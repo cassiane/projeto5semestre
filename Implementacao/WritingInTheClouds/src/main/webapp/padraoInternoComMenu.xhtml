@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>
+    </h:head>
+    <h:body>        
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="144">
+                <f:facet name="header">                    
+                    <div id="top" style="height: 70px;text-align: center;line-height: 70px;font-size: 40px">
+                        <h:outputText value="WITC"/>
+                    </div>                                
+                    <div id="middle" style="height: 25px;text-align: center;">
+                        <h:outputText value="Olá, #{autenticarBean.nomeUsuario}"/>
+                    </div>                                
+
+                    <div id="botton" style="height: 20px;text-align: right;">
+                        <h:form>                                                                                        
+                            <p:commandLink id="lnkLogout"
+                                style="color: black; font-size: 14px"
+                                value="Sair"
+                                action="#{autenticarBean.efetuarLogoff()}"
+                                ajax="false">
+                            </p:commandLink>
+                        </h:form>                        
+                    </div>                    
+                </f:facet>                
+            </p:layoutUnit>
+            <p:layoutUnit position="west">
+                <h:form>
+                    <p:menu>
+                        <p:menuitem ajax="false" value="Item" action="index.xhtml"/>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>            
+            <p:layoutUnit position="center">
+                <ui:insert name="conteudo"/>
+            </p:layoutUnit>
+        </p:layout>
+        <ui:insert name="dialogos"/>
+    </h:body>    
+</html>

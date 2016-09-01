@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="padraoInternoSemMenu.xhtml">        
+        <ui:define name="conteudo">                
+            <p:messages/>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="txtEmail" value="Email: "/>
+                    <p:inputText id="txtEmail" maxlength="30" size="20" required="true" binding="#{email}"/>
+                    <p:outputLabel for="txtSenha" value="Senha: "/>
+                    <p:password id="txtSenha" maxlength="32" size="20" required="true" binding="#{senha}"/>                    
+                </h:panelGrid>                
+                <h:panelGrid columns="2">
+                    <p:commandButton ajax="false" value="Entrar" style="width:145px" 
+                                     action="#{autenticarBean.efetuarLogin(email.value, senha.value)}" />                                    
+                </h:panelGrid>
+            </h:form>                            
+        </ui:define>
+    </ui:composition>
+</html>
+
