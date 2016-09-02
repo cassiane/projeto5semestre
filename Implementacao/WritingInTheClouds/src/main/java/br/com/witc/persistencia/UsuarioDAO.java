@@ -22,11 +22,11 @@ public class UsuarioDAO {
     }
     
     /**
-     * Verifica se existe usuário e senha informados
-     * @param email O email do usuário
-     * @param senha A senha do usuário
+     * Verifica se existe usuÃ¡rio e senha informados
+     * @param email O email do usuÃ¡rio
+     * @param senha A senha do usuÃ¡rio
      * @return Um objeto Usuario
-     * @throws LoginInvalidoException Caso o usuário e/ou a senha sejam inválidos
+     * @throws LoginInvalidoException Caso o usuÃ¡rio e/ou a senha sejam invÃ¡lidos
      */
     public Usuario efetuarLogin(String email, String senha) throws LoginInvalidoException {
         Usuario tmpUsuario = (Usuario) sessao.createQuery("FROM Usuario WHERE email=:email AND senha=:senha")

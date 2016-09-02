@@ -155,8 +155,9 @@ public class Usuario implements Serializable {
      * @return Um objeto Usuario
      * @throws LoginInvalidoException Caso os dados informados sejam inválidos
      */
-    public static Usuario efetuarLogin(String email, String senha) throws LoginInvalidoException {
+    public static Usuario efetuarLogin(String email, String senha) throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
+        String hashSenha = criarHashSenha(senha);
         return usuarioDAO.efetuarLogin(email, senha);
     }
 
@@ -166,7 +167,7 @@ public class Usuario implements Serializable {
      * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
      * @throws UnsupportedEncodingException Caso haja erro de codificação
      */
-    private String criarHashSenha() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    private static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         String text = "This is some text";
 
