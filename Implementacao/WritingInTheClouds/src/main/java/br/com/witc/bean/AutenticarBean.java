@@ -28,17 +28,17 @@ public class AutenticarBean {
     }    
     
     /**     
-     * @return O nome do usu·rio logado no sistema
+     * @return O nome do usu√°rio logado no sistema
      */
     public String getNomeUsuario() {
         return this.controlador.getNomeUsuario();
     }
     
     /**
-     * Autentica um usu·rio no sistema
-     * @param login O login do usu·rio
-     * @param senha A senha do usu·rio
-     * @return A p·gina a ser visualizada pelo usu·rio apÛs o login     
+     * Autentica um usu√°rio no sistema
+     * @param login O login do usu√°rio
+     * @param senha A senha do usu√°rio
+     * @return A p√°gina a ser visualizada pelo usu√°rio ap√≥s o login     
      */
     public String efetuarLogin(String login, String senha) {        
         try {
@@ -50,8 +50,8 @@ public class AutenticarBean {
     }    
     
     /**
-     * Realiza o logout do usu·rio
-     * @return A prÛxima p·gina a ser visualizada pelo usu·rio apÛs o logout
+     * Realiza o logout do usu√°rio
+     * @return A pr√≥xima p√°gina a ser visualizada pelo usu√°rio ap√≥s o logout
      */
     public String efetuarLogoff() {
         getCurrentInstance().getExternalContext().invalidateSession();
@@ -59,7 +59,7 @@ public class AutenticarBean {
     }    
     
     /**
-     * Envia ‡ viewer uma mensagem com o status da operaÁ„o
+     * Envia √† viewer uma mensagem com o status da opera√ß√£o
      * @param sev A severidade da mensagem
      * @param msg A mensagem a ser apresentada
      */

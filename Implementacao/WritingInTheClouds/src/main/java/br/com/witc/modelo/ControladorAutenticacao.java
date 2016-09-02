@@ -19,17 +19,17 @@ public class ControladorAutenticacao {
     }        
     
     /**     
-     * @return O nome do usuário logado no sistema
+     * @return O nome do usuÃ¡rio logado no sistema
      */
     public String getNomeUsuario() {
         return this.usuario.getNome();
     }
     
     /**
-     * Autentica um usuário no sistema
-     * @param email O email do usuário
-     * @param senha A senha do usuário
-     * @return A página a ser visualizada pelo usuário após o login              
+     * Autentica um usuÃ¡rio no sistema
+     * @param email O email do usuÃ¡rio
+     * @param senha A senha do usuÃ¡rio
+     * @return A pÃ¡gina a ser visualizada pelo usuÃ¡rio apÃ³s o login              
      * @throws br.com.witc.excessao.LoginInvalidoException  Se o login for invalido            
      */
     public String efetuarLogin(String email, String senha) throws LoginInvalidoException {                
