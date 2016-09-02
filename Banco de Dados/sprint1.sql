@@ -11,7 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema witc
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `witc` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `witc` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 USE `witc` ;
 
 -- -----------------------------------------------------
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `witc`.`Usuario` (
   `dataAniversario` DATE NOT NULL,
   `genero` VARCHAR(20) NOT NULL,
   `foto` BLOB NULL,
-  `senha` VARCHAR(100) NOT NULL,
+  `senha` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
