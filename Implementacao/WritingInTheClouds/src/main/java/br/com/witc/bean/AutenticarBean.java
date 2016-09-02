@@ -22,13 +22,43 @@ import static javax.faces.context.FacesContext.getCurrentInstance;
 @SessionScoped
 public class AutenticarBean {
     private final ControladorAutenticacao controlador;
+    private String email;
+    private String senha;
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return the senha
+     */
+    public String getSenha() {
+        return senha;
+    }
+
+    /**
+     * @param senha the senha to set
+     */
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }    
 
     public AutenticarBean() {
         this.controlador = new ControladorAutenticacao();              
     }    
     
     /**     
-     * @return O nome do usuário logado no sistema
+     * @return O email do usuário logado no sistema
      */
     public String getNomeUsuario() {
         return this.controlador.getNomeUsuario();
@@ -36,13 +66,11 @@ public class AutenticarBean {
     
     /**
      * Autentica um usuário no sistema
-     * @param login O login do usuário
-     * @param senha A senha do usuário
      * @return A página a ser visualizada pelo usuário após o login     
      */
-    public String efetuarLogin(String login, String senha) {        
+    public String efetuarLogin() {        
         try {
-            return this.controlador.efetuarLogin(login, senha);
+            return this.controlador.efetuarLogin(this.email, this.senha);
         } catch(LoginInvalidoException e) {
             enviarMensagem(SEVERITY_ERROR, e.getMessage());
             return "index";            
@@ -66,5 +94,5 @@ public class AutenticarBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }          
+    }            
 }

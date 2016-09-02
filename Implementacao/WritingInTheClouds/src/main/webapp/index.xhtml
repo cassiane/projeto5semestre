@@ -3,23 +3,112 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="padraoInternoSemMenu.xhtml">        
-        <ui:define name="conteudo">                
-            <p:messages/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="padraoUsuarioNaoLogado.xhtml">        
+        <ui:define name="header">                
+            <p:growl id="growl" severity="error" globalOnly="true" />             
             <h:form>
-                <h:panelGrid columns="2">
-                    <p:outputLabel for="txtEmail" value="Email: "/>
-                    <p:inputText id="txtEmail" maxlength="30" size="20" required="true" binding="#{email}"/>
-                    <p:outputLabel for="txtSenha" value="Senha: "/>
-                    <p:password id="txtSenha" maxlength="32" size="20" required="true" binding="#{senha}"/>                    
-                </h:panelGrid>                
-                <h:panelGrid columns="2">
-                    <p:commandButton ajax="false" value="Entrar" style="width:145px" 
-                                     action="#{autenticarBean.efetuarLogin(email.value, senha.value)}" />                                    
-                </h:panelGrid>
+                <div style="overflow: auto; position: relative">
+                    <div style="float: left;">                        
+                        <h:graphicImage height="95px" name="imagens/logo.png"/>
+                    </div>
+                    <div>
+                        <div style="padding: 5px; position: absolute; width: 610px; right: 0px;">
+                            <p:outputLabel for="iptEmail" value="Email" />
+                            <p:outputLabel for="pwdSenha" value="Senha" style="margin-left: 165px"/>                            
+                        </div>
+                        <div style="padding: 5px; position: absolute; width: 610px; top: 25px; right: 0px;">
+                            <p:inputText id="iptEmail" maxlength="30" size="20" required="true" value="#{autenticarBean.email}"/>
+                            <p:password id="pwdSenha" maxlength="32" size="20" required="true" value="#{autenticarBean.senha}" 
+                                        style="margin-left: 3px;" />
+                            <p:commandButton ajax="false" value="Entrar" style="width:145px; margin-left: 3px;"
+                                             action="#{autenticarBean.efetuarLogin()}" />
+                        </div>
+                        <div style="padding: 5px; position: absolute; width: 378px; right: 0px; top: 60px;">
+                            <p:link href="timeline.xhtml">Esqueceu a conta?</p:link>
+                        </div>
+                    </div>
+                </div>
             </h:form>                            
+        </ui:define>
+        <ui:define name="conteudo">
+            <h:form>
+                <div style="overflow: auto; position: relative">
+                    <div style="float: left;">
+                        <h:graphicImage style="height: 400px; padding-top: 100px" name="imagens/livro.png"/>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 390px; top: 10px;">
+                        <h:outputText value="Abra uma Conta" style="font-size: 30px;"/>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 0px; top: 60px;">
+                        <p:inputText maxlength="50" placeholder="Nome" style="width: 295px;" 
+                                     required="true"  value="#{cadastrarBean.usuario.nome}"/>
+                        <p:inputText maxlength="50" placeholder="Sobrenome" style="width: 295px; margin-left: 3px;" 
+                                     required="true" value="#{cadastrarBean.usuario.sobrenome}"/>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 0px; top: 110px;">
+                        <p:inputText maxlength="120" placeholder="Email" style="width: 604px;" 
+                                     required="true" value="#{cadastrarBean.usuario.email}"/>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 0px; top: 160px;">
+                        <p:inputText maxlength="120" placeholder="Digite novamente o email" style="width: 604px;" 
+                                     required="true" value="#{cadastrarBean.emailVerificado}"/>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 0px; top: 210px;">
+                        <p:inputText maxlength="120" placeholder="Senha" style="width: 604px;" 
+                                     required="true" value="#{cadastrarBean.usuario.senha}"/>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 513px; top: 260px;">
+                        <h:outputText value="Aniversário" style="font-size: 20px;"/>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 288px; top: 290px;">
+                        <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 65px" required="true">
+                            <f:selectItem itemLabel="Dia" itemValue="" />
+                            <c:forEach var="dia" begin="1" end="31">
+                                <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" />
+                            </c:forEach>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 65px; margin-left: 10px;" 
+                                         required="true">
+                            <f:selectItem itemLabel="Mês" itemValue="" />
+                            <c:forEach var="mes" begin="1" end="12">
+                                <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
+                            </c:forEach>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 65px; margin-left: 10px;" 
+                                         required="true">
+                            <f:selectItem itemLabel="Ano" itemValue="" />
+                            <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
+                                <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
+                            </c:forEach>
+                        </p:selectOneMenu>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 416px; top: 340px;">
+                        <p:selectOneRadio value="#{cadastrarBean.usuario.genero}" required="true">
+                            <f:selectItem itemLabel="Feminino" itemValue="F" />
+                            <f:selectItem itemLabel="Masculino" itemValue="M" />
+                        </p:selectOneRadio>
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 0px; top: 390px;">
+                        <h:outputText value="Ao clicar em Abrir uma Conta, você concorda com os nossos " />
+                        <a href="http://www.google.com.br">Termos</a>                        
+                        <h:outputText value=" e que leu " />
+                    </div>                     
+                    <div style="padding: 5px; position: absolute; right: 59px; top: 420px;">
+                        <h:outputText value=" e que leu a nossa " />
+                        <a href="http://www.google.com.br">Política de Dados</a>
+                        <h:outputText value=" incluindo o nosso " />
+                        <a href="http://www.google.com.br">Uso de Cookies</a>
+                        <h:outputText value="." />
+                    </div>
+                    <div style="padding: 5px; position: absolute; right: 415px; top: 460px;">
+                        <p:commandButton ajax="false" value="Abrir uma Conta" style="width:200px; margin-left: 3px;"
+                                         action="#{cadastrarBean.cadastrarUsuario()}" />
+                    </div>
+                </div>
+            </h:form>                
         </ui:define>
     </ui:composition>
 </html>
-
