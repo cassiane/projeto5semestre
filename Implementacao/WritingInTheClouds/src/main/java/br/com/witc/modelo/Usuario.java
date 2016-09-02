@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import br.com.witc.persistencia.UsuarioDAO;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import static javax.persistence.TemporalType.DATE;
@@ -171,12 +172,18 @@ public class Usuario implements Serializable {
      * @throws UnsupportedEncodingException Caso haja erro de codificação
      */
     private static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        String text = "This is some text";
+        MessageDigest md = MessageDigest.getInstance("SHA-256");        
 
-        md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+        md.update(senha.getBytes("UTF-8")); 
         byte[] digest = md.digest();
         
-        return String.valueOf(digest);
+        StringBuilder hexString = new StringBuilder();
+        for (int i = 0; i < digest.length; i++) {
+            String hex = Integer.toHexString(0xff & digest[i]);
+            if(hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+        
+        return hexString.toString();
     }
 }
