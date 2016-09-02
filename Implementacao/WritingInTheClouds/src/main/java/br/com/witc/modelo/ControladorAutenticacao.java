@@ -6,6 +6,8 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.LoginInvalidoException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  *
@@ -31,8 +33,11 @@ public class ControladorAutenticacao {
      * @param senha A senha do usuário
      * @return A página a ser visualizada pelo usuário após o login              
      * @throws br.com.witc.excessao.LoginInvalidoException  Se o login for invalido            
+     * @throws java.security.NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado          
+     * @throws java.io.UnsupportedEncodingException Caso haja erro de codificação          
      */
-    public String efetuarLogin(String email, String senha) throws LoginInvalidoException {                
+    public String efetuarLogin(String email, String senha) 
+            throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {                
         this.usuario = Usuario.efetuarLogin(email, senha);
         
         if (this.usuario != null)

@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import br.com.witc.modelo.ControladorAutenticacao;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 
@@ -72,9 +74,11 @@ public class AutenticarBean {
         try {
             return this.controlador.efetuarLogin(this.email, this.senha);
         } catch(LoginInvalidoException e) {
-            enviarMensagem(SEVERITY_ERROR, e.getMessage());
-            return "index";            
+            enviarMensagem(SEVERITY_ERROR, e.getMessage());                        
+        } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            enviarMensagem(SEVERITY_ERROR, "Problemas na geração do hash da senha!");            
         }
+        return "index";
     }    
     
     /**

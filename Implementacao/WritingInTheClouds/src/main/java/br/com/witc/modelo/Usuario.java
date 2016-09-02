@@ -154,11 +154,14 @@ public class Usuario implements Serializable {
      * @param senha A senha do usuário
      * @return Um objeto Usuario
      * @throws LoginInvalidoException Caso os dados informados sejam inválidos
+     * @throws java.security.NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
+     * @throws java.io.UnsupportedEncodingException Caso haja erro de codificação
      */
-    public static Usuario efetuarLogin(String email, String senha) throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static Usuario efetuarLogin(String email, String senha) 
+            throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         String hashSenha = criarHashSenha(senha);
-        return usuarioDAO.efetuarLogin(email, senha);
+        return usuarioDAO.efetuarLogin(email, hashSenha);
     }
 
     /**
