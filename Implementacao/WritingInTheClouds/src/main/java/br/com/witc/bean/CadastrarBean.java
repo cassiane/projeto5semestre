@@ -121,6 +121,7 @@ public class CadastrarBean {
      * @return Uma string contendo a próxima página a ser enviada para o usuário
      */
     public String cadastrarUsuario() {
+        // Setar a data de nascimento no usuario
         this.controlador.cadastrarUsuario(usuario);
         return "pagina a ser encaminhado usuario";
     }

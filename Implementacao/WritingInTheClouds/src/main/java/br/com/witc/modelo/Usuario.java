@@ -13,6 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import br.com.witc.persistencia.UsuarioDAO;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import static javax.persistence.TemporalType.DATE;
 
 /**
@@ -146,14 +149,30 @@ public class Usuario implements Serializable {
     }
      
     /**
-     * Autentica um usuario no sistema
-     * @param email O email do usu�rio
-     * @param senha A senha do usu�rio
+     * Autentica um usuário no sistema
+     * @param email O email do usuário
+     * @param senha A senha do usuário
      * @return Um objeto Usuario
-     * @throws LoginInvalidoException Caso os dados informados sejam inv�lidos
+     * @throws LoginInvalidoException Caso os dados informados sejam inválidos
      */
     public static Usuario efetuarLogin(String email, String senha) throws LoginInvalidoException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         return usuarioDAO.efetuarLogin(email, senha);
+    }
+
+    /**
+     * Cria O hash da senha do usuário utilizando o algorítimo SHA-256
+     * @return O hash criar
+     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
+     * @throws UnsupportedEncodingException Caso haja erro de codificação
+     */
+    private String criarHashSenha() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        String text = "This is some text";
+
+        md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+        byte[] digest = md.digest();
+        
+        return String.valueOf(digest);
     }
 }
