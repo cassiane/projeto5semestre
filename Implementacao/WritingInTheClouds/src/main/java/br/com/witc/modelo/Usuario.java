@@ -6,6 +6,7 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.LoginInvalidoException;
+import br.com.witc.excessao.UsuarioInvalidoException;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Entity;
@@ -14,10 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import br.com.witc.persistencia.UsuarioDAO;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import static javax.persistence.TemporalType.DATE;
 
 /**
  *
@@ -31,11 +30,14 @@ public class Usuario implements Serializable {
     private String nome;
     private String sobrenome;
     private String email;
-    @Temporal(DATE)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataAniversario;
     private String genero;
     private byte[] foto;
     private String senha;
+    //@OneToOne
+    //@JoinColumn(name = "")
+    //private Perfil perfil;
 
     /**
      * @return the id
@@ -148,7 +150,7 @@ public class Usuario implements Serializable {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-     
+    
     /**
      * Autentica um usuário no sistema
      * @param email O email do usuário
@@ -186,4 +188,18 @@ public class Usuario implements Serializable {
         
         return hexString.toString();
     }
+    /**
+     * Persiste usuario no banco
+     * @param usuario
+     * @throws UsuarioInvalidoException 
+     * @throws java.security.NoSuchAlgorithmException 
+     * @throws java.io.UnsupportedEncodingException 
+     */
+    public void CadastrarUsuario(Usuario usuario) throws UsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{
+       UsuarioDAO dao = new UsuarioDAO();
+       this.setSenha(criarHashSenha(this.senha));
+       dao.salvarUsuario(usuario);
+    }
+
+    
 }
