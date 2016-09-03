@@ -19,6 +19,13 @@ public class ControladorAutenticacao {
     public ControladorAutenticacao() {
         this.usuario = new Usuario();
     }        
+
+    /**
+     * @return O usuário logado no sistema
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
     
     /**     
      * @return O nome do usuário logado no sistema

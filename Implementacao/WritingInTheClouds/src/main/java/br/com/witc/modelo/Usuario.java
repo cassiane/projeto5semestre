@@ -17,6 +17,7 @@ import br.com.witc.persistencia.UsuarioDAO;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  *
@@ -24,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
  */
 @Entity
 public class Usuario implements Serializable {
+
     @Id
     @GeneratedValue   
     private int id;
@@ -201,5 +203,9 @@ public class Usuario implements Serializable {
        dao.salvarUsuario(usuario);
     }
 
+    public List<Usuario> listarAmigos() throws UsuarioInvalidoException {
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.listarAmigos(this.getId());
+    }
     
 }

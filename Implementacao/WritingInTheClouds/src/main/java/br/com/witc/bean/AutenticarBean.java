@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import br.com.witc.modelo.ControladorAutenticacao;
+import br.com.witc.modelo.Usuario;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
@@ -64,6 +65,14 @@ public class AutenticarBean {
      */
     public String getNomeUsuario() {
         return this.controlador.getNomeUsuario();
+    }
+    
+    /**
+     * Unica forma que achei para buscar o usuario
+     * @return Retorna o usuario logado
+     */
+    public Usuario usuarioLogado() {
+        return this.controlador.getUsuario();
     }
     
     /**

@@ -6,23 +6,33 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.UsuarioInvalidoException;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
  * @author marcelo.lima
  */
 public class ControladorCadastro {
+
     private Usuario usuario;
 
     public ControladorCadastro(Usuario usuario) {
         this.usuario = usuario;
     }
-    
-    
+
     /**
      * Cadastra um usuário no sistemap
+     *
      * @param usuario O usuário a ser cadastrado no sistema
      * @return Uma string contendo a próxima página a ser enviada para o usuário
      * @throws br.com.witc.excessao.UsuarioInvalidoException
@@ -30,8 +40,34 @@ public class ControladorCadastro {
      * @throws java.io.UnsupportedEncodingException
      */
     public String cadastrarUsuario(Usuario usuario) throws UsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        usuario.CadastrarUsuario(usuario);        
+        usuario.CadastrarUsuario(usuario);
         return "timeline";
-    }   
-    
+    }
+
+    /**
+     * Listar os amigos do usuario logado
+     *
+     * @return A lista de amigos
+     */
+    public List<Usuario> listarAmigos() throws UsuarioInvalidoException {
+        return this.usuario.listarAmigos();
+    }
+
+    /**
+     * Retorna a imagem do amigo do usuario
+     *
+     * @param usufoto Usuario amigo
+     * @return A imagem
+     */
+    public StreamedContent getAmigosFoto(Usuario usufoto) {
+        if (usufoto.getFoto() == null) {
+            return null;
+        }
+        StreamedContent foto = new DefaultStreamedContent(new ByteArrayInputStream(usufoto.getFoto()), "image/png");
+        return foto;
+    }
+
+    public void usuarioLogado(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

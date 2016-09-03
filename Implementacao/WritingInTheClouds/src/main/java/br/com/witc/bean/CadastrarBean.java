@@ -13,12 +13,14 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import static javax.faces.context.FacesContext.getCurrentInstance;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -33,6 +35,8 @@ public class CadastrarBean {
     private String diaNascimento;
     private String mesNascimento;
     private String anoNascimento;
+    //private List<Usuario> amigos;
+    //private StreamedContent amigosFoto;
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro(null);
@@ -109,6 +113,15 @@ public class CadastrarBean {
         this.anoNascimento = anoNascimento;
     }    
 
+    public List<Usuario> getAmigos() throws UsuarioInvalidoException {
+        this.controlador.usuarioLogado(this.usuario);
+        return this.controlador.listarAmigos();
+    }
+
+    public StreamedContent getAmigosFoto(Usuario usufoto) {
+        return this.controlador.getAmigosFoto(usufoto);
+    }
+
     /**
      * @return the anoAtual
      */
@@ -158,6 +171,10 @@ public class CadastrarBean {
             enviarMensagem(SEVERITY_ERROR, e.getMessage());            
         }
         return null;
+    }
+
+    public String listarAmigos() {
+        return "listarAmigos";
     }
     
     /**

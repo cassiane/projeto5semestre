@@ -19,18 +19,21 @@ import org.hibernate.exception.ConstraintViolationException;
  * @author marcelo.lima
  */
 public class UsuarioDAO {
+
     private final Session sessao;
-    
+
     public UsuarioDAO() {
         sessao = getSessionFactory().getCurrentSession();
     }
-    
+
     /**
      * Verifica se existe usuário e senha informados
+     *
      * @param email O email do usuário
      * @param senha A senha do usuário
      * @return Um objeto Usuario
-     * @throws LoginInvalidoException Caso o usuário e/ou a senha sejam inválidos
+     * @throws LoginInvalidoException Caso o usuário e/ou a senha sejam
+     * inválidos
      */
     public Usuario efetuarLogin(String email, String senha) throws LoginInvalidoException {
         Usuario tmpUsuario = (Usuario) sessao.createQuery("FROM Usuario WHERE email=:email AND senha=:senha")
@@ -41,23 +44,34 @@ public class UsuarioDAO {
             throw new LoginInvalidoException("Email ou senha incorretos!");
         }
         return tmpUsuario;
-    }          
+    }
+
     /**
-     * 
+     *
      * @param usuario
-     * @throws UsuarioInvalidoException 
+     * @throws UsuarioInvalidoException
      */
-    public void salvarUsuario(Usuario usuario) throws  UsuarioInvalidoException{
+    public void salvarUsuario(Usuario usuario) throws UsuarioInvalidoException {
         try {
-            sessao.saveOrUpdate(usuario);        
-        } catch (ConstraintViolationException e) {            
+            sessao.saveOrUpdate(usuario);
+        } catch (ConstraintViolationException e) {
             if (e.getSQLException().getMessage().contains("email")) {
                 sessao.clear();
                 throw new UsuarioInvalidoException("Email já está sendo utilizado realize o login ou clique em esqueceu a senha.");
-            } 
-            else {
-                
+            } else {
+
             }
         }
-    }        
+    }
+
+    public List<Usuario> listarAmigos(int idUsuario) throws UsuarioInvalidoException {
+        List<Usuario> tmpAmigos = sessao.createQuery("FROM Usuario WHERE id<>:idUsuario ORDER BY nome")
+                .setInteger("idUsuario", idUsuario)
+                .list();
+        System.out.println("usuario:: " + idUsuario);
+        if (tmpAmigos.isEmpty()) {
+            throw new UsuarioInvalidoException("Você não possui amigos ainda, faça amizades logo!");
+        }
+        return tmpAmigos;
+    }
 }
