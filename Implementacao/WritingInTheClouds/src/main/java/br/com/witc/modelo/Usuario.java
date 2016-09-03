@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import br.com.witc.persistencia.UsuarioDAO;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import static javax.persistence.TemporalType.DATE;

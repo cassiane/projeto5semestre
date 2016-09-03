@@ -32,7 +32,8 @@ public class FiltroTransacoesHibernate implements Filter {
         String paginaAtual = new String(req.getRequestURL());
         
         // dont filter index.xhtml because otherwise an endless loop.	
-        if ((request.getAttribute(FILTER_APPLIED) == null) && (!paginaAtual.endsWith("index.xhtml"))) {
+        if ((request.getAttribute(FILTER_APPLIED) == null) && (!paginaAtual.endsWith("index.xhtml")) 
+                && (!paginaAtual.endsWith("recuperarConta.xhtml"))) {
             request.setAttribute(FILTER_APPLIED, Boolean.TRUE);
             // If the session bean is not null get the session bean property
             // username.
