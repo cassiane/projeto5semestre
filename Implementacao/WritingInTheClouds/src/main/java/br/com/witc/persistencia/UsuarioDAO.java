@@ -6,9 +6,13 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.excessao.LoginInvalidoException;
+import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import java.util.List;
+//import javax.validation.ConstraintViolationException;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -37,5 +41,23 @@ public class UsuarioDAO {
             throw new LoginInvalidoException("Email ou senha incorretos!");
         }
         return tmpUsuario;
-    }
+    }          
+    /**
+     * 
+     * @param usuario
+     * @throws UsuarioInvalidoException 
+     */
+    public void salvarUsuario(Usuario usuario) throws  UsuarioInvalidoException{
+        try {
+            sessao.saveOrUpdate(usuario);        
+        } catch (ConstraintViolationException e) {            
+            if (e.getSQLException().getMessage().contains("email")) {
+                sessao.clear();
+                throw new UsuarioInvalidoException("Email já está sendo utilizado realize o login ou clique em esqueceu a senha.");
+            } 
+            else {
+                
+            }
+        }
+    }        
 }

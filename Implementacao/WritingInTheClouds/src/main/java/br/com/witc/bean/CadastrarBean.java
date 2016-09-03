@@ -5,11 +5,20 @@
  */
 package br.com.witc.bean;
 
+import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Usuario;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import javax.faces.application.FacesMessage;
+import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import static javax.faces.context.FacesContext.getCurrentInstance;
 
 /**
  *
@@ -24,9 +33,9 @@ public class CadastrarBean {
     private String diaNascimento;
     private String mesNascimento;
     private String anoNascimento;
-
+    
     public CadastrarBean() {
-        this.controlador = new ControladorCadastro();
+        this.controlador = new ControladorCadastro(null);
         this.usuario = new Usuario();
     }
     
@@ -114,15 +123,50 @@ public class CadastrarBean {
     public String getAnoInicial() {
         int anoAtual = Integer.parseInt(this.getAnoAtual());
         return String.valueOf(anoAtual - 80);
+    }   
+
+    
+    
+    public void setDataNascimento() throws ParseException {         
+        SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");            
+        String data = getDiaNascimento()+"/"+getMesNascimento()+"/"+getAnoNascimento();
+        Calendar c = Calendar.getInstance();;
+        c.setTime(formatoData.parse(data));
+
+        this.usuario.setDataAniversario(c);            
     }
     
     /**
      * Cadastra um usuario no sistema
      * @return Uma string contendo a próxima página a ser enviada para o usuário
+     * @throws br.com.witc.excessao.UsuarioInvalidoException
      */
-    public String cadastrarUsuario() {
+    public String cadastrarUsuario() throws UsuarioInvalidoException {
         // Setar a data de nascimento no usuario
-        this.controlador.cadastrarUsuario(usuario);
-        return "pagina a ser encaminhado usuario";
+        try {
+            if (!this.usuario.getEmail().equals(this.emailVerificado)) {
+                throw new UsuarioInvalidoException("Os emails informados não coicidem!");
+            }
+            setDataNascimento();                
+            this.controlador.cadastrarUsuario(usuario);
+            return "timeline";
+        }catch(ParseException ex){
+            enviarMensagem(SEVERITY_ERROR, "Data de Nascimento inválida.");          
+        } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            enviarMensagem(SEVERITY_ERROR, "Problemas na geração do hash da senha!");            
+        } catch(UsuarioInvalidoException e) {
+            enviarMensagem(SEVERITY_ERROR, e.getMessage());            
+        }
+        return null;
     }
+    
+    /**
+     * Envia à viewer uma mensagem com o status da operação
+     * @param sev A severidade da mensagem
+     * @param msg A mensagem a ser apresentada
+     */
+    private void enviarMensagem(FacesMessage.Severity sev, String msg) {
+        FacesContext context = getCurrentInstance();        
+        context.addMessage(null, new FacesMessage(sev, msg, ""));
+    }          
 }
