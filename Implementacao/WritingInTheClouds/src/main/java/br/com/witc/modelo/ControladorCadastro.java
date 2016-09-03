@@ -22,7 +22,7 @@ public class ControladorCadastro {
     
     
     /**
-     * Cadastra um usuário no sistema
+     * Cadastra um usuário no sistemap
      * @param usuario O usuário a ser cadastrado no sistema
      * @return Uma string contendo a próxima página a ser enviada para o usuário
      * @throws br.com.witc.excessao.UsuarioInvalidoException
