@@ -6,7 +6,6 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.excessao.LoginInvalidoException;
-<<<<<<< refs/remotes/origin/master
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
@@ -14,18 +13,15 @@ import java.util.List;
 //import javax.validation.ConstraintViolationException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
-=======
-import br.com.witc.modelo.Usuario;
-import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
-import org.hibernate.Session;
->>>>>>> HEAD~1
+
+
 
 /**
  *
  * @author marcelo.lima
  */
 public class UsuarioDAO {
-<<<<<<< refs/remotes/origin/master
+
 
     private final Session sessao;
 
@@ -41,20 +37,6 @@ public class UsuarioDAO {
      * @return Um objeto Usuario
      * @throws LoginInvalidoException Caso o usuário e/ou a senha sejam
      * inválidos
-=======
-    private final Session sessao;
-    
-    public UsuarioDAO() {
-        sessao = getSessionFactory().getCurrentSession();
-    }
-    
-    /**
-     * Verifica se existe usuário e senha informados
-     * @param email O email do usuário
-     * @param senha A senha do usuário
-     * @return Um objeto Usuario
-     * @throws LoginInvalidoException Caso o usuário e/ou a senha sejam inválidos
->>>>>>> HEAD~1
      */
     public Usuario efetuarLogin(String email, String senha) throws LoginInvalidoException {
         Usuario tmpUsuario = (Usuario) sessao.createQuery("FROM Usuario WHERE email=:email AND senha=:senha")
@@ -66,7 +48,7 @@ public class UsuarioDAO {
         }
         return tmpUsuario;
     }
-<<<<<<< refs/remotes/origin/master
+
 
     /**
      *
@@ -96,6 +78,5 @@ public class UsuarioDAO {
         }
         return tmpAmigos;
     }
-=======
->>>>>>> HEAD~1
+
 }

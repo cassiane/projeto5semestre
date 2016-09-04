@@ -19,7 +19,7 @@ public class ControladorAutenticacao {
     public ControladorAutenticacao() {
         this.usuario = new Usuario();
     }        
-<<<<<<< refs/remotes/origin/master
+
 
     /**
      * @return O usuário logado no sistema
@@ -27,8 +27,7 @@ public class ControladorAutenticacao {
     public Usuario getUsuario() {
         return usuario;
     }
-=======
->>>>>>> HEAD~1
+
     
     /**     
      * @return O nome do usuário logado no sistema

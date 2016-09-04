@@ -11,10 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import br.com.witc.modelo.ControladorAutenticacao;
-<<<<<<< refs/remotes/origin/master
 import br.com.witc.modelo.Usuario;
-=======
->>>>>>> HEAD~1
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;

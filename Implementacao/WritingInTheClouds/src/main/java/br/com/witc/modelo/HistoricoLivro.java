@@ -5,13 +5,20 @@
  */
 package br.com.witc.modelo;
 
+import java.io.Serializable;
 import java.util.Calendar;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  *
  * @author root
  */
-class HistoricoLivro {
+@Entity
+class HistoricoLivro implements Serializable {
+    @Id
+    @GeneratedValue
     private int id;
     private Calendar dataInicio;
     private Calendar  dataConclusao;
