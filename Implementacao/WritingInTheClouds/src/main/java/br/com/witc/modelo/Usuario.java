@@ -6,7 +6,10 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.LoginInvalidoException;
+<<<<<<< refs/remotes/origin/master
 import br.com.witc.excessao.UsuarioInvalidoException;
+=======
+>>>>>>> HEAD~1
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Entity;
@@ -17,7 +20,11 @@ import br.com.witc.persistencia.UsuarioDAO;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+<<<<<<< refs/remotes/origin/master
 import java.util.List;
+=======
+import static javax.persistence.TemporalType.DATE;
+>>>>>>> HEAD~1
 
 /**
  *
@@ -25,21 +32,31 @@ import java.util.List;
  */
 @Entity
 public class Usuario implements Serializable {
+<<<<<<< refs/remotes/origin/master
 
+=======
+>>>>>>> HEAD~1
     @Id
     @GeneratedValue   
     private int id;
     private String nome;
     private String sobrenome;
     private String email;
+<<<<<<< refs/remotes/origin/master
     @Temporal(javax.persistence.TemporalType.DATE)
+=======
+    @Temporal(DATE)
+>>>>>>> HEAD~1
     private Calendar dataAniversario;
     private String genero;
     private byte[] foto;
     private String senha;
+<<<<<<< refs/remotes/origin/master
     //@OneToOne
     //@JoinColumn(name = "")
     //private Perfil perfil;
+=======
+>>>>>>> HEAD~1
 
     /**
      * @return the id
@@ -152,7 +169,11 @@ public class Usuario implements Serializable {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+<<<<<<< refs/remotes/origin/master
     
+=======
+     
+>>>>>>> HEAD~1
     /**
      * Autentica um usuário no sistema
      * @param email O email do usuário
@@ -176,6 +197,7 @@ public class Usuario implements Serializable {
      * @throws UnsupportedEncodingException Caso haja erro de codificação
      */
     private static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+<<<<<<< refs/remotes/origin/master
         MessageDigest md = MessageDigest.getInstance("SHA-256");        
 
         md.update(senha.getBytes("UTF-8")); 
@@ -208,4 +230,14 @@ public class Usuario implements Serializable {
         return dao.listarAmigos(this.getId());
     }
     
+=======
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        String text = "This is some text";
+
+        md.update(text.getBytes("UTF-8")); // Change this to "UTF-16" if needed
+        byte[] digest = md.digest();
+        
+        return String.valueOf(digest);
+    }
+>>>>>>> HEAD~1
 }

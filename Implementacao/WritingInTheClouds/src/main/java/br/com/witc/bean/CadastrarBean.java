@@ -5,6 +5,7 @@
  */
 package br.com.witc.bean;
 
+<<<<<<< refs/remotes/origin/master
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Usuario;
@@ -21,6 +22,13 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import org.primefaces.model.StreamedContent;
+=======
+import br.com.witc.modelo.ControladorCadastro;
+import br.com.witc.modelo.Usuario;
+import java.util.Calendar;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+>>>>>>> HEAD~1
 
 /**
  *
@@ -35,11 +43,17 @@ public class CadastrarBean {
     private String diaNascimento;
     private String mesNascimento;
     private String anoNascimento;
+<<<<<<< refs/remotes/origin/master
     //private List<Usuario> amigos;
     //private StreamedContent amigosFoto;
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro(null);
+=======
+
+    public CadastrarBean() {
+        this.controlador = new ControladorCadastro();
+>>>>>>> HEAD~1
         this.usuario = new Usuario();
     }
     
@@ -113,6 +127,7 @@ public class CadastrarBean {
         this.anoNascimento = anoNascimento;
     }    
 
+<<<<<<< refs/remotes/origin/master
     public List<Usuario> getAmigos() throws UsuarioInvalidoException {
         this.controlador.usuarioLogado(this.usuario);
         return this.controlador.listarAmigos();
@@ -122,6 +137,8 @@ public class CadastrarBean {
         return this.controlador.getAmigosFoto(usufoto);
     }
 
+=======
+>>>>>>> HEAD~1
     /**
      * @return the anoAtual
      */
@@ -136,6 +153,7 @@ public class CadastrarBean {
     public String getAnoInicial() {
         int anoAtual = Integer.parseInt(this.getAnoAtual());
         return String.valueOf(anoAtual - 80);
+<<<<<<< refs/remotes/origin/master
     }   
 
     
@@ -147,11 +165,14 @@ public class CadastrarBean {
         c.setTime(formatoData.parse(data));
 
         this.usuario.setDataAniversario(c);            
+=======
+>>>>>>> HEAD~1
     }
     
     /**
      * Cadastra um usuario no sistema
      * @return Uma string contendo a próxima página a ser enviada para o usuário
+<<<<<<< refs/remotes/origin/master
      * @throws br.com.witc.excessao.UsuarioInvalidoException
      */
     public String cadastrarUsuario() throws UsuarioInvalidoException {
@@ -186,4 +207,12 @@ public class CadastrarBean {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     }          
+=======
+     */
+    public String cadastrarUsuario() {
+        // Setar a data de nascimento no usuario
+        this.controlador.cadastrarUsuario(usuario);
+        return "pagina a ser encaminhado usuario";
+    }
+>>>>>>> HEAD~1
 }

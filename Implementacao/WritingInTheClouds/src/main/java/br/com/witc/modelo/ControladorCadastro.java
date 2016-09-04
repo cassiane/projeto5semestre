@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+<<<<<<< refs/remotes/origin/master
 import br.com.witc.excessao.UsuarioInvalidoException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -18,11 +19,14 @@ import javax.imageio.ImageIO;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
+=======
+>>>>>>> HEAD~1
 /**
  *
  * @author marcelo.lima
  */
 public class ControladorCadastro {
+<<<<<<< refs/remotes/origin/master
 
     private Usuario usuario;
 
@@ -69,5 +73,14 @@ public class ControladorCadastro {
 
     public void usuarioLogado(Usuario usuario) {
         this.usuario = usuario;
+=======
+    /**
+     * Cadastra um usuário no sistema
+     * @param usuario O usuário a ser cadastrado no sistema
+     * @return Uma string contendo a próxima página a ser enviada para o usuário
+     */
+    public String cadastrarUsuario(Usuario usuario) {
+        return "pagina a ser encaminhado usuario";
+>>>>>>> HEAD~1
     }
 }

@@ -11,7 +11,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import br.com.witc.modelo.ControladorAutenticacao;
+<<<<<<< refs/remotes/origin/master
 import br.com.witc.modelo.Usuario;
+=======
+>>>>>>> HEAD~1
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
@@ -68,6 +71,7 @@ public class AutenticarBean {
     }
     
     /**
+<<<<<<< refs/remotes/origin/master
      * Unica forma que achei para buscar o usuario
      * @return Retorna o usuario logado
      */
@@ -76,6 +80,8 @@ public class AutenticarBean {
     }
     
     /**
+=======
+>>>>>>> HEAD~1
      * Autentica um usuário no sistema
      * @return A página a ser visualizada pelo usuário após o login     
      */
