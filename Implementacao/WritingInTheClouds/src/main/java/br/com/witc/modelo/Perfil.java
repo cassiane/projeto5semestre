@@ -5,16 +5,20 @@
  */
 package br.com.witc.modelo;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  *
  * @author root
  */
 public class Perfil {
+    @Id
+    @GeneratedValue
     private int id;
     private int qualificacao;
     private String pseudonimo;
     private Usuario usuario;
-    private HistoricoLivro historicoLivro;
 
     public int getId() {
         return id;
@@ -46,16 +50,5 @@ public class Perfil {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public HistoricoLivro getHistoricoLivro() {
-        return historicoLivro;
-    }
-
-    public void setHistoricoLivro(HistoricoLivro historicoLivro) {
-        this.historicoLivro = historicoLivro;
-    }
-    
-    
-    
+    }   
 }

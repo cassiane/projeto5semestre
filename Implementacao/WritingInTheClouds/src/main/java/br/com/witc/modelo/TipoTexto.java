@@ -5,14 +5,19 @@
  */
 package br.com.witc.modelo;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  *
  * @author root
  */
 public class TipoTexto {
+    @Id
+    @GeneratedValue
     private int id;
     private String tipoTexto;
-    private Livro livro;
+    
 
     public int getId() {
         return id;
@@ -29,13 +34,4 @@ public class TipoTexto {
     public void setTipoTexto(String tipoTexto) {
         this.tipoTexto = tipoTexto;
     }
-
-    public Livro getLivro() {
-        return livro;
-    }
-
-    public void setLivro(Livro livro) {
-        this.livro = livro;
-    }
-    
 }

@@ -5,14 +5,18 @@
  */
 package br.com.witc.modelo;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  *
  * @author root
  */
-public class TipoGenero {
+class TipoGenero {
+    @Id
+    @GeneratedValue
     private int id;
     private String tipoGenero;
-    private Livro livro;
 
     public int getId() {
         return id;
@@ -28,14 +32,6 @@ public class TipoGenero {
 
     public void setTipoGenero(String tipoGenero) {
         this.tipoGenero = tipoGenero;
-    }
-
-    public Livro getLivro() {
-        return livro;
-    }
-
-    public void setLivro(Livro livro) {
-        this.livro = livro;
     }
     
 }
