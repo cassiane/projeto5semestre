@@ -39,8 +39,11 @@
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="300">
                 <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
-                <h:form>
-                    <p:menu>
-                        <p:menuitem ajax="false" value="Amigos" action="#{cadastrarBean.listarAmigos()}" />
-                    </p:menu>
-                </h:form>
+                </p:layoutUnit>            
+            <p:layoutUnit position="center">
+                <ui:insert name="conteudo"/>
+            </p:layoutUnit>
+        </p:layout>
+        <ui:insert name="dialogos"/>
+    </h:body>    
+</html>

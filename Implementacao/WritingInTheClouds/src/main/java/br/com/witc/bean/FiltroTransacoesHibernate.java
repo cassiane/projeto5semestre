@@ -46,7 +46,7 @@ public class FiltroTransacoesHibernate implements Filter {
             }
             if (nome == null) {
                 // redireciona para a pagina de login
-                resp.sendRedirect("/WITC/faces/index.xhtml");
+                resp.sendRedirect("/WritingInTheClouds/faces/index.xhtml");
                 return;
             }            
         }                        

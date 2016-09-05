@@ -27,11 +27,7 @@
                                              action="#{autenticarBean.efetuarLogin()}" />
                         </div>
                         <div style="padding: 5px; position: absolute; width: 378px; right: 0px; top: 60px;">
-<<<<<<< refs/remotes/origin/master
                             <p:link href="recuperarConta.xhtml">Esqueceu a conta?</p:link>
-=======
-                            <p:link href="timeline.xhtml">Esqueceu a conta?</p:link>
->>>>>>> HEAD~1
                         </div>
                     </div>
                 </div>
@@ -40,13 +36,8 @@
         <ui:define name="conteudo">
             <h:form>
                 <div style="overflow: auto; position: relative">
-<<<<<<< refs/remotes/origin/master
                     <div>
                         <h:graphicImage style="padding-top: 100px;" name="imagens/livro.png"/>
-=======
-                    <div style="float: left;">
-                        <h:graphicImage style="height: 400px; padding-top: 100px" name="imagens/livro.png"/>
->>>>>>> HEAD~1
                     </div>
                     <div style="padding: 5px; position: absolute; right: 390px; top: 10px;">
                         <h:outputText value="Abra uma Conta" style="font-size: 30px;"/>
@@ -72,34 +63,21 @@
                     <div style="padding: 5px; position: absolute; right: 513px; top: 260px;">
                         <h:outputText value="Aniversário" style="font-size: 20px;"/>
                     </div>
-<<<<<<< refs/remotes/origin/master
                     <div style="padding: 5px; position: absolute; right: 335px; top: 290px;">
                         <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 50px" required="true">
-=======
-                    <div style="padding: 5px; position: absolute; right: 288px; top: 290px;">
-                        <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 65px" required="true">
->>>>>>> HEAD~1
                             <f:selectItem itemLabel="Dia" itemValue="" />
                             <c:forEach var="dia" begin="1" end="31">
                                 <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" />
                             </c:forEach>
                         </p:selectOneMenu>
-<<<<<<< refs/remotes/origin/master
                         <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 
-=======
-                        <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 65px; margin-left: 10px;" 
->>>>>>> HEAD~1
                                          required="true">
                             <f:selectItem itemLabel="Mês" itemValue="" />
                             <c:forEach var="mes" begin="1" end="12">
                                 <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
                             </c:forEach>
                         </p:selectOneMenu>
-<<<<<<< refs/remotes/origin/master
                         <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 50px; margin-left: 10px;" 
-=======
-                        <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 65px; margin-left: 10px;" 
->>>>>>> HEAD~1
                                          required="true">
                             <f:selectItem itemLabel="Ano" itemValue="" />
                             <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">

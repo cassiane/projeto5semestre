@@ -70,7 +70,7 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> listarAmigos(int idUsuario) throws UsuarioInvalidoException {
-        Query query = sessao.createSQLQuery("CALL proc_amigo(:idusu)")
+        Query query = sessao.createSQLQuery("CALL witc.proc_amigo(:idusu)")
                 .addEntity(Usuario.class)
                 .setParameter("idusu", idUsuario);
         List resultado = query.list();
@@ -83,7 +83,7 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> listarSugestao(int idUsuario) throws UsuarioInvalidoException{
-        Query query = sessao.createSQLQuery("CALL proc_sugestao(:idusu)")
+        Query query = sessao.createSQLQuery("CALL witc.proc_sugestao(:idusu)")
                 .addEntity(Usuario.class)
                 .setParameter("idusu", idUsuario);
         List resultado = query.list();
@@ -100,7 +100,7 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> listarSolicitacao(int idUsuario) throws UsuarioInvalidoException {
-        Query query = sessao.createSQLQuery("CALL proc_solicitacao(:idusu)")
+        Query query = sessao.createSQLQuery("CALL witc.proc_solicitacao(:idusu)")
                 .addEntity(Usuario.class)
                 .setParameter("idusu", idUsuario);
         List resultado = query.list();
