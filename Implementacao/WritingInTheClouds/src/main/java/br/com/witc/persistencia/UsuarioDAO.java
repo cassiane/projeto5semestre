@@ -15,11 +15,14 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 
+
+
 /**
  *
  * @author marcelo.lima
  */
 public class UsuarioDAO {
+
 
     private final Session sessao;
 
@@ -46,6 +49,7 @@ public class UsuarioDAO {
         }
         return tmpUsuario;
     }
+
 
     /**
      *

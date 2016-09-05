@@ -18,11 +18,13 @@ import javax.imageio.ImageIO;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
+
 /**
  *
  * @author marcelo.lima
  */
 public class ControladorCadastro {
+
 
     private Usuario usuario;
 

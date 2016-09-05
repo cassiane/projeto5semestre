@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import static javax.persistence.TemporalType.DATE;
 
 /**
  *
@@ -32,14 +33,17 @@ public class Usuario implements Serializable {
     private String nome;
     private String sobrenome;
     private String email;
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataAniversario;
     private String genero;
     private byte[] foto;
     private String senha;
+
     //@OneToOne
     //@JoinColumn(name = "")
     //private Perfil perfil;
+
 
     /**
      * @return the id
@@ -152,7 +156,7 @@ public class Usuario implements Serializable {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
+
     /**
      * Autentica um usuário no sistema
      * @param email O email do usuário
@@ -176,6 +180,7 @@ public class Usuario implements Serializable {
      * @throws UnsupportedEncodingException Caso haja erro de codificação
      */
     private static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
         MessageDigest md = MessageDigest.getInstance("SHA-256");        
 
         md.update(senha.getBytes("UTF-8")); 

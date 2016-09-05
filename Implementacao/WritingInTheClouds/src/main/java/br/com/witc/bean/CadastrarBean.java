@@ -5,6 +5,7 @@
  */
 package br.com.witc.bean;
 
+
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Usuario;
@@ -44,6 +45,7 @@ public class CadastrarBean {
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro(null);
+
         this.usuario = new Usuario();
     }
     
@@ -180,6 +182,7 @@ public class CadastrarBean {
         return false;
     }
 
+
     /**
      * @return the anoAtual
      */
@@ -194,6 +197,7 @@ public class CadastrarBean {
     public String getAnoInicial() {
         int anoAtual = Integer.parseInt(this.getAnoAtual());
         return String.valueOf(anoAtual - 80);
+
     }   
 
     
@@ -205,11 +209,13 @@ public class CadastrarBean {
         c.setTime(formatoData.parse(data));
 
         this.usuario.setDataAniversario(c);            
+
     }
     
     /**
      * Cadastra um usuario no sistema
      * @return Uma string contendo a próxima página a ser enviada para o usuário
+
      * @throws br.com.witc.excessao.UsuarioInvalidoException
      */
     public String cadastrarUsuario() throws UsuarioInvalidoException {

@@ -68,6 +68,7 @@ public class AutenticarBean {
     }
     
     /**
+<<<<<<< refs/remotes/origin/master
      * Unica forma que achei para buscar o usuario
      * @return Retorna o usuario logado
      */
@@ -76,6 +77,8 @@ public class AutenticarBean {
     }
     
     /**
+=======
+>>>>>>> HEAD~1
      * Autentica um usuário no sistema
      * @return A página a ser visualizada pelo usuário após o login     
      */
