@@ -18,11 +18,11 @@
                             <p:graphicImage height="75px" name="imagens/chat-green.png" />
                             <h:outputText value="#{solAmizade.nome}" />
                         </f:facet>
-                        <p:commandButton value="Aceitar Amizade" id="btnAceAmizade" actionListener="#{cadastrarBean.aceitarAmizade(solAmizade.id)}" update="growl, carSolicitacao" icon="ui-icon-closethick" style="width:90px; margin-left: 3px;" />
+                        <p:commandButton value="Aceitar Amizade" id="btnAceAmizade" actionListener="#{cadastrarBean.aceitarAmizade(solAmizade.id)}" update="growl, carSolicitacao, datAmigos" icon="ui-icon-closethick" style="width:90px; margin-left: 3px;" />
                         <p:commandButton value="Remover Amizade" id="btnRemAmizade" actionListener="#{cadastrarBean.removerAmizade(solAmizade.id)}" update="growl, carSolicitacao" icon="ui-icon-closethick" style="width:90px; margin-left: 3px;" />
                     </p:panelGrid>
                 </p:carousel>
-                <p:dataScroller value="#{cadastrarBean.amigos}" var="amigo" chunkSize="10">
+                <p:dataScroller id="datAmigos" value="#{cadastrarBean.amigos}" var="amigo" chunkSize="10">
 <!--                    <f:facet name="Lista de amigos">
                         <h:outputText value="Lista de amigos" />
                     </f:facet>-->
@@ -34,7 +34,7 @@
                                 <p:outputPanel>
                                     <h:outputText value="#{amigo.nome}" style="font-weight: bold" />
                                 </p:outputPanel>
-                                <p:commandButton value="Desfazer Amizade" id="btnDesAmizade" actionListener="#{cadastrarBean.removerAmizade(amigo.id)}" update="growl" icon="ui-icon-closethick" />
+                                <p:commandButton value="Desfazer Amizade" id="btnDesAmizade" actionListener="#{cadastrarBean.removerAmizade(amigo.id)}" update="growl, datAmigos" icon="ui-icon-closethick" />
                             </h:panelGrid>
                         </p:outputPanel>
                     </h:panelGrid>
