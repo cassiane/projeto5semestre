@@ -10,5 +10,6 @@ package br.com.witc.modelo;
  * @author root
  */
 public class ControladorEdicao {
+    Livro livro;
     
 }
