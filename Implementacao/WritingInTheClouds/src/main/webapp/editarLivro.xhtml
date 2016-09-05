@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="padraoInterno.xhtml">        
+        <ui:define name="conteudo">     
+            <div align="center"> 
+               <h1>Editor de texto</h1>
+               <h:form >           
+                     <p:editor id="editor" widgetVar="editorWidget" value="" width="600" />
+
+                     <h:panelGrid columns="2" style="margin-top: 10px">
+                        <p:commandButton value="Salvar" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-disk" />
+
+                        <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+                    </h:panelGrid>
+
+                    <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                        <h:outputText id="display" value="" escape="false" />
+                    </p:dialog>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
