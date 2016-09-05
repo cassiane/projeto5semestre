@@ -10,6 +10,7 @@ import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
+import org.hibernate.Query;
 //import javax.validation.ConstraintViolationException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
@@ -65,13 +66,66 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> listarAmigos(int idUsuario) throws UsuarioInvalidoException {
-        List<Usuario> tmpAmigos = sessao.createQuery("FROM Usuario WHERE id<>:idUsuario ORDER BY nome")
-                .setInteger("idUsuario", idUsuario)
-                .list();
-        System.out.println("usuario:: " + idUsuario);
-        if (tmpAmigos.isEmpty()) {
-            throw new UsuarioInvalidoException("Você não possui amigos ainda, faça amizades logo!");
+        Query query = sessao.createSQLQuery("CALL proc_amigo(:idusu)")
+                .addEntity(Usuario.class)
+                .setParameter("idusu", idUsuario);
+        List resultado = query.list();
+        //System.out.println("amigo:: " + idUsuario);
+        if (resultado.isEmpty()) {
+            throw new UsuarioInvalidoException("Você não possui amigos ainda, faça logo uma amizade!");
         }
+        List<Usuario> tmpAmigos = (List<Usuario>)resultado;
         return tmpAmigos;
+    }
+
+    public List<Usuario> listarSugestao(int idUsuario) throws UsuarioInvalidoException{
+        Query query = sessao.createSQLQuery("CALL proc_sugestao(:idusu)")
+                .addEntity(Usuario.class)
+                .setParameter("idusu", idUsuario);
+        List resultado = query.list();
+        //System.out.println("sugestao:: " + idUsuario + " - " + tmpAmigos.size());
+        if (resultado.isEmpty()) {
+            throw new UsuarioInvalidoException("No momento não temos sugestão de amizade!");
+        }
+        List<Usuario> tmpAmigos = (List<Usuario>)resultado;
+        return tmpAmigos;
+    }
+
+    public void solicitarAmizade(int id, int idSugestao) {
+        sessao.createSQLQuery("INSERT INTO Usuario_tem_Amigo (idUsuario, idAmigo, dataSolicitacao) VALUES (:usuario, :amigo, CURRENT_DATE())").setInteger("usuario", id).setInteger("amigo", idSugestao).executeUpdate();
+    }
+
+    public List<Usuario> listarSolicitacao(int idUsuario) throws UsuarioInvalidoException {
+        Query query = sessao.createSQLQuery("CALL proc_solicitacao(:idusu)")
+                .addEntity(Usuario.class)
+                .setParameter("idusu", idUsuario);
+        List resultado = query.list();
+        if (resultado.isEmpty()) {
+            throw new UsuarioInvalidoException("Você não possui solicitações!");
+        }
+        List<Usuario> tmpUsuarios = (List<Usuario>)resultado;
+        return tmpUsuarios;
+    }
+
+    public void aceitarAmizade(int id, int idAceitar) {
+        sessao.createSQLQuery("UPDATE Usuario_tem_Amigo "
+                + "SET dataAceitacao = CURRENT_DATE(), amigoStatus = TRUE "
+                + "WHERE idUsuario = :amigo AND idAmigo = :usuario")
+                .setInteger("usuario", id)
+                .setInteger("amigo", idAceitar)
+                .executeUpdate();
+    }
+
+    public void removerAmizade(int id, int idAmizade) {
+        sessao.createSQLQuery("DELETE FROM Usuario_tem_Amigo "
+                + "WHERE idUsuario = :usuario AND idAmigo = :amigo")
+                .setParameter("usuario", id)
+                .setParameter("amigo", idAmizade)
+                .executeUpdate();
+        sessao.createSQLQuery("DELETE FROM Usuario_tem_Amigo "
+                + "WHERE idUsuario = :amigo AND idAmigo = :usuario")
+                .setParameter("usuario", id)
+                .setParameter("amigo", idAmizade)
+                .executeUpdate();
     }
 }

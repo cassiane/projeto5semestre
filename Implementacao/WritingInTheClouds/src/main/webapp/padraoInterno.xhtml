@@ -22,23 +22,23 @@
                     <div id="botton" style="height: 20px;text-align: right;">
                         <h:form>                                                                                        
                             <p:commandLink id="lnkLogout"
-                                style="color: black; font-size: 14px"
-                                value="Sair"
-                                action="#{autenticarBean.efetuarLogoff()}"
-                                ajax="false">
+                                           style="color: black; font-size: 14px"
+                                           value="Sair"
+                                           action="#{autenticarBean.efetuarLogoff()}"
+                                           ajax="false">
                             </p:commandLink>
                         </h:form>                        
                     </div>                    
                 </f:facet>                
             </p:layoutUnit>
             <p:layoutUnit position="east" resizable="true" size="300">
+                <p:stack icon="/resources/imagens/chat.png" expanded="true">
+                    <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
+                    <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
+                </p:stack>
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="300">
-                <h:form>
-                    <p:menu>
-                        <p:menuitem ajax="false" value="Amigos" action="#{cadastrarBean.listarAmigos()}" />
-                    </p:menu>
-                </h:form>
+                <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
             </p:layoutUnit>            
             <p:layoutUnit position="center">
                 <ui:insert name="conteudo"/>

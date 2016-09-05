@@ -207,5 +207,30 @@ public class Usuario implements Serializable {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarAmigos(this.getId());
     }
+
+    public List<Usuario> listarSugestao() throws UsuarioInvalidoException{
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.listarSugestao(this.getId());
+    }
+
+    public void solicitarAmizade(int idSugestao) {
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.solicitarAmizade(this.getId(), idSugestao);
+    }
+
+    public List<Usuario> listarSolicitacao() throws UsuarioInvalidoException{
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.listarSolicitacao(this.getId());
+    }
+
+    void aceitarAmizade(int idAceitar) {
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.aceitarAmizade(this.getId(), idAceitar);
+    }
+
+    void removerAmizade(int idAmizade) {
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.removerAmizade(this.getId(), idAmizade);
+    }
     
 }

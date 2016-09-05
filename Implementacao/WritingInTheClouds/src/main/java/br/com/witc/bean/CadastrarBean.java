@@ -14,6 +14,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import javax.faces.bean.ManagedBean;
@@ -35,8 +38,9 @@ public class CadastrarBean {
     private String diaNascimento;
     private String mesNascimento;
     private String anoNascimento;
-    //private List<Usuario> amigos;
-    //private StreamedContent amigosFoto;
+    private List<Usuario> amigos;
+    private List<Usuario> sugestao;
+    private List<Usuario> solicitacao;
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro(null);
@@ -113,13 +117,67 @@ public class CadastrarBean {
         this.anoNascimento = anoNascimento;
     }    
 
+    public StreamedContent getFoto(Usuario usufoto) {
+        return this.controlador.getAmigosFoto(usufoto);
+    }
+    
     public List<Usuario> getAmigos() throws UsuarioInvalidoException {
-        this.controlador.usuarioLogado(this.usuario);
-        return this.controlador.listarAmigos();
+        //System.out.println("GetAmigos: " + this.amigos.size());
+        return this.amigos;
+    }
+    
+    private void setAmigos() throws UsuarioInvalidoException {
+        this.amigos = null;
+        try {
+            this.amigos = this.controlador.listarAmigos();
+        } catch (UsuarioInvalidoException | NullPointerException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
+    }
+    
+    public boolean isTemAmigos() {
+        if (this.amigos.isEmpty() || this.amigos == null)
+            return true;
+        return false;
     }
 
-    public StreamedContent getAmigosFoto(Usuario usufoto) {
-        return this.controlador.getAmigosFoto(usufoto);
+    public List<Usuario> getSugestao() throws UsuarioInvalidoException{
+        //System.out.println("GetSugestao: " + this.sugestao.size());
+        return this.sugestao;
+    }
+    
+    private void setSugestao() throws UsuarioInvalidoException {
+        this.sugestao = null;
+        try {
+            this.sugestao = this.controlador.listarSugestao();
+        } catch (UsuarioInvalidoException | NullPointerException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
+    }
+    
+    public boolean isTemSugestao() {
+        if (this.sugestao.isEmpty() || this.sugestao == null)
+            return true;
+        return false;
+    }
+    
+    public List<Usuario> getSolicitacao() {
+        return solicitacao;
+    }
+
+    private void setSolicitacao() throws UsuarioInvalidoException{
+        this.solicitacao = null;
+        try {
+            this.solicitacao = this.controlador.listarSolicitacao();
+        } catch (NullPointerException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
+    }
+    
+    public boolean isTemSolicitacao() {
+        if (this.solicitacao.isEmpty() || this.solicitacao == null)
+            return true;
+        return false;
     }
 
     /**
@@ -174,7 +232,43 @@ public class CadastrarBean {
     }
 
     public String listarAmigos() {
+        this.controlador.usuarioLogado(this.usuario);
+        try {
+            this.setSolicitacao();
+            this.setAmigos();
+            this.setSugestao();
+        } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
         return "listarAmigos";
+    }
+    
+    public void solicitarAmizade(int idSugestao) {
+        this.controlador.solicitarAmizade(idSugestao);
+        try {
+            //this.controlador.usuarioLogado(this.usuario);
+            this.setSugestao();
+        } catch (UsuarioInvalidoException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
+    }
+    
+    public void aceitarAmizade(int idAceitar) {
+        this.controlador.aceitarAmizade(idAceitar);
+        try {
+            this.setSolicitacao();
+        } catch (UsuarioInvalidoException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
+    }
+    
+    public void removerAmizade(int idAmizade) {
+        this.controlador.removerAmizade(idAmizade);
+        try {
+            this.setSolicitacao();
+        } catch (UsuarioInvalidoException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
     }
     
     /**
@@ -185,5 +279,5 @@ public class CadastrarBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }          
+    }
 }

@@ -67,7 +67,28 @@ public class ControladorCadastro {
         return foto;
     }
 
+    public List<Usuario> listarSugestao() throws UsuarioInvalidoException{
+        return this.usuario.listarSugestao();
+    }
+
     public void usuarioLogado(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public void solicitarAmizade(int idSugestao) {
+        this.usuario.solicitarAmizade(idSugestao);
+    }
+
+    public List<Usuario> listarSolicitacao() throws UsuarioInvalidoException {
+        return this.usuario.listarSolicitacao();
+    }
+
+    public void aceitarAmizade(int idAceitar) {
+        this.usuario.aceitarAmizade(idAceitar);
+    }
+
+    public void removerAmizade(int idAmizade) {
+        this.usuario.removerAmizade(idAmizade);
+    }
+
 }
