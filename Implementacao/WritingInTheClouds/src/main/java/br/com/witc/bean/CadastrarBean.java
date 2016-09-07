@@ -241,7 +241,15 @@ public class CadastrarBean {
         this.controlador.usuarioLogado(this.usuario);
         try {
             this.setSolicitacao();
+        } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
+        try {
             this.setAmigos();
+        } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
+            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+        }
+        try {
             this.setSugestao();
         } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
             enviarMensagem(SEVERITY_ERROR, ex.getMessage());
