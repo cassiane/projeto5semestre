@@ -51,7 +51,7 @@ public class ControladorCadastro {
      *
      * @return A lista de amigos
      */
-    public List<Usuario> listarAmigos() throws UsuarioInvalidoException {
+    public List<Usuario> listarAmigos() {
         return this.usuario.listarAmigos();
     }
 
@@ -69,7 +69,7 @@ public class ControladorCadastro {
         return foto;
     }
 
-    public List<Usuario> listarSugestao() throws UsuarioInvalidoException{
+    public List<Usuario> listarSugestao() {
         return this.usuario.listarSugestao();
     }
 
@@ -81,7 +81,7 @@ public class ControladorCadastro {
         this.usuario.solicitarAmizade(idSugestao);
     }
 
-    public List<Usuario> listarSolicitacao() throws UsuarioInvalidoException {
+    public List<Usuario> listarSolicitacao() {
         return this.usuario.listarSolicitacao();
     }
 

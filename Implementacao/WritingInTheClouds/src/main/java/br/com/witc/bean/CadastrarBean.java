@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,6 +43,7 @@ public class CadastrarBean {
     private List<Usuario> amigos;
     private List<Usuario> sugestao;
     private List<Usuario> solicitacao;
+    private Usuario convidarEmail;
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro(null);
@@ -123,65 +125,56 @@ public class CadastrarBean {
         return this.controlador.getAmigosFoto(usufoto);
     }
     
-    public List<Usuario> getAmigos() throws UsuarioInvalidoException {
-        //System.out.println("GetAmigos: " + this.amigos.size());
+    public List<Usuario> getAmigos() {
+        this.amigos = this.controlador.listarAmigos();
         return this.amigos;
     }
     
-    private void setAmigos() throws UsuarioInvalidoException {
-        this.amigos = null;
-        try {
-            this.amigos = this.controlador.listarAmigos();
-        } catch (UsuarioInvalidoException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
-    }
-    
     public boolean isTemAmigos() {
-        if (this.amigos.isEmpty() || this.amigos == null)
-            return true;
-        return false;
+        return !(this.amigos == null || this.amigos.isEmpty());
     }
 
-    public List<Usuario> getSugestao() throws UsuarioInvalidoException{
-        //System.out.println("GetSugestao: " + this.sugestao.size());
+    public List<Usuario> getSugestao() {
+        this.sugestao = this.controlador.listarSugestao();
         return this.sugestao;
     }
     
-    private void setSugestao() throws UsuarioInvalidoException {
-        this.sugestao = null;
-        try {
-            this.sugestao = this.controlador.listarSugestao();
-        } catch (UsuarioInvalidoException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
-    }
-    
     public boolean isTemSugestao() {
-        if (this.sugestao.isEmpty() || this.sugestao == null)
-            return true;
-        return false;
+        return !(this.sugestao == null || this.sugestao.isEmpty());
     }
     
     public List<Usuario> getSolicitacao() {
+        this.solicitacao = this.controlador.listarSolicitacao();
         return solicitacao;
     }
 
-    private void setSolicitacao() throws UsuarioInvalidoException{
-        this.solicitacao = null;
-        try {
-            this.solicitacao = this.controlador.listarSolicitacao();
-        } catch (NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
-    }
-    
     public boolean isTemSolicitacao() {
-        if (this.solicitacao.isEmpty() || this.solicitacao == null)
-            return true;
-        return false;
+        return !(this.solicitacao == null || this.solicitacao.isEmpty());
     }
 
+    public Usuario getConvidarEmail() {
+        return convidarEmail;
+    }
+
+    public void setConvidarEmail(Usuario convidarEmail) {
+        this.convidarEmail = convidarEmail;
+    }
+
+    public List<Usuario> completeEmail(String email) {
+        //List<Theme> allThemes = service.getThemes();
+        //List<Theme> filteredThemes = new ArrayList<Theme>();
+        List<Usuario> filteredUsuario = new ArrayList<Usuario>();
+         
+        //for (int i = 0; i < allThemes.size(); i++) {
+            //Theme skin = allThemes.get(i);
+            //if(skin.getName().toLowerCase().startsWith(query)) {
+                //filteredThemes.add(skin);
+            //}
+        //}
+         
+        //return filteredThemes;
+        return filteredUsuario;
+    }
 
     /**
      * @return the anoAtual
@@ -239,50 +232,19 @@ public class CadastrarBean {
 
     public String listarAmigos() {
         this.controlador.usuarioLogado(this.usuario);
-        try {
-            this.setSolicitacao();
-        } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
-        try {
-            this.setAmigos();
-        } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
-        try {
-            this.setSugestao();
-        } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
         return "listarAmigos";
     }
     
     public void solicitarAmizade(int idSugestao) {
         this.controlador.solicitarAmizade(idSugestao);
-        try {
-            //this.controlador.usuarioLogado(this.usuario);
-            this.setSugestao();
-        } catch (UsuarioInvalidoException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
     }
     
     public void aceitarAmizade(int idAceitar) {
         this.controlador.aceitarAmizade(idAceitar);
-        try {
-            this.setSolicitacao();
-        } catch (UsuarioInvalidoException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
     }
     
     public void removerAmizade(int idAmizade) {
         this.controlador.removerAmizade(idAmizade);
-        try {
-            this.setSolicitacao();
-        } catch (UsuarioInvalidoException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
     }
     
     public String editarLivro(){

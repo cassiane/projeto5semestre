@@ -208,12 +208,12 @@ public class Usuario implements Serializable {
        dao.salvarUsuario(usuario);
     }
 
-    public List<Usuario> listarAmigos() throws UsuarioInvalidoException {
+    public List<Usuario> listarAmigos() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarAmigos(this.getId());
     }
 
-    public List<Usuario> listarSugestao() throws UsuarioInvalidoException{
+    public List<Usuario> listarSugestao() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarSugestao(this.getId());
     }
@@ -223,7 +223,7 @@ public class Usuario implements Serializable {
         dao.solicitarAmizade(this.getId(), idSugestao);
     }
 
-    public List<Usuario> listarSolicitacao() throws UsuarioInvalidoException{
+    public List<Usuario> listarSolicitacao() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarSolicitacao(this.getId());
     }

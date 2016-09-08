@@ -10,37 +10,65 @@
             <!-- Seta o usuario logado -->
             <f:event listener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" type="preRenderView" />
             <p:growl id="growl" severity="error" globalOnly="true" />             
-            <h:form id="idPagAmigos"> 
-                <p:carousel id="carSolicitacao" value="#{cadastrarBean.solicitacao}" headerText="Solicitação de amizade" var="solAmizade" itemStyle="text-align:center" responsive="true" >
-                    <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+<!--            <h:form id="frmEma">
+                <p:panelGrid columns="2" style="width: 100%;margin: 10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+                    <f:facet name="header">
+                        <h:outputText value="Encontrar amigos" style="font-size: small" />
+                    </f:facet>
+                    <p:outputPanel>
+                        <h:outputText value="Digite o email:"/>
+                        <p:autoComplete id="autoEmail" value="#{cadastrarBean.convidarEmail}" completeMethod="#{cadastrarBean.completeEmail}"
+                                        var="convidado" itemLabel="#{convidado.nome}" itemValue="#{theme}" converter="themeConverter" forceSelection="true">
+                            <p:column>
+                                <h:outputText styleClass="ui-theme ui-theme-#{theme.name}" />
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{theme.displayName}" />
+                            </p:column>
+                        </p:autoComplete>
+                    </p:outputPanel>
+                    <p:commandButton value="Convidar" id="btnComEmail" actionListener="#{cadastrarBean.listarAmigos()}" update="frmEma" style="width:90px; margin-left: 3px; font-size: small" />
+                </p:panelGrid>
+            </h:form>-->
+            <h:form id="frmSol"> 
+                <p:carousel id="carSolicitacao" value="#{cadastrarBean.solicitacao}" headerText="Solicitação de amizade" var="solAmizade" itemStyle="text-align:center" responsive="true">
+                    <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank" rendered="#{cadastrarBean.temSolicitacao}">
                         <f:facet name="header">
                             <p:graphicImage height="75px" name="imagens/chat-green.png" />
                             <h:outputText value="#{solAmizade.nome}" />
                         </f:facet>
-                        <p:commandButton value="Aceitar Amizade" id="btnAceAmizade" actionListener="#{cadastrarBean.aceitarAmizade(solAmizade.id)}" update="growl, idPagAmigos" icon="ui-icon-closethick" style="width:90px; margin-left: 3px; font-size: small" />
-                        <p:commandButton value="Remover Amizade" id="btnRemAmizade" actionListener="#{cadastrarBean.removerAmizade(solAmizade.id)}" update="growl, idPagAmigos" icon="ui-icon-closethick" style="width:90px; margin-left: 3px; font-size: small" />
+                        <p:commandButton value="Aceitar Amizade" id="btnAceAmizade" actionListener="#{cadastrarBean.aceitarAmizade(solAmizade.id)}" update="frmSol:carSolicitacao, frmAmi" icon="ui-icon-closethick" style="width:90px; margin-left: 3px; font-size: small" />
+                        <p:commandButton value="Remover Amizade" id="btnRemAmizade" actionListener="#{cadastrarBean.removerAmizade(solAmizade.id)}" update="frmSol:carSolicitacao, frmSug:carSugestao" icon="ui-icon-closethick" style="width:90px; margin-left: 3px; font-size: small" />
                     </p:panelGrid>
                 </p:carousel>
+            </h:form>
+            <h:form id="frmAmi">
                 <p:dataScroller id="datAmigos" value="#{cadastrarBean.amigos}" var="amigo" chunkSize="10">
-                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                    <f:facet name="header">
+                        <h:outputText value="Lista de amigos"/>
+                    </f:facet>
+                    <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail" rendered="#{cadastrarBean.temAmigos}">
                         <p:graphicImage height="75px" name="imagens/email.png" />
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputPanel>
                                     <h:outputText value="#{amigo.nome}" style="font-weight: bold" />
                                 </p:outputPanel>
-                                <p:commandButton value="Desfazer Amizade" id="btnDesAmizade" actionListener="#{cadastrarBean.removerAmizade(amigo.id)}" update="growl, idPagAmigos" icon="ui-icon-closethick" />
+                                <p:commandButton value="Desfazer Amizade" id="btnDesAmizade" actionListener="#{cadastrarBean.removerAmizade(amigo.id)}" update="frmAmi:datAmigos, frmSug:carSugestao" icon="ui-icon-closethick" />
                             </h:panelGrid>
                         </p:outputPanel>
                     </h:panelGrid>
                 </p:dataScroller>
-                <p:carousel id="carAmigos" value="#{cadastrarBean.sugestao}" headerText="Sugestões de amizade" var="sugAmizade" itemStyle="text-align:center" responsive="true" >
-                    <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
+            </h:form>
+            <h:form id="frmSug">
+                <p:carousel id="carSugestao" value="#{cadastrarBean.sugestao}" headerText="Sugestões de amizade" var="sugAmizade" itemStyle="text-align:center" responsive="true">
+                    <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank" rendered="#{cadastrarBean.temSugestao}">
                         <f:facet name="header">
                             <p:graphicImage height="95px" name="imagens/chat.png" />
                             <h:outputText value="#{sugAmizade.nome}" />
                         </f:facet>
-                        <p:commandButton value="Solicitar Amizade" id="btnSolAmizade" actionListener="#{cadastrarBean.solicitarAmizade(sugAmizade.id)}" update="growl, idPagAmigos" icon="ui-icon-closethick" />
+                        <p:commandButton value="Solicitar Amizade" id="btnSolAmizade" actionListener="#{cadastrarBean.solicitarAmizade(sugAmizade.id)}" update="frmSug:carSugestao" icon="ui-icon-closethick" style="width:90px; margin-left: 3px; font-size: small" />
                         <h:outputText value="Remover" />
                     </p:panelGrid>
                 </p:carousel>

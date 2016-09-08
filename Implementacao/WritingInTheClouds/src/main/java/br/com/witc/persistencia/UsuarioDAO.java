@@ -69,27 +69,29 @@ public class UsuarioDAO {
         }
     }
 
-    public List<Usuario> listarAmigos(int idUsuario) throws UsuarioInvalidoException {
+    public List<Usuario> listarAmigos(int idUsuario) {
         Query query = sessao.createSQLQuery("CALL witc.proc_amigo(:idusu)")
                 .addEntity(Usuario.class)
                 .setParameter("idusu", idUsuario);
         List resultado = query.list();
         //System.out.println("amigo:: " + idUsuario);
         if (resultado.isEmpty()) {
-            throw new UsuarioInvalidoException("Você não possui amigos ainda, faça logo uma amizade!");
+            //throw new UsuarioInvalidoException("Você não possui amigos ainda, faça logo uma amizade!");
+            return null;
         }
         List<Usuario> tmpAmigos = (List<Usuario>)resultado;
         return tmpAmigos;
     }
 
-    public List<Usuario> listarSugestao(int idUsuario) throws UsuarioInvalidoException{
+    public List<Usuario> listarSugestao(int idUsuario) {
         Query query = sessao.createSQLQuery("CALL witc.proc_sugestao(:idusu)")
                 .addEntity(Usuario.class)
                 .setParameter("idusu", idUsuario);
         List resultado = query.list();
         //System.out.println("sugestao:: " + idUsuario + " - " + tmpAmigos.size());
         if (resultado.isEmpty()) {
-            throw new UsuarioInvalidoException("No momento não temos sugestão de amizade!");
+            //throw new UsuarioInvalidoException("No momento não temos sugestão de amizade!");
+            return null;
         }
         List<Usuario> tmpAmigos = (List<Usuario>)resultado;
         return tmpAmigos;
@@ -99,13 +101,14 @@ public class UsuarioDAO {
         sessao.createSQLQuery("INSERT INTO Usuario_tem_Amigo (idUsuario, idAmigo, dataSolicitacao) VALUES (:usuario, :amigo, CURRENT_DATE())").setInteger("usuario", id).setInteger("amigo", idSugestao).executeUpdate();
     }
 
-    public List<Usuario> listarSolicitacao(int idUsuario) throws UsuarioInvalidoException {
+    public List<Usuario> listarSolicitacao(int idUsuario) {
         Query query = sessao.createSQLQuery("CALL witc.proc_solicitacao(:idusu)")
                 .addEntity(Usuario.class)
                 .setParameter("idusu", idUsuario);
         List resultado = query.list();
         if (resultado.isEmpty()) {
-            throw new UsuarioInvalidoException("Você não possui solicitações!");
+            //throw new UsuarioInvalidoException("Você não possui solicitações!");
+            return null;
         }
         List<Usuario> tmpUsuarios = (List<Usuario>)resultado;
         return tmpUsuarios;
