@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LoginInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import java.io.Serializable;
@@ -18,7 +19,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import static javax.persistence.TemporalType.DATE;
 
 /**
  *
@@ -175,12 +175,12 @@ public class Usuario implements Serializable {
 
     /**
      * Cria O hash da senha do usuário utilizando o algorítimo SHA-256
+     * @param senha A string que servira de base para criacao do hash
      * @return O hash criar
      * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
      * @throws UnsupportedEncodingException Caso haja erro de codificação
      */
-    private static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-
+    public static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");        
 
         md.update(senha.getBytes("UTF-8")); 
@@ -238,4 +238,14 @@ public class Usuario implements Serializable {
         dao.removerAmizade(this.getId(), idAmizade);
     }
     
+    /**
+     * Verifica a existência do usuário no BD
+     * @param Email O email do usuário pesquisado
+     * @return Um objeto Usuario contendo o usuário pesquisado
+     * @throws DadosUsuarioInvalidoException Caso o usuário não seja localizado na base de dados
+     */
+    public static Usuario verificarExistenciaUsuario(String Email) throws DadosUsuarioInvalidoException {
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        return usuarioDAO.verificarExistenciaUsuario(Email);
+    }    
 }

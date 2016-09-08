@@ -8,5 +8,6 @@
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.current_session_context_class">managed</property>
     <mapping class="br.com.witc.modelo.Usuario"/>
+    <mapping class="br.com.witc.modelo.RedefinicaoSenha"/>
   </session-factory>
 </hibernate-configuration>

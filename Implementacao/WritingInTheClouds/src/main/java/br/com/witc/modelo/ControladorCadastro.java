@@ -5,16 +5,15 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+import javax.mail.MessagingException;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -28,8 +27,8 @@ public class ControladorCadastro {
 
     private Usuario usuario;
 
-    public ControladorCadastro(Usuario usuario) {
-        this.usuario = usuario;
+    public ControladorCadastro() {
+        this.usuario = new Usuario();
     }
 
     /**
@@ -50,6 +49,7 @@ public class ControladorCadastro {
      * Listar os amigos do usuario logado
      *
      * @return A lista de amigos
+     * @throws br.com.witc.excessao.UsuarioInvalidoException
      */
     public List<Usuario> listarAmigos() throws UsuarioInvalidoException {
         return this.usuario.listarAmigos();
@@ -93,4 +93,24 @@ public class ControladorCadastro {
         this.usuario.removerAmizade(idAmizade);
     }
 
+    
+    /**
+     * Envia o link de redefinição de senha para o usuário
+     * @param destinatario O email do usuário que está redefinindo a senha
+     * @throws MessagingException Caso ocorra erro no envio do email
+     * @throws DadosUsuarioInvalidoException Caso o usuário não seja encontrado
+     * @throws NoSuchAlgorithmException Caso ocorra um erro na criação do hash
+     * @throws UnsupportedEncodingException Caso ocorra um erro na criação do hash
+     */
+    public void recuperarSenha(String destinatario) throws MessagingException, 
+            DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {                        
+        RedefinicaoSenha redefinicao = new RedefinicaoSenha();
+        
+        this.usuario = Usuario.verificarExistenciaUsuario(destinatario);
+        redefinicao.setUsuario(this.usuario);
+        String senhaHash = Calendar.getInstance().getTime().toString() + "witc" + Arrays.toString(destinatario.getBytes());
+        redefinicao.setHashRecuperacaoSenha(Usuario.criarHashSenha(senhaHash));
+        
+        redefinicao.EnviarEmailRecuperacao();
+    }     
 }
