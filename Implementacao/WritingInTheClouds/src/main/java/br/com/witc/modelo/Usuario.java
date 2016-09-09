@@ -195,18 +195,29 @@ public class Usuario implements Serializable {
         
         return hexString.toString();
     }
+    
     /**
      * Persiste usuario no banco
-     * @param usuario
-     * @throws UsuarioInvalidoException 
-     * @throws java.security.NoSuchAlgorithmException 
-     * @throws java.io.UnsupportedEncodingException 
+     * @param usuario O usuário a ser persistido
+     * @throws DadosUsuarioInvalidoException Caso o usuário já esteja cadastrado no sistema
+     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
+     * @throws UnsupportedEncodingException Caso haja erro de codificação
      */
-    public void CadastrarUsuario(Usuario usuario) throws UsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{
+    public void cadastrarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{
        UsuarioDAO dao = new UsuarioDAO();
-       this.setSenha(criarHashSenha(this.senha));
+       usuario.setSenha(criarHashSenha(this.senha));
        dao.salvarUsuario(usuario);
     }
+    
+    /**
+     * Salva ou atualiza um usuário no sistema
+     * @throws DadosUsuarioInvalidoException Caso o usuário já esteja cadastrado no sistema
+     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
+     * @throws UnsupportedEncodingException Caso haja erro de codificação
+     */
+    public void cadastrarUsuario() throws DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{
+        cadastrarUsuario(this);
+    }    
 
     public List<Usuario> listarAmigos() throws UsuarioInvalidoException {
         UsuarioDAO dao = new UsuarioDAO();
@@ -247,5 +258,5 @@ public class Usuario implements Serializable {
     public static Usuario verificarExistenciaUsuario(String Email) throws DadosUsuarioInvalidoException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         return usuarioDAO.verificarExistenciaUsuario(Email);
-    }    
+    }        
 }

@@ -13,6 +13,29 @@
             <p:layoutUnit position="north">                
                 <f:facet name="header">                    
                     <ui:insert name="header"/>
+                    <h:form>
+                        <div style="overflow: auto; position: relative">
+                            <div style="float: left;max-width: 40%">                        
+                                <h:graphicImage height="95px" name="imagens/logo.png"/>
+                            </div>
+                            <div>
+                                <div style="padding: 5px; position: absolute; width: 610px; right: 0px;">
+                                    <p:outputLabel for="iptEmail" value="Email" />
+                                    <p:outputLabel for="pwdSenha" value="Senha" style="margin-left: 165px"/>                            
+                                </div>
+                                <div style="padding: 5px; position: absolute; width: 610px; top: 25px; right: 0px;">
+                                    <p:inputText id="iptEmail" maxlength="30" size="20" required="true" value="#{autenticarBean.email}"/>
+                                    <p:password id="pwdSenha" maxlength="32" size="20" required="true" value="#{autenticarBean.senha}" 
+                                                style="margin-left: 3px;" />
+                                    <p:commandButton ajax="false" value="Entrar" style="width:145px; margin-left: 3px;"
+                                                     action="#{autenticarBean.efetuarLogin()}" />
+                                </div>
+                                <div style="padding: 5px; position: absolute; width: 378px; right: 0px; top: 60px;">
+                                    <p:link href="recuperarConta.xhtml">Esqueceu a conta?</p:link>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>                          
                 </f:facet>
             </p:layoutUnit>            
             <p:layoutUnit position="center">
