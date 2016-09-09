@@ -21,11 +21,12 @@
                                         var="convidado" itemLabel="#{convidado.nome}" itemValue="#{convidado}" converter="convidarConverter"
                                         maxResults="6" minQueryLength="3" forceSelection="true">
                             <p:column>
-                                <p:graphicImage value="imagens/chat-green.png" width="40" height="50" />
+                                <p:graphicImage name="imagens/chat-green.png" width="40" height="50" />
                             </p:column>
 
                             <p:column>
                                 <h:outputText value="#{convidado.nome}" styleClass="ui-theme ui-theme-#{theme.name}" />
+                                <br/>
                                 <h:outputText value="#{convidado.email}" />
                             </p:column>
                         </p:autoComplete>
