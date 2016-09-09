@@ -237,5 +237,10 @@ public class Usuario implements Serializable {
         UsuarioDAO dao = new UsuarioDAO();
         dao.removerAmizade(this.getId(), idAmizade);
     }
+
+    @Override
+    public String toString() {
+        return this.email;
+    }
     
 }

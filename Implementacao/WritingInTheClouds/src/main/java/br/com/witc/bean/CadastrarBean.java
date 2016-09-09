@@ -165,12 +165,15 @@ public class CadastrarBean {
         //List<Theme> filteredThemes = new ArrayList<Theme>();
         List<Usuario> filteredUsuario = new ArrayList<Usuario>();
          
-        //for (int i = 0; i < allThemes.size(); i++) {
-            //Theme skin = allThemes.get(i);
-            //if(skin.getName().toLowerCase().startsWith(query)) {
+        for (int i = 0; i < this.sugestao.size(); i++) {
+                //Theme skin = allThemes.get(i);
+            Usuario pesquisando = this.sugestao.get(i);
+                //if(skin.getName().toLowerCase().startsWith(query)) {
+            if (pesquisando.getEmail().toLowerCase().startsWith(email)) {
                 //filteredThemes.add(skin);
-            //}
-        //}
+                filteredUsuario.add(pesquisando);
+            }
+        }
          
         //return filteredThemes;
         return filteredUsuario;
