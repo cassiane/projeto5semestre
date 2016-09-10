@@ -7,6 +7,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
     </h:head>
     <h:body>        
         <p:layout fullPage="true">
@@ -19,14 +20,21 @@
                         <h:outputText value="Olá, #{autenticarBean.nomeUsuario}"/>
                     </div>                                
 
-                    <div id="botton" style="height: 20px;text-align: right;">
+                    <div id="botton" style="height: 20px;text-align: right; padding-bottom: 5px;">
                         <h:form>                                                                                        
-                            <p:commandLink id="lnkLogout"
+                            <!-- <p:commandLink id="lnkLogout"
                                            style="color: black; font-size: 14px"
                                            value="Sair"
-                                           action="#{autenticarBean.efetuarLogoff()}"
+                                           action="{autenticarBean.efetuarLogoff()}"
                                            ajax="false">
-                            </p:commandLink>
+                            </p:commandLink> -->
+                            <!--<i class="fa fa-bars" aria-hidden="true" onclick="" style="font-size:30px" id="dynaButton"></i>-->
+                            <p:growl id="messages" showDetail="true" />
+                            <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
+                            <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+                                <p:menuitem value="Editar minha conta" url="http://www.prime.com.tr" />
+                                <p:menuitem value="Logoff" action="#{autenticarBean.efetuarLogoff()}" />
+                            </p:tieredMenu>
                         </h:form>                        
                     </div>                    
                 </f:facet>                
