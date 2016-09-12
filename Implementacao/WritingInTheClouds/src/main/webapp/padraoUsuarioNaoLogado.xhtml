@@ -20,7 +20,7 @@
                                 <h:graphicImage class="logo_img" name="imagens/logo.png" />
                             </h:column>
                             <h:column>
-                                <h:panelGrid columns="3" style="float: left; width: 78%">
+                                <h:panelGrid columns="3" columnClasses="colunaDireita">
                                     <p:outputLabel for="iptEmail" value="Email" />                                    
                                     <p:outputLabel for="pwdSenha" value="Senha" />
                                 </h:panelGrid>
@@ -29,7 +29,7 @@
                                     <p:password id="pwdSenha" maxlength="120" required="true" value="#{autenticarBean.senha}" />
                                     <p:commandButton ajax="false" value="Entrar" action="#{autenticarBean.efetuarLogin()}" />
                                 </h:panelGrid>
-                                <h:panelGrid columns="1" style="margin-left: 37%;">
+                                <h:panelGrid columns="3">
                                     <p:link href="recuperarConta.xhtml">Esqueceu a conta?</p:link>
                                 </h:panelGrid>
                             </h:column>

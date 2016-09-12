@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import javax.mail.MessagingException;
+import org.apache.commons.mail.EmailException;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -96,20 +97,19 @@ public class ControladorCadastro {
     /**
      * Envia o link de redefinição de senha para o usuário
      * @param destinatario O email do usuário que está redefinindo a senha
-     * @throws MessagingException Caso ocorra erro no envio do email
+     * @throws EmailException Caso ocorra erro no envio do email
      * @throws DadosUsuarioInvalidoException Caso o usuário não seja encontrado
      * @throws NoSuchAlgorithmException Caso ocorra um erro na criação do hash
      * @throws UnsupportedEncodingException Caso ocorra um erro na criação do hash
      */
-    public void recuperarConta(String destinatario) throws MessagingException, 
+    public void recuperarConta(String destinatario) throws EmailException, 
             DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {                        
         RecuperarConta recuperar = new RecuperarConta();
         
         this.usuario = Usuario.verificarExistenciaUsuario(destinatario);
         recuperar.setUsuario(this.usuario);
         String senhaHash = Calendar.getInstance().getTime().toString() + "witc" + Arrays.toString(destinatario.getBytes());
-        recuperar.setHashRecuperacaoSenha(Usuario.criarHashSenha(senhaHash));
-        
+        recuperar.setHashRecuperacaoSenha(Usuario.criarHashSenha(senhaHash));                
         recuperar.EnviarEmailRecuperacao();        
     }             
     

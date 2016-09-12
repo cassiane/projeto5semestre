@@ -31,11 +31,15 @@ and open the template in the editor.
 }
 
 .column1 {
-    width: 53%;
+    width: 60%;
     height:auto;        
 }
 
 .column2 {
-    width: 47%;
+    width: 40%;
     height:auto;
+}
+
+.colunaDireita{
+    width: 230px;        
 }

@@ -21,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -135,50 +136,21 @@ public class RecuperarConta implements Serializable {
     
     /**
      * Envia um email com o link para redefinição de senha
-     * @throws MessagingException Caso ocorra algum problema no envio do email
+     * @throws EmailException Caso ocorra algum problema no envio do email
      */
-    public void EnviarEmailRecuperacao() throws MessagingException {       
-        Properties props = new Properties();
-        props.put("mail.smtp.user", "witcapp@gmail.com");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "465");
-        props.put("mail.smtp.starttls.enable","true");
-        props.put("mail.smtp.debug", "true");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.socketFactory.fallback", "false");
-
-        Session session = Session.getInstance(props,
-          new javax.mail.Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("witcapp@gmail.com", "cmmvwitc");
-                }
-          });
-        
-        Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress("witcapp@gmail.com"));
-        message.setRecipients(Message.RecipientType.TO,
-                InternetAddress.parse(this.usuario.getEmail()));
-        message.setSubject("Redefinição de senha do WitC");
+    public void EnviarEmailRecuperacao() throws EmailException {       
+        Mensagem mensagem = new Mensagem();
+        mensagem.setDestino(this.usuario.getEmail());
+        mensagem.setTitulo("Redefinição de senha do WitC");
         String link = "http://localhost:8084/WritingInTheClouds/faces/redefinirSenha.xhtml?usuario=" + this.usuario.getEmail() + "&hash=" + this.hashRecuperacaoSenha;
-        message.setText("Prezado ," + this.usuario.getNome()
-                + "\n\n Estás recebendo este email porque solicitaste a recuperação da tua conta. "
+        mensagem.setMensagem("Prezado ," + this.usuario.getNome()
+                + "\n\n Você está recebendo este email porque solicitou a recuperação da sua conta. "
                 + "Por favor, clique no link abaixo e siga as instruções da página."
                 + "\n\n" + link
                 + "\n\nAtenciosamente,"
                 + "\n\nEquipe WitC");
+        EmailUtils.enviaEmail(mensagem);
         
-        try {
-            Transport transport = session.getTransport("smtps");
-            transport.connect("smtp.gmail.com", 465, "witcapp@gmail.com", "cmmvwitc");
-            transport.sendMessage(message, message.getAllRecipients());
-            transport.close();
-        }catch (MessagingException e) {
-            System.out.println(e.getMessage());
-        }
-                
         this.dataSolicitacao = Calendar.getInstance();
         
         RecuperarContaDAO redefinicaoDAO = new RecuperarContaDAO();

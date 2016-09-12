@@ -58,11 +58,11 @@
         <artifactId>jstl</artifactId>
         <version>1.2</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-email -->
     <dependency>
-        <groupId>javax.mail</groupId>
-        <artifactId>mail</artifactId>
-        <version>1.4.7</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-email</artifactId>
+        <version>1.4</version>
     </dependency>
   </dependencies>
   <build>
