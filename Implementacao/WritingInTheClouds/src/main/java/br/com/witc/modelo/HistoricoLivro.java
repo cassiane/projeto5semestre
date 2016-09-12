@@ -10,6 +10,8 @@ import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -20,9 +22,13 @@ class HistoricoLivro implements Serializable {
     @Id
     @GeneratedValue
     private int id;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataInicio;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar  dataConclusao;
+    @OneToOne
     private Livro livro;
+    @OneToOne
     private Perfil perfil;
 
     public int getId() {

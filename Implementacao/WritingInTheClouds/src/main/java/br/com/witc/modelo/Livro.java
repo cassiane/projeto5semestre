@@ -6,6 +6,8 @@
 package br.com.witc.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,9 +29,19 @@ public class Livro implements Serializable {
     private boolean reportadoConteudoImproprio;
     private int qualificacao;
     private String texto;
-    private TipoTexto tipoTexto;
-    private TipoGenero tipoGenero;
+   
 
+    public Livro(String titulo, String texto) {
+        this.titulo = titulo;
+        this.texto = texto;
+    }
+
+    public Livro() {
+       
+    }
+
+    
+    
     public int getId() {
         return id;
     }
@@ -111,21 +123,11 @@ public class Livro implements Serializable {
     public void carregarLivro(int id){
         
     }
+    
+    
 
-    public TipoTexto getTipoTexto() {
-        return tipoTexto;
-    }
+  
 
-    public void setTipoTexto(TipoTexto tipoTexto) {
-        this.tipoTexto = tipoTexto;
-    }
 
-    public TipoGenero getTipoGenero() {
-        return tipoGenero;
-    }
-
-    public void setTipoGenero(TipoGenero tipoGenero) {
-        this.tipoGenero = tipoGenero;
-    }
     
 }

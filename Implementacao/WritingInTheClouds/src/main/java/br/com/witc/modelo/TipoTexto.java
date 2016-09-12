@@ -5,20 +5,20 @@
  */
 package br.com.witc.modelo;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 /**
  *
  * @author root
  */
 public class TipoTexto {
-    @Id
-    @GeneratedValue
+  
     private int id;
     private String tipoTexto;
-    
 
+    public TipoTexto(String tipoTexto) {
+        this.tipoTexto = tipoTexto;
+    }
+    
+    
     public int getId() {
         return id;
     }

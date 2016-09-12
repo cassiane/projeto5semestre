@@ -5,8 +5,14 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.excessao.UsuarioInvalidoException;
+import br.com.witc.modelo.Livro;
+import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -14,6 +20,8 @@ import org.hibernate.Session;
  */
 public class LivroDAO {
     Session sessao;
+   
+   
 
     /**
      *
@@ -24,11 +32,22 @@ public class LivroDAO {
     
     /**
      *
+     * @param livro
      */
-    public void criarLivro(){
+    public void criarLivro(Livro livro){
+       
         //salva livro no banco
         
-    }
+        try {
+           sessao.saveOrUpdate(livro);
+        } catch (ConstraintViolationException e) {
+          
+                sessao.clear();
+             
+            } 
+        }
+        
+    
     
     /**
      *
@@ -46,7 +65,15 @@ public class LivroDAO {
         
     }
     
-    
+    public List <Livro> carregarTodosLivrosUsuario(Usuario usuario){
+        List<Livro> livrosUsuario = new ArrayList();
+        sessao.createSQLQuery("SELECT FROM perfil_tem_livro "
+                + "WHERE idUsuario = :usuario ")
+                .setParameter("usuario", usuario.getId())
+                .executeUpdate();
+        return livrosUsuario;
+        
+    }
     
     
 }

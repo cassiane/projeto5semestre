@@ -5,21 +5,32 @@
  */
 package br.com.witc.modelo;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author root
  */
-public class Perfil {
+@Entity
+public class Perfil implements Serializable {
     @Id
     @GeneratedValue
     private int id;
     private int qualificacao;
     private String pseudonimo;
+    @ManyToOne
     private Usuario usuario;
 
+    public Perfil(int id, Usuario usuario) {
+        this.id = id;
+        this.usuario = usuario;
+    }
+    public Perfil(){}
+    
     public int getId() {
         return id;
     }
