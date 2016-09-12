@@ -6,6 +6,8 @@
 package br.com.witc.bean;
 
 
+import br.com.witc.excessao.DadosUsuarioInvalidoException;
+import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Usuario;
@@ -15,15 +17,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import static javax.faces.context.FacesContext.getCurrentInstance;
+import org.apache.commons.mail.EmailException;
 import org.primefaces.model.StreamedContent;
 
 /**
@@ -36,6 +35,9 @@ public class CadastrarBean {
     private final ControladorCadastro controlador;    
     private Usuario usuario;
     private String emailVerificado;
+    private String emailRecuperacaoSenha;
+    private String senhaRedefinicao;
+    private String hashRedefinicao;
     private String diaNascimento;
     private String mesNascimento;
     private String anoNascimento;
@@ -44,8 +46,7 @@ public class CadastrarBean {
     private List<Usuario> solicitacao;
     
     public CadastrarBean() {
-        this.controlador = new ControladorCadastro(null);
-
+        this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
     }
     
@@ -76,6 +77,48 @@ public class CadastrarBean {
     public void setEmailVerificado(String emailVerificado) {
         this.emailVerificado = emailVerificado;
     }
+    
+    /**
+     * @return the emailRecuperacaoSenha
+     */
+    public String getEmailRecuperacaoSenha() {
+        return emailRecuperacaoSenha;
+    }
+
+    /**
+     * @param emailRecuperacaoSenha the emailRecuperacaoSenha to set
+     */
+    public void setEmailRecuperacaoSenha(String emailRecuperacaoSenha) {
+        this.emailRecuperacaoSenha = emailRecuperacaoSenha;
+    }    
+    
+    /**
+     * @return the senhaRedefinicao
+     */
+    public String getSenhaRedefinicao() {
+        return senhaRedefinicao;
+    }
+
+    /**
+     * @param senhaRedefinicao the senhaRedefinicao to set
+     */
+    public void setSenhaRedefinicao(String senhaRedefinicao) {
+        this.senhaRedefinicao = senhaRedefinicao;
+    }    
+    
+    /**
+     * @return the hashRedefinicao
+     */
+    public String getHashRedefinicao() {
+        return hashRedefinicao;
+    }
+
+    /**
+     * @param hashRedefinicao the hashRedefinicao to set
+     */
+    public void setHashRedefinicao(String hashRedefinicao) {
+        this.hashRedefinicao = hashRedefinicao;
+    }    
     
     /**
      * @return the diaNascimento
@@ -133,14 +176,12 @@ public class CadastrarBean {
         try {
             this.amigos = this.controlador.listarAmigos();
         } catch (UsuarioInvalidoException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
     
     public boolean isTemAmigos() {
-        if (this.amigos.isEmpty() || this.amigos == null)
-            return true;
-        return false;
+        return this.amigos.isEmpty() || this.amigos == null;
     }
 
     public List<Usuario> getSugestao() throws UsuarioInvalidoException{
@@ -153,14 +194,12 @@ public class CadastrarBean {
         try {
             this.sugestao = this.controlador.listarSugestao();
         } catch (UsuarioInvalidoException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
     
     public boolean isTemSugestao() {
-        if (this.sugestao.isEmpty() || this.sugestao == null)
-            return true;
-        return false;
+        return this.sugestao.isEmpty() || this.sugestao == null;
     }
     
     public List<Usuario> getSolicitacao() {
@@ -172,14 +211,12 @@ public class CadastrarBean {
         try {
             this.solicitacao = this.controlador.listarSolicitacao();
         } catch (NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
     
     public boolean isTemSolicitacao() {
-        if (this.solicitacao.isEmpty() || this.solicitacao == null)
-            return true;
-        return false;
+        return this.solicitacao.isEmpty() || this.solicitacao == null;
     }
 
 
@@ -205,7 +242,7 @@ public class CadastrarBean {
     public void setDataNascimento() throws ParseException {         
         SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");            
         String data = getDiaNascimento()+"/"+getMesNascimento()+"/"+getAnoNascimento();
-        Calendar c = Calendar.getInstance();;
+        Calendar c = Calendar.getInstance();
         c.setTime(formatoData.parse(data));
 
         this.usuario.setDataAniversario(c);            
@@ -214,25 +251,25 @@ public class CadastrarBean {
     
     /**
      * Cadastra um usuario no sistema
-     * @return Uma string contendo a próxima página a ser enviada para o usuário
-
-     * @throws br.com.witc.excessao.UsuarioInvalidoException
+     * @return Uma string contendo a próxima página a ser enviada para o usuário    
      */
-    public String cadastrarUsuario() throws UsuarioInvalidoException {
+    public String cadastrarUsuario() {
         // Setar a data de nascimento no usuario
         try {
             if (!this.usuario.getEmail().equals(this.emailVerificado)) {
-                throw new UsuarioInvalidoException("Os emails informados não coicidem!");
+                throw new DadosUsuarioInvalidoException("Os emails informados não coicidem!");
             }
             setDataNascimento();                
             this.controlador.cadastrarUsuario(usuario);
             return "timeline";
         }catch(ParseException ex){
-            enviarMensagem(SEVERITY_ERROR, "Data de Nascimento inválida.");          
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento inválida.");          
         } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            enviarMensagem(SEVERITY_ERROR, "Problemas na geração do hash da senha!");            
-        } catch(UsuarioInvalidoException e) {
-            enviarMensagem(SEVERITY_ERROR, e.getMessage());            
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash da senha!");            
+        } catch(DadosUsuarioInvalidoException e) {
+            // Apaga os dados do formulario
+            this.usuario = new Usuario();
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, e.getMessage());            
         }
         return null;
     }
@@ -241,18 +278,10 @@ public class CadastrarBean {
         this.controlador.usuarioLogado(this.usuario);
         try {
             this.setSolicitacao();
-        } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
-        try {
             this.setAmigos();
-        } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
-        }
-        try {
             this.setSugestao();
         } catch (UsuarioInvalidoException | IllegalArgumentException | NullPointerException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
         return "listarAmigos";
     }
@@ -263,7 +292,7 @@ public class CadastrarBean {
             //this.controlador.usuarioLogado(this.usuario);
             this.setSugestao();
         } catch (UsuarioInvalidoException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
     
@@ -272,7 +301,7 @@ public class CadastrarBean {
         try {
             this.setSolicitacao();
         } catch (UsuarioInvalidoException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
     
@@ -281,12 +310,57 @@ public class CadastrarBean {
         try {
             this.setSolicitacao();
         } catch (UsuarioInvalidoException ex) {
-            enviarMensagem(SEVERITY_ERROR, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
     }
     
-    public String editarLivro(){
-        return "editarLivro";
+    /**
+     * Envia o link de redefinição de senha para o usuário
+     * @return A próxima página a ser visualizada pelo usuário
+     */
+    public String recuperarConta() {
+        try {
+            this.controlador.recuperarConta(this.emailRecuperacaoSenha);
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, "Um email com instruções para redefinir sua senha foi enviado.");
+            return "resultadoOper";
+        } catch(DadosUsuarioInvalidoException e) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, e.getMessage());
+        } catch(EmailException e) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Não foi possível enviar o email para redefinição de senha!");
+        } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash para redefinição de senha!");                                
+        } 
+        return null;
+    }
+    
+    /**
+     * Redefine a senha do usuário
+     * @return A próxima página a ser visualizada pelo usuário
+     */
+    public String redefinirSenha() {
+        if (!this.usuario.getSenha().equals(this.senhaRedefinicao)) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "As senhas informadas não coicidem!");
+            return null;
+        }
+        
+        if (this.hashRedefinicao.length() != 64) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Link de redefinição inválido!");
+            return null;
+        }
+               
+        try {
+            this.controlador.redefinirSenha(this.emailRecuperacaoSenha, this.hashRedefinicao, this.senhaRedefinicao);
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso");
+            return "index.xhtml";
+        } catch (DadosUsuarioInvalidoException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash para redefinição de senha!");
+        } catch (LinkRecuperacaoInvalidoException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Link de redefinição inválido!");
+        }
+        
+        return null;
     }
     
     /**

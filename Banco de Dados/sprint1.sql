@@ -207,6 +207,26 @@ CREATE TABLE IF NOT EXISTS `witc`.`Usuario_tem_Amigo` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `witc`.`RecuperarConta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `witc`.`RecuperarConta` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idUsuario` INT UNSIGNED NOT NULL,
+  `dataSolicitacao` DATE NOT NULL,
+  `dataUtilizacao` DATE NULL,
+  `hashRecuperacaoSenha` VARCHAR(64) NOT NULL,
+  `inutilizado` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  INDEX `fk_RecuperacaoSenha_Usuario1_idx` (`idUsuario` ASC),
+  CONSTRAINT `fk_RecuperacaoSenha_Usuario1`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `witc`.`Usuario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

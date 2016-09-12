@@ -7,12 +7,34 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>
+        <h:outputStylesheet library="css" name="witc.css" />
     </h:head>
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit position="north">                
                 <f:facet name="header">                    
                     <ui:insert name="header"/>
+                    <h:form>
+                        <h:panelGrid columns="2" columnClasses="column1,column2">
+                            <h:column>
+                                <h:graphicImage class="logo_img" name="imagens/logo.png" />
+                            </h:column>
+                            <h:column>
+                                <h:panelGrid columns="3" columnClasses="colunaDireita">
+                                    <p:outputLabel for="iptEmail" value="Email" />                                    
+                                    <p:outputLabel for="pwdSenha" value="Senha" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="3">
+                                    <p:inputText id="iptEmail" maxlength="150" required="true" value="#{autenticarBean.email}" />
+                                    <p:password id="pwdSenha" maxlength="120" required="true" value="#{autenticarBean.senha}" />
+                                    <p:commandButton ajax="false" value="Entrar" action="#{autenticarBean.efetuarLogin()}" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="3">
+                                    <p:link href="recuperarConta.xhtml">Esqueceu a conta?</p:link>
+                                </h:panelGrid>
+                            </h:column>
+                        </h:panelGrid>
+                    </h:form>                          
                 </f:facet>
             </p:layoutUnit>            
             <p:layoutUnit position="center">

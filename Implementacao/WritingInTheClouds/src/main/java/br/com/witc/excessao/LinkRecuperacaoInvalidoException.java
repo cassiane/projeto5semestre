@@ -9,24 +9,24 @@ package br.com.witc.excessao;
  *
  * @author marcelo.lima
  */
-public class UsuarioInvalidoException extends Exception {
+public class LinkRecuperacaoInvalidoException extends Exception {
 
-    public UsuarioInvalidoException() {
+    public LinkRecuperacaoInvalidoException() {
     }
 
-    public UsuarioInvalidoException(String message) {
+    public LinkRecuperacaoInvalidoException(String message) {
         super(message);
     }
 
-    public UsuarioInvalidoException(String message, Throwable cause) {
+    public LinkRecuperacaoInvalidoException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public UsuarioInvalidoException(Throwable cause) {
+    public LinkRecuperacaoInvalidoException(Throwable cause) {
         super(cause);
     }
 
-    public UsuarioInvalidoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public LinkRecuperacaoInvalidoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
     
