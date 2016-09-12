@@ -219,12 +219,12 @@ public class Usuario implements Serializable {
         cadastrarUsuario(this);
     }    
 
-    public List<Usuario> listarAmigos() throws UsuarioInvalidoException {
+    public List<Usuario> listarAmigos() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarAmigos(this.getId());
     }
 
-    public List<Usuario> listarSugestao() throws UsuarioInvalidoException{
+    public List<Usuario> listarSugestao() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarSugestao(this.getId());
     }
@@ -234,7 +234,7 @@ public class Usuario implements Serializable {
         dao.solicitarAmizade(this.getId(), idSugestao);
     }
 
-    public List<Usuario> listarSolicitacao() throws UsuarioInvalidoException{
+    public List<Usuario> listarSolicitacao() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarSolicitacao(this.getId());
     }
@@ -247,6 +247,11 @@ public class Usuario implements Serializable {
     void removerAmizade(int idAmizade) {
         UsuarioDAO dao = new UsuarioDAO();
         dao.removerAmizade(this.getId(), idAmizade);
+    }
+
+    @Override
+    public String toString() {
+        return this.email;
     }
     
     /**
