@@ -7,7 +7,6 @@ package br.com.witc.modelo;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LoginInvalidoException;
-import br.com.witc.excessao.UsuarioInvalidoException;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Entity;
