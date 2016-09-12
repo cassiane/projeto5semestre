@@ -11,6 +11,7 @@ import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -66,11 +67,11 @@ public class LivroDAO {
     }
     
     public List <Livro> carregarTodosLivrosUsuario(Usuario usuario){
-        List<Livro> livrosUsuario = new ArrayList();
-        sessao.createSQLQuery("SELECT FROM perfil_tem_livro "
+         
+  List<Livro> livrosUsuario = sessao.createSQLQuery("SELECT idLivro FROM perfil_tem_livro "
                 + "WHERE idUsuario = :usuario ")
-                .setParameter("usuario", usuario.getId())
-                .executeUpdate();
+                .setParameter("usuario", usuario.getId()).list();
+               
         return livrosUsuario;
         
     }

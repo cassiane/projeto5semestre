@@ -253,7 +253,9 @@ public class CadastrarBean {
     public String editarLivro(){
         return "editarLivro";
     }
-    
+     public String biblioteca(){
+         return "biblioteca";
+     }
     /**
      * Envia à viewer uma mensagem com o status da operação
      * @param sev A severidade da mensagem

@@ -11,12 +11,11 @@
                <h:form >  
                    
                    <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.textoLivro}" width="600" />
-                     <h:panelGrid columns="2" style="margin-top: 10px">
-                         <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" />
+                     <h:panelGrid columns="3" style="margin-top: 10px">
+                        <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
-                    </h:panelGrid>
-
-                    
+                        <p:commandButton value="Voltar"  action="#{editarBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />
+                    </h:panelGrid>                  
     
                 </h:form>
             </div>

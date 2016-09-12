@@ -3,22 +3,64 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">     
             <div align="center"> 
-               <h1>Editor de texto</h1>
-               <h:form >  
-                   
-                   <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.textoLivro}" width="600" />
-                     <h:panelGrid columns="2" style="margin-top: 10px">
-                         <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" />
-                        <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
-                    </h:panelGrid>
+              
+                   <f:view>
 
-                    
-    
-                </h:form>
+
+                       <h:form id="form">
+                           <h1><h:outputText value="Minha Biblioteca"/></h1>
+                           <p:dataTable value="#{editarBean.livros}" var="item">
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Id"/>
+                                   </f:facet>
+                                   <h:outputText value="#{item.id}"/>
+                               </p:column>
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Titulo"/>
+                                   </f:facet>
+                                   <h:outputText value="#{item.titulo}"/>
+                               </p:column>
+                               
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Capa"/>
+                                   </f:facet>
+                                   <h:outputText value="#{item.capa}"/>
+                               </p:column>
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Classificacao"/>
+                                   </f:facet>
+                                   <h:outputText value="#{item.classificacao}"/>
+                               </p:column>
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Qualificacao"/>
+                                   </f:facet>
+                                   <h:outputText value="#{item.qualificacao}"/>
+                               </p:column>
+                               
+                               <p:column>
+                                   <p:commandButton value="Salvar"  action="editarLivro" icon="ui-icon-disk" />
+                               </p:column>
+                             
+                           </p:dataTable>
+                       </h:form>
+                       <h:form>
+                           <p:column>
+                                   <p:commandButton value="Novo Livro"  action="editarLivro" icon="ui-icon-disk" />
+                               </p:column>
+                             
+                       </h:form>
+                   </f:view>
+                  
             </div>
         </ui:define>
     </ui:composition>

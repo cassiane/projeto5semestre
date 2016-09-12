@@ -5,12 +5,19 @@
  */
 package br.com.witc.modelo;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  *
  * @author root
  */
-class TipoGenero {
-   
+@Entity
+class TipoGenero implements Serializable {
+    @Id
+    @GeneratedValue
     private int id;
     private String tipoGenero;
 

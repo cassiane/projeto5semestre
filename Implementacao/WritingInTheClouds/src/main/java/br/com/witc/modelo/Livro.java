@@ -8,9 +8,11 @@ package br.com.witc.modelo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -29,7 +31,14 @@ public class Livro implements Serializable {
     private boolean reportadoConteudoImproprio;
     private int qualificacao;
     private String texto;
-   
+    /*
+    @ManyToOne
+    @Column(name="idTipoGenero")
+    private TipoGenero tipoGenero;
+    @ManyToOne
+    @Column(name="idTipoTexto")
+    private TipoTexto tipoTexto;
+   */
 
     public Livro(String titulo, String texto) {
         this.titulo = titulo;
@@ -123,8 +132,24 @@ public class Livro implements Serializable {
     public void carregarLivro(int id){
         
     }
+/*
+    public TipoGenero getTipoGenero() {
+        return tipoGenero;
+    }
+
+    public void setTipoGenero(TipoGenero tipoGenero) {
+        this.tipoGenero = tipoGenero;
+    }
+
+    public TipoTexto getTipoTexto() {
+        return tipoTexto;
+    }
+
+    public void setTipoTexto(TipoTexto tipoTexto) {
+        this.tipoTexto = tipoTexto;
+    }
     
-    
+    */
 
   
 

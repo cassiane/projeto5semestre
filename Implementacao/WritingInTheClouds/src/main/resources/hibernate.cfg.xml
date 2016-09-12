@@ -10,5 +10,7 @@
     <mapping class="br.com.witc.modelo.Usuario"/>
     <mapping class="br.com.witc.modelo.Livro"/>
     <mapping class="br.com.witc.modelo.Perfil"/>
+    <mapping class="br.com.witc.modelo.TipoTexto"/>
+    <mapping class="br.com.witc.modelo.TipoGenero"/>
   </session-factory>
 </hibernate-configuration>
