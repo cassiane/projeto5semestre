@@ -12,79 +12,68 @@
         </ui:define>
         <ui:define name="conteudo">
             <h:form>
-                <div style="overflow: auto; position: relative">
-                    <div>
-                        <h:graphicImage style="padding-top: 100px;" name="imagens/livro.png"/>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 390px; top: 10px;">
-                        <h:outputText value="Abra uma Conta" style="font-size: 30px;"/>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 0px; top: 60px;">
-                        <p:inputText maxlength="50" placeholder="Nome" style="width: 295px;" 
-                                     required="true"  value="#{cadastrarBean.usuario.nome}"/>
-                        <p:inputText maxlength="50" placeholder="Sobrenome" style="width: 295px; margin-left: 3px;" 
-                                     required="true" value="#{cadastrarBean.usuario.sobrenome}"/>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 0px; top: 110px;">
-                        <p:inputText maxlength="120" placeholder="Email" style="width: 604px;" 
-                                     required="true" value="#{cadastrarBean.usuario.email}"/>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 0px; top: 160px;">
-                        <p:inputText maxlength="120" placeholder="Digite novamente o email" style="width: 604px;" 
-                                     required="true" value="#{cadastrarBean.emailVerificado}"/>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 0px; top: 210px;">
-                        <p:password maxlength="120" placeholder="Senha" style="width: 604px;" 
-                                     required="true" value="#{cadastrarBean.usuario.senha}"/>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 513px; top: 260px;">
-                        <h:outputText value="Aniversário" style="font-size: 20px;"/>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 335px; top: 290px;">
-                        <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 50px" required="true">
-                            <f:selectItem itemLabel="Dia" itemValue="" />
-                            <c:forEach var="dia" begin="1" end="31">
-                                <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" />
-                            </c:forEach>
-                        </p:selectOneMenu>
-                        <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 
-                                         required="true">
-                            <f:selectItem itemLabel="Mês" itemValue="" />
-                            <c:forEach var="mes" begin="1" end="12">
-                                <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
-                            </c:forEach>
-                        </p:selectOneMenu>
-                        <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 50px; margin-left: 10px;" 
-                                         required="true">
-                            <f:selectItem itemLabel="Ano" itemValue="" />
-                            <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
-                                <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
-                            </c:forEach>
-                        </p:selectOneMenu>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 416px; top: 340px;">
-                        <p:selectOneRadio value="#{cadastrarBean.usuario.genero}" required="true">
-                            <f:selectItem itemLabel="Feminino" itemValue="F" />
-                            <f:selectItem itemLabel="Masculino" itemValue="M" />
-                        </p:selectOneRadio>
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 0px; top: 390px;">
-                        <h:outputText value="Ao clicar em Abrir uma Conta, você concorda com os nossos " />
-                        <a href="http://www.google.com.br">Termos</a>                        
-                        <h:outputText value=" e que leu " />
-                    </div>                     
-                    <div style="padding: 5px; position: absolute; right: 59px; top: 420px;">
-                        <h:outputText value=" e que leu a nossa " />
-                        <a href="http://www.google.com.br">Política de Dados</a>
-                        <h:outputText value=" incluindo o nosso " />
-                        <a href="http://www.google.com.br">Uso de Cookies</a>
-                        <h:outputText value="." />
-                    </div>
-                    <div style="padding: 5px; position: absolute; right: 415px; top: 460px;">
-                        <p:commandButton ajax="false" value="Abrir uma Conta" style="width:200px; margin-left: 3px;"
+                <h:panelGrid columns="2" columnClasses="column1,column2" >
+                    <h:column>
+                        <h:graphicImage class="book_img" name="imagens/livro.png"/>
+                    </h:column>                    
+                    <h:column>
+                        <h:panelGrid columns="1" class="painelgrid">
+                            <h:outputText value="Abra uma Conta" style="font-size: 30px;"/>                            
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" class="painelgrid" cellpadding="3px">
+                            <p:inputText class="inputtext2c" maxlength="50" placeholder="Nome" required="true"  value="#{cadastrarBean.usuario.nome}"/>
+                            <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" value="#{cadastrarBean.usuario.sobrenome}"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">
+                            <p:inputText class="inputtext" maxlength="150" placeholder="Email" required="true" value="#{cadastrarBean.usuario.email}"/>
+                            <p:inputText class="inputtext" maxlength="150" placeholder="Digite novamente o email" required="true" value="#{cadastrarBean.emailVerificado}"/>
+                            <p:password class="inputtext" maxlength="120" placeholder="Senha" required="true" value="#{cadastrarBean.usuario.senha}"/>
+                            <h:outputText value="Aniversário" style="font-size: 20px;"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3">
+                            <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 50px" required="true">
+                                <f:selectItem itemLabel="Dia" itemValue="" />
+                                <c:forEach var="dia" begin="1" end="31">
+                                    <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" />
+                                </c:forEach>
+                            </p:selectOneMenu>
+                            <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 
+                                             required="true">
+                                <f:selectItem itemLabel="Mês" itemValue="" />
+                                <c:forEach var="mes" begin="1" end="12">
+                                    <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
+                                </c:forEach>
+                            </p:selectOneMenu>
+                            <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 50px; margin-left: 10px;" 
+                                             required="true">
+                                <f:selectItem itemLabel="Ano" itemValue="" />
+                                <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
+                                    <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
+                                </c:forEach>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">
+                            <p:selectOneRadio value="#{cadastrarBean.usuario.genero}" required="true">
+                                <f:selectItem itemLabel="Feminino" itemValue="F" />
+                                <f:selectItem itemLabel="Masculino" itemValue="M" />
+                            </p:selectOneRadio>
+                            <h:column>
+                                <h:outputText value="Ao clicar em Abrir uma Conta, você concorda com os nossos " />
+                                <a href="http://www.google.com.br">Termos</a>                        
+                                <h:outputText value=" e que leu " />
+                            </h:column>
+                            <h:column>
+                                <h:outputText value=" e que leu a nossa " />
+                                <a href="http://www.google.com.br">Política de Dados</a>
+                                <h:outputText value=" incluindo o nosso " />
+                                <a href="http://www.google.com.br">Uso de Cookies</a>
+                                <h:outputText value="." />
+                            </h:column>
+                            <p:commandButton ajax="false" value="Abrir uma Conta" style="width:200px; margin-left: 3px;"
                                          action="#{cadastrarBean.cadastrarUsuario()}" />
-                    </div>
-                </div>
+                        </h:panelGrid>
+                    </h:column>
+                </h:panelGrid>                            
             </h:form>                
         </ui:define>
     </ui:composition>

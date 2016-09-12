@@ -17,8 +17,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -342,12 +340,12 @@ public class CadastrarBean {
     public String redefinirSenha() {
         if (!this.usuario.getSenha().equals(this.senhaRedefinicao)) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "As senhas informadas não coicidem!");
-            return "resultadoOper.xhtml";
+            return null;
         }
         
         if (this.hashRedefinicao.length() != 64) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Link de redefinição inválido!");
-            return "resultadoOper.xhtml";
+            return null;
         }
                
         try {
@@ -362,7 +360,7 @@ public class CadastrarBean {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Link de redefinição inválido!");
         }
         
-        return "resultadoOper.xhtml";
+        return null;
     }
     
     /**

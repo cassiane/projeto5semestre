@@ -17,11 +17,12 @@
             <h:form>
                 <h:panelGrid columns="2">
                     <p:outputLabel for="pwdSenha" value="Digite a nova senha" />
-                    <p:password id="pwdSenha" maxlength="32" size="20" required="true" value="#{cadastrarBean.usuario.senha}" 
-                                style="margin-left: 3px;" />
+                    <p:password id="pwdSenha" maxlength="120" size="20" required="true" 
+                                class="inputtext" value="#{cadastrarBean.usuario.senha}" />
+                                
                     <p:outputLabel for="pwdRSenha" value="Redigite a nova senha" />
-                    <p:password id="pwdRSenha" maxlength="32" size="20" required="true" value="#{cadastrarBean.senhaRedefinicao}" 
-                                style="margin-left: 3px;" />
+                    <p:password id="pwdRSenha" maxlength="120" required="true" 
+                                class="inputtext" value="#{cadastrarBean.senhaRedefinicao}" />                                
                 </h:panelGrid>
                 <p:commandButton ajax="false" value="Redefinir" style="width:145px; margin-left: 3px;"
                                  action="#{cadastrarBean.redefinirSenha()}" />

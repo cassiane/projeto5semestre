@@ -7,3 +7,35 @@ and open the template in the editor.
     Created on : 05/09/2016, 16:06:18
     Author     : marcelo.lima
 */
+
+.inputtext {
+    width: 98%;        
+}
+
+.inputtext2c {
+    width: 96%;
+}
+
+.painelgrid {
+    width: 100%;    
+}
+
+.book_img {
+    width: 100%; 
+    height: auto;
+}
+
+.logo_img {
+    width: 42%; 
+    height: auto;
+}
+
+.column1 {
+    width: 53%;
+    height:auto;        
+}
+
+.column2 {
+    width: 47%;
+    height:auto;
+}
