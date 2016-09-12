@@ -7,7 +7,6 @@ package br.com.witc.modelo;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
-import br.com.witc.excessao.UsuarioInvalidoException;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;

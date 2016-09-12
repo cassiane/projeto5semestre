@@ -253,21 +253,21 @@ public class CadastrarBean {
     
     /**
      * Cadastra um usuario no sistema
-     * @return Uma string contendo a prÃ³xima pÃ¡gina a ser enviada para o usuÃ¡rio    
+     * @return Uma string contendo a próxima página a ser enviada para o usuário    
      */
     public String cadastrarUsuario() {
         // Setar a data de nascimento no usuario
         try {
             if (!this.usuario.getEmail().equals(this.emailVerificado)) {
-                throw new DadosUsuarioInvalidoException("Os emails informados nÃ£o coicidem!");
+                throw new DadosUsuarioInvalidoException("Os emails informados não coicidem!");
             }
             setDataNascimento();                
             this.controlador.cadastrarUsuario(usuario);
             return "timeline";
         }catch(ParseException ex){
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento invÃ¡lida.");          
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento inválida.");          
         } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geraÃ§Ã£o do hash da senha!");            
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash da senha!");            
         } catch(DadosUsuarioInvalidoException e) {
             // Apaga os dados do formulario
             this.usuario = new Usuario();
@@ -294,36 +294,36 @@ public class CadastrarBean {
     }
     
     /**
-     * Envia o link de redefiniÃ§Ã£o de senha para o usuÃ¡rio
-     * @return A prÃ³xima pÃ¡gina a ser visualizada pelo usuÃ¡rio
+     * Envia o link de redefinição de senha para o usuário
+     * @return A próxima página a ser visualizada pelo usuário
      */
     public String recuperarConta() {
         try {
             this.controlador.recuperarConta(this.emailRecuperacaoSenha);
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, "Um email com instruÃ§Ãµes para redefinir sua senha foi enviado.");
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, "Um email com instruções para redefinir sua senha foi enviado.");
             return "resultadoOper";
         } catch(DadosUsuarioInvalidoException e) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, e.getMessage());
         } catch(EmailException e) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "NÃ£o foi possÃ­vel enviar o email para redefiniÃ§Ã£o de senha!");
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Não foi possível enviar o email para redefinição de senha!");
         } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geraÃ§Ã£o do hash para redefiniÃ§Ã£o de senha!");                                
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash para redefinição de senha!");                                
         } 
         return null;
     }
     
     /**
-     * Redefine a senha do usuÃ¡rio
-     * @return A prÃ³xima pÃ¡gina a ser visualizada pelo usuÃ¡rio
+     * Redefine a senha do usuário
+     * @return A próxima página a ser visualizada pelo usuário
      */
     public String redefinirSenha() {
         if (!this.usuario.getSenha().equals(this.senhaRedefinicao)) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "As senhas informadas nÃ£o coicidem!");
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "As senhas informadas não coicidem!");
             return null;
         }
         
         if (this.hashRedefinicao.length() != 64) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Link de redefiniÃ§Ã£o invÃ¡lido!");
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Link de redefinição inválido!");
             return null;
         }
                
@@ -334,16 +334,16 @@ public class CadastrarBean {
         } catch (DadosUsuarioInvalidoException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geraÃ§Ã£o do hash para redefiniÃ§Ã£o de senha!");
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash para redefinição de senha!");
         } catch (LinkRecuperacaoInvalidoException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Link de redefiniÃ§Ã£o invÃ¡lido!");
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
         
         return null;
     }
     
     /**
-     * Envia Ã  viewer uma mensagem com o status da operaÃ§Ã£o
+     * Envia à viewer uma mensagem com o status da operação
      * @param sev A severidade da mensagem
      * @param msg A mensagem a ser apresentada
      */
