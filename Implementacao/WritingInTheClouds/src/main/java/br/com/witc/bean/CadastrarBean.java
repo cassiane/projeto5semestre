@@ -263,8 +263,7 @@ public class CadastrarBean {
                 throw new DadosUsuarioInvalidoException("Os emails informados não coicidem!");
             }
             setDataNascimento();                
-            this.controlador.cadastrarUsuario(usuario);
-            //return "timeline";
+            this.controlador.cadastrarUsuario(usuario);            
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
