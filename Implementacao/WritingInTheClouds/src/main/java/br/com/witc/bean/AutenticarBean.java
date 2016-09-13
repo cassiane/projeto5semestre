@@ -104,7 +104,7 @@ public class AutenticarBean {
      */
     public String efetuarLogoff() {
         getCurrentInstance().getExternalContext().invalidateSession();
-        return "index.xhtml?faces-redirect=true";
+        return "index.xhtml?faces-redirect=true";        
     }    
     
     /**

@@ -159,6 +159,17 @@ public class CadastrarBean {
     }
 
     /**
+     * Seta o usuario deste bean com o usuario logado no sistema
+     */
+    public void setUsuarioLogado() {
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "autenticarBean");
+        
+        this.usuario = autenticarBean.usuarioLogado();
+    }
+    
+    /**
      * @param anoNascimento the anoNascimento to set
      */
     public void setAnoNascimento(String anoNascimento) {

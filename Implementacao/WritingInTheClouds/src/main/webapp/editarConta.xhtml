@@ -8,6 +8,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">   
+            <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>
             <h:form id="EditarUsuario" style="position: absolute; padding: 10px; left: 10%">
                 <h:panelGrid columns="1" columnClasses="column1,column2" >                                      
                     <h:column>                                                
