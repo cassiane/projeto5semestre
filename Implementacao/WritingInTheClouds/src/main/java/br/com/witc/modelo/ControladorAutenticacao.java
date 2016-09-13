@@ -20,7 +20,13 @@ public class ControladorAutenticacao {
         this.usuario = new Usuario();
     }        
 
-
+    /**
+     * @param usuario the usuario to set
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
     /**
      * @return O usuário logado no sistema
      */
@@ -39,18 +45,13 @@ public class ControladorAutenticacao {
     /**
      * Autentica um usuário no sistema
      * @param email O email do usuário
-     * @param senha A senha do usuário
-     * @return A página a ser visualizada pelo usuário após o login              
+     * @param senha A senha do usuário     
      * @throws br.com.witc.excessao.LoginInvalidoException  Se o login for invalido            
      * @throws java.security.NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado          
      * @throws java.io.UnsupportedEncodingException Caso haja erro de codificação          
      */
-    public String efetuarLogin(String email, String senha) 
+    public void efetuarLogin(String email, String senha) 
             throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {                
-        this.usuario = Usuario.efetuarLogin(email, senha);
-        
-        if (this.usuario != null)
-            return "timeline";
-        return null;
+        this.setUsuario(Usuario.efetuarLogin(email, senha));
     }
 }

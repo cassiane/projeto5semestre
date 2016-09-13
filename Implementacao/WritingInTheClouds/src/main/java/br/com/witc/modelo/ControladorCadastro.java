@@ -7,6 +7,7 @@ package br.com.witc.modelo;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
+import br.com.witc.excessao.UsuarioInvalidoException;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -38,16 +39,19 @@ public class ControladorCadastro {
      * @throws br.com.witc.excessao.DadosUsuarioInvalidoException
      * @throws java.security.NoSuchAlgorithmException
      * @throws java.io.UnsupportedEncodingException
+     * @throws br.com.witc.excessao.UsuarioInvalidoException Caso usuário já exista no BD
      */
-    public void cadastrarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        usuario.cadastrarUsuario(usuario);        
+    public void cadastrarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
+        
+        usuario.consistirDados();
+        usuario.cadastrarUsuario();        
     }
 
     /**
      * Listar os amigos do usuario logado
      *
-     * @return A lista de amigos
-     * @throws br.com.witc.excessao.UsuarioInvalidoException
+     * @return A lista de amigos     
      */
     public List<Usuario> listarAmigos() {
         return this.usuario.listarAmigos();
@@ -119,7 +123,7 @@ public class ControladorCadastro {
      * @throws DadosUsuarioInvalidoException Caso o usuário não esteja cadastrado no sistema
      * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
      * @throws UnsupportedEncodingException Caso haja erro de codificação
-     * @throws LinkRecuperacaoInvalidoException Caso o link seja inválido
+     * @throws LinkRecuperacaoInvalidoException Caso o link seja inválido     
      */
     public void redefinirSenha(String email, String hashCode, String novaSenha) 
             throws DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException, 
@@ -132,7 +136,13 @@ public class ControladorCadastro {
         recuperar = recuperar.verificarLink();
         
         this.usuario.setSenha(novaSenha);
-        this.usuario.cadastrarUsuario();
+        
+        try {
+            this.usuario.cadastrarUsuario();
+        } catch (UsuarioInvalidoException ex) { // Essa excessao, no cadastro do usuario, eh lancada quando o usuario jah estah cadastrado no sistema
+            // Essa excecao nao eh lancada, pois eh necessario que o usuario tenha
+            // cadastro para redefinir a senha
+        }
         
         recuperar.setDataUtilizacao(Calendar.getInstance());
         recuperar.salvar();

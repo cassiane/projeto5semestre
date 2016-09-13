@@ -30,7 +30,7 @@
                             </p:commandLink> -->
                             <!--<i class="fa fa-bars" aria-hidden="true" onclick="" style="font-size:30px" id="dynaButton"></i>-->
                             <p:growl id="messages" showDetail="true" />
-                            <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
+                                <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
                             <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
                                 <p:menuitem value="Editar minha conta" url="http://www.prime.com.tr" />
                                 <p:menuitem value="Logoff" action="#{autenticarBean.efetuarLogoff()}" />
@@ -40,16 +40,16 @@
                 </f:facet>                
             </p:layoutUnit>
             <p:layoutUnit position="east" resizable="true" size="300">
-                <p:stack icon="/resources/imagens/chat.png" expanded="true">
-                    <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
-                    <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
-                </p:stack>
+                <h:form>
+                    <p:stack icon="/resources/imagens/chat.png" expanded="true">
+                        <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
+                        <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
+                    </p:stack>
+                </h:form>
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="300">
                 <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
-                <br/>
-                <p:link outcome="#{cadastrarBean.editarLivro()}" value="Editar Livro" />
-                <br/>
+                <br/>                               
                 <p:link outcome="mensagem.xhtml" value="Teste Mensagem" />
             </p:layoutUnit>    
             <p:layoutUnit position="center">

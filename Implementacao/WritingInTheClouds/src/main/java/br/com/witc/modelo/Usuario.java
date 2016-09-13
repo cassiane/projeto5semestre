@@ -7,6 +7,7 @@ package br.com.witc.modelo;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LoginInvalidoException;
+import br.com.witc.excessao.UsuarioInvalidoException;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Entity;
@@ -38,11 +39,6 @@ public class Usuario implements Serializable {
     private String genero;
     private byte[] foto;
     private String senha;
-
-    //@OneToOne
-    //@JoinColumn(name = "")
-    //private Perfil perfil;
-
 
     /**
      * @return the id
@@ -196,28 +192,19 @@ public class Usuario implements Serializable {
     }
     
     /**
-     * Persiste usuario no banco
-     * @param usuario O usuário a ser persistido
+     * Persiste usuario no banco     
      * @throws DadosUsuarioInvalidoException Caso o usuário já esteja cadastrado no sistema
      * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
      * @throws UnsupportedEncodingException Caso haja erro de codificação
+     * @throws br.com.witc.excessao.UsuarioInvalidoException Caso usuário já exista no BD
      */
-    public void cadastrarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{
+    public void cadastrarUsuario() throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
        UsuarioDAO dao = new UsuarioDAO();
-       usuario.setSenha(criarHashSenha(this.senha));
-       dao.salvarUsuario(usuario);
+       setSenha(criarHashSenha(this.senha));
+       dao.salvarUsuario(this);
     }
     
-    /**
-     * Salva ou atualiza um usuário no sistema
-     * @throws DadosUsuarioInvalidoException Caso o usuário já esteja cadastrado no sistema
-     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
-     * @throws UnsupportedEncodingException Caso haja erro de codificação
-     */
-    public void cadastrarUsuario() throws DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{
-        cadastrarUsuario(this);
-    }    
-
     public List<Usuario> listarAmigos() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarAmigos(this.getId());
@@ -262,5 +249,25 @@ public class Usuario implements Serializable {
     public static Usuario verificarExistenciaUsuario(String Email) throws DadosUsuarioInvalidoException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         return usuarioDAO.verificarExistenciaUsuario(Email);
-    }        
+    }       
+    
+    /**
+     * Consiste os dados informados     
+     * @throws DadosUsuarioInvalidoException Quando um ou mais dados estiverem incorretos
+     */
+    public void consistirDados() throws DadosUsuarioInvalidoException {        
+        String regexNome = "^[a-zA-Zà-úÀ-Ú ]*$";
+        if (!this.nome.trim().matches(regexNome)) {
+            throw new DadosUsuarioInvalidoException("O nome informado é inválido!");
+        }
+        
+        if (!this.sobrenome.trim().matches(regexNome)) {
+            throw new DadosUsuarioInvalidoException("O sobrenome informado é inválido!");
+        }
+                
+        String regexEmail = "^\\w+([-\\.]\\w+)*@\\w+([-.]\\w+)+$";
+        if (!this.email.matches(regexEmail)) {
+            throw new DadosUsuarioInvalidoException("O e-mail informado é inválido!");
+        }
+    }
 }

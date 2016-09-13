@@ -18,6 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -206,7 +209,7 @@ public class CadastrarBean {
     public List<Usuario> completeEmail(String email) {
         //List<Theme> allThemes = service.getThemes();
         //List<Theme> filteredThemes = new ArrayList<Theme>();
-        List<Usuario> filteredUsuario = new ArrayList<Usuario>();
+        List<Usuario> filteredUsuario = new ArrayList<>();
          
         for (int i = 0; i < this.sugestao.size(); i++) {
                 //Theme skin = allThemes.get(i);
@@ -237,9 +240,7 @@ public class CadastrarBean {
         int anoAtual = Integer.parseInt(this.getAnoAtual());
         return String.valueOf(anoAtual - 80);
 
-    }   
-
-    
+    }       
     
     public void setDataNascimento() throws ParseException {         
         SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");            
@@ -263,15 +264,26 @@ public class CadastrarBean {
             }
             setDataNascimento();                
             this.controlador.cadastrarUsuario(usuario);
+            //return "timeline";
+            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+            AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "autenticarBean");
+            autenticarBean.setUsuario(this.usuario);            
             return "timeline";
         }catch(ParseException ex){
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento inválida.");          
-        } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
+        } catch(NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash da senha!");            
-        } catch(DadosUsuarioInvalidoException e) {
+        } catch(DadosUsuarioInvalidoException ex) {            
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());            
+        } catch (UsuarioInvalidoException ex) {
             // Apaga os dados do formulario
             this.usuario = new Usuario();
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, e.getMessage());            
+            this.diaNascimento = null;
+            this.mesNascimento = null;
+            this.anoNascimento = null;
+            this.emailVerificado = null;
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());  
         }
         return null;
     }
