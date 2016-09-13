@@ -18,8 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -260,7 +258,7 @@ public class CadastrarBean {
         // Setar a data de nascimento no usuario
         try {
             if (!this.usuario.getEmail().equals(this.emailVerificado)) {
-                throw new DadosUsuarioInvalidoException("Os emails informados não coicidem!");
+                throw new DadosUsuarioInvalidoException("Os emails informados não coincidem!");
             }
             setDataNascimento();                
             this.controlador.cadastrarUsuario(usuario);            
