@@ -9,22 +9,21 @@
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">   
             <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>
+            <f:event listener="#{cadastrarBean.retornarDataNasc()}" type="preRenderView"/>
             <h:form id="EditarUsuario" style="position: absolute; padding: 10px; left: 10%">
                 <h:panelGrid columns="1" columnClasses="column1,column2" >                                      
                     <h:column>                                                
                         <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">
                             <p:inputText class="inputtext2c" placeholder="Nome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.nome}"/>
                             <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.sobrenome}"/>
-                            <p:inputText class="inputtext" maxlength="150" placeholder="Email" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.email}"/>
-                            <p:inputText class="inputtext" maxlength="150" placeholder="Digite novamente o email" required="true" style="width: 500px;" value="#{cadastrarBean.emailVerificado}"/>
-                            <p:password class="inputtext" maxlength="120" placeholder="Senha" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.senha}"/>
+                            <p:inputText class="inputtext" maxlength="150" placeholder="Email" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.email}"/>                            
                             <h:outputText value="Aniversário" style="font-size: 20px;"/>
                         </h:panelGrid>
                         <h:panelGrid columns="3">
-                            <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 50px" required="true">
-                                <f:selectItem itemLabel="Dia" itemValue="" />
-                                <c:forEach var="dia" begin="1" end="31">
-                                    <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" />
+                            <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 50px" required="true" >
+                                <f:selectItem itemLabel="#{cadastrarBean.diaNascimento}" itemValue="#{cadastrarBean.diaNascimento}" />                                
+                                <c:forEach var="dia" begin="1" end="31">                                    
+                                    <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" noSelectionOption="#{cadastrarBean.diaNascimento.equals(dia)}" />
                                 </c:forEach>
                             </p:selectOneMenu>
                             <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 

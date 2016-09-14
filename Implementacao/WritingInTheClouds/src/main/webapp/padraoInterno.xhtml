@@ -25,7 +25,7 @@
                             <p:growl id="messages" showDetail="true" />
                                 <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
                             <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
-                                <p:menuitem value="Editar minha conta" outcome="/editarConta" />
+                                <p:menuitem value="Editar minha conta" outcome="editarConta"/>
                                 <p:menuitem value="Logoff" actionListener="#{autenticarBean.efetuarLogoff()}" update="messages" ajax="false" />
                             </p:tieredMenu>
                         </h:form>                        

@@ -250,7 +250,10 @@ public class CadastrarBean {
         return String.valueOf(anoAtual - 80);
 
     }       
-    
+    /**.
+     * Seta a data de nascimento
+     * @throws ParseException 
+     */
     public void setDataNascimento() throws ParseException {         
         SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");            
         String data = getDiaNascimento()+"/"+getMesNascimento()+"/"+getAnoNascimento();
@@ -259,6 +262,26 @@ public class CadastrarBean {
 
         this.usuario.setDataAniversario(c);            
 
+    }
+    
+    /**
+     * Seta a data de nascimento nas variaveis locais 
+     */
+    public void preencherDataNasc() {         
+        try {
+            this.diaNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getDay());
+            this.mesNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getMonth());
+            this.anoNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getYear());
+        } catch (Exception e) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, e.getMessage());
+        }
+    }
+        
+    /**
+     * Retorna a data de nascimento
+     */    
+    public void retornarDataNasc() {
+        this.preencherDataNasc();        
     }
     
     /**
