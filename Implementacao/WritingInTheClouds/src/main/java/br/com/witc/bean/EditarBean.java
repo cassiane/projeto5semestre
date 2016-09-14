@@ -10,7 +10,11 @@ import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.Usuario;
 import br.com.witc.persistencia.LivroDAO;
+import br.com.witc.persistencia.PerfilDAO;
+import br.com.witc.persistencia.PerfilTemLivroDAO;
+import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -22,6 +26,7 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class EditarBean {
     private ControladorAutenticacao controlador;
+    private AutenticarBean autenticar=null;
     private Livro livro;
     private Usuario usuario;
     private Perfil perfilUsuario;
@@ -29,12 +34,16 @@ public class EditarBean {
     private String textoLivro="";
     private List<Livro> livros;
     LivroDAO dao;
+    PerfilDAO daoPerfil;
+    PerfilTemLivroDAO daoPerfilTemLivro;
     
-    public EditarBean() {
-       
-      this.livro=new Livro();
+  // carrega o perfil padrao e a lista de livros logo após instanciar a classe
+  
+    public EditarBean(){     
+       this.livro=new Livro();
+      daoPerfil = new PerfilDAO();
        dao = new LivroDAO();
-     //  this.livros = dao.carregarTodosLivrosUsuario(controlador.getUsuario());
+       
     }
 
     public Livro getLivro() {
@@ -48,17 +57,19 @@ public class EditarBean {
     public Usuario getUsuario() {
         return usuario;
     }
-
+    public Usuario usuarioLogado(){
+        return autenticar.usuarioLogado();
+    }
     public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+        this.usuario = controlador.getUsuario();
     }
 
     public Perfil getPerfilUsuario() {
-        return perfilUsuario;
+        return daoPerfil.buscaPerfilPadrao(usuario.getId());
     }
 
     public void setPerfilUsuario(Perfil perfilUsuario) {
-        this.perfilUsuario = perfilUsuario;
+        this.perfilUsuario = daoPerfil.buscaPerfilPadrao(usuario.getId());
     }
     
     
@@ -84,22 +95,21 @@ public class EditarBean {
         this.livro.setTitulo(this.tituloLivro);
        
         dao.criarLivro(livro);
+        daoPerfilTemLivro.salvarPerfilLivro(perfilUsuario, livro);
         this.textoLivro="";
         return "biblioteca";
     }
      public String biblioteca(){
          return "biblioteca";
      }
-    public void listarLivrosUsuario(){
-       
-       this.livros = dao.carregarTodosLivrosUsuario(this.usuario);
-    }
-
+  
     public List<Livro> getLivros() {
-        return livros;
+       return this.livros;
     }
 
     public void setLivros(List<Livro> livros) {
-        this.livros = livros;
+        this.livros = dao.carregarTodosLivrosUsuario(perfilUsuario);
     }
+    
+    
 }

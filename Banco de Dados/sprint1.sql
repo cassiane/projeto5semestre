@@ -210,3 +210,33 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Table `witc`.`Perfil_tem_Livro`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `witc`.`Perfil_tem_Livro` (
+`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idPErfil` INT UNSIGNED NOT NULL,
+  `idLivro` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Perfil_has_Livro_Perfil_idx` (`idPerfil` ASC),
+  INDEX `fk_Perfil_has_Livro_Perfil1_idx` (`idLivro` ASC),
+
+  CONSTRAINT `fk_Perfil_has_Livro1`
+    FOREIGN KEY (`idPerfil`)
+    REFERENCES `witc`.`Perfil` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Perfil_has_Livro2`
+    FOREIGN KEY (`idLivro`)
+    REFERENCES `witc`.`Livro` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

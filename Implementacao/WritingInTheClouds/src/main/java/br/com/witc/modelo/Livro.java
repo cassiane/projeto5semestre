@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -31,6 +32,8 @@ public class Livro implements Serializable {
     private boolean reportadoConteudoImproprio;
     private int qualificacao;
     private String texto;
+    @OneToOne
+    private Perfil perfil;
     /*
     @ManyToOne
     @Column(name="idTipoGenero")
@@ -132,27 +135,4 @@ public class Livro implements Serializable {
     public void carregarLivro(int id){
         
     }
-/*
-    public TipoGenero getTipoGenero() {
-        return tipoGenero;
-    }
-
-    public void setTipoGenero(TipoGenero tipoGenero) {
-        this.tipoGenero = tipoGenero;
-    }
-
-    public TipoTexto getTipoTexto() {
-        return tipoTexto;
-    }
-
-    public void setTipoTexto(TipoTexto tipoTexto) {
-        this.tipoTexto = tipoTexto;
-    }
-    
-    */
-
-  
-
-
-    
 }

@@ -5,14 +5,15 @@
  */
 package br.com.witc.persistencia;
 
-import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.Livro;
+import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.PerfilTemLivro;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
-import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -21,6 +22,7 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class LivroDAO {
     Session sessao;
+    PerfilTemLivro perfilTemLivro;
    
    
 
@@ -38,9 +40,10 @@ public class LivroDAO {
     public void criarLivro(Livro livro){
        
         //salva livro no banco
-        
+        perfilTemLivro = new PerfilTemLivro();
         try {
            sessao.saveOrUpdate(livro);
+           
         } catch (ConstraintViolationException e) {
           
                 sessao.clear();
@@ -65,15 +68,15 @@ public class LivroDAO {
         //carrega livro no banco
         
     }
-    
-    public List <Livro> carregarTodosLivrosUsuario(Usuario usuario){
-         
-  List<Livro> livrosUsuario = sessao.createSQLQuery("SELECT idLivro FROM perfil_tem_livro "
-                + "WHERE idUsuario = :usuario ")
-                .setParameter("usuario", usuario.getId()).list();
-               
-        return livrosUsuario;
-        
+    //busca todos os livros do usuario passando o seu perfuil padrao
+    public List <Livro> carregarTodosLivrosUsuario(Perfil perfilPadrao){
+         Criteria crit = sessao.createCriteria(Livro.class);
+         crit.add(Restrictions.eq("idPerfil",perfilPadrao));
+           List<Livro> list = (List<Livro>) crit.list();
+           if(!list.isEmpty()){
+               return list;
+           }
+           return null;
     }
     
     

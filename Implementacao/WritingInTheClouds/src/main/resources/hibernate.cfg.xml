@@ -12,5 +12,7 @@
     <mapping class="br.com.witc.modelo.Perfil"/>
     <mapping class="br.com.witc.modelo.TipoTexto"/>
     <mapping class="br.com.witc.modelo.TipoGenero"/>
+    <mapping class="br.com.witc.modelo.TipoPerfil"/>
+    <mapping class="br.com.witc.modelo.PerfilTemLivro" file="" jar="" package="" resource=""/>
   </session-factory>
 </hibernate-configuration>

@@ -5,37 +5,44 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.PerfilTemLivro;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
  * @author 00026108
  */
-public class PerfilDAO {
+public class PerfilTemLivroDAO {
     Session sessao;
 
-    public PerfilDAO() {
+    public PerfilTemLivroDAO() {
         this.sessao = getSessionFactory().getCurrentSession();
     }
     
-    public void criarPerfil(Perfil perfil){
-        
-           try {
-           sessao.saveOrUpdate(perfil);
+    public void salvar(PerfilTemLivro perfilTemLivro){
+            try {
+           sessao.saveOrUpdate( perfilTemLivro);
         } catch (ConstraintViolationException e) {
           
                 sessao.clear();    
             } 
-    }
-    // busca Perfil padrao do usuario
-    public Perfil buscaPerfilPadrao(int idUsuario){
-         Criteria crit = sessao.createCriteria(Perfil.class);
-         crit.add(Restrictions.eq("idUsuario",idUsuario));
-        return (Perfil)crit.uniqueResult(); 
+        
+    }   
+    public void salvarPerfilLivro (Perfil perfil, Livro livro){
+        PerfilTemLivro temp = new PerfilTemLivro();
+        temp.setLivro(livro);
+        temp.setPerfil(perfil);
+        try{
+        sessao.saveOrUpdate(temp);
+        }catch(ConstraintViolationException e) {
+          
+                sessao.clear();    
+            } 
+            
+        
     }
 }

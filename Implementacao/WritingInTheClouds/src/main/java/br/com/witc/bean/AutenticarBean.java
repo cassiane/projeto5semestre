@@ -27,6 +27,7 @@ public class AutenticarBean {
     private final ControladorAutenticacao controlador;
     private String email;
     private String senha;
+   
 
     /**
      * @return the email
