@@ -27,9 +27,11 @@ public class ControladorCadastro {
 
 
     private Usuario usuario;
+    private Perfil perfil;
 
     public ControladorCadastro(Usuario usuario) {
         this.usuario = usuario;
+        this.perfil = new Perfil();
     }
 
     /**
@@ -91,6 +93,10 @@ public class ControladorCadastro {
 
     public void removerAmizade(int idAmizade) {
         this.usuario.removerAmizade(idAmizade);
+    }
+    
+    public void criarPerfilPadrao(Usuario usuario){
+        this.perfil.criarPerfilPadrao(usuario);
     }
 
 }

@@ -7,61 +7,39 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">     
-            <div align="center"> 
+           
               
                    <f:view>
 
+<center>
+                <h:form>
+                  <p:growl id="msgs" showDetail="true" />
+                    <p:panel id="basic" header="Biblioteca"  style="margin-bottom:20px">
+                        
+                        <p:dataTable value="#{editarBean.livros}"  var="lis" rows="10" paginator="true">
+                            <p:column headerText="ID" sortBy="#{lis.id}">
+                            #{lis.id}
+                         </p:column>
+                            <p:column headerText="Capa"   width="141">
+                        #{lis.capa}
+                         </p:column>
+                            <p:column headerText="Título" sortBy="#{lis.titulo}">
+                        #{lis.titulo}
+                         </p:column>
+                            <p:column headerText="Editar">
+                            <p:commandButton ajax="false" title="Editar" value="Editar Livro" actionListener="#{editarBean.salvarLivro()}" />
+                            
+                        </p:column>
+                     </p:dataTable>
+                        <p:commandButton ajax="false" title="Novo" value="Novo Livro" actionListener="#{editarBean.salvarLivro()}" />
+    
+                   </p:panel>
+                     
+                </h:form>
 
-                       <h:form id="form">
-                           <h1><h:outputText value="Minha Biblioteca"/></h1>
-                           <p:dataTable value="#{editarBean.livros}" var="item">
-                               <p:column>
-                                   <f:facet name="header">
-                                       <h:outputText value="Id"/>
-                                   </f:facet>
-                                   <h:outputText value="#{item.id}"/>
-                               </p:column>
-                               <p:column>
-                                   <f:facet name="header">
-                                       <h:outputText value="Titulo"/>
-                                   </f:facet>
-                                   <h:outputText value="#{item.titulo}"/>
-                               </p:column>
-                               
-                               <p:column>
-                                   <f:facet name="header">
-                                       <h:outputText value="Capa"/>
-                                   </f:facet>
-                                   <h:outputText value="#{item.capa}"/>
-                               </p:column>
-                               <p:column>
-                                   <f:facet name="header">
-                                       <h:outputText value="Classificacao"/>
-                                   </f:facet>
-                                   <h:outputText value="#{item.classificacao}"/>
-                               </p:column>
-                               <p:column>
-                                   <f:facet name="header">
-                                       <h:outputText value="Qualificacao"/>
-                                   </f:facet>
-                                   <h:outputText value="#{item.qualificacao}"/>
-                               </p:column>
-                               
-                               <p:column>
-                                   <p:commandButton value="Salvar"  action="editarLivro" icon="ui-icon-disk" />
-                               </p:column>
-                             
-                           </p:dataTable>
-                       </h:form>
-                       <h:form>
-                           <p:column>
-                                   <p:commandButton value="Novo Livro"  action="editarLivro" icon="ui-icon-disk" />
-                               </p:column>
-                             
-                       </h:form>
+            </center>
                    </f:view>
-                  
-            </div>
+          
         </ui:define>
     </ui:composition>
 </html>

@@ -5,7 +5,9 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.persistencia.PerfilDAO;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,15 +23,13 @@ public class Perfil implements Serializable {
     @GeneratedValue
     private int id;
     private int qualificacao;
+    private int idTipoPerfil;
     private String pseudonimo;
     @ManyToOne
+    @Column(name="idUsuario")
     private Usuario usuario;
 
-    public Perfil(int id, Usuario usuario) {
-        this.id = id;
-        this.usuario = usuario;
-    }
-    public Perfil(){}
+    
     
     public int getId() {
         return id;
@@ -61,5 +61,30 @@ public class Perfil implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }   
+    } 
+    
+    
+    public int getIdTipoPerfil() {
+        return idTipoPerfil;
+    }
+
+    public void setIdTipoPerfil(int tipoPerfil) {
+        this.idTipoPerfil= tipoPerfil;
+    }
+    
+    // cria perfil padrao para um determinado usuario;
+    public void criarPerfilPadrao(Usuario usuario){
+        Perfil p = new Perfil();
+       
+        p.setUsuario(usuario);
+        p.setPseudonimo(usuario.getNome());
+        p.setQualificacao(0);
+        p.setIdTipoPerfil(1);
+        
+        PerfilDAO dao = new PerfilDAO();
+        dao.criarPerfil(p);
+        
+        
+    }
+
 }

@@ -222,6 +222,8 @@ public class CadastrarBean {
             }
             setDataNascimento();                
             this.controlador.cadastrarUsuario(usuario);
+            //criar o perfil padrao do usuario
+            this.controlador.criarPerfilPadrao(usuario);
             return "timeline";
         }catch(ParseException ex){
             enviarMensagem(SEVERITY_ERROR, "Data de Nascimento inválida.");          
