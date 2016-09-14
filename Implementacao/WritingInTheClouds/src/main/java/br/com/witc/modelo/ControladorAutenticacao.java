@@ -39,7 +39,7 @@ public class ControladorAutenticacao {
      * @return O nome do usuário logado no sistema
      */
     public String getNomeUsuario() {
-        return this.usuario.getNome();
+        return this.usuario.getNome().split(" ")[0];
     }
     
     /**

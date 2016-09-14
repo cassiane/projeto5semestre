@@ -8,15 +8,19 @@
         <ui:define name="header">                
             <p:growl id="growl" severity="error" globalOnly="true" />             
         </ui:define>
-        <ui:define name="conteudo">            
-            <h:form>
+        <ui:define name="conteudo">                        
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />            
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage name="imagens/ajaxloadingbar.gif" />
+            </p:dialog>
+            <h:form>                
                 <h:outputText value="Recupere sua conta" style="" />                
                 <h:panelGrid columns="2">
                     <h:outputLabel for="iptEmail" value="Email" /> 
                     <p:inputText id="iptEmail" required="true" size="40" value="#{cadastrarBean.emailRecuperacaoSenha}"/>                                        
                 </h:panelGrid>                            
                 <h:panelGrid columns="2">
-                    <p:commandButton ajax="false" value="Enviar" style="width: 130px;" 
+                    <p:commandButton value="Enviar" style="width: 130px;" update="growl"
                                              action="#{cadastrarBean.recuperarConta()}" />
                     <p:button value="Cancelar" style="width: 130px;" href="index.xhtml" />
                 </h:panelGrid>
