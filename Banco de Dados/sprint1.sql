@@ -11,7 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema witc
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `witc` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `witc` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 USE `witc` ;
 
 -- -----------------------------------------------------
@@ -213,8 +213,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `witc`.`RecuperarConta` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idUsuario` INT UNSIGNED NOT NULL,
-  `dataSolicitacao` DATE NOT NULL,
-  `dataUtilizacao` DATE NULL,
+  `dataSolicitacao` DATETIME NOT NULL,
+  `dataUtilizacao` DATETIME NULL,
   `hashRecuperacaoSenha` VARCHAR(64) NOT NULL,
   `inutilizado` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),

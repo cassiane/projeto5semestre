@@ -27,6 +27,8 @@ public class RecuperarContaDAO {
      * @param recuperar O objeto RecuperarConta a ser persistido
      */
     public void salvar(RecuperarConta recuperar) {
+        inutilizaLink(recuperar);
+        
         sessao.saveOrUpdate(recuperar);
     }
     
@@ -49,9 +51,7 @@ public class RecuperarContaDAO {
         
         if (tmpRecuperar == null) {
             throw new LinkRecuperacaoInvalidoException("Link de recuperação inválido!");
-        }        
-        
-        inutilizaLink(recuperar);
+        }                        
         
         return tmpRecuperar;
     }
@@ -74,7 +74,7 @@ public class RecuperarContaDAO {
         // Inutiliza links nao utilizados
         for (RecuperarConta rec : lstRecuperar) {
             rec.setInutilizado(true);
-            salvar(rec);
+            sessao.saveOrUpdate(rec);
         }
     }
 }

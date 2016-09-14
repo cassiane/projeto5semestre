@@ -145,7 +145,7 @@ public class RecuperarConta implements Serializable {
                 + "\n\nAtenciosamente,"
                 + "\n\nEquipe WitC");
         
-        EmailUtils.enviaEmail(mensagem);
+        //EmailUtils.enviaEmail(mensagem);
         
         this.dataSolicitacao = Calendar.getInstance();
         
