@@ -5,11 +5,19 @@
  */
 package br.com.witc.bean;
 
+import br.com.witc.modelo.HistoricoLivro;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.TipoStatus;
 import br.com.witc.modelo.Usuario;
+import br.com.witc.persistencia.HistoricoLivroDAO;
 import br.com.witc.persistencia.LivroDAO;
 import br.com.witc.persistencia.PerfilDAO;
+import br.com.witc.persistencia.TipoStatusDAO;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
@@ -28,9 +36,11 @@ public class EditarBean {
     private Usuario usuario;
     private Perfil perfilUsuario;
     private String textoLivro;
+    private HistoricoLivro historico;
     private List<Livro> livros;
     private PerfilDAO daoPerfil;
     private LivroDAO daoLivro;
+    private HistoricoLivroDAO daoHistorico;
     
     
     public EditarBean() {
@@ -42,6 +52,7 @@ public class EditarBean {
         this.usuario = autenticarBean.usuarioLogado();
         daoPerfil = new PerfilDAO();
         daoLivro = new LivroDAO();
+        daoHistorico = new HistoricoLivroDAO();
     }
 
     public Livro getLivro() {
@@ -76,9 +87,27 @@ public class EditarBean {
         this.livros = livros;
     }
     
+      public String getTextoLivro() {
+        return textoLivro;
+    }
+
+    public void setTextoLivro(String textoLivro) {
+        this.textoLivro = textoLivro;
+    }
+
+    public HistoricoLivro getHistorico() {
+        return historico;
+    }
+
+    public void setHistorico(HistoricoLivro historico) {
+        this.historico = historico;
+    }    
   
     public void salvarLivro(){
-       // this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);
+        this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);
+        TipoStatus st = new TipoStatus();
+        TipoStatusDAO daoStatus = new TipoStatusDAO();
+        st=daoStatus.carregarPerfil(1);
         this.livro = new Livro();
         this.livro.setTexto(textoLivro);
         this.livro.setTitulo("titulo do livro");
@@ -88,30 +117,33 @@ public class EditarBean {
         this.livro.setQualificacao(0);
         daoLivro.criarLivro(livro);
         
-        
-       
-        //perfil usuario
-        //livro
-        //salva livro
-        //historico
-        //salvahistorico
+        this.historico=new HistoricoLivro(); 
+        this.historico.setPerfil(this.perfilUsuario);
+        this.historico.setLivro(this.livro);
+        this.historico.setStatus(st);
+        this.historico.setDataInicio(this.getPegaDataAtual());
+        daoHistorico.salvarHistorico(this.historico);
+ 
     }
     
+    public  Calendar getPegaDataAtual(){
+		Calendar calendar = new GregorianCalendar();
+		Date trialTime = new Date();
+		calendar.setTime(trialTime);
+                return  calendar;
+	
+    }
     public String biblioteca(){
         return "biblioteca";
     }  
     
     public String editor(){
+        this.livro=new Livro();
+        this.textoLivro="";
         return "editarLivro";
     }
 
-    public String getTextoLivro() {
-        return textoLivro;
-    }
-
-    public void setTextoLivro(String textoLivro) {
-        this.textoLivro = textoLivro;
-    }
+  
 
    
 }

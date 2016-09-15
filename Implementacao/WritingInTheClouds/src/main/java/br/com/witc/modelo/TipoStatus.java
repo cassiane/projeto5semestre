@@ -9,17 +9,31 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 
 /**
  *
  * @author 00026108
  */
 @Entity
+@Table(name="tipostatus")
 public class TipoStatus implements Serializable {
     @Id
     @GeneratedValue
     private int id;
-    private String status;
+    
+   
+    private String tipoStatus;
+
+    public TipoStatus(String status) {
+        this.tipoStatus = status;
+    }
+
+    public TipoStatus() {
+    }
+    
+    
 
     public int getId() {
         return id;
@@ -29,13 +43,15 @@ public class TipoStatus implements Serializable {
         this.id = id;
     }
 
-    public String getStatus() {
-        return status;
+    public String getTipoStatus() {
+        return tipoStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTipoStatus(String tipoStatus) {
+        this.tipoStatus = tipoStatus;
     }
+
+ 
     
     
 }

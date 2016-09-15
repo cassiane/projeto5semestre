@@ -27,10 +27,13 @@
                         #{lis.titulo}
                          </p:column>
                             <p:column headerText="Editar">
+                                
                             <p:link outcome="editarLivro" value="Editar Livro" />
                             
                         </p:column>
                      </p:dataTable>
+                        <p:commandButton value="Novo Livro"  action="#{editarBean.editor()}" icon="ui-icon-disk" ajax="false" />
+                                         <br/>
                         <p:link outcome="editarLivro" value="Novo Livro" />
     
                    </p:panel>
