@@ -5,8 +5,10 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.modelo.Livro;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -24,11 +26,20 @@ public class LivroDAO {
     
     /**
      *
+     * @param livro
      */
-    public void criarLivro(){
-        //salva livro no banco
+    public void criarLivro(Livro livro){
         
-    }
+        try {
+           sessao.saveOrUpdate(livro);
+           
+            } catch (ConstraintViolationException e) {
+          
+                sessao.clear();
+             
+            } 
+        }
+    
     
     /**
      *

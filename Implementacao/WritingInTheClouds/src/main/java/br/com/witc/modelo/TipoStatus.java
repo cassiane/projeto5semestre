@@ -12,14 +12,14 @@ import javax.persistence.Id;
 
 /**
  *
- * @author root
+ * @author 00026108
  */
 @Entity
-public class TipoGenero implements Serializable {
+public class TipoStatus implements Serializable {
     @Id
     @GeneratedValue
     private int id;
-    private String tipoGenero;
+    private String status;
 
     public int getId() {
         return id;
@@ -29,12 +29,13 @@ public class TipoGenero implements Serializable {
         this.id = id;
     }
 
-    public String getTipoGenero() {
-        return tipoGenero;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTipoGenero(String tipoGenero) {
-        this.tipoGenero = tipoGenero;
+    public void setStatus(String status) {
+        this.status = status;
     }
+    
     
 }

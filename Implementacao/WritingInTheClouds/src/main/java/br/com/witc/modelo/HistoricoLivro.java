@@ -10,6 +10,10 @@ import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -20,10 +24,19 @@ class HistoricoLivro implements Serializable {
     @Id
     @GeneratedValue
     private int id;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataInicio;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar  dataConclusao;
+    @ManyToOne
+    @JoinColumn(name="idLivro")
     private Livro livro;
+    @ManyToOne
+    @JoinColumn(name="idPerfil")
     private Perfil perfil;
+    @OneToOne
+    @JoinColumn(name="isStatus")
+    private TipoStatus status;
 
     public int getId() {
         return id;
@@ -63,6 +76,14 @@ class HistoricoLivro implements Serializable {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    }
+
+    public TipoStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TipoStatus status) {
+        this.status = status;
     }
     
 }

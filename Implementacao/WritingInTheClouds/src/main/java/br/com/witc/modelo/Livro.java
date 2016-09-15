@@ -9,6 +9,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -16,6 +18,8 @@ import javax.persistence.Id;
  */
 @Entity
 public class Livro implements Serializable {
+
+    
     @Id
     @GeneratedValue
     private int id;
@@ -27,8 +31,13 @@ public class Livro implements Serializable {
     private boolean reportadoConteudoImproprio;
     private int qualificacao;
     private String texto;
+    @OneToOne
+    @JoinColumn(name="idTipoTexto")
     private TipoTexto tipoTexto;
+    @OneToOne
+    @JoinColumn(name="idTipoGenero")
     private TipoGenero tipoGenero;
+   
 
     public int getId() {
         return id;
@@ -127,5 +136,7 @@ public class Livro implements Serializable {
     public void setTipoGenero(TipoGenero tipoGenero) {
         this.tipoGenero = tipoGenero;
     }
+
+    
     
 }
