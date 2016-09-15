@@ -10,28 +10,31 @@
             <!-- Seta o usuario logado -->
             <f:event listener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" type="preRenderView" />
             <p:growl id="growl" severity="error" globalOnly="true" />             
-            <h:form id="frmEma">
+            <h:form>
                 <p:panelGrid columns="2" style="width: 100%;margin: 10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
                     <f:facet name="header">
                         <h:outputText value="Encontrar amigos" style="font-size: small" />
                     </f:facet>
                     <p:outputPanel>
                         <h:outputText value="Digite o email:"/>
-                        <p:autoComplete id="autoEmail" value="#{cadastrarBean.convidarEmail}" completeMethod="#{cadastrarBean.completeEmail}"
-                                        var="convidado" itemLabel="#{convidado.nome}" itemValue="#{convidado}" converter="convidarConverter"
-                                        maxResults="6" minQueryLength="3" forceSelection="true">
+                        <p:autoComplete id="autoEmail" minQueryLength="3" value="#{cadastrarBean.convidarEmail}"
+                                        completeMethod="#{cadastrarBean.completeEmail}" effect="fade"
+                                        var="convidado" itemLabel="#{convidado.email}"
+                                        itemValue="#{convidado}" converter="convidarConverter"
+                                        maxResults="6" forceSelection="true">
                             <p:column>
                                 <p:graphicImage name="imagens/chat-green.png" width="40" height="50" />
                             </p:column>
 
                             <p:column>
-                                <h:outputText value="#{convidado.nome}" styleClass="ui-theme ui-theme-#{theme.name}" />
+                                <h:outputText value="#{convidado.nome}" />
                                 <br/>
                                 <h:outputText value="#{convidado.email}" />
                             </p:column>
                         </p:autoComplete>
                     </p:outputPanel>
-                    <p:commandButton value="Convidar" id="btnComEmail" actionListener="#{cadastrarBean.listarAmigos()}" update="frmEma" style="width:90px; margin-left: 3px; font-size: small" />
+                    <p:commandButton value="Convidar" id="btnComEmail" actionListener="#{cadastrarBean.enviarConvite()}"
+                                     style="width:90px; margin-left: 3px; font-size: small" />
                 </p:panelGrid>
             </h:form>
             <h:form id="frmSol"> 

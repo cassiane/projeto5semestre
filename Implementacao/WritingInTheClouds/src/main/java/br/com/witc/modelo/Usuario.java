@@ -208,31 +208,64 @@ public class Usuario implements Serializable {
        dao.salvarUsuario(usuario);
     }
 
+    /**
+     * Acessar o dao para buscar os amigos
+     * @return Lista de amigos
+     */
     public List<Usuario> listarAmigos() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarAmigos(this.getId());
     }
 
+    /**
+     * Acessa o dao para buscar as sugestões
+     * @return Lista de sugestão de amigos
+     */
     public List<Usuario> listarSugestao() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarSugestao(this.getId());
     }
+    
+    /**
+     * Acessar o dao para buscar os usuarios
+     * @return Lista de usuarios do sistema
+     */
+    public List<Usuario> listarUsuarios() {
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.listarUsuarios();
+    }
 
+    /**
+     * Acessar o dao para registrar uma solicitação de amizade
+     * @param idSugestao Identificador do amigo a ser solicitado
+     */
     public void solicitarAmizade(int idSugestao) {
         UsuarioDAO dao = new UsuarioDAO();
         dao.solicitarAmizade(this.getId(), idSugestao);
     }
 
+    /**
+     * Acessar o dao para buscar a lista de solicitações de amizade do usuario
+     * @return Lista de solicitação de amizade
+     */
     public List<Usuario> listarSolicitacao() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarSolicitacao(this.getId());
     }
 
+    /**
+     * Acessar o dao para registrar o aceite de amizade
+     * @param idAceitar Identificador do solicitante da amizade
+     */
     void aceitarAmizade(int idAceitar) {
         UsuarioDAO dao = new UsuarioDAO();
         dao.aceitarAmizade(this.getId(), idAceitar);
     }
 
+    /**
+     * Acessar o dao para remover a amizade solicitada ou realizada
+     * @param idAmizade Identificador do solicitante ou amigo
+     */
     void removerAmizade(int idAmizade) {
         UsuarioDAO dao = new UsuarioDAO();
         dao.removerAmizade(this.getId(), idAmizade);

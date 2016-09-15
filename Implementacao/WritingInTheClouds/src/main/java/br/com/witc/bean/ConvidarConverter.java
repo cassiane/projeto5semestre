@@ -23,10 +23,7 @@ public class ConvidarConverter implements Converter{
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
             try {
-                //ThemeService service = (ThemeService) fc.getExternalContext().getApplicationMap().get("themeService");
-                CadastrarBean cadastrar = (CadastrarBean) fc.getExternalContext().getApplicationMap().get("cadastrarBean");
-                //return service.getThemes().get(Integer.parseInt(value));
-                return cadastrar.getSolicitacao().get(Integer.parseInt(value));
+                return value;
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
             }
@@ -39,10 +36,12 @@ public class ConvidarConverter implements Converter{
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
         if(object != null) {
-            return String.valueOf(((Usuario) object).getId());
+            return String.valueOf(((Usuario) object).getEmail());
         }
         else {
             return null;
         }
     }
+    
+    
 }
