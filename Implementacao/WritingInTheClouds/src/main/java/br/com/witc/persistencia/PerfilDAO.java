@@ -6,10 +6,9 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -22,7 +21,7 @@ public class PerfilDAO {
     public PerfilDAO() {
         this.sessao = getSessionFactory().getCurrentSession();
     }
-    
+    //cria novo perfil
     public void criarPerfil(Perfil perfil){
         
            try {
@@ -33,9 +32,12 @@ public class PerfilDAO {
             } 
     }
     // busca Perfil padrao do usuario
-    public Perfil buscaPerfilPadrao(int idUsuario){
-         Criteria crit = sessao.createCriteria(Perfil.class);
-         crit.add(Restrictions.eq("idUsuario",idUsuario));
-        return (Perfil)crit.uniqueResult(); 
+    public Perfil buscaPerfil(int id){
+        return (Perfil) sessao.load(Perfil.class, id);
+         
+    }
+    
+    public Perfil burcarPerfilUsuario (Usuario usuario){
+       return (Perfil) sessao.createQuery("FROM Perfil WHERE idUsuario=:idUsuario").setInteger("idUsuario",usuario.getId()).uniqueResult();
     }
 }

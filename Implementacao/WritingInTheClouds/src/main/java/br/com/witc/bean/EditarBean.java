@@ -5,18 +5,24 @@
  */
 package br.com.witc.bean;
 
-import br.com.witc.modelo.ControladorAutenticacao;
+import br.com.witc.modelo.HistoricoLivro;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.TipoStatus;
 import br.com.witc.modelo.Usuario;
+import br.com.witc.persistencia.HistoricoDAO;
 import br.com.witc.persistencia.LivroDAO;
 import br.com.witc.persistencia.PerfilDAO;
-import br.com.witc.persistencia.PerfilTemLivroDAO;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import java.util.List;
-import javax.annotation.PostConstruct;
+import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -25,25 +31,34 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 public class EditarBean {
-    private ControladorAutenticacao controlador;
-    private AutenticarBean autenticar=null;
+   
+  
     private Livro livro;
     private Usuario usuario;
     private Perfil perfilUsuario;
     private String tituloLivro = "";
     private String textoLivro="";
+    private HistoricoLivro historico;
     private List<Livro> livros;
     LivroDAO dao;
     PerfilDAO daoPerfil;
-    PerfilTemLivroDAO daoPerfilTemLivro;
+ 
+    HistoricoDAO historicoDAO;
     
   // carrega o perfil padrao e a lista de livros logo após instanciar a classe
   
-    public EditarBean(){     
-       this.livro=new Livro();
+    public EditarBean(){ 
+       
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "autenticarBean");
+        
+        this.usuario = autenticarBean.usuarioLogado();
+        this.historico = new HistoricoLivro();
+       
       daoPerfil = new PerfilDAO();
        dao = new LivroDAO();
-       
+       historicoDAO = new HistoricoDAO();
     }
 
     public Livro getLivro() {
@@ -57,21 +72,18 @@ public class EditarBean {
     public Usuario getUsuario() {
         return usuario;
     }
-    public Usuario usuarioLogado(){
-        return autenticar.usuarioLogado();
-    }
+    
     public void setUsuario(Usuario usuario) {
-        this.usuario = controlador.getUsuario();
+        this.usuario = usuario;
     }
 
     public Perfil getPerfilUsuario() {
-        return daoPerfil.buscaPerfilPadrao(usuario.getId());
+        return this.perfilUsuario;
     }
 
     public void setPerfilUsuario(Perfil perfilUsuario) {
-        this.perfilUsuario = daoPerfil.buscaPerfilPadrao(usuario.getId());
+        this.perfilUsuario = perfilUsuario;
     }
-    
     
     public String getTituloLivro() {
         return tituloLivro;
@@ -90,15 +102,24 @@ public class EditarBean {
     }
     
     public String salvarLivro(){
-        
+        perfilUsuario = daoPerfil.burcarPerfilUsuario(usuario);
+        this.livro=new Livro();
         this.livro.setTexto(this.textoLivro);
         this.livro.setTitulo(this.tituloLivro);
-       
+        historico.setLivro(livro);
+        historico.setPerfil(perfilUsuario);
+        TipoStatus status = null;
+        historico.setStatus(status);
+        historico.setDataInicio(Calendar.getInstance());
+    //    historico.setDataConclusao(Calendar.getInstance());
         dao.criarLivro(livro);
-        daoPerfilTemLivro.salvarPerfilLivro(perfilUsuario, livro);
+        historicoDAO.criarHistorico(historico);
         this.textoLivro="";
         return "biblioteca";
+        
     }
+    
+   
      public String biblioteca(){
          return "biblioteca";
      }

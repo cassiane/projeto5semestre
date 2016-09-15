@@ -6,13 +6,9 @@
 package br.com.witc.modelo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -33,7 +29,9 @@ public class Livro implements Serializable {
     private int qualificacao;
     private String texto;
     @OneToOne
-    private Perfil perfil;
+    private HistoricoLivro historico;
+    
+    
     /*
     @ManyToOne
     @Column(name="idTipoGenero")
@@ -126,7 +124,7 @@ public class Livro implements Serializable {
         this.texto = texto;
     }
     
-    public void criarLivro(Perfil[]autores){
+    public void criarLivro(Perfil autor){
         
     }
     public void editarLivro(){
@@ -134,5 +132,13 @@ public class Livro implements Serializable {
     }
     public void carregarLivro(int id){
         
+    }
+
+    public HistoricoLivro getHistorico() {
+        return historico;
+    }
+
+    public void setHistorico(HistoricoLivro historico) {
+        this.historico = historico;
     }
 }

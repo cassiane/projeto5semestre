@@ -7,8 +7,7 @@ package br.com.witc.persistencia;
 
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
-import br.com.witc.modelo.PerfilTemLivro;
-import br.com.witc.modelo.Usuario;
+
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -22,7 +21,7 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class LivroDAO {
     Session sessao;
-    PerfilTemLivro perfilTemLivro;
+    
    
    
 
@@ -40,7 +39,7 @@ public class LivroDAO {
     public void criarLivro(Livro livro){
        
         //salva livro no banco
-        perfilTemLivro = new PerfilTemLivro();
+       
         try {
            sessao.saveOrUpdate(livro);
            

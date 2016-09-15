@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.persistencia.HistoricoDAO;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import javax.persistence.Temporal;
  * @author root
  */
 @Entity
-class HistoricoLivro implements Serializable {
+public class HistoricoLivro implements Serializable {
     @Id
     @GeneratedValue
     private int id;
@@ -30,6 +31,10 @@ class HistoricoLivro implements Serializable {
     private Livro livro;
     @OneToOne
     private Perfil perfil;
+    @OneToOne
+    private TipoStatus status;
+    
+    
 
     public int getId() {
         return id;
@@ -69,6 +74,17 @@ class HistoricoLivro implements Serializable {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    } 
+    
+    public TipoStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TipoStatus status) {
+        this.status = status;
     }
     
+    
+
+   
 }

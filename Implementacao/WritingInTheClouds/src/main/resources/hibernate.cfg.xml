@@ -14,5 +14,6 @@
     <mapping class="br.com.witc.modelo.TipoGenero"/>
     <mapping class="br.com.witc.modelo.TipoPerfil"/>
     <mapping class="br.com.witc.modelo.PerfilTemLivro" file="" jar="" package="" resource=""/>
+    <mapping class="br.com.witc.modelo.HistoricoLivro"/>
   </session-factory>
 </hibernate-configuration>

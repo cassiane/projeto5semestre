@@ -31,6 +31,13 @@ public class Perfil implements Serializable {
     @JoinColumn(name="idUsuario")
     private Usuario usuario;
 
+    public Perfil(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Perfil() {
+    }
+
     
     
     public int getId() {
@@ -76,9 +83,9 @@ public class Perfil implements Serializable {
     
     // cria perfil padrao para um determinado usuario;
     public void criarPerfilPadrao(Usuario usuario){
-        Perfil p = new Perfil();
+        Perfil p = new Perfil(usuario);
        
-        p.setUsuario(usuario);
+        
         p.setPseudonimo(usuario.getNome());
         p.setQualificacao(0);
         p.setIdTipoPerfil(1);
