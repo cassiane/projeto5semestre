@@ -38,3 +38,18 @@ START TRANSACTION;
 COMMIT;
 END$$
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- Procedure `proc_convite` realizar a pesquisa de convites existente e grava na solicitação
+-- -----------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_convite` (IN email VARCHAR(150))
+BEGIN
+START TRANSACTION;
+INSERT INTO witc.Usuario_tem_Amigo (idUsuario, idAmigo, dataSolicitacao)
+ SELECT a.idUsuario, b.id, a.dataSolicitacao FROM witc.ConvidadoUsuario a
+ JOIN witc.Usuario b ON a.emailConvidado = b.email
+ WHERE a.emailConvidado = email;
+COMMIT;
+END$$
+DELIMITER ;
