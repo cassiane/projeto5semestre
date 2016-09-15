@@ -9,5 +9,6 @@
     <property name="hibernate.current_session_context_class">managed</property>
     <mapping class="br.com.witc.modelo.Usuario"/>
     <mapping class="br.com.witc.modelo.RecuperarConta"/>
+    <mapping class="br.com.witc.modelo.ConvidadoUsuario"/>
   </session-factory>
 </hibernate-configuration>

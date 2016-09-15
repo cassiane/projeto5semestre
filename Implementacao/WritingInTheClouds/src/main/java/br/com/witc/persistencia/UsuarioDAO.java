@@ -8,6 +8,7 @@ package br.com.witc.persistencia;
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LoginInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
+import br.com.witc.modelo.ConvidadoUsuario;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
@@ -187,5 +188,20 @@ public class UsuarioDAO {
             throw new DadosUsuarioInvalidoException("Usuário não encontrado na base de dados!");
         }
         return usuario;
+    }
+
+    public void registrarConvite(int id, String destinatario) {
+        ConvidadoUsuario novoUsuario = new ConvidadoUsuario(id, destinatario);
+        sessao.saveOrUpdate(novoUsuario);
+    }
+
+    public void verificarConvite(String email) {
+        try {
+            sessao.createSQLQuery("CALL witc.proc_convite(:idemail)")
+                    .setString("idemail", email)
+                    .executeUpdate();
+        } catch (Exception ex) {
+            // usuario não recebeu nenhuma solicitação
+        }
     }
 }

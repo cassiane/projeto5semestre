@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -28,7 +29,7 @@ import java.util.List;
 public class Usuario implements Serializable {
 
     @Id
-    @GeneratedValue   
+    @GeneratedValue
     private int id;
     private String nome;
     private String sobrenome;
@@ -154,14 +155,17 @@ public class Usuario implements Serializable {
 
     /**
      * Autentica um usuário no sistema
+     *
      * @param email O email do usuário
      * @param senha A senha do usuário
      * @return Um objeto Usuario
      * @throws LoginInvalidoException Caso os dados informados sejam inválidos
-     * @throws java.security.NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
-     * @throws java.io.UnsupportedEncodingException Caso haja erro de codificação
+     * @throws java.security.NoSuchAlgorithmException Caso o algorítimo SHA-256
+     * não seja localizado
+     * @throws java.io.UnsupportedEncodingException Caso haja erro de
+     * codificação
      */
-    public static Usuario efetuarLogin(String email, String senha) 
+    public static Usuario efetuarLogin(String email, String senha)
             throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         String hashSenha = criarHashSenha(senha);
@@ -170,43 +174,52 @@ public class Usuario implements Serializable {
 
     /**
      * Cria O hash da senha do usuário utilizando o algorítimo SHA-256
+     *
      * @param senha A string que servira de base para criacao do hash
      * @return O hash criar
-     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
+     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja
+     * localizado
      * @throws UnsupportedEncodingException Caso haja erro de codificação
      */
     public static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");        
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
 
-        md.update(senha.getBytes("UTF-8")); 
+        md.update(senha.getBytes("UTF-8"));
         byte[] digest = md.digest();
-        
+
         StringBuilder hexString = new StringBuilder();
         for (int i = 0; i < digest.length; i++) {
             String hex = Integer.toHexString(0xff & digest[i]);
-            if(hex.length() == 1) hexString.append('0');
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
             hexString.append(hex);
         }
-        
+
         return hexString.toString();
     }
-    
+
     /**
-     * Persiste usuario no banco     
-     * @throws DadosUsuarioInvalidoException Caso o usuário já esteja cadastrado no sistema
-     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
+     * Persiste usuario no banco
+     *
+     * @throws DadosUsuarioInvalidoException Caso o usuário já esteja cadastrado
+     * no sistema
+     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja
+     * localizado
      * @throws UnsupportedEncodingException Caso haja erro de codificação
-     * @throws br.com.witc.excessao.UsuarioInvalidoException Caso usuário já exista no BD
+     * @throws br.com.witc.excessao.UsuarioInvalidoException Caso usuário já
+     * exista no BD
      */
-    public void cadastrarUsuario() throws DadosUsuarioInvalidoException, 
-            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
-       UsuarioDAO dao = new UsuarioDAO();
-       setSenha(criarHashSenha(this.senha));
-       dao.salvarUsuario(this);
+    public void cadastrarUsuario() throws DadosUsuarioInvalidoException,
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
+        UsuarioDAO dao = new UsuarioDAO();
+        setSenha(criarHashSenha(this.senha));
+        dao.salvarUsuario(this);
     }
 
     /**
      * Acessar o dao para buscar os amigos
+     *
      * @return Lista de amigos
      */
     public List<Usuario> listarAmigos() {
@@ -216,15 +229,17 @@ public class Usuario implements Serializable {
 
     /**
      * Acessa o dao para buscar as sugestões
+     *
      * @return Lista de sugestão de amigos
      */
     public List<Usuario> listarSugestao() {
         UsuarioDAO dao = new UsuarioDAO();
         return dao.listarSugestao(this.getId());
     }
-    
+
     /**
      * Acessar o dao para buscar os usuarios
+     *
      * @return Lista de usuarios do sistema
      */
     public List<Usuario> listarUsuarios() {
@@ -234,6 +249,7 @@ public class Usuario implements Serializable {
 
     /**
      * Acessar o dao para registrar uma solicitação de amizade
+     *
      * @param idSugestao Identificador do amigo a ser solicitado
      */
     public void solicitarAmizade(int idSugestao) {
@@ -243,6 +259,7 @@ public class Usuario implements Serializable {
 
     /**
      * Acessar o dao para buscar a lista de solicitações de amizade do usuario
+     *
      * @return Lista de solicitação de amizade
      */
     public List<Usuario> listarSolicitacao() {
@@ -252,6 +269,7 @@ public class Usuario implements Serializable {
 
     /**
      * Acessar o dao para registrar o aceite de amizade
+     *
      * @param idAceitar Identificador do solicitante da amizade
      */
     void aceitarAmizade(int idAceitar) {
@@ -261,6 +279,7 @@ public class Usuario implements Serializable {
 
     /**
      * Acessar o dao para remover a amizade solicitada ou realizada
+     *
      * @param idAmizade Identificador do solicitante ou amigo
      */
     void removerAmizade(int idAmizade) {
@@ -272,35 +291,61 @@ public class Usuario implements Serializable {
     public String toString() {
         return this.email;
     }
-    
+
     /**
      * Verifica a existência do usuário no BD
+     *
      * @param Email O email do usuário pesquisado
      * @return Um objeto Usuario contendo o usuário pesquisado
-     * @throws DadosUsuarioInvalidoException Caso o usuário não seja localizado na base de dados
+     * @throws DadosUsuarioInvalidoException Caso o usuário não seja localizado
+     * na base de dados
      */
     public static Usuario verificarExistenciaUsuario(String Email) throws DadosUsuarioInvalidoException {
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         return usuarioDAO.verificarExistenciaUsuario(Email);
-    }       
-    
+    }
+
     /**
-     * Consiste os dados informados     
-     * @throws DadosUsuarioInvalidoException Quando um ou mais dados estiverem incorretos
+     * Consiste os dados informados
+     *
+     * @throws DadosUsuarioInvalidoException Quando um ou mais dados estiverem
+     * incorretos
      */
-    public void consistirDados() throws DadosUsuarioInvalidoException {        
+    public void consistirDados() throws DadosUsuarioInvalidoException {
         String regexNome = "^[a-zA-Zà-úÀ-Ú ]*$";
         if (!this.nome.trim().matches(regexNome)) {
             throw new DadosUsuarioInvalidoException("O nome informado é inválido!");
         }
-        
+
         if (!this.sobrenome.trim().matches(regexNome)) {
             throw new DadosUsuarioInvalidoException("O sobrenome informado é inválido!");
         }
-                
+
         String regexEmail = "^\\w+([-\\.]\\w+)*@\\w+([-.]\\w+)+$";
         if (!this.email.matches(regexEmail)) {
             throw new DadosUsuarioInvalidoException("O e-mail informado é inválido!");
         }
+    }
+
+    void enviarConviteEmail(String destinatario, String path) throws EmailException {
+        UsuarioDAO dao = new UsuarioDAO();
+        //registrar o envio do convite
+        dao.registrarConvite(this.id, destinatario);
+        //preencher a mensagem para novos usuarios
+        Mensagem msn = new Mensagem();
+        msn.setDestino(destinatario);
+        msn.setTitulo("Solicitação de Amizade");
+        msn.setMensagem("Você ainda não conhece o Escrita Colaborativa?\n\n"
+                + "Venha logo conhecer, o usuario \b" + this.getNome()
+                + " " + this.getSobrenome() + "\b está convidando você"
+                + " para participar, para isso acesse o link "
+                + path + " e faça logo o seu cadastro.");
+        //enviar email para novos usuarios
+        EmailUtils.enviaEmail(msn);
+    }
+
+    void verificarConvite(String email) {
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.verificarConvite(email);
     }
 }

@@ -327,6 +327,8 @@ public class CadastrarBean {
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
             autenticarBean.setUsuario(this.usuario);
+            // Verifica se o novo usuario ja recebeu alguma solicitação de amizade
+            this.controlador.verificarConvite(this.usuario.getEmail());
             return "timeline";
         } catch (ParseException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento inválida.");
@@ -474,14 +476,21 @@ public class CadastrarBean {
      */
     public void enviarConvite() {
         try {
+            // Capitura o email para convidar
+            String email = this.getConvidarEmail();
+            // Limpa o campo para a tela
+            this.convidarEmail = null;
             // Capitura a url do sistema
-            String path = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURL().toString();
+            String path = ((HttpServletRequest) FacesContext.getCurrentInstance()
+                    .getExternalContext().getRequest()).getRequestURL().toString();
             // Altera a variavel para excluir o restante da url
             path = path.replaceFirst("/faces(.*)", "");
             // Envia o email digitado e a URL para o metodo que envia o email
-            this.controlador.enviarConvite(this.getConvidarEmail(), path);
+            this.controlador.enviarConvite(email, path);
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Email enviado com sucesso para "
+                    + email + "!");
         } catch (EmailException e) {
-            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Erro ao enviar o convite, tente novamente!");
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Erro ao enviar o convite, tente novamente mais tarde!");
         }
     }
 

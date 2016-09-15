@@ -141,17 +141,8 @@ public class ControladorCadastro {
                 //solicitar amizade
                 this.solicitarAmizade(ami.getId());
             } else {
-                //preencher a mensagem para novos usuarios
-                Mensagem msn = new Mensagem();
-                msn.setDestino(o.toLowerCase());
-                msn.setTitulo("Solicitação de Amizade");
-                msn.setMensagem("Você ainda não conhece o Escrita Colaborativa?\n\n"
-                        + "Venha logo conhecer, o usuario \b" + this.usuario.getNome()
-                        + " " + this.usuario.getSobrenome() + "\b está convidando você"
-                        + " para participar, para isso acesse o link " + path + " e faça"
-                        + " logo o seu cadastro.");
-                //enviar email para novos usuarios
-                EmailUtils.enviaEmail(msn);
+                //envia o email do destinatario para o metodo enviar o convite
+                this.usuario.enviarConviteEmail(o.toLowerCase(), path);
             }
         }
     }
@@ -162,6 +153,10 @@ public class ControladorCadastro {
      */
     public List<Usuario> listarUsuarios() {
         return usuario.listarUsuarios();
+    }
+
+    public void verificarConvite(String email) {
+        usuario.verificarConvite(email);
     }
     
     /**
