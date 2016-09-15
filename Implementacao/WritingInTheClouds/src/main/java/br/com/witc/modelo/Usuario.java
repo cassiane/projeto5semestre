@@ -15,10 +15,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import br.com.witc.persistencia.UsuarioDAO;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -33,13 +39,13 @@ public class Usuario implements Serializable {
     private String nome;
     private String sobrenome;
     private String email;
-
+   
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataAniversario;
-    private String genero;
-    private byte[] foto;
-    private String senha;
-
+    private String genero;    
+    private byte[] foto = null;
+    private String senha;    
+    //private StreamedContent imagem = null; 
     /**
      * @return the id
      */
@@ -151,7 +157,36 @@ public class Usuario implements Serializable {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
+    /**
+     * @return 
+     
+    public StreamedContent getImagem() {
+        return imagem;
+    }*/
+    /**
+     * @param imagem 
+     
+    public void setImagem(StreamedContent imagem) {
+        this.imagem = imagem;
+    }*/
+    /*
+    public Usuario() {
+        this.imagem = new DefaultStreamedContent();
+    }*/
+    
+    /**
+     * Evento de upload da tela editar conta
+     * @param event 
+     
+    public void handleFileUpload(FileUploadEvent event) {
+        try {
+            imagem = new DefaultStreamedContent(event.getFile().getInputstream());
+            byte[] fotoTemp = event.getFile().getContents();
+            this.setFoto(fotoTemp);
+            } catch (IOException ex) {
+                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }*/
     /**
      * Autentica um usuário no sistema
      * @param email O email do usuário
@@ -202,6 +237,18 @@ public class Usuario implements Serializable {
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
        UsuarioDAO dao = new UsuarioDAO();
        setSenha(criarHashSenha(this.senha));
+       dao.salvarUsuario(this);
+    }
+    /**
+     * altera os dados do usuário
+     * @throws DadosUsuarioInvalidoException
+     * @throws NoSuchAlgorithmException
+     * @throws UnsupportedEncodingException
+     * @throws UsuarioInvalidoException 
+     */
+    public void alterarUsuario() throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
+       UsuarioDAO dao = new UsuarioDAO();      
        dao.salvarUsuario(this);
     }
 

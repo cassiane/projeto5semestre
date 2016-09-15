@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
@@ -293,9 +294,13 @@ public class CadastrarBean {
      */
     public void preencherDataNasc() {
         try {
-            this.diaNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getDay());
-            this.mesNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getMonth());
-            this.anoNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getYear());
+            Calendar c;
+            c = this.usuario.getDataAniversario();
+            //Date data = c.getTime();
+            //int dia = c.get(Calendar.DAY_OF_MONTH);
+            this.diaNascimento = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+            this.mesNascimento = Integer.toString(c.get(Calendar.MONTH)+1);            
+            this.anoNascimento = Integer.toString(c.get(Calendar.YEAR));
         } catch (Exception e) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, e.getMessage());
         }
@@ -323,6 +328,38 @@ public class CadastrarBean {
             }
             setDataNascimento();
             this.controlador.cadastrarUsuario(usuario);
+            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+            AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "autenticarBean");
+            autenticarBean.setUsuario(this.usuario);
+            return "timeline";
+        } catch (ParseException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento inválida.");
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash da senha!");
+        } catch (DadosUsuarioInvalidoException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        } catch (UsuarioInvalidoException ex) {
+            // Apaga os dados do formulario
+            this.usuario = new Usuario();
+            this.diaNascimento = null;
+            this.mesNascimento = null;
+            this.anoNascimento = null;
+            this.emailVerificado = null;
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+        return null;
+    }
+    /**
+     * Altera o usuário não utlizado o método de cadastro para 
+     * não prejudicar a validação do email 
+     * @return 
+     */
+    public String alterarUsuario() {
+        // Setar a data de nascimento no usuario
+        try {            
+            setDataNascimento();
+            this.controlador.alterarUsuario(usuario);
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
