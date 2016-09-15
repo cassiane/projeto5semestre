@@ -5,8 +5,6 @@
  */
 package br.com.witc.modelo;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
@@ -34,13 +32,12 @@ public class EmailUtils {
     }
 
     public static String enviaEmail(Mensagem mensagem) throws EmailException {
-        Email email = new SimpleEmail();
-        email = conectaEmail();
+        Email email = conectaEmail();
         email.setSubject(mensagem.getTitulo());
         email.setMsg(mensagem.getMensagem());
         email.addTo(mensagem.getDestino());
         String resposta = email.send();
-        //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "E-mail enviado com sucesso para: " + mensagem.getDestino(), "Informação"));
+        
         return "E-mail enviado com sucesso para: " + mensagem.getDestino();
     }
 }

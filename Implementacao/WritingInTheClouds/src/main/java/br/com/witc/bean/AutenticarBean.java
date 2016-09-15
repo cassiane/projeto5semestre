@@ -24,10 +24,14 @@ import static javax.faces.context.FacesContext.getCurrentInstance;
 @ManagedBean
 @SessionScoped
 public class AutenticarBean {
-    private final ControladorAutenticacao controlador;
+    private ControladorAutenticacao controlador;
     private String email;
     private String senha;
 
+    public AutenticarBean() {
+        this.controlador = new ControladorAutenticacao();              
+    }    
+    
     /**
      * @return the email
      */
@@ -54,11 +58,14 @@ public class AutenticarBean {
      */
     public void setSenha(String senha) {
         this.senha = senha;
-    }    
-
-    public AutenticarBean() {
-        this.controlador = new ControladorAutenticacao();              
-    }    
+    }               
+    
+    /**     
+     * @param usuario the usuario to set
+     */
+    public void setUsuario(Usuario usuario) {
+        this.controlador.setUsuario(usuario);
+    }
     
     /**     
      * @return O email do usuário logado no sistema
@@ -81,7 +88,8 @@ public class AutenticarBean {
      */
     public String efetuarLogin() {        
         try {
-            return this.controlador.efetuarLogin(this.email, this.senha);
+            this.controlador.efetuarLogin(this.email, this.senha);
+            return "timeline";
         } catch(LoginInvalidoException e) {
             enviarMensagem(SEVERITY_ERROR, e.getMessage());                        
         } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
@@ -96,7 +104,7 @@ public class AutenticarBean {
      */
     public String efetuarLogoff() {
         getCurrentInstance().getExternalContext().invalidateSession();
-        return "index.xhtml?faces-redirect=true";
+        return "index.xhtml?faces-redirect=true";        
     }    
     
     /**

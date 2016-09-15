@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LoginInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import java.io.Serializable;
@@ -18,7 +19,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import static javax.persistence.TemporalType.DATE;
 
 /**
  *
@@ -39,11 +39,6 @@ public class Usuario implements Serializable {
     private String genero;
     private byte[] foto;
     private String senha;
-
-    //@OneToOne
-    //@JoinColumn(name = "")
-    //private Perfil perfil;
-
 
     /**
      * @return the id
@@ -175,12 +170,12 @@ public class Usuario implements Serializable {
 
     /**
      * Cria O hash da senha do usuário utilizando o algorítimo SHA-256
+     * @param senha A string que servira de base para criacao do hash
      * @return O hash criar
      * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
      * @throws UnsupportedEncodingException Caso haja erro de codificação
      */
-    private static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-
+    public static String criarHashSenha(String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");        
 
         md.update(senha.getBytes("UTF-8")); 
@@ -195,17 +190,19 @@ public class Usuario implements Serializable {
         
         return hexString.toString();
     }
+    
     /**
-     * Persiste usuario no banco
-     * @param usuario
-     * @throws UsuarioInvalidoException 
-     * @throws java.security.NoSuchAlgorithmException 
-     * @throws java.io.UnsupportedEncodingException 
+     * Persiste usuario no banco     
+     * @throws DadosUsuarioInvalidoException Caso o usuário já esteja cadastrado no sistema
+     * @throws NoSuchAlgorithmException Caso o algorítimo SHA-256 não seja localizado
+     * @throws UnsupportedEncodingException Caso haja erro de codificação
+     * @throws br.com.witc.excessao.UsuarioInvalidoException Caso usuário já exista no BD
      */
-    public void CadastrarUsuario(Usuario usuario) throws UsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{
+    public void cadastrarUsuario() throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
        UsuarioDAO dao = new UsuarioDAO();
-       this.setSenha(criarHashSenha(this.senha));
-       dao.salvarUsuario(usuario);
+       setSenha(criarHashSenha(this.senha));
+       dao.salvarUsuario(this);
     }
 
     /**
@@ -276,4 +273,34 @@ public class Usuario implements Serializable {
         return this.email;
     }
     
+    /**
+     * Verifica a existência do usuário no BD
+     * @param Email O email do usuário pesquisado
+     * @return Um objeto Usuario contendo o usuário pesquisado
+     * @throws DadosUsuarioInvalidoException Caso o usuário não seja localizado na base de dados
+     */
+    public static Usuario verificarExistenciaUsuario(String Email) throws DadosUsuarioInvalidoException {
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        return usuarioDAO.verificarExistenciaUsuario(Email);
+    }       
+    
+    /**
+     * Consiste os dados informados     
+     * @throws DadosUsuarioInvalidoException Quando um ou mais dados estiverem incorretos
+     */
+    public void consistirDados() throws DadosUsuarioInvalidoException {        
+        String regexNome = "^[a-zA-Zà-úÀ-Ú ]*$";
+        if (!this.nome.trim().matches(regexNome)) {
+            throw new DadosUsuarioInvalidoException("O nome informado é inválido!");
+        }
+        
+        if (!this.sobrenome.trim().matches(regexNome)) {
+            throw new DadosUsuarioInvalidoException("O sobrenome informado é inválido!");
+        }
+                
+        String regexEmail = "^\\w+([-\\.]\\w+)*@\\w+([-.]\\w+)+$";
+        if (!this.email.matches(regexEmail)) {
+            throw new DadosUsuarioInvalidoException("O e-mail informado é inválido!");
+        }
+    }
 }

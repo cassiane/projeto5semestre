@@ -5,13 +5,13 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LoginInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Query;
-//import javax.validation.ConstraintViolationException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -50,11 +50,10 @@ public class UsuarioDAO {
         return tmpUsuario;
     }
 
-
     /**
      *
      * @param usuario
-     * @throws UsuarioInvalidoException
+     * @throws UsuarioInvalidoException Caso usuário já exista no BD
      */
     public void salvarUsuario(Usuario usuario) throws UsuarioInvalidoException {
         try {
@@ -171,5 +170,22 @@ public class UsuarioDAO {
      */
     public List<Usuario> listarUsuarios() {
         return sessao.createQuery("FROM Usuario").list();
+    }
+    
+    /**
+     * Verifica a existência do usuário no BD
+     * @param email O email do usuário pesquisado
+     * @return Um objeto Usuario
+     * @throws DadosUsuarioInvalidoException Caso o usuário não seja localizado na base de dados
+     */
+    public Usuario verificarExistenciaUsuario(String email) throws DadosUsuarioInvalidoException {
+        Usuario usuario = (Usuario) sessao.createQuery("FROM Usuario WHERE email=:email")
+                .setParameter("email", email)
+                .uniqueResult();        
+        
+        if (usuario == null) {
+            throw new DadosUsuarioInvalidoException("Usuário não encontrado na base de dados!");
+        }
+        return usuario;
     }
 }
