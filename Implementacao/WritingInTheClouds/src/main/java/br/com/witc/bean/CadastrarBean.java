@@ -366,6 +366,8 @@ public class CadastrarBean {
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
             autenticarBean.setUsuario(this.usuario);
+            // Verifica se o novo usuario ja recebeu alguma solicitação de amizade
+            this.controlador.verificarConvite(this.usuario.getEmail());
             return "timeline";
         } catch (ParseException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento inválida.");
