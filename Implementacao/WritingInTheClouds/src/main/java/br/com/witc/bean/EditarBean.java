@@ -53,6 +53,9 @@ public class EditarBean {
         daoPerfil = new PerfilDAO();
         daoLivro = new LivroDAO();
         daoHistorico = new HistoricoLivroDAO();
+        
+        this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);
+        this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);
     }
 
     public Livro getLivro() {
@@ -102,7 +105,9 @@ public class EditarBean {
     public void setHistorico(HistoricoLivro historico) {
         this.historico = historico;
     }    
-  
+    public void listarLivrosPerfil(){
+        this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);
+    }
     public void salvarLivro(){
         this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);
         TipoStatus st = new TipoStatus();
