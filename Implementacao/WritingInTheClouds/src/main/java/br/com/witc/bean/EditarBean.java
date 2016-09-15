@@ -102,7 +102,7 @@ public class EditarBean {
     }
     
     public String salvarLivro(){
-        perfilUsuario = daoPerfil.burcarPerfilUsuario(usuario);
+        perfilUsuario = daoPerfil.burcarPerfilUsuario(this.usuario);
         this.livro=new Livro();
         this.livro.setTexto(this.textoLivro);
         this.livro.setTitulo(this.tituloLivro);
