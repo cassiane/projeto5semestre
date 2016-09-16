@@ -8,6 +8,7 @@ package br.com.witc.persistencia;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.TypedQuery;
 import org.hibernate.Session;
@@ -44,9 +45,10 @@ public class LivroDAO {
         }
     
     public List<Livro> listarLivrosPerfil(Perfil perfil){
-        String consulta ="select livro.id,livro.titulo from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
-        return sessao.createSQLQuery(consulta).setInteger("id",perfil.getId()).list();
-
+        String consulta ="select livro.* from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
+       List<Livro> lista ;
+        lista= sessao.createSQLQuery(consulta).addEntity("livro",Livro.class).setInteger("id",perfil.getId()).list();
+        return lista;
        
     }
     /**

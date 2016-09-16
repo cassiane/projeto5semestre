@@ -12,34 +12,26 @@
                    <f:view>
 
 <center>
+                 
                 <h:form>
                   <p:growl id="msgs" showDetail="true" />
                     <p:panel id="basic" header="Biblioteca"  style="margin-bottom:20px">
-                        
+                        <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{editarBean.editor()}"/>
                         <p:dataTable value="#{editarBean.livros}"  var="lis" rows="10" paginator="true">
-                            <p:column headerText="ID" sortBy="#{lis.id}">
+                            <p:column headerText="ID" sortBy="#{lis.id}"  filterBy="#{lis.id}" width="100">
                             #{lis.id}
                          </p:column>
-                            <p:column headerText="Capa"   width="141">
-                        #{lis.capa}
+                            <p:column headerText="Nome" sortBy="#{lis.titulo}" filterBy="#{lis.titulo}" width="141">
+                        #{lis.nome}
                          </p:column>
-                            <p:column headerText="Título" sortBy="#{lis.titulo}">
-                        #{lis.titulo}
-                         </p:column>
-                            <p:column headerText="Editar">
-                                
-                            <p:link outcome="editarLivro" value="Editar Livro" />
-                            
+                            <p:column>
+                            <p:commandButton ajax="false" title="Consultar" value="Consultar" actionListener="#{editarBean.editor()}" action="editarLivro"/>                         
                         </p:column>
-                     </p:dataTable>
-                        <p:commandButton value="Novo Livro"  action="#{editarBean.editor()}" icon="ui-icon-disk" ajax="false" />
-                                         <br/>
-                        <p:link outcome="editarLivro" value="Novo Livro" />
+                        </p:dataTable>
     
                    </p:panel>
-                     
+                     <p:commandButton value="Voltar" ajax="false" action="timeline"/>
                 </h:form>
-
             </center>
                    </f:view>
           
