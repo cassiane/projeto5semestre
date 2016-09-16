@@ -24,21 +24,21 @@
                         </h:panelGrid>
                         <h:panelGrid columns="3">
                             <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 50px" required="true" >
-                                <f:selectItem itemLabel="#{cadastrarBean.diaNascimento}" itemValue="#{cadastrarBean.diaNascimento}" />                                
+                                <f:selectItem itemLabel="Dia" itemValue="#{cadastrarBean.diaNascimento}" />                                
                                 <c:forEach var="dia" begin="1" end="31">                                    
                                     <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" noSelectionOption="#{cadastrarBean.diaNascimento.equals(dia)}" />
                                 </c:forEach>
                             </p:selectOneMenu>
                             <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 
                                              required="true">
-                                <f:selectItem itemLabel="#{cadastrarBean.mesNascimento}" itemValue="#{cadastrarBean.mesNascimento}" />
+                                <f:selectItem itemLabel="Mês" itemValue="#{cadastrarBean.mesNascimento}" />
                                 <c:forEach var="mes" begin="1" end="12">
                                     <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
                                 </c:forEach>
                             </p:selectOneMenu>
                             <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 50px; margin-left: 10px;" 
                                              required="true">
-                                <f:selectItem itemLabel="#{cadastrarBean.anoNascimento}" itemValue="#{cadastrarBean.anoNascimento}" />
+                                <f:selectItem itemLabel="Ano" itemValue="#{cadastrarBean.anoNascimento}" />
                                 <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
                                     <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
                                 </c:forEach>
@@ -53,7 +53,7 @@
                             <p:commandButton ajax="false" value="Salvar Configurações" style="width:200px; margin-left: 3px;"
                                              action="#{cadastrarBean.alterarUsuario()}" />
                             <p:commandLink ajax="false" value="Excluir minha conta" style="width:200px; margin-left: 3px; color: red"
-                                         action="#{cadastrarBean.cadastrarUsuario()}" />
+                                           action="#{cadastrarBean.excluirUsuario()}" />
                         </h:panelGrid>
                     </h:column>
                 </h:panelGrid>
