@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 /**
@@ -20,7 +21,8 @@ import javax.persistence.Temporal;
  * @author root
  */
 @Entity
-class HistoricoLivro implements Serializable {
+@Table(name = "historicolivros")
+public class HistoricoLivro implements Serializable {
     @Id
     @GeneratedValue
     private int id;
@@ -35,7 +37,7 @@ class HistoricoLivro implements Serializable {
     @JoinColumn(name="idPerfil")
     private Perfil perfil;
     @OneToOne
-    @JoinColumn(name="isStatus")
+    @JoinColumn(name="idTipoStatus")
     private TipoStatus status;
 
     public int getId() {

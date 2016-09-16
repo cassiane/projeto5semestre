@@ -26,6 +26,10 @@ public class Perfil implements Serializable {
     @ManyToOne
     @JoinColumn(name="idUsuario")
     private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name="idTipoPerfil")
+    private TipoPerfil tipoPerfil;
+    
 
     public int getId() {
         return id;
@@ -58,4 +62,12 @@ public class Perfil implements Serializable {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }   
+
+    public TipoPerfil getTipoPerfil() {
+        return tipoPerfil;
+    }
+
+    public void setTipoPerfil(TipoPerfil tipoPerfil) {
+        this.tipoPerfil = tipoPerfil;
+    }
 }
