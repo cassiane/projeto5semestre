@@ -120,6 +120,10 @@ public class EditarBean {
         st=daoStatus.carregarPerfil(1);
         this.livro = new Livro();
         this.livro.setTexto(textoLivro);
+        
+        if(tituloLivro.isEmpty()){
+            tituloLivro="Novo Livro";
+        }
         this.livro.setTitulo(tituloLivro);
         this.livro.setClassificacao("LIVRE");
         this.livro.setDisponivelBiblioteca(true);

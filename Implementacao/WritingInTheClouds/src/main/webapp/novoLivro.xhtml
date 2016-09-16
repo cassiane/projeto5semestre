@@ -10,7 +10,7 @@
                <h1>Editor de texto</h1>
                <h:form >  
                    <p:outputLabel for="titulo" value="Título: "/>
-                   <p:inputText id="titulo" label="titulo"  value="#{editarBean.tituloLivro}" required="true" requiredMessage="Informe o titulo do livro!!"/> 
+                   <p:inputText id="titulo" label="titulo"  value="#{editarBean.tituloLivro}"/> 
                    <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.textoLivro}" width="600" />
                      <h:panelGrid columns="3" style="margin-top: 10px">
                          <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
