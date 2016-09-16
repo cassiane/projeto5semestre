@@ -17,7 +17,7 @@
                   <p:growl id="msgs" showDetail="true" />
                     <p:panel id="basic" header="Biblioteca"  style="margin-bottom:20px">
                         <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{editarBean.editorNovoLivro()}"/>
-                        <p:dataTable value="#{editarBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true">
+                        <p:dataTable   value="#{editarBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true">
                             <p:column headerText="ID" sortBy="#{lis.id}"   >
                             #{lis.id}
                          </p:column>

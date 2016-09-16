@@ -15,5 +15,6 @@
     <mapping class="br.com.witc.modelo.TipoStatus"/>
     <mapping class="br.com.witc.modelo.TipoTexto"/>
     <mapping class="br.com.witc.modelo.HistoricoLivro"/>
+    <mapping class="br.com.witc.modelo.TipoPerfil"/>
   </session-factory>
 </hibernate-configuration>

@@ -9,6 +9,7 @@ import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -30,6 +31,14 @@ public class PerfilDAO {
         return null; // lançar excessao
     }
         return p;
+    }
+    
+    public void salvarPerfil(Perfil perfil){
+        try{
+            sessao.save(perfil);
+        }catch(ConstraintViolationException e){
+             sessao.clear();
+        }
     }
     
 }

@@ -36,6 +36,7 @@ public class EditarBean {
     private Usuario usuario;
     private Perfil perfilUsuario;
     private String textoLivro;
+    private String tituloLivro;
     private HistoricoLivro historico;
     private List<Livro> livros;
     private PerfilDAO daoPerfil;
@@ -106,7 +107,10 @@ public class EditarBean {
         this.historico = historico;
     }    
     public List<Livro> listarLivrosPerfil(){
-       return daoLivro.listarLivrosPerfil(this.perfilUsuario);
+        List<Livro> listaTemp = daoLivro.listarLivrosPerfil(this.perfilUsuario);
+       
+            return listaTemp;
+        
     }
     
     public void salvarNovoLivro(){
@@ -116,7 +120,7 @@ public class EditarBean {
         st=daoStatus.carregarPerfil(1);
         this.livro = new Livro();
         this.livro.setTexto(textoLivro);
-        this.livro.setTitulo("titulo do livro");
+        this.livro.setTitulo(tituloLivro);
         this.livro.setClassificacao("LIVRE");
         this.livro.setDisponivelBiblioteca(true);
         this.livro.setReportadoConteudoImproprio(false);
@@ -133,7 +137,7 @@ public class EditarBean {
     }
     
     public void salvarLivro(){
-        daoLivro.criarLivro(this.livro);
+        daoLivro.criarLivro(this.livroCarregado);
     }
     
     public  Calendar getPegaDataAtual(){
@@ -165,6 +169,14 @@ public class EditarBean {
 
     public void setLivroCarregado(Livro livroCarregado) {
         this.livroCarregado = livroCarregado;
+    }
+
+    public String getTituloLivro() {
+        return tituloLivro;
+    }
+
+    public void setTituloLivro(String tituloLivro) {
+        this.tituloLivro = tituloLivro;
     }
 
    

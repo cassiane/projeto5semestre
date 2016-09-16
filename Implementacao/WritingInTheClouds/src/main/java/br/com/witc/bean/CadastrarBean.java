@@ -295,7 +295,8 @@ public class CadastrarBean {
                 throw new DadosUsuarioInvalidoException("Os emails informados não coincidem!");
             }
             setDataNascimento();                
-            this.controlador.cadastrarUsuario(usuario);            
+            this.controlador.cadastrarUsuario(usuario);    
+            this.controlador.criarPerfilPadrao(usuario);
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
