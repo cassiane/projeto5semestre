@@ -218,6 +218,18 @@ public class Usuario implements Serializable {
     }
 
     /**
+     * altera os dados do usuário
+     * @throws DadosUsuarioInvalidoException
+     * @throws NoSuchAlgorithmException
+     * @throws UnsupportedEncodingException
+     * @throws UsuarioInvalidoException 
+     */
+    public void alterarUsuario() throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
+       UsuarioDAO dao = new UsuarioDAO();      
+       dao.salvarUsuario(this);
+    }
+    /**
      * Acessar o dao para buscar os amigos
      *
      * @return Lista de amigos

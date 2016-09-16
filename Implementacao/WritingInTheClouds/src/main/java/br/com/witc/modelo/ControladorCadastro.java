@@ -47,6 +47,21 @@ public class ControladorCadastro {
         usuario.consistirDados();
         usuario.cadastrarUsuario();        
     }
+    /**
+     * altera um usuário no sistema
+     * 
+     * @param usuario
+     * @throws DadosUsuarioInvalidoException
+     * @throws NoSuchAlgorithmException
+     * @throws UnsupportedEncodingException
+     * @throws UsuarioInvalidoException 
+     */
+    public void alterarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
+        
+        usuario.consistirDados();
+        usuario.alterarUsuario();
+    }
 
     /**
      * Listar os amigos do usuario logado

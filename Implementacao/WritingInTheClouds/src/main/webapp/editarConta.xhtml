@@ -12,8 +12,11 @@
             <f:event listener="#{cadastrarBean.retornarDataNasc()}" type="preRenderView"/>
             <h:form id="EditarUsuario" style="position: absolute; padding: 10px; left: 10%">
                 <h:panelGrid columns="1" columnClasses="column1,column2" >                                      
-                    <h:column>                                                
-                        <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">
+                    <h:column>                          
+                        <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">   
+                            <!--<p:graphicImage id="Imagem" value="{cadastrarBean.usuario.imagem}" height="240px" width="320px" cache="false"/>                            
+                            <p:fileUpload  sizeLimit="204800" auto="true" widgetVar="uploader" label="Procurar..."  fileUploadListener="{cadastrarBean.usuario.handleFileUpload(event)}"
+                                allowTypes="*.jpg;*.png;*.gif;" update="imagem" multiple="false"/>-->
                             <p:inputText class="inputtext2c" placeholder="Nome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.nome}"/>
                             <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.sobrenome}"/>
                             <p:inputText class="inputtext" maxlength="150" placeholder="Email" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.email}"/>                            
@@ -28,14 +31,14 @@
                             </p:selectOneMenu>
                             <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 
                                              required="true">
-                                <f:selectItem itemLabel="Mês" itemValue="" />
+                                <f:selectItem itemLabel="#{cadastrarBean.mesNascimento}" itemValue="#{cadastrarBean.mesNascimento}" />
                                 <c:forEach var="mes" begin="1" end="12">
                                     <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
                                 </c:forEach>
                             </p:selectOneMenu>
                             <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 50px; margin-left: 10px;" 
                                              required="true">
-                                <f:selectItem itemLabel="Ano" itemValue="" />
+                                <f:selectItem itemLabel="#{cadastrarBean.anoNascimento}" itemValue="#{cadastrarBean.anoNascimento}" />
                                 <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
                                     <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
                                 </c:forEach>
@@ -48,7 +51,7 @@
                             </p:selectOneRadio>
                             
                             <p:commandButton ajax="false" value="Salvar Configurações" style="width:200px; margin-left: 3px;"
-                                         action="#{cadastrarBean.cadastrarUsuario()}" />
+                                             action="#{cadastrarBean.alterarUsuario()}" />
                             <p:commandLink ajax="false" value="Excluir minha conta" style="width:200px; margin-left: 3px; color: red"
                                          action="#{cadastrarBean.cadastrarUsuario()}" />
                         </h:panelGrid>

@@ -312,8 +312,6 @@ public class CadastrarBean {
      * Cadastra um usuario no sistema
      *
      * @return Uma string contendo a próxima página a ser enviada para o usuário
-     *
-     * @throws br.com.witc.excessao.UsuarioInvalidoException
      */
     public String cadastrarUsuario() {
         // Setar a data de nascimento no usuario
@@ -323,6 +321,41 @@ public class CadastrarBean {
             }
             setDataNascimento();
             this.controlador.cadastrarUsuario(usuario);
+            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+            AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "autenticarBean");
+            autenticarBean.setUsuario(this.usuario);
+            // Verifica se o novo usuario ja recebeu alguma solicitação de amizade
+            this.controlador.verificarConvite(this.usuario.getEmail());
+            return "timeline";
+        } catch (ParseException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento inválida.");
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash da senha!");
+        } catch (DadosUsuarioInvalidoException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        } catch (UsuarioInvalidoException ex) {
+            // Apaga os dados do formulario
+            this.usuario = new Usuario();
+            this.diaNascimento = null;
+            this.mesNascimento = null;
+            this.anoNascimento = null;
+            this.emailVerificado = null;
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * Altera o usuário não utlizado o método de cadastro para 
+     * não prejudicar a validação do email 
+     * @return 
+     */
+    public String alterarUsuario() {
+        // Setar a data de nascimento no usuario
+        try {            
+            setDataNascimento();
+            this.controlador.alterarUsuario(usuario);
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
