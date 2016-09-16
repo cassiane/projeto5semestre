@@ -227,6 +227,22 @@ CREATE TABLE IF NOT EXISTS `witc`.`RecuperarConta` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `witc`.`ConvidadoUsuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `witc`.`ConvidadoUsuario` (
+  `idUsuario` INT UNSIGNED NOT NULL,
+  `emailConvidado` VARCHAR(150) NOT NULL,
+  `dataSolicitacao` DATE NULL,
+  INDEX `fk_ConvidadoUsuario_Usuario1_idx` (`idUsuario` ASC),
+  CONSTRAINT `fk_ConvidadoUsuario_Usuario1`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `witc`.`Usuario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

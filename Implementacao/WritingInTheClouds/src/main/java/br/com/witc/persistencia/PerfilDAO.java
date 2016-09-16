@@ -31,5 +31,7 @@ public class PerfilDAO {
     }
         return p;
     }
-    
+    public void salvarPerfil(Perfil perfil){
+        
+    }
 }
