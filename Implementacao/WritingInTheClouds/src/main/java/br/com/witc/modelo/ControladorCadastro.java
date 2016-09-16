@@ -8,6 +8,8 @@ package br.com.witc.modelo;
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
+import br.com.witc.persistencia.PerfilDAO;
+import br.com.witc.persistencia.TipoPerfilDAO;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -45,7 +47,10 @@ public class ControladorCadastro {
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
         
         usuario.consistirDados();
-        usuario.cadastrarUsuario();        
+        usuario.cadastrarUsuario();
+        
+        
+                
     }
     /**
      * altera um usuário no sistema
@@ -239,5 +244,19 @@ public class ControladorCadastro {
         
         recuperar.setDataUtilizacao(Calendar.getInstance());
         recuperar.salvar();
+    }
+    
+    public void criarPerfilPadrao(Usuario usuario){
+        TipoPerfil tipo = new TipoPerfil();
+        TipoPerfilDAO tipoDAO = new TipoPerfilDAO();
+        tipo = tipoDAO.carregarTipoPerfil(1);
+        Perfil perfil = new Perfil();       
+        PerfilDAO perfilDAO = new PerfilDAO();
+        perfil.setUsuario(usuario);
+        perfil.setPseudonimo(usuario.getNome());
+        perfil.setTipoPerfil(tipo);
+        perfil.setQualificacao(0);
+        perfilDAO.salvarPerfil(perfil);
+            
     }
 }

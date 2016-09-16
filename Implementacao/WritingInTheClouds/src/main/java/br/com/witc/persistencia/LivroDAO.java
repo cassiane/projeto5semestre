@@ -5,8 +5,14 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.modelo.Livro;
+import br.com.witc.modelo.Perfil;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.TypedQuery;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -24,25 +30,54 @@ public class LivroDAO {
     
     /**
      *
+     * @param livro
      */
-    public void criarLivro(){
-        //salva livro no banco
+    public void criarLivro(Livro livro){
         
-    }
+        try {
+           sessao.saveOrUpdate(livro);
+           
+            } catch (ConstraintViolationException e) {
+          
+                sessao.clear();
+             
+            } 
+        }
     
+    public List<Livro> listarLivrosPerfil(Perfil perfil){
+
+        String consulta ="select livro.* from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
+       List<Livro> lista ;
+        lista= sessao.createSQLQuery(consulta).addEntity("livro",Livro.class).setInteger("id",perfil.getId()).list();
+        return lista;
+       
+
+    }
     /**
      *
+     * @param livro
      */
-    public void editarLivro(){
+    public void editarLivro(Livro livro){
         //update livro no banco
-    }
+         try {
+           sessao.saveOrUpdate(livro);
+           
+            } catch (ConstraintViolationException e) {
+          
+                sessao.clear();
+             
+            } 
+        }
+    
     
     /**
      *
      * @param id
+     * @return Livro
      */
-    public void carregarLivro(int id){
+    public Livro carregarLivro(int id){
         //carrega livro no banco
+        return (Livro) sessao.load(Livro.class, id);
         
     }
     
