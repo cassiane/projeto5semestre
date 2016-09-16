@@ -133,11 +133,11 @@ public class RecuperarConta implements Serializable {
      * Envia um email com o link para redefinição de senha
      * @throws EmailException Caso ocorra algum problema no envio do email
      */
-    public void EnviarEmailRecuperacao() throws EmailException {       
+    public void EnviarEmailRecuperacao(String path) throws EmailException {       
         Mensagem mensagem = new Mensagem();
         mensagem.setDestino(this.usuario.getEmail());
         mensagem.setTitulo("Redefinição de senha do WitC");
-        String link = "http://localhost:8084/WritingInTheClouds/faces/redefinirSenha.xhtml?usuario=" + this.usuario.getEmail() + "&hash=" + this.hashRecuperacaoSenha;
+        String link = path + "/faces/redefinirSenha.xhtml?usuario=" + this.usuario.getEmail() + "&hash=" + this.hashRecuperacaoSenha;
         mensagem.setMensagem("Prezado ," + this.usuario.getNome()
                 + "\n\n Você está recebendo este email porque solicitou a recuperação da sua conta. "
                 + "Por favor, clique no link abaixo e siga as instruções da página."

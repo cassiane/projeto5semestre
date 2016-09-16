@@ -355,7 +355,12 @@ public class CadastrarBean {
      */
     public String recuperarConta() {
         try {
-            this.controlador.recuperarConta(this.emailRecuperacaoSenha);
+            // Capitura a url do sistema
+            String path = ((HttpServletRequest) FacesContext.getCurrentInstance()
+                    .getExternalContext().getRequest()).getRequestURL().toString();
+            // Altera a variavel para excluir o restante da url
+            path = path.replaceFirst("/faces(.*)", "");
+            this.controlador.recuperarConta(this.emailRecuperacaoSenha, path);
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, "Um email com instruções para redefinir sua senha foi enviado.");
             return "resultadoOper";
         } catch (DadosUsuarioInvalidoException e) {

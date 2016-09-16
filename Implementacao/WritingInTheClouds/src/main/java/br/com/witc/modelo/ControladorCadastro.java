@@ -167,7 +167,7 @@ public class ControladorCadastro {
      * @throws NoSuchAlgorithmException Caso ocorra um erro na criação do hash
      * @throws UnsupportedEncodingException Caso ocorra um erro na criação do hash
      */
-    public void recuperarConta(String destinatario) throws EmailException, 
+    public void recuperarConta(String destinatario, String path) throws EmailException, 
             DadosUsuarioInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {                        
         RecuperarConta recuperar = new RecuperarConta();
         
@@ -175,7 +175,7 @@ public class ControladorCadastro {
         recuperar.setUsuario(this.usuario);
         String senhaHash = Calendar.getInstance().getTime().toString() + "witc" + Arrays.toString(destinatario.getBytes());
         recuperar.setHashRecuperacaoSenha(Usuario.criarHashSenha(senhaHash));                
-        recuperar.EnviarEmailRecuperacao();        
+        recuperar.EnviarEmailRecuperacao(path);        
     }             
     
     /**
