@@ -44,10 +44,9 @@ public class LivroDAO {
         }
     
     public List<Livro> listarLivrosPerfil(Perfil perfil){
-        String consulta ="select livro.id,livro.titulo from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
+        String consulta ="select livro.id,  livro.idTipoGenero, livro.idTipoTexto, livro.titulo, livro.nroPaginas, livro.capa, livro.classificacao, livro.disponivelBiblioteca, livro.reportadoConteudoImproprio, livro.qualificacao, livro.texto from livro l inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
         return sessao.createSQLQuery(consulta).setInteger("id",perfil.getId()).list();
 
-       
     }
     /**
      *
