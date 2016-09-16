@@ -67,6 +67,21 @@ public class ControladorCadastro {
         usuario.consistirDados();
         usuario.alterarUsuario();
     }
+    /**
+     * Dado um usuário do sistema
+     * quando selecionar excluir conta
+     * então o sistema deve excluir a conta do usuário
+     * e retornar á pagina inicial
+     * @param usuario
+     * @throws DadosUsuarioInvalidoException
+     * @throws NoSuchAlgorithmException
+     * @throws UnsupportedEncodingException
+     * @throws UsuarioInvalidoException 
+     */
+    public void excluirUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
+        usuario.excluirUsuario();
+    }
 
     /**
      * Listar os amigos do usuario logado

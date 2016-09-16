@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -386,7 +388,25 @@ public class CadastrarBean {
         }
         return null;
     }
-
+    public String excluirUsuario(){        
+        try {
+            this.controlador.excluirUsuario(usuario);
+        } catch (DadosUsuarioInvalidoException ex) {
+            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UsuarioInvalidoException ex) {
+            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.usuario = new Usuario();
+        this.diaNascimento = null;
+        this.mesNascimento = null;
+        this.anoNascimento = null;
+        this.emailVerificado = null;
+        return "index";
+    }
     /**
      * Envia o link de redefinição de senha para o usuário
      *
