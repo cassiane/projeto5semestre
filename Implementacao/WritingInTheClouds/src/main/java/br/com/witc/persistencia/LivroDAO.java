@@ -53,17 +53,29 @@ public class LivroDAO {
     }
     /**
      *
+     * @param livro
      */
-    public void editarLivro(){
+    public void editarLivro(Livro livro){
         //update livro no banco
-    }
+         try {
+           sessao.saveOrUpdate(livro);
+           
+            } catch (ConstraintViolationException e) {
+          
+                sessao.clear();
+             
+            } 
+        }
+    
     
     /**
      *
      * @param id
+     * @return Livro
      */
-    public void carregarLivro(int id){
+    public Livro carregarLivro(int id){
         //carrega livro no banco
+        return (Livro) sessao.load(Livro.class, id);
         
     }
     

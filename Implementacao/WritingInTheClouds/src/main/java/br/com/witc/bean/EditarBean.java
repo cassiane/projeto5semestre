@@ -32,7 +32,7 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class EditarBean {
 
-    private Livro livro;
+    private Livro livro, livroCarregado;
     private Usuario usuario;
     private Perfil perfilUsuario;
     private String textoLivro;
@@ -105,10 +105,11 @@ public class EditarBean {
     public void setHistorico(HistoricoLivro historico) {
         this.historico = historico;
     }    
-    public void listarLivrosPerfil(){
-        this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);
+    public List<Livro> listarLivrosPerfil(){
+       return daoLivro.listarLivrosPerfil(this.perfilUsuario);
     }
-    public void salvarLivro(){
+    
+    public void salvarNovoLivro(){
         this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);
         TipoStatus st = new TipoStatus();
         TipoStatusDAO daoStatus = new TipoStatusDAO();
@@ -131,6 +132,10 @@ public class EditarBean {
  
     }
     
+    public void salvarLivro(){
+        daoLivro.criarLivro(this.livro);
+    }
+    
     public  Calendar getPegaDataAtual(){
 		Calendar calendar = new GregorianCalendar();
 		Date trialTime = new Date();
@@ -142,13 +147,25 @@ public class EditarBean {
         return "biblioteca";
     }  
     
-    public String editor(){
+    public String editorNovoLivro(){
         this.livro=new Livro();
         this.textoLivro="";
+        return "novoLivro";
+    }
+
+    public String editarLivro(int id){
+        livroCarregado = new Livro();
+        livroCarregado=daoLivro.carregarLivro(id);
         return "editarLivro";
     }
 
-  
+    public Livro getLivroCarregado() {
+        return livroCarregado;
+    }
+
+    public void setLivroCarregado(Livro livroCarregado) {
+        this.livroCarregado = livroCarregado;
+    }
 
    
 }
