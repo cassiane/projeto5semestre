@@ -10,6 +10,7 @@ import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Usuario;
+import java.awt.image.BufferedImage;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -20,13 +21,22 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.el.ELContext;
-import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.mail.EmailException;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import org.primefaces.model.CroppedImage;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.DefaultStreamedContent;
+import java.io.FileOutputStream;
+import java.io.*;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -50,7 +60,14 @@ public class CadastrarBean {
     private List<Usuario> solicitacao;
     private List<Usuario> usuarios;
     private String convidarEmail;
+    private StreamedContent imagemEnviada = new DefaultStreamedContent();
+    private String imagemTemporaria;
+    private CroppedImage croppedImage;
+    private boolean exibeBotao = true;
+    private UploadedFile file;
 
+    private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
+    
     public CadastrarBean() {
         this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
@@ -167,7 +184,121 @@ public class CadastrarBean {
     public void setAnoNascimento(String anoNascimento) {
         this.anoNascimento = anoNascimento;
     }
+    
+    /**
+     * @return 
+     */
+    public StreamedContent getImagemEnviada() {
+        return imagemEnviada;
+    }
+    /**
+     * @param imagemEnviada 
+     */
+    public void setImagemEnviada(StreamedContent imagemEnviada) {
+        this.imagemEnviada = imagemEnviada;
+    }
+    /**
+     * @return 
+     */
+    public String getImagemTemporaria() {
+        return imagemTemporaria;
+    }
+    /**
+     * @param imagemTemporaria 
+     */
+    public void setImagemTemporaria(String imagemTemporaria) {
+        this.imagemTemporaria = imagemTemporaria;
+    }
+    /**
+     * @return 
+     */
+    public CroppedImage getCroppedImage() {
+        return croppedImage;
+    }
+    /**
+     * @param croppedImage 
+     */
+    public void setCroppedImage(CroppedImage croppedImage) {
+        this.croppedImage = croppedImage;
+    }
+    /**
+     * @return 
+     */
+    public boolean isExibeBotao() {
+        return exibeBotao;
+    }
+    /**
+     * @param exibeBotao 
+     */
+    public void setExibeBotao(boolean exibeBotao) {
+        this.exibeBotao = exibeBotao;
+    }
+    
+    public UploadedFile getFile() {
+        return this.file;
+    }
 
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+    
+    public StreamedContent getFoto() {                 
+        if (this.usuario.getFoto() == null) {
+            return carregarFotoDefault();
+        }
+        
+        InputStream is = new ByteArrayInputStream(this.usuario.getFoto());               
+        StreamedContent image = new DefaultStreamedContent(is);        
+        return image;
+    }
+    
+    /**
+     * Cria o arquivo temporário
+     * @param bytes
+     * @param arquivo 
+     */
+    public void criaArquivo(byte[] bytes, String arquivo) {
+      FileOutputStream fos;
+      try {
+         fos = new FileOutputStream(arquivo);
+         fos.write(bytes);
+         fos.close();
+      } catch (FileNotFoundException ex) {
+          enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+      } catch (IOException ex) {
+         enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+      }
+   }
+    /**
+     * Evento de enviar a imagem utilizado no primefaces
+     * O método enviarImagem(FileUploadEvent event) é utilizado no atributo 
+     * fileUploadListener para ser executado sempre que uma imagem estiver sendo 
+     * enviada. É neste método onde poderemos fazer conversões, criação de 
+     * arquivos, etc.
+     * @param event 
+     */
+   public void enviarImagem(FileUploadEvent event) {       
+      byte[] img = event.getFile().getContents();
+       
+      imagemTemporaria = event.getFile().getFileName();
+      FacesContext facesContext = FacesContext.getCurrentInstance();      
+      ServletContext scontext; 
+      scontext = (ServletContext) facesContext.getExternalContext().getContext();
+      String arquivo = scontext.getRealPath("/Upload/" + imagemTemporaria);
+      arquivo = "C:\\Temp\\"+imagemTemporaria;
+      criaArquivo(img, arquivo);
+      setExibeBotao(true);
+   }
+   /**
+    * método crop() para coletar a imagem recortada e jogar dentro da 
+    * imagemEnviada que é do tipo StreamedContent, que pode ser trabalhado 
+    * dinamicamente com o um p:graphicImage.
+    * Seta a imagem no ImaggeCropper
+    */
+   public void crop() {
+      setImagemEnviada(new DefaultStreamedContent(new ByteArrayInputStream(croppedImage.getBytes())));      
+   }
+   
     /**
      * Busca e atualiza a lista de amigos
      *
@@ -360,8 +491,15 @@ public class CadastrarBean {
      * @return 
      */
     public String alterarUsuario() {
+        InputStream inputStream = null;
+        byte[] imgBytes = null;
         // Setar a data de nascimento no usuario
         try {            
+            if ((this.file != null) && (!this.file.getFileName().isEmpty()))  {
+                inputStream = this.file.getInputstream();                
+                imgBytes = IOUtils.toByteArray(inputStream);
+                this.usuario.setFoto(imgBytes);
+            }                        
             setDataNascimento();
             this.controlador.alterarUsuario(usuario);
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
@@ -369,7 +507,7 @@ public class CadastrarBean {
                     .getELResolver().getValue(elContext, null, "autenticarBean");
             autenticarBean.setUsuario(this.usuario);
             // Verifica se o novo usuario ja recebeu alguma solicitação de amizade
-            this.controlador.verificarConvite(this.usuario.getEmail());
+            this.controlador.verificarConvite(this.usuario.getEmail());            
             return "timeline";
         } catch (ParseException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Data de Nascimento inválida.");
@@ -385,6 +523,8 @@ public class CadastrarBean {
             this.anoNascimento = null;
             this.emailVerificado = null;
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        } catch (IOException ex) {
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Problemas ao carregar a foto!");
         }
         return null;
     }
@@ -561,6 +701,59 @@ public class CadastrarBean {
     public String editarLivro() {
         return "editarLivro";
     }
+    
+    /**
+     * Converte uma imagem para apresentar em um componente p:graphicImage     
+     * @return Um objeto StreamedContent
+     */
+    public StreamedContent converterFoto(String pathFile) {        
+        // Cria um objeto File com a foto do cliente        
+        File imgFile = new File(pathFile);
+        
+        // Converte o arquivo em um array de bytes
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] fotoCliente = null;
+        try {            
+            BufferedImage imagem = ImageIO.read(imgFile);
+            ImageIO.write(imagem, "PNG", bos);
+            bos.flush();  
+            fotoCliente = bos.toByteArray();                
+        } catch (IOException e) {            
+        }        
+        
+        try {
+            return new DefaultStreamedContent(new ByteArrayInputStream(fotoCliente));
+        } catch(NullPointerException e) {
+            // Nao foi possivel localizar nenhuma foto ...
+            return new DefaultStreamedContent();
+        }        
+    }        
+    
+    /**
+     * Converte uma imagem para apresentar em um componente p:graphicImage     
+     * @return Um objeto StreamedContent
+     */
+    public StreamedContent carregarFotoDefault() {        
+        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_FOTO_DEFAULT));            
+        
+        // Converte o arquivo em um array de bytes
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] fotoCliente = null;
+        try {            
+            BufferedImage imagem = ImageIO.read(imgFile);
+            ImageIO.write(imagem, "PNG", bos);
+            bos.flush();  
+            fotoCliente = bos.toByteArray();                
+        } catch (IOException e) {            
+        }        
+        
+        try {
+            return new DefaultStreamedContent(new ByteArrayInputStream(fotoCliente));
+        } catch(NullPointerException e) {
+            // Nao foi possivel localizar nenhuma foto ...
+            return new DefaultStreamedContent();
+        }        
+    }    
 
     /**
      * Envia à viewer uma mensagem com o status da operação
@@ -571,5 +764,5 @@ public class CadastrarBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }
+    }        
 }
