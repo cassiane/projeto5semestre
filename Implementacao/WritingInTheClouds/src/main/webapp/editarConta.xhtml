@@ -10,32 +10,34 @@
         <ui:define name="conteudo">   
             <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>
             <f:event listener="#{cadastrarBean.retornarDataNasc()}" type="preRenderView"/>
-            <h:form id="EditarUsuario" style="position: absolute; padding: 10px; left: 10%">
+            <h:form id="EditarUsuario" style="position: absolute; padding: 10px; left: 10%" enctype="multipart/form-data">
                 <h:panelGrid columns="1" columnClasses="column1,column2" >                                      
-                    <h:column>                                                
-                        <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">
+                    <h:column>  
+                        <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">   
+                            <p:graphicImage style="border-style: solid" id="img" width="130" height="100" value="#{cadastrarBean.foto}" cache="false"/>                                    
+                            <p:fileUpload value="#{cadastrarBean.file}" update="img" 
+                                          mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>                            
                             <p:inputText class="inputtext2c" placeholder="Nome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.nome}"/>
-                            <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.sobrenome}"/>
-                            <p:inputText class="inputtext" maxlength="150" placeholder="Email" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.email}"/>                            
+                            <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.sobrenome}"/>                            
                             <h:outputText value="Aniversário" style="font-size: 20px;"/>
                         </h:panelGrid>
                         <h:panelGrid columns="3">
                             <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 50px" required="true" >
-                                <f:selectItem itemLabel="#{cadastrarBean.diaNascimento}" itemValue="#{cadastrarBean.diaNascimento}" />                                
+                                <f:selectItem itemLabel="Dia" itemValue="#{cadastrarBean.diaNascimento}" />                                
                                 <c:forEach var="dia" begin="1" end="31">                                    
                                     <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" noSelectionOption="#{cadastrarBean.diaNascimento.equals(dia)}" />
                                 </c:forEach>
                             </p:selectOneMenu>
                             <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 
                                              required="true">
-                                <f:selectItem itemLabel="Mês" itemValue="" />
+                                <f:selectItem itemLabel="Mês" itemValue="#{cadastrarBean.mesNascimento}" />
                                 <c:forEach var="mes" begin="1" end="12">
                                     <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
                                 </c:forEach>
                             </p:selectOneMenu>
                             <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 50px; margin-left: 10px;" 
                                              required="true">
-                                <f:selectItem itemLabel="Ano" itemValue="" />
+                                <f:selectItem itemLabel="Ano" itemValue="#{cadastrarBean.anoNascimento}" />
                                 <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
                                     <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
                                 </c:forEach>
@@ -48,9 +50,18 @@
                             </p:selectOneRadio>
                             
                             <p:commandButton ajax="false" value="Salvar Configurações" style="width:200px; margin-left: 3px;"
-                                         action="#{cadastrarBean.cadastrarUsuario()}" />
-                            <p:commandLink ajax="false" value="Excluir minha conta" style="width:200px; margin-left: 3px; color: red"
-                                         action="#{cadastrarBean.cadastrarUsuario()}" />
+                                             action="#{cadastrarBean.alterarUsuario()}" />
+                            <h:form>
+                                <p:growl id="message" showDetail="true" />
+                                <p:commandButton value="Excluir minha conta" actionListener="#{cadastrarBean.excluirUsuario()}" update="message">
+                                    <p:confirm header="Confirmação" message="Você tem certeza?" icon="ui-icon-alert" />
+                                </p:commandButton>
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </h:form>
                         </h:panelGrid>
                     </h:column>
                 </h:panelGrid>

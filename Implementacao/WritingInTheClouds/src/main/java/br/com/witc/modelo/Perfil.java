@@ -5,20 +5,31 @@
  */
 package br.com.witc.modelo;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author root
  */
-public class Perfil {
+@Entity
+public class Perfil implements Serializable {
     @Id
     @GeneratedValue
     private int id;
     private int qualificacao;
     private String pseudonimo;
+    @ManyToOne
+    @JoinColumn(name="idUsuario")
     private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name="idTipoPerfil")
+    private TipoPerfil tipoPerfil;
+    
 
     public int getId() {
         return id;
@@ -51,4 +62,12 @@ public class Perfil {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }   
+
+    public TipoPerfil getTipoPerfil() {
+        return tipoPerfil;
+    }
+
+    public void setTipoPerfil(TipoPerfil tipoPerfil) {
+        this.tipoPerfil = tipoPerfil;
+    }
 }

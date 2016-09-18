@@ -68,6 +68,21 @@ public class UsuarioDAO {
             }
         }
     }
+    /**
+     * Mérodo para excluir o usuário
+     * @param usuario
+     * @throws UsuarioInvalidoException 
+     */
+    public void ExcluirUsuario(Usuario usuario) throws UsuarioInvalidoException{
+        try{
+            sessao.delete(usuario);
+        }catch (ConstraintViolationException e) {
+            if (e.getSQLException().getMessage().contains("email")) {
+                sessao.clear();
+                throw new UsuarioInvalidoException("Email já está sendo utilizado realize o login ou clique em esqueceu a senha.");
+            }
+        }
+    }
 
     /**
      * Consulta a procedure e busca uma lista de amigos

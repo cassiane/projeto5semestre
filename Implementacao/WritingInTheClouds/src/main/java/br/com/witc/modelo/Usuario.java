@@ -216,7 +216,28 @@ public class Usuario implements Serializable {
         setSenha(criarHashSenha(this.senha));
         dao.salvarUsuario(this);
     }
-
+    /**
+     * Dado um usuário do sistema
+     * quando selecionar excluir conta
+     * então deve apagar a conta do usuário
+     * @throws UsuarioInvalidoException 
+     */
+    public void excluirUsuario() throws UsuarioInvalidoException{
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.ExcluirUsuario(this);
+    }
+    /**
+     * altera os dados do usuário
+     * @throws DadosUsuarioInvalidoException
+     * @throws NoSuchAlgorithmException
+     * @throws UnsupportedEncodingException
+     * @throws UsuarioInvalidoException 
+     */
+    public void alterarUsuario() throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
+       UsuarioDAO dao = new UsuarioDAO();      
+       dao.salvarUsuario(this);
+    }
     /**
      * Acessar o dao para buscar os amigos
      *
