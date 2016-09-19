@@ -11,7 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema witc
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `witc` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+CREATE SCHEMA IF NOT EXISTS `witc` DEFAULT CHARACTER SET utf8 ;
 USE `witc` ;
 
 -- -----------------------------------------------------
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `witc`.`Usuario` (
   `email` VARCHAR(150) NOT NULL,
   `dataAniversario` DATE NOT NULL,
   `genero` VARCHAR(20) NOT NULL,
-  `foto` BLOB NULL,
+  `foto` LONGBLOB NULL,
   `senha` VARCHAR(64) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
