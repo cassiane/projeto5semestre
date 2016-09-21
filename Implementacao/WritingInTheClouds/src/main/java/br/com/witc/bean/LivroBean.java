@@ -14,11 +14,14 @@ import br.com.witc.persistencia.HistoricoLivroDAO;
 import br.com.witc.persistencia.LivroDAO;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoStatusDAO;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,7 +33,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @SessionScoped
-public class EditarBean {
+public class LivroBean {
 
     private Livro livro, livroCarregado;
     private Usuario usuario;
@@ -42,23 +45,42 @@ public class EditarBean {
     private PerfilDAO daoPerfil;
     private LivroDAO daoLivro;
     private HistoricoLivroDAO daoHistorico;
+    private List<String> teste = new ArrayList();    
+    private List<String> tipoTexto = new ArrayList();
     
-    
-    public EditarBean() {
+    public LivroBean() {
         //usuario logado
-          ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
         
-        this.usuario = autenticarBean.usuarioLogado();
+        this.usuario = autenticarBean.usuarioLogado();        
+        /*
         daoPerfil = new PerfilDAO();
         daoLivro = new LivroDAO();
         daoHistorico = new HistoricoLivroDAO();
         
         this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);
-        this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);
+        this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);        
+        */
+        
+        tipoTexto.add("Teste1");
+        tipoTexto.add("Teste2");
+        tipoTexto.add("Teste3");
+        
+        for (int i=0; i<10; i++) {
+            teste.add("Livro" + i);
+        }
     }
-
+    
+    public List<String> getTeste() {
+        return teste;
+    }
+    
+    public List<String> getTipoTexto() {
+        return tipoTexto;
+    }
+    
     public Livro getLivro() {
         return livro;
     }

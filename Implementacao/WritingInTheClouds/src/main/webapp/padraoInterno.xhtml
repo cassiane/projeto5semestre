@@ -41,13 +41,11 @@
                 </h:form>
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="300">
-                <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
-
-                <br/>
-                <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
-
-                <br/>
-
+                <h:panelGrid columns="1">
+                    <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
+                    <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
+                    <p:link outcome="bibliotecaVirtual.xhtml" value="Biblioteca Virtual" />
+                </h:panelGrid>
             </p:layoutUnit>    
             <p:layoutUnit position="center">
                 <ui:insert name="conteudo"/>

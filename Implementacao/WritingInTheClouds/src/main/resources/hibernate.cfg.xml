@@ -7,6 +7,7 @@
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/witc?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.current_session_context_class">managed</property>
+    <property name="hibernate.connection.password">root</property>
     <mapping class="br.com.witc.modelo.Usuario"/>
     <mapping class="br.com.witc.modelo.RecuperarConta"/>
     <mapping class="br.com.witc.modelo.Perfil"/>
@@ -15,12 +16,7 @@
     <mapping class="br.com.witc.modelo.TipoStatus"/>
     <mapping class="br.com.witc.modelo.TipoTexto"/>
     <mapping class="br.com.witc.modelo.HistoricoLivro"/>
-
-
     <mapping class="br.com.witc.modelo.ConvidadoUsuario"/>
-
-
     <mapping class="br.com.witc.modelo.TipoPerfil"/>
-
   </session-factory>
 </hibernate-configuration>
