@@ -16,15 +16,16 @@
                 </h:panelGrid>                
             </h:form>
             
-            <c:forEach items="#{livroBean.tipoTexto}" var="tipoTexto">
-                <p:dataGrid value="#{livroBean.teste}" var="coletanea" columns="10">
-                    <f:facet name="header">
-                        #{tipoTexto}
-                    </f:facet>
-                    <p:panel style="text-align:center">                    
-                        <p:graphicImage height="100px" width="80px" name="imagens/livro.png"/>                                             
-                    </p:panel>             
-                </p:dataGrid>
+            <c:forEach items="#{livroBean.teste2.entrySet().toArray()}" var="entry">
+                <p:carousel value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
+                    <p:dataGrid value="#{livro}" var="coletanea">
+                        <f:facet name="header">
+                            <p:graphicImage height="100px" width="80px" name="imagens/livro.png"/>
+                        </f:facet>
+                                                
+                        <h:outputText value="#{livro}" />
+                    </p:dataGrid>
+                </p:carousel>
             </c:forEach>
         </ui:define>
     </ui:composition>

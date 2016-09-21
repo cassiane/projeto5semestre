@@ -46,7 +46,7 @@ public class LivroBean {
     private LivroDAO daoLivro;
     private HistoricoLivroDAO daoHistorico;
     private List<String> teste = new ArrayList();    
-    private List<String> tipoTexto = new ArrayList();
+    private Map<String ,List<String>> teste2 = new HashMap();    
     
     public LivroBean() {
         //usuario logado
@@ -64,21 +64,36 @@ public class LivroBean {
         this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);        
         */
         
-        tipoTexto.add("Teste1");
-        tipoTexto.add("Teste2");
-        tipoTexto.add("Teste3");
-        
         for (int i=0; i<10; i++) {
             teste.add("Livro" + i);
         }
+                
+        teste2.put("TipoTexto1", teste); 
+        teste = new ArrayList();
+        teste.add("Livro");
+        teste2.put("TipoTexto2", teste);
+        teste = new ArrayList();
+        teste.add("Livro");
+        teste.add("Livro");
+        teste.add("Livro");
+        teste2.put("TipoTexto3", teste);
+        teste = new ArrayList();
+        teste.add("Livro");
+        teste.add("Livro");
+        teste.add("Livro");
+        teste.add("Livro");
+        teste.add("Livro");
+        teste2.put("TipoTexto4", teste);
+        teste = new ArrayList();
+        teste.add("Livro");
     }
     
     public List<String> getTeste() {
         return teste;
     }
     
-    public List<String> getTipoTexto() {
-        return tipoTexto;
+    public Map<String,List<String>> getTeste2() {
+        return teste2;
     }
     
     public Livro getLivro() {
