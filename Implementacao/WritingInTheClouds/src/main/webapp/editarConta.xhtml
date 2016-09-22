@@ -8,52 +8,52 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">   
-            <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>
-            <f:event listener="#{cadastrarBean.retornarDataNasc()}" type="preRenderView"/>
+            <f:event listener="#{usuarioBean.setUsuarioLogado()}" type="preRenderView"/>
+            <f:event listener="#{usuarioBean.retornarDataNasc()}" type="preRenderView"/>
             <h:form id="EditarUsuario" style="position: absolute; padding: 10px; left: 10%" enctype="multipart/form-data">
                 <h:panelGrid columns="1" columnClasses="column1,column2" >                                      
                     <h:column>  
                         <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">   
-                            <p:graphicImage style="border-style: solid" id="img" width="130" height="100" value="#{cadastrarBean.foto}" cache="false"/>                                    
-                            <p:fileUpload value="#{cadastrarBean.file}" update="img" 
+                            <p:graphicImage style="border-style: solid" id="img" width="130" height="100" value="#{usuarioBean.foto}" cache="false"/>                                    
+                            <p:fileUpload value="#{usuarioBean.file}" update="img" 
                                           mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>                            
-                            <p:inputText class="inputtext2c" placeholder="Nome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.nome}"/>
-                            <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.sobrenome}"/>                            
+                            <p:inputText class="inputtext2c" placeholder="Nome" required="true" style="width: 500px;" value="#{usuarioBean.usuario.nome}"/>
+                            <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" style="width: 500px;" value="#{usuarioBean.usuario.sobrenome}"/>                            
                             <h:outputText value="Aniversário" style="font-size: 20px;"/>
                         </h:panelGrid>
                         <h:panelGrid columns="3">
-                            <p:selectOneMenu value="#{cadastrarBean.diaNascimento}" style="width: 50px" required="true" >
-                                <f:selectItem itemLabel="Dia" itemValue="#{cadastrarBean.diaNascimento}" />                                
+                            <p:selectOneMenu value="#{usuarioBean.diaNascimento}" style="width: 50px" required="true" >
+                                <f:selectItem itemLabel="Dia" itemValue="#{usuarioBean.diaNascimento}" />                                
                                 <c:forEach var="dia" begin="1" end="31">                                    
-                                    <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" noSelectionOption="#{cadastrarBean.diaNascimento.equals(dia)}" />
+                                    <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" noSelectionOption="#{usuarioBean.diaNascimento.equals(dia)}" />
                                 </c:forEach>
                             </p:selectOneMenu>
-                            <p:selectOneMenu value="#{cadastrarBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 
+                            <p:selectOneMenu value="#{usuarioBean.mesNascimento}" style="width: 50px; margin-left: 10px;" 
                                              required="true">
-                                <f:selectItem itemLabel="Mês" itemValue="#{cadastrarBean.mesNascimento}" />
+                                <f:selectItem itemLabel="Mês" itemValue="#{usuarioBean.mesNascimento}" />
                                 <c:forEach var="mes" begin="1" end="12">
                                     <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
                                 </c:forEach>
                             </p:selectOneMenu>
-                            <p:selectOneMenu value="#{cadastrarBean.anoNascimento}" style="width: 50px; margin-left: 10px;" 
+                            <p:selectOneMenu value="#{usuarioBean.anoNascimento}" style="width: 50px; margin-left: 10px;" 
                                              required="true">
-                                <f:selectItem itemLabel="Ano" itemValue="#{cadastrarBean.anoNascimento}" />
-                                <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
+                                <f:selectItem itemLabel="Ano" itemValue="#{usuarioBean.anoNascimento}" />
+                                <c:forEach varStatus="ano" begin="#{usuarioBean.anoInicial}" end="#{usuarioBean.anoAtual}">
                                     <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
                                 </c:forEach>
                             </p:selectOneMenu>
                         </h:panelGrid>
                         <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">
-                            <p:selectOneRadio value="#{cadastrarBean.usuario.genero}" required="true">
+                            <p:selectOneRadio value="#{usuarioBean.usuario.genero}" required="true">
                                 <f:selectItem itemLabel="Feminino" itemValue="F" />
                                 <f:selectItem itemLabel="Masculino" itemValue="M" />
                             </p:selectOneRadio>
                             
                             <p:commandButton ajax="false" value="Salvar Configurações" style="width:200px; margin-left: 3px;"
-                                             action="#{cadastrarBean.alterarUsuario()}" />
+                                             action="#{usuarioBean.alterarUsuario()}" />
                             <h:form>
                                 <p:growl id="message" showDetail="true" />
-                                <p:commandButton value="Excluir minha conta" actionListener="#{cadastrarBean.excluirUsuario()}" update="message">
+                                <p:commandButton value="Excluir minha conta" actionListener="#{usuarioBean.excluirUsuario()}" update="message">
                                     <p:confirm header="Confirmação" message="Você tem certeza?" icon="ui-icon-alert" />
                                 </p:commandButton>
 

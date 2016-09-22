@@ -33,6 +33,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.FileOutputStream;
 import java.io.*;
+import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import org.apache.commons.io.IOUtils;
@@ -44,7 +45,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @SessionScoped
-public class CadastrarBean {
+public class UsuarioBean {
 
     private final ControladorCadastro controlador;
     private Usuario usuario;
@@ -68,7 +69,7 @@ public class CadastrarBean {
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
-    public CadastrarBean() {
+    public UsuarioBean() {
         this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
     }
@@ -537,21 +538,21 @@ public class CadastrarBean {
             this.usuario.setAtivo(false);
             this.controlador.excluirUsuario(usuario);             
         } catch (DadosUsuarioInvalidoException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UsuarioInvalidoException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.usuario = new Usuario();
         this.diaNascimento = null;
         this.mesNascimento = null;
         this.anoNascimento = null;
         this.emailVerificado = null;
-        AutenticarBean aut = new AutenticarBean(); 
-        return aut.efetuarLogoff();        
+        getCurrentInstance().getExternalContext().invalidateSession();
+        return "index.xhtml?faces-redirect=true";        
     }
     /**
      * Envia o link de redefinição de senha para o usuário
