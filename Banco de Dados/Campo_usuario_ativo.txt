@@ -1,0 +1,2 @@
+alter table usuario add column ativo smallint(1) not null; 
+update usuario set ativo = 1; 
