@@ -21,7 +21,7 @@ public class Perfil implements Serializable {
     @Id
     @GeneratedValue
     private int id;
-    private int qualificacao;
+    private Integer qualificacao;
     private String pseudonimo;
     @ManyToOne
     @JoinColumn(name="idUsuario")
@@ -39,11 +39,11 @@ public class Perfil implements Serializable {
         this.id = id;
     }
 
-    public int getQualificacao() {
+    public Integer getQualificacao() {
         return qualificacao;
     }
 
-    public void setQualificacao(int qualificacao) {
+    public void setQualificacao(Integer qualificacao) {
         this.qualificacao = qualificacao;
     }
 

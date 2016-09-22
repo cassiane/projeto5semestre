@@ -5,13 +5,19 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.TypedQuery;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -81,7 +87,46 @@ public class LivroDAO {
         
     }
     
+    /**
+     * Lista os livros publicados na Biblioteca Virtual
+     * @return Uma lista de livros publicados na Biblioteca Virtual
+     */
+    public List<Livro> listarLivrosPublicados() {
+        return sessao.createCriteria(Livro.class)
+                .add(Restrictions.like("disponivelBiblioteca", true))
+                .addOrder(Order.asc("tipoTexto"))
+                .list();
+    }
     
+    /**
+     * @return Um Map com os Livros da Biblioteca Virtual
+     * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso a Biblioteca Virtual esteja vazia
+     */
+    public Map<String,List<Livro>> getBibliotecaVirtual() throws BibliotecaVirtualVaziaException {
+        Map<String,List<Livro>> tmpBiblioteca = new HashMap();
+        List<Livro> lstLivros = listarLivrosPublicados();        
+        
+        if (!lstLivros.isEmpty()) {            
+            List<Livro> lstLivrosTipoTexto = new ArrayList();
+            String key = lstLivros.get(0).getTipoTexto().toString();            
+            for (Livro livro : lstLivros) {            
+                if (key.equals(livro.getTipoTexto().toString())) {
+                    lstLivrosTipoTexto.add(livro);
+                } else {
+                    tmpBiblioteca.put(key, lstLivrosTipoTexto);
+                                        
+                    key = livro.getTipoTexto().toString();
+                    lstLivrosTipoTexto = new ArrayList();
+                    lstLivrosTipoTexto.add(livro);                    
+                }
+            }
+            tmpBiblioteca.put(key, lstLivrosTipoTexto);
+        } else {
+            throw new BibliotecaVirtualVaziaException("Nenhum livro foi publicado até o momento.");
+        }
+        
+        return tmpBiblioteca;
+    }
     
     
 }

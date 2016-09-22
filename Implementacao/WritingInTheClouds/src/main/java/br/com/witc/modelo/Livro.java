@@ -5,7 +5,11 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.persistencia.LivroDAO;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -24,12 +28,12 @@ public class Livro implements Serializable {
     @GeneratedValue
     private int id;
     private String titulo;
-    private int nroPaginas;
+    private Integer nroPaginas;
     private byte[] capa;
     private String classificacao;
     private boolean disponivelBiblioteca;
     private boolean reportadoConteudoImproprio;
-    private int qualificacao;
+    private Integer qualificacao;
     private String texto;
     @OneToOne
     @JoinColumn(name="idTipoTexto")
@@ -55,11 +59,11 @@ public class Livro implements Serializable {
         this.titulo = titulo;
     }
 
-    public int getNroPaginas() {
+    public Integer getNroPaginas() {
         return nroPaginas;
     }
 
-    public void setNroPaginas(int nroPaginas) {
+    public void setNroPaginas(Integer nroPaginas) {
         this.nroPaginas = nroPaginas;
     }
 
@@ -95,11 +99,11 @@ public class Livro implements Serializable {
         this.reportadoConteudoImproprio = reportadoConteudoImproprio;
     }
 
-    public int getQualificacao() {
+    public Integer getQualificacao() {
         return qualificacao;
     }
 
-    public void setQualificacao(int qualificacao) {
+    public void setQualificacao(Integer qualificacao) {
         this.qualificacao = qualificacao;
     }
 
@@ -114,9 +118,11 @@ public class Livro implements Serializable {
     public void criarLivro(Perfil[]autores){
         
     }
+    
     public void editarLivro(){
         
     }
+    
     public void carregarLivro(int id){
         
     }
@@ -136,7 +142,23 @@ public class Livro implements Serializable {
     public void setTipoGenero(TipoGenero tipoGenero) {
         this.tipoGenero = tipoGenero;
     }
-
     
+    /**     
+     * @param idLivro O id do livro
+     * @return O array de byte que representa a imagem
+     */
+    public byte[] getCapaPorId(int idLivro) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.carregarLivro(idLivro).getCapa();
+    }
+
+    /**     
+     * @return Um Map com os Livros da Biblioteca Virtual
+     * @throws BibliotecaVirtualVaziaException Caso a Biblioteca Virtual esteja vazia
+     */
+    public Map<String,List<Livro>> getBibliotecaVirtual() throws BibliotecaVirtualVaziaException {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.getBibliotecaVirtual();
+    }
     
 }

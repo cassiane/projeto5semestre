@@ -16,14 +16,16 @@
                 </h:panelGrid>                
             </h:form>
             
-            <c:forEach items="#{livroBean.teste2.entrySet().toArray()}" var="entry">
+            <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">
                 <p:carousel value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
-                    <p:dataGrid value="#{livro}" var="coletanea">
+                    <p:dataGrid value="#{livro}">
                         <f:facet name="header">
-                            <p:graphicImage height="100px" width="80px" name="imagens/livro.png"/>
+                            <p:graphicImage id="capa" height="100px" width="70px" value="#{livroBean.capa}" cache="false">
+                                <f:param  name="livroId" value="#{livro.id}" />
+                            </p:graphicImage>
                         </f:facet>
                                                 
-                        <h:outputText value="#{livro}" />
+                        <h:outputText value="#{livro.titulo}" />
                     </p:dataGrid>
                 </p:carousel>
             </c:forEach>
