@@ -53,3 +53,23 @@ INSERT INTO witc.Usuario_tem_Amigo (idUsuario, idAmigo, dataSolicitacao)
 COMMIT;
 END$$
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- Procedure `proc_convite` Ajuste para limpar a tabela apos realizar a pesquisa de convites existente e grava na solicitação
+-- -----------------------------------------------------
+DROP procedure IF EXISTS `proc_convite`;
+
+DELIMITER $$
+USE `witc`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_convite`(IN email VARCHAR(150))
+BEGIN
+START TRANSACTION;
+INSERT INTO witc.Usuario_tem_Amigo (idUsuario, idAmigo, dataSolicitacao)
+ SELECT a.idUsuario, b.id, a.dataSolicitacao FROM witc.ConvidadoUsuario a
+ JOIN witc.Usuario b ON a.emailConvidado = b.email
+ WHERE a.emailConvidado = email;
+DELETE FROM witc.ConvidadoUsuario WHERE emailConvidado = email;
+COMMIT;
+END$$
+
+DELIMITER ;
