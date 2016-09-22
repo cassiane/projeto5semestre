@@ -426,9 +426,14 @@ public class CadastrarBean {
      */
     public void preencherDataNasc() {
         try {
-            this.diaNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getDay());
+            Calendar c; 
+            c = this.usuario.getDataAniversario();             
+            this.diaNascimento = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+            this.mesNascimento = Integer.toString(c.get(Calendar.MONTH)+1); 
+            this.anoNascimento = Integer.toString(c.get(Calendar.YEAR));
+            /*this.diaNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getDate());
             this.mesNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getMonth());
-            this.anoNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getYear());
+            this.anoNascimento = Integer.toString(this.usuario.getDataAniversario().getTime().getYear());*/
         } catch (Exception e) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, e.getMessage());
         }
@@ -454,10 +459,9 @@ public class CadastrarBean {
             }
 
             setDataNascimento();
+            this.usuario.setAtivo(true);
             this.controlador.cadastrarUsuario(usuario);
-
-            setDataNascimento();                
-            this.controlador.cadastrarUsuario(usuario);    
+            setDataNascimento();                  
             this.controlador.criarPerfilPadrao(usuario);
 
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
@@ -530,7 +534,8 @@ public class CadastrarBean {
     }
     public String excluirUsuario(){        
         try {
-            this.controlador.excluirUsuario(usuario);
+            this.usuario.setAtivo(false);
+            this.controlador.excluirUsuario(usuario);             
         } catch (DadosUsuarioInvalidoException ex) {
             Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
@@ -545,7 +550,8 @@ public class CadastrarBean {
         this.mesNascimento = null;
         this.anoNascimento = null;
         this.emailVerificado = null;
-        return "index";
+        AutenticarBean aut = new AutenticarBean(); 
+        return aut.efetuarLogoff();        
     }
     /**
      * Envia o link de redefinição de senha para o usuário

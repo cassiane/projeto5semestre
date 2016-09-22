@@ -40,6 +40,7 @@ public class Usuario implements Serializable {
     private String genero;
     private byte[] foto;
     private String senha;
+    private boolean ativo; 
 
     /**
      * @return the id
@@ -152,7 +153,20 @@ public class Usuario implements Serializable {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
+    
+    /**
+     * @return 
+     */
+    public boolean isAtivo() {
+        return ativo;
+    }
+    
+    /**
+     * @param ativo 
+     */
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
     /**
      * Autentica um usuário no sistema
      *
