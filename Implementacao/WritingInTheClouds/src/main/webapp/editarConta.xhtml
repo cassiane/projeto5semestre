@@ -10,16 +10,15 @@
         <ui:define name="conteudo">   
             <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>
             <f:event listener="#{cadastrarBean.retornarDataNasc()}" type="preRenderView"/>
-            <h:form id="EditarUsuario" style="position: absolute; padding: 10px; left: 10%">
+            <h:form id="EditarUsuario" style="position: absolute; padding: 10px; left: 10%" enctype="multipart/form-data">
                 <h:panelGrid columns="1" columnClasses="column1,column2" >                                      
-                    <h:column>                          
+                    <h:column>  
                         <h:panelGrid columns="1" class="painelgrid" cellpadding="3px">   
-                            <!--<p:graphicImage id="Imagem" value="{cadastrarBean.usuario.imagem}" height="240px" width="320px" cache="false"/>                            
-                            <p:fileUpload  sizeLimit="204800" auto="true" widgetVar="uploader" label="Procurar..."  fileUploadListener="{cadastrarBean.usuario.handleFileUpload(event)}"
-                                allowTypes="*.jpg;*.png;*.gif;" update="imagem" multiple="false"/>-->
+                            <p:graphicImage style="border-style: solid" id="img" width="130" height="100" value="#{cadastrarBean.foto}" cache="false"/>                                    
+                            <p:fileUpload value="#{cadastrarBean.file}" update="img" 
+                                          mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>                            
                             <p:inputText class="inputtext2c" placeholder="Nome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.nome}"/>
-                            <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.sobrenome}"/>
-                            <p:inputText class="inputtext" maxlength="150" placeholder="Email" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.email}"/>                            
+                            <p:inputText class="inputtext2c" maxlength="50" placeholder="Sobrenome" required="true" style="width: 500px;" value="#{cadastrarBean.usuario.sobrenome}"/>                            
                             <h:outputText value="Aniversário" style="font-size: 20px;"/>
                         </h:panelGrid>
                         <h:panelGrid columns="3">
@@ -52,8 +51,17 @@
                             
                             <p:commandButton ajax="false" value="Salvar Configurações" style="width:200px; margin-left: 3px;"
                                              action="#{cadastrarBean.alterarUsuario()}" />
-                            <p:commandLink ajax="false" value="Excluir minha conta" style="width:200px; margin-left: 3px; color: red"
-                                           action="#{cadastrarBean.excluirUsuario()}" />
+                            <h:form>
+                                <p:growl id="message" showDetail="true" />
+                                <p:commandButton value="Excluir minha conta" actionListener="#{cadastrarBean.excluirUsuario()}" update="message">
+                                    <p:confirm header="Confirmação" message="Você tem certeza?" icon="ui-icon-alert" />
+                                </p:commandButton>
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                </p:confirmDialog>
+                            </h:form>
                         </h:panelGrid>
                     </h:column>
                 </h:panelGrid>

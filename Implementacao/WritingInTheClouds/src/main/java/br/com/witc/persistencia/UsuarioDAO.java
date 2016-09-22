@@ -12,6 +12,7 @@ import br.com.witc.modelo.ConvidadoUsuario;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
+import static javax.faces.context.FacesContext.getCurrentInstance;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
@@ -47,8 +48,13 @@ public class UsuarioDAO {
                 .uniqueResult();
         if (tmpUsuario == null) {
             throw new LoginInvalidoException("Email ou senha incorretos!");
+        }else{
+            if(tmpUsuario.isAtivo() == false){
+                throw new LoginInvalidoException("Usuário inativo!");
+            }else{
+                return tmpUsuario;
+            }
         }
-        return tmpUsuario;
     }
 
     /**
@@ -75,7 +81,7 @@ public class UsuarioDAO {
      */
     public void ExcluirUsuario(Usuario usuario) throws UsuarioInvalidoException{
         try{
-            sessao.delete(usuario);
+            sessao.saveOrUpdate(usuario);           
         }catch (ConstraintViolationException e) {
             if (e.getSQLException().getMessage().contains("email")) {
                 sessao.clear();
