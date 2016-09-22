@@ -83,10 +83,7 @@ public class UsuarioDAO {
         try{
             sessao.saveOrUpdate(usuario);           
         }catch (ConstraintViolationException e) {
-            if (e.getSQLException().getMessage().contains("email")) {
-                sessao.clear();
-                throw new UsuarioInvalidoException("Email já está sendo utilizado realize o login ou clique em esqueceu a senha.");
-            }
+            throw new UsuarioInvalidoException("Não foi possivel excluir sua conta - "+e.getMessage());            
         }
     }
 
