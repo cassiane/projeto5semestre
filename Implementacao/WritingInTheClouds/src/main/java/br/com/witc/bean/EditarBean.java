@@ -15,6 +15,7 @@ import br.com.witc.persistencia.LivroDAO;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoStatusDAO;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -56,7 +57,7 @@ public class EditarBean {
         daoHistorico = new HistoricoLivroDAO();
         
         this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);
-        this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);
+      // this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);
     }
 
     public Livro getLivro() {
@@ -107,9 +108,10 @@ public class EditarBean {
         this.historico = historico;
     }    
     public List<Livro> listarLivrosPerfil(){
-        List<Livro> listaTemp = daoLivro.listarLivrosPerfil(this.perfilUsuario);
+        livros = daoLivro.listarLivrosPerfil(this.perfilUsuario);
        
-            return listaTemp;
+            return livros;
+        
         
     }
     
