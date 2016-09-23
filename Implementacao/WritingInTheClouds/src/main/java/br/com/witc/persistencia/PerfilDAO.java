@@ -8,6 +8,8 @@ package br.com.witc.persistencia;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -39,6 +41,16 @@ public class PerfilDAO {
         }catch(ConstraintViolationException e){
              sessao.clear();
         }
+    }
+
+    public List<Usuario> carregarListaAmigoEdigor() {
+        List<Usuario> tmpPerfil = null;
+        try {
+            tmpPerfil = sessao.createSQLQuery("FROM Usuario").addEntity(Usuario.class).list();
+        } catch (Exception ex) {
+            
+        }
+        return tmpPerfil;
     }
     
 

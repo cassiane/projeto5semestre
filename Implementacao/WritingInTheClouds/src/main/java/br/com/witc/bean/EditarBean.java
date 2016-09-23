@@ -5,6 +5,7 @@
  */
 package br.com.witc.bean;
 
+import br.com.witc.modelo.ControladorEdicao;
 import br.com.witc.modelo.HistoricoLivros;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
@@ -32,6 +33,7 @@ import javax.faces.context.FacesContext;
 @SessionScoped
 public class EditarBean {
 
+    private final ControladorEdicao controlador;
     private Livro livro, livroCarregado;
     private Usuario usuario;
     private Perfil perfilUsuario;
@@ -42,9 +44,13 @@ public class EditarBean {
     private PerfilDAO daoPerfil;
     private LivroDAO daoLivro;
     private HistoricoLivroDAO daoHistorico;
+    private List<Usuario> amigoEditor;
+    private List<Usuario> listaAmigoEditor;
     
     
     public EditarBean() {
+        this.controlador = new ControladorEdicao();
+        
         //usuario logado
           ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
@@ -183,5 +189,16 @@ public class EditarBean {
         this.tituloLivro = tituloLivro;
     }
 
-   
+    public List<Usuario> getAmigoEditor() {
+        return amigoEditor;
+    }
+
+    public void setAmigoEditor(List<Usuario> AmigoEditor) {
+        this.amigoEditor = AmigoEditor;
+    }
+
+    public List<Usuario> getListaAmigoEditor() {
+        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor();
+        return listaAmigoEditor;
+    }
 }

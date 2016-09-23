@@ -12,14 +12,22 @@
                    <p:outputLabel for="titulo" value="Título: "/>
                    <p:inputText id="titulo" label="titulo"  value="#{editarBean.livroCarregado.titulo}" required="true" requiredMessage="Informe o titulo do livro!!"/>                    
                    <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.livroCarregado.texto}" width="600" />
-                     <h:panelGrid columns="3" style="margin-top: 10px">
-                         <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
+                     <h:panelGrid columns="4" style="margin-top: 10px">
+                        <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
                         <p:commandButton value="Voltar"  action="#{editarBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />
                     </h:panelGrid>                  
     
                 </h:form>
             </div>
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog header="Convidar amigos para edição" id="diaConAmiEdi" widgetVar="ConAmiEdi" modal="true">
+                <h:form>
+                    
+                </h:form>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </html>

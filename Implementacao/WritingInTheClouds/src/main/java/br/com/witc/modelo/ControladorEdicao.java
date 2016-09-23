@@ -5,11 +5,18 @@
  */
 package br.com.witc.modelo;
 
+import java.util.List;
+
 /**
  *
  * @author root
  */
 public class ControladorEdicao {
     Livro livro;
+
+    public List<Usuario> carregarListaAmigoEditor() {
+        Perfil perfil = new Perfil();
+        return perfil.carregarListaAmigoEditor();
+    }
     
 }

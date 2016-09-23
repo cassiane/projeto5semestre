@@ -5,7 +5,9 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.persistencia.PerfilDAO;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -69,5 +71,10 @@ public class Perfil implements Serializable {
 
     public void setTipoPerfil(TipoPerfil tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
+    }
+
+    public List<Usuario> carregarListaAmigoEditor() {
+        PerfilDAO dao = new PerfilDAO();
+        return dao.carregarListaAmigoEdigor();
     }
 }
