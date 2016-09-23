@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"      
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    </h:head>
+    <h:body>        
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="144">
+                <f:facet name="header">                    
+                    <div id="top" style="height: 70px;text-align: center;line-height: 70px;font-size: 40px">
+                        <h:outputText value="WITC"/>
+                    </div>                                
+                    <div id="middle" style="height: 25px;text-align: center;">
+                        <h:outputText value="Olá, #{autenticarBean.nomeUsuario}"/>
+                    </div>                                
+
+                    <div id="botton" style="height: 20px;text-align: right; padding-bottom: 5px;">
+                        <h:form>
+                            <p:growl id="messages" showDetail="true" />
+                                <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
+                            <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+                                <p:menuitem value="Editar minha conta" outcome="editarConta"/>
+                                <p:menuitem value="Logoff" action="#{autenticarBean.efetuarLogoff()}" update="messages" ajax="false" />
+                            </p:tieredMenu>
+                        </h:form>                        
+                    </div>                    
+                </f:facet>                
+            </p:layoutUnit>
+            <p:layoutUnit position="east" resizable="true" size="300">
+                <h:form>
+                    <p:stack icon="/resources/imagens/chat.png" expanded="true">
+                        <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
+                        <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
+                    </p:stack>
+                </h:form>
+            </p:layoutUnit>            
+            <p:layoutUnit position="west" resizable="true" size="300">
+                <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" /><br/>
+                <p:link outcome="biblioteca.xhtml" value="Biblioteca" /><br/>
+                <p:link outcome="perfisUsuarios.xhtml" value="Perfis de Usuários" /><br/>
+            </p:layoutUnit>    
+            <p:layoutUnit position="center">
+                <ui:insert name="conteudo"/>
+            </p:layoutUnit>
+        </p:layout>
+        <ui:insert name="dialogos"/>
+    </h:body>    
+</html>

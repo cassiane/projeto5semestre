@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.persistencia.PerfilDAO;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -69,5 +70,15 @@ public class Perfil implements Serializable {
 
     public void setTipoPerfil(TipoPerfil tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
+    }
+    
+    /**
+     * Método que retorna o perfil do usuario logado
+     * @param usuario
+     * @return 
+     */
+    public static Perfil retornarPerfilUsuarioLogado(Usuario usuario) {
+        PerfilDAO dao = new PerfilDAO();
+        return dao.carregarPerfil(usuario); 
     }
 }

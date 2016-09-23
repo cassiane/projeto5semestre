@@ -45,7 +45,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @SessionScoped
-public class UsuarioBean {
+public class CadastrarBean {
 
     private final ControladorCadastro controlador;
     private Usuario usuario;
@@ -69,7 +69,7 @@ public class UsuarioBean {
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
-    public UsuarioBean() {
+    public CadastrarBean() {
         this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
     }
@@ -538,13 +538,13 @@ public class UsuarioBean {
             this.usuario.setAtivo(false);
             this.controlador.excluirUsuario(usuario);             
         } catch (DadosUsuarioInvalidoException ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UsuarioInvalidoException ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.usuario = new Usuario();
         this.diaNascimento = null;
