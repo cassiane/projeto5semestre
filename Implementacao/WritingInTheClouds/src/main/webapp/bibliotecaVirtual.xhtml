@@ -8,27 +8,36 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo"> 
+            <f:event listener="#{livroBean.carregaBibliotecaVirtualCompleta()}" type="preRenderView" />
             <h:outputText value="Pesquisa" />
             <h:form>
-                <h:panelGrid columns="2">
-                    <p:selectOneMenu />
-                    <p:inputText />            
-                </h:panelGrid>                
-            </h:form>
-            
-            <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">
-                <p:carousel value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
-                    <p:dataGrid value="#{livro}">
-                        <f:facet name="header">
-                            <p:graphicImage id="capa" height="100px" width="70px" value="#{livroBean.capa}" cache="false">
-                                <f:param  name="livroId" value="#{livro.id}" />
-                            </p:graphicImage>
-                        </f:facet>
-                                                
-                        <h:outputText value="#{livro.titulo}" />
-                    </p:dataGrid>
-                </p:carousel>
-            </c:forEach>
+                <h:panelGrid columns="3">
+                    <p:selectOneMenu style="width: 200px;" value="#{livroBean.campoPesquisa}">
+                        <f:selectItem itemLabel="Selecione" itemValue="" />
+                        <f:selectItem itemLabel="Autor" itemValue="autor" />
+                        <f:selectItem itemLabel="Classificação" itemValue="classificacao" />
+                        <f:selectItem itemLabel="Título" itemValue="titulo" />
+                        <f:selectItem itemLabel="Tipo de Texto" itemValue="tipoTexto" />
+                    </p:selectOneMenu>
+                    <p:inputText value="#{livroBean.valorPesquisa}" style="width: 200px;"/>
+                    <p:commandButton ajax="false" action="#{livroBean.carregaBibliotecaVirtualPesquisa()}" 
+                                     style="width:30px; height: 31px;" icon="ui-icon-search" />
+                </h:panelGrid>      
+                
+                <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">
+                    <p:carousel value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
+                        <p:dataGrid value="#{livro}">
+                            <f:facet name="header">
+                                <p:graphicImage id="capa" height="100px" width="70px" value="#{livroBean.capa}" cache="false">
+                                    <f:param  name="livroId" value="#{livro.id}" />
+                                </p:graphicImage>
+                            </f:facet>
+
+                            <h:outputText value="#{livro.titulo}" />
+                        </p:dataGrid>
+                    </p:carousel>
+                </c:forEach>
+            </h:form>                        
         </ui:define>
     </ui:composition>
 </html>

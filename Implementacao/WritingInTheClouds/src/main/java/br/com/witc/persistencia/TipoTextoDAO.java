@@ -35,5 +35,5 @@ public class TipoTextoDAO {
             throw new TipoTextoException("Nenhum tipo de texto cadastrado no sistema");
         }
         return lstTipoTexto;
-    }
+    }    
 }

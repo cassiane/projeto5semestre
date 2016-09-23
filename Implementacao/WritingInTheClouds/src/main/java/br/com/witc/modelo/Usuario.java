@@ -27,14 +27,12 @@ import org.apache.commons.mail.EmailException;
  */
 @Entity
 public class Usuario implements Serializable {
-
     @Id
     @GeneratedValue
     private int id;
     private String nome;
     private String sobrenome;
     private String email;
-
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataAniversario;
     private String genero;

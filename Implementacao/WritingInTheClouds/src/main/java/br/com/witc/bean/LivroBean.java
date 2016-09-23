@@ -18,7 +18,11 @@ import br.com.witc.persistencia.HistoricoLivroDAO;
 import br.com.witc.persistencia.LivroDAO;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoStatusDAO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +40,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.faces.event.PhaseId;
+import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -57,12 +62,15 @@ public class LivroBean {
     private HistoricoLivro historico;
     private TipoTexto tipoTexto;
     private List<Livro> livros;
-    private PerfilDAO daoPerfil;
-    private LivroDAO daoLivro;
-    private HistoricoLivroDAO daoHistorico;        
+    private final PerfilDAO daoPerfil;
+    private final LivroDAO daoLivro;
+    private final HistoricoLivroDAO daoHistorico;        
     private final ControladorLivro controlador;    
     private UploadedFile file;
     private static final String CAMINHO_CAPA_DEFAULT = "/resources/imagens/semCapa.png";
+    private String campoPesquisa;
+    private String valorPesquisa;
+    private Map<String,List<Livro>> bibliotecaVirtual;
 
     public LivroBean() {
         this.controlador = new ControladorLivro();
@@ -162,61 +170,7 @@ public class LivroBean {
        
             return listaTemp;
         
-    }
-    
-    public void salvarNovoLivro(){        
-        try {
-            this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);             
-            TipoStatusDAO daoStatus = new TipoStatusDAO();
-            TipoStatus st =daoStatus.carregarPerfil(1);
-            this.livro = new Livro();
-            
-            this.livro.setCapa(getImgBytes());
-            this.livro.setTipoTexto(tipoTexto);
-            this.livro.setTexto(textoLivro);
-            if(tituloLivro.isEmpty()){
-                tituloLivro="Novo Livro";
-            }
-            this.livro.setTitulo(tituloLivro);
-            this.livro.setClassificacao("LIVRE");
-            this.livro.setDisponivelBiblioteca(false);
-            this.livro.setReportadoConteudoImproprio(false);
-            this.livro.setQualificacao(0);
-            daoLivro.criarLivro(livro);
-            
-            this.historico=new HistoricoLivro();
-            this.historico.setPerfil(this.perfilUsuario);
-            this.historico.setLivro(this.livro);
-            this.historico.setStatus(st);
-            this.historico.setDataInicio(this.getPegaDataAtual());
-            daoHistorico.salvarHistorico(this.historico);
-        } catch (Exception ex) {
-            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Problemas ao carregar a capa!");
-        }
- 
-    }
-    
-    public void salvarLivro(){
-        try {
-            this.livroCarregado.setCapa(getImgBytes());
-            this.livroCarregado.setTipoTexto(tipoTexto);
-            daoLivro.criarLivro(this.livroCarregado);
-        } catch (Exception ex) {
-            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Problemas ao carregar a capa!");
-        }
-    }
-    
-    /**     
-     * @return Um array de byte da imagem
-     * @throws Exception Caso haja algum problema na conversão da imagem
-     */
-    private byte[] getImgBytes() throws Exception {
-        if (this.file == null) {
-            this.file.write(CAMINHO_CAPA_DEFAULT);
-        }
-        InputStream inputStream = this.file.getInputstream();
-        return IOUtils.toByteArray(inputStream);                        
-    }
+    }            
     
     public  Calendar getPegaDataAtual(){
 		Calendar calendar = new GregorianCalendar();
@@ -265,20 +219,108 @@ public class LivroBean {
         this.file = file;
     }    
     
+/**
+     * @return the campoPesquisa
+     */
+    public String getCampoPesquisa() {
+        return campoPesquisa;
+    }
+
+    /**
+     * @param campoPesquisa the campoPesquisa to set
+     */
+    public void setCampoPesquisa(String campoPesquisa) {
+        this.campoPesquisa = campoPesquisa;
+    }
+
+    /**
+     * @return the valorPesquisa
+     */
+    public String getValorPesquisa() {
+        return valorPesquisa;
+    }
+
+    /**
+     * @param valorPesquisa the valorPesquisa to set
+     */
+    public void setValorPesquisa(String valorPesquisa) {
+        this.valorPesquisa = valorPesquisa;
+    }    
+    
     /**     
      * @return Um Map com os Livros da Biblioteca Virtual
      */
-    public Map<String,List<Livro>> getBibliotecaVirtual() {
-        try {
-            return this.controlador.getBibliotecaVirtual();
-        } catch (BibliotecaVirtualVaziaException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
-        }
-        return new HashMap();
+    public Map<String,List<Livro>> getBibliotecaVirtual() {                
+        return this.bibliotecaVirtual;
    }
+    
+    public void salvarNovoLivro(){        
+        try {
+            this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);             
+            TipoStatusDAO daoStatus = new TipoStatusDAO();
+            TipoStatus st =daoStatus.carregarPerfil(1);
+            this.livro = new Livro();
+            
+            this.livro.setCapa(getImgBytes());
+            this.livro.setTipoTexto(tipoTexto);
+            this.livro.setTexto(textoLivro);
+            if(tituloLivro.isEmpty()){
+                tituloLivro="Novo Livro";
+            }
+            this.livro.setTitulo(tituloLivro);
+            this.livro.setClassificacao("LIVRE");
+            this.livro.setDisponivelBiblioteca(false);
+            this.livro.setReportadoConteudoImproprio(false);
+            this.livro.setQualificacao(0);
+            daoLivro.criarLivro(livro);
+            
+            this.historico=new HistoricoLivro();
+            this.historico.setPerfil(this.perfilUsuario);
+            this.historico.setLivro(this.livro);
+            this.historico.setStatus(st);
+            this.historico.setDataInicio(this.getPegaDataAtual());
+            daoHistorico.salvarHistorico(this.historico);
+        } catch (Exception ex) {
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
+        }
+ 
+    }
+    
+    public void salvarLivro(){
+        try {
+            this.livroCarregado.setCapa(getImgBytes());
+            this.livroCarregado.setTipoTexto(tipoTexto);
+            daoLivro.criarLivro(this.livroCarregado);
+        } catch (Exception ex) {
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
+        }
+    }        
 
     /**     
-     * @return A capa do livro
+     * @return Um array de byte da imagem
+     * @throws Exception Caso haja algum problema na conversão da imagem
+     */
+    private byte[] getImgBytes() throws Exception {
+        if ((this.file == null) || (this.file.getFileName().isEmpty())) {            
+            File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_CAPA_DEFAULT));            
+        
+            if (imgFile.exists()) {
+                // Converte o arquivo em um array de bytes
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();            
+                BufferedImage imagem = ImageIO.read(imgFile);
+                ImageIO.write(imagem, "PNG", bos);
+                bos.flush();  
+                return bos.toByteArray();                
+            } else {
+                throw new Exception();
+            }             
+        }
+        InputStream inputStream = this.file.getInputstream();
+        return IOUtils.toByteArray(inputStream);                        
+    }    
+    
+    /**     
+     * @return A capa do livro em formato compatível com p:graphicImage
      */
     public StreamedContent getCapa() {                                                                 
         FacesContext context = FacesContext.getCurrentInstance();        
@@ -301,7 +343,31 @@ public class LivroBean {
         InputStream is = new ByteArrayInputStream(img);               
         StreamedContent capa = new DefaultStreamedContent(is);        
         return capa;
-    }    
+    }  
+    
+    /**
+     * Carrega todos os livros disponíveis na Biblioteca Virtual
+     */
+    public void carregaBibliotecaVirtualCompleta() {    
+        try {
+            this.bibliotecaVirtual = this.controlador.getBibliotecaVirtual();
+        } catch (BibliotecaVirtualVaziaException ex) {
+            this.bibliotecaVirtual = new HashMap();
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
+        }        
+    }
+    
+    /**
+     * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
+     */
+    public void carregaBibliotecaVirtualPesquisa() {
+        try {
+            this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtualPesquisa(campoPesquisa, valorPesquisa);
+        } catch (BibliotecaVirtualVaziaException ex) {
+            this.bibliotecaVirtual = new HashMap();
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
+        }  
+    }        
     
     /**
      * Envia à viewer uma mensagem com o status da operação
@@ -311,5 +377,5 @@ public class LivroBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }        
+    }           
 }

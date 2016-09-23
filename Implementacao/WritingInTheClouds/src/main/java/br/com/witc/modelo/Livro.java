@@ -6,14 +6,19 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.persistencia.LivroDAO;
+import br.com.witc.persistencia.TipoTextoDAO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -21,9 +26,7 @@ import javax.persistence.OneToOne;
  * @author root
  */
 @Entity
-public class Livro implements Serializable {
-
-    
+public class Livro implements Serializable {      
     @Id
     @GeneratedValue
     private int id;
@@ -41,6 +44,8 @@ public class Livro implements Serializable {
     @OneToOne
     @JoinColumn(name="idTipoGenero")
     private TipoGenero tipoGenero;
+    @OneToMany(mappedBy = "livro")
+    private List<HistoricoLivro> historicoLivros;
    
 
     public int getId() {
@@ -160,5 +165,31 @@ public class Livro implements Serializable {
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.getBibliotecaVirtual();
     }
+
+    /**
+     * @return the historicoLivros
+     */
+    public List<HistoricoLivro> getHistoricoLivros() {
+        return historicoLivros;
+    }
+
+    /**
+     * @param historicoLivros the historicoLivros to set
+     */
+    public void setHistoricoLivros(List<HistoricoLivro> historicoLivros) {
+        this.historicoLivros = historicoLivros;
+    }
     
+    /**
+     * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
+     * @param campoPesquisa O campo a ser pesquisado
+     * @param valorPesquisa O valor a ser pesquisado
+     * @return Um objeto Map, com os livros encontrados
+     * @throws BibliotecaVirtualVaziaException Caso não sejam encontrados livros
+     */
+    public Map<String, List<Livro>> carregaBibliotecaVirtualPesquisa(String campoPesquisa, String valorPesquisa) 
+            throws BibliotecaVirtualVaziaException {                        
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.getBibliotecaVirtual(campoPesquisa, valorPesquisa);
+    }    
 }

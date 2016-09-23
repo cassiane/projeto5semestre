@@ -59,4 +59,16 @@ public class ControladorLivro {
     public byte[] getCapaPorId(int idLivro) {
         return this.livro.getCapaPorId(idLivro);
     }
+    
+    /**
+     * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
+     * @param campoPesquisa O campo a ser pesquisado
+     * @param valorPesquisa O valor a ser pesquisado
+     * @return Um objeto Map, com os livros encontrados
+     * @throws BibliotecaVirtualVaziaException Caso não sejam encontrados livros
+     */
+    public Map<String, List<Livro>> carregaBibliotecaVirtualPesquisa(String campoPesquisa, String valorPesquisa) 
+            throws BibliotecaVirtualVaziaException {
+        return this.livro.carregaBibliotecaVirtualPesquisa(campoPesquisa, valorPesquisa);
+    }
 }

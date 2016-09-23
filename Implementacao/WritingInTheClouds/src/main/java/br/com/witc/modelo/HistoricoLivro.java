@@ -29,7 +29,7 @@ public class HistoricoLivro implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataInicio;
     @Temporal(javax.persistence.TemporalType.DATE)
-    private Calendar  dataConclusao;
+    private Calendar  dataConclusao;        
     @ManyToOne
     @JoinColumn(name="idLivro")
     private Livro livro;
