@@ -453,8 +453,8 @@ public class CadastrarBean {
                 throw new DadosUsuarioInvalidoException("Os emails informados não coincidem!");
             }
 
-            setDataNascimento();
-            this.controlador.cadastrarUsuario(usuario);
+            //setDataNascimento();
+            //this.controlador.cadastrarUsuario(usuario);
 
             setDataNascimento();                
             this.controlador.cadastrarUsuario(usuario);    

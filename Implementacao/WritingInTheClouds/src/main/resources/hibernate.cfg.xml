@@ -14,13 +14,8 @@
     <mapping class="br.com.witc.modelo.TipoGenero"/>
     <mapping class="br.com.witc.modelo.TipoStatus"/>
     <mapping class="br.com.witc.modelo.TipoTexto"/>
-    <mapping class="br.com.witc.modelo.HistoricoLivro"/>
-
-
+    <mapping class="br.com.witc.modelo.HistoricoLivros"/>
     <mapping class="br.com.witc.modelo.ConvidadoUsuario"/>
-
-
     <mapping class="br.com.witc.modelo.TipoPerfil"/>
-
   </session-factory>
 </hibernate-configuration>

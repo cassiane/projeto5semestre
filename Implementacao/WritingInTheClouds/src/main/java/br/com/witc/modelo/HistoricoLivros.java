@@ -21,8 +21,8 @@ import javax.persistence.Temporal;
  * @author root
  */
 @Entity
-@Table(name = "historicolivros")
-public class HistoricoLivro implements Serializable {
+//@Table(name = "historicolivros")
+public class HistoricoLivros implements Serializable {
     @Id
     @GeneratedValue
     private int id;

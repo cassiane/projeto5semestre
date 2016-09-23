@@ -5,7 +5,7 @@
  */
 package br.com.witc.bean;
 
-import br.com.witc.modelo.HistoricoLivro;
+import br.com.witc.modelo.HistoricoLivros;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.TipoStatus;
@@ -37,7 +37,7 @@ public class EditarBean {
     private Perfil perfilUsuario;
     private String textoLivro;
     private String tituloLivro;
-    private HistoricoLivro historico;
+    private HistoricoLivros historico;
     private List<Livro> livros;
     private PerfilDAO daoPerfil;
     private LivroDAO daoLivro;
@@ -99,11 +99,11 @@ public class EditarBean {
         this.textoLivro = textoLivro;
     }
 
-    public HistoricoLivro getHistorico() {
+    public HistoricoLivros getHistorico() {
         return historico;
     }
 
-    public void setHistorico(HistoricoLivro historico) {
+    public void setHistorico(HistoricoLivros historico) {
         this.historico = historico;
     }    
     public List<Livro> listarLivrosPerfil(){
@@ -131,7 +131,7 @@ public class EditarBean {
         this.livro.setQualificacao(0);
         daoLivro.criarLivro(livro);
         
-        this.historico=new HistoricoLivro(); 
+        this.historico=new HistoricoLivros(); 
         this.historico.setPerfil(this.perfilUsuario);
         this.historico.setLivro(this.livro);
         this.historico.setStatus(st);

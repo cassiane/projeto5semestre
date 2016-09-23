@@ -5,7 +5,7 @@
  */
 package br.com.witc.persistencia;
 
-import br.com.witc.modelo.HistoricoLivro;
+import br.com.witc.modelo.HistoricoLivros;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
@@ -21,7 +21,7 @@ public class HistoricoLivroDAO {
         this.sessao = getSessionFactory().getCurrentSession();
     }
     
-     public void salvarHistorico(HistoricoLivro hist){
+     public void salvarHistorico(HistoricoLivros hist){
          
           try {
            sessao.saveOrUpdate(hist);

@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * @author 00026108
  */
 @Entity
-@Table(name="tipostatus")
+//@Table(name="tipostatus")
 public class TipoStatus implements Serializable {
     @Id
     @GeneratedValue
