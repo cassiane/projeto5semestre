@@ -54,6 +54,7 @@ public class ControladorLivro {
     }
     
     /**
+     * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
      * @return Um Map com os Livros da Biblioteca Virtual
      * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso a Biblioteca Virtual esteja vazia     
      * @throws br.com.witc.excessao.TipoTextoException Caso não haja Tipos de Textos cadastrados no sistema    
@@ -61,9 +62,8 @@ public class ControladorLivro {
     public Map<String,List<Livro>> carregaBibliotecaVirtual() 
             throws BibliotecaVirtualVaziaException, TipoTextoException {        
         Map<String,List<Livro>> tmpMap = new HashMap();
-        
-        TipoTexto tipoTexto = new TipoTexto();
-        for (TipoTexto tp : tipoTexto.getLstTipoTexto()) {
+                
+        for (TipoTexto tp : getLstTipoTexto()) {
             try {
                 tmpMap.put(tp.getTipoTexto(), this.livro.listarLivrosPorTipoTexto(tp));
             } catch (BibliotecaVirtualVaziaException ex) {}
