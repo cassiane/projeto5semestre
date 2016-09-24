@@ -15,7 +15,10 @@ import br.com.witc.persistencia.HistoricoLivroDAO;
 import br.com.witc.persistencia.LivroDAO;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoStatusDAO;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -24,6 +27,8 @@ import javax.el.ELContext;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -198,7 +203,22 @@ public class EditarBean {
     }
 
     public List<Usuario> getListaAmigoEditor() {
-        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor();
         return listaAmigoEditor;
+    }
+    
+    public StreamedContent carregarFoto(int idfoto) {
+        byte[] foto = null;
+        
+        if (foto == null) {
+            return new CadastrarBean().carregarFotoDefault();
+        }
+        
+        InputStream is = new ByteArrayInputStream(foto);               
+        StreamedContent image = new DefaultStreamedContent(is);        
+        return image;
+    }
+    
+    public void carregarListaAmigoEditor() {
+        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor();
     }
 }

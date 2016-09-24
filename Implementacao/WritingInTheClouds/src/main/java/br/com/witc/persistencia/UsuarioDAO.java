@@ -207,7 +207,7 @@ public class UsuarioDAO {
 
     public void registrarConvite(int id, String destinatario) {
         ConvidadoUsuario novoUsuario = new ConvidadoUsuario(id, destinatario);
-        sessao.saveOrUpdate(novoUsuario);
+        sessao.save(novoUsuario);
     }
 
     public void verificarConvite(String email) {

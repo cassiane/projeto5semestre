@@ -3,9 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">     
+            <f:event listener="#{editarBean.carregarListaAmigoEditor()}" type="preRenderView" />
             <div align="center"> 
                <h1>Editor de texto</h1>
                <h:form >  
@@ -13,7 +15,7 @@
                    <p:inputText id="titulo" label="titulo"  value="#{editarBean.livroCarregado.titulo}" required="true" requiredMessage="Informe o titulo do livro!!"/>                    
                    <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.livroCarregado.texto}" width="600" />
                      <h:panelGrid columns="4" style="margin-top: 10px">
-                        <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
+                         <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
                         <p:commandButton value="Voltar"  action="#{editarBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />
@@ -25,7 +27,16 @@
         <ui:define name="dialogos">
             <p:dialog header="Convidar amigos para edição" id="diaConAmiEdi" widgetVar="ConAmiEdi" modal="true">
                 <h:form>
-                    
+                    <p:selectManyMenu id="advanced" value="#{editarBean.amigoEditor}" converter="convidarConverter"
+                          var="Editores" filter="true" filterMatchMode="startsWith" showCheckbox="true">
+                        <f:selectItems value="#{editarBean.listaAmigoEditor}" var="selEditores" itemLabel="#{selEditores.nome}" itemValue="#{selEditores}" />
+                        <p:column>
+                            <!--<p:graphicImage style="border-style: solid" id="img" width="30" height="30" value="#{editarBean.carregarFoto(Editores.id)}" cache="false" />-->
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{Editores.nome}" />
+                        </p:column>
+                    </p:selectManyMenu>
                 </h:form>
             </p:dialog>
         </ui:define>
