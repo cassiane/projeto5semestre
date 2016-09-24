@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="padraoInterno.xhtml">        
+        <ui:define name="conteudo">     
+            <div align="center">                
+               <h:form >  
+                   <p:outputLabel for="descricao" value="Descrição: "/>
+                   <p:inputText id="descricao" label="Descrição"  value="" required="true" requiredMessage="Informe o titulo do livro!!"/>                    
+                   <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.livroCarregado.texto}" width="600" />
+                     <h:panelGrid columns="3" style="margin-top: 10px">
+                         <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+                        <p:commandButton value="Voltar"  action="#{editarBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />
+                    </h:panelGrid>                  
+    
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

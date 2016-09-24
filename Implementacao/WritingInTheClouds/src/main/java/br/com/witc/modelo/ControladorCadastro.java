@@ -7,6 +7,7 @@ package br.com.witc.modelo;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
+import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoPerfilDAO;
@@ -29,7 +30,7 @@ public class ControladorCadastro {
 
 
     private Usuario usuario;
-
+    
     public ControladorCadastro() {
         this.usuario = new Usuario();
     }
@@ -45,12 +46,8 @@ public class ControladorCadastro {
      */
     public void cadastrarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, 
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
-        
         usuario.consistirDados();
         usuario.cadastrarUsuario();
-        
-        
-                
     }
     /**
      * altera um usuário no sistema
@@ -63,7 +60,6 @@ public class ControladorCadastro {
      */
     public void alterarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, 
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
-        
         usuario.consistirDados();
         usuario.alterarUsuario();
     }
@@ -189,7 +185,9 @@ public class ControladorCadastro {
     public List<Usuario> listarUsuarios() {
         return usuario.listarUsuarios();
     }
-
+    /**
+     * @param email 
+     */
     public void verificarConvite(String email) {
         usuario.verificarConvite(email);
     }
@@ -197,6 +195,7 @@ public class ControladorCadastro {
     /**
      * Envia o link de redefinição de senha para o usuário
      * @param destinatario O email do usuário que está redefinindo a senha
+     * @param path
      * @throws EmailException Caso ocorra erro no envio do email
      * @throws DadosUsuarioInvalidoException Caso o usuário não seja encontrado
      * @throws NoSuchAlgorithmException Caso ocorra um erro na criação do hash
@@ -245,7 +244,9 @@ public class ControladorCadastro {
         recuperar.setDataUtilizacao(Calendar.getInstance());
         recuperar.salvar();
     }
-    
+    /** 
+     * @param usuario 
+     */
     public void criarPerfilPadrao(Usuario usuario){
         TipoPerfil tipo = new TipoPerfil();
         TipoPerfilDAO tipoDAO = new TipoPerfilDAO();
@@ -258,5 +259,12 @@ public class ControladorCadastro {
         perfil.setQualificacao(0);
         perfilDAO.salvarPerfil(perfil);
             
+    }
+    /**
+     * @param tipoPerfil 
+     * @throws TipoPerfilException 
+     */
+    public void cadastrarTipoPerfil(TipoPerfil tipoPerfil) throws TipoPerfilException{
+        tipoPerfil.cadastrarTipoPerfil(); 
     }
 }

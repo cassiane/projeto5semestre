@@ -5,9 +5,11 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.TipoPerfil;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import org.hibernate.Session;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -22,6 +24,17 @@ public class TipoPerfilDAO {
     
     public TipoPerfil carregarTipoPerfil(int id){
        return  (TipoPerfil) sessao.load(TipoPerfil.class,id);
+    }
+    /**
+     * 
+     * @param aThis 
+     */
+    public void cadastrarTipoPerfil(TipoPerfil aThis) {       
+        try{
+            sessao.save(aThis);
+        }catch(ConstraintViolationException e){
+             sessao.clear();
+        }    
     }
     
 }
