@@ -157,15 +157,6 @@ public class Livro implements Serializable {
         return livroDAO.carregarLivro(idLivro).getCapa();
     }
 
-    /**     
-     * @return Um Map com os Livros da Biblioteca Virtual
-     * @throws BibliotecaVirtualVaziaException Caso a Biblioteca Virtual esteja vazia
-     */
-    public Map<String,List<Livro>> getBibliotecaVirtual() throws BibliotecaVirtualVaziaException {
-        LivroDAO livroDAO = new LivroDAO();
-        return livroDAO.getBibliotecaVirtual();
-    }
-
     /**
      * @return the historicoLivros
      */
@@ -181,15 +172,28 @@ public class Livro implements Serializable {
     }
     
     /**
+     * Lista os livros na biblioteca com o Tipo Texto enviado
+     * @param tp O Tipo Texto para pesquisa
+     * @return Uma lista de Livro
+     * @throws BibliotecaVirtualVaziaException Caso não seja encontrado nenhum livro com o critério informado
+     */
+    public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp) 
+            throws BibliotecaVirtualVaziaException {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.listarLivrosPorTipoTexto(tp);
+    }
+    
+    /**
      * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
+     * @param tp O Tipo Texto para pesquisa
      * @param campoPesquisa O campo a ser pesquisado
      * @param valorPesquisa O valor a ser pesquisado
      * @return Um objeto Map, com os livros encontrados
      * @throws BibliotecaVirtualVaziaException Caso não sejam encontrados livros
      */
-    public Map<String, List<Livro>> carregaBibliotecaVirtualPesquisa(String campoPesquisa, String valorPesquisa) 
+    public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
             throws BibliotecaVirtualVaziaException {                        
         LivroDAO livroDAO = new LivroDAO();
-        return livroDAO.getBibliotecaVirtual(campoPesquisa, valorPesquisa);
+        return livroDAO.listarLivrosPublicados(tp, campoPesquisa, valorPesquisa);
     }    
 }

@@ -7,6 +7,7 @@ package br.com.witc.modelo;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.TipoTextoException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,15 +34,7 @@ public class ControladorLivro {
      */
     public void setLivro(Livro livro) {
         this.livro = livro;
-    }
-    
-    /**
-     * @return Um Map com os Livros da Biblioteca Virtual
-     * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso a Biblioteca Virtual esteja vazia     
-     */
-    public Map<String,List<Livro>> getBibliotecaVirtual() throws BibliotecaVirtualVaziaException {
-        return this.livro.getBibliotecaVirtual();
-    }
+    }        
     
     /**     
      * @return Uma lista contendo os tipos de textos cadastrados no sistema
@@ -61,14 +54,49 @@ public class ControladorLivro {
     }
     
     /**
+     * @return Um Map com os Livros da Biblioteca Virtual
+     * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso a Biblioteca Virtual esteja vazia     
+     * @throws br.com.witc.excessao.TipoTextoException Caso não haja Tipos de Textos cadastrados no sistema    
+     */
+    public Map<String,List<Livro>> carregaBibliotecaVirtual() 
+            throws BibliotecaVirtualVaziaException, TipoTextoException {        
+        Map<String,List<Livro>> tmpMap = new HashMap();
+        
+        TipoTexto tipoTexto = new TipoTexto();
+        for (TipoTexto tp : tipoTexto.getLstTipoTexto()) {
+            try {
+                tmpMap.put(tp.getTipoTexto(), this.livro.listarLivrosPorTipoTexto(tp));
+            } catch (BibliotecaVirtualVaziaException ex) {}
+        }
+        
+        if (tmpMap.isEmpty()) {
+            throw new BibliotecaVirtualVaziaException("Nenhum livro foi publicado até o momento.");
+        }
+        return tmpMap;
+    }
+    
+    /**
      * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
      * @param campoPesquisa O campo a ser pesquisado
      * @param valorPesquisa O valor a ser pesquisado
      * @return Um objeto Map, com os livros encontrados
      * @throws BibliotecaVirtualVaziaException Caso não sejam encontrados livros
+     * @throws br.com.witc.excessao.TipoTextoException Caso não haja Tipos de Textos cadastrados no sistema
      */
     public Map<String, List<Livro>> carregaBibliotecaVirtualPesquisa(String campoPesquisa, String valorPesquisa) 
-            throws BibliotecaVirtualVaziaException {
-        return this.livro.carregaBibliotecaVirtualPesquisa(campoPesquisa, valorPesquisa);
+            throws BibliotecaVirtualVaziaException, TipoTextoException {
+        Map<String,List<Livro>> tmpMap = new HashMap();
+        
+        TipoTexto tipoTexto = new TipoTexto();
+        for (TipoTexto tp : tipoTexto.getLstTipoTexto()) {
+            try {
+                tmpMap.put(tp.getTipoTexto(), this.livro.listarLivrosPorTipoTexto(tp, campoPesquisa, valorPesquisa));
+            } catch (BibliotecaVirtualVaziaException ex) {}
+        }
+        
+        if (tmpMap.isEmpty()) {
+            throw new BibliotecaVirtualVaziaException("Nenhum livro foi publicado até o momento.");
+        }
+        return tmpMap;
     }
 }

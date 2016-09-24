@@ -8,6 +8,7 @@ package br.com.witc.persistencia;
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.TipoTexto;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,12 +88,14 @@ public class LivroDAO {
     
     /**
      * Lista os livros publicados na Biblioteca Virtual
+     * @param tp O Tipo Texto para pesquisa
      * @return Uma lista de livros publicados na Biblioteca Virtual
      * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso não haja livros publicados na Biblioteca
      */
-    public List<Livro> listarLivrosPublicados() throws BibliotecaVirtualVaziaException {
+    public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp) throws BibliotecaVirtualVaziaException {
         List<Livro> tmpLstLivro = sessao.createCriteria(Livro.class)
                 .add(Restrictions.like("disponivelBiblioteca", true))
+                .add(Restrictions.eq("tipoTexto", tp))
                 .addOrder(Order.asc("tipoTexto"))
                 .list();
         
@@ -104,14 +107,14 @@ public class LivroDAO {
     
     /**
      * Lista os livros publicados na Biblioteca Virtual     
+     * @param tp O Tipo Texto para pesquisa
      * @param campoPesquisa O campo a ser pesquisado
      * @param valorPesquisa O valor a ser pesquisado
      * @return Uma lista de livros publicados na Biblioteca Virtual
      * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso não haja livros publicados na Biblioteca
-     */
-    @SuppressWarnings("unchecked")
-    public List<Livro> listarLivrosPublicados(String campoPesquisa, String valorPesquisa) 
-            throws BibliotecaVirtualVaziaException {
+     */    
+    public List<Livro> listarLivrosPublicados(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
+            throws BibliotecaVirtualVaziaException {        
         String sql = "FROM Livro AS l ";
         switch (campoPesquisa) {
             case "autor":
@@ -119,11 +122,11 @@ public class LivroDAO {
                      + "INNER JOIN l.historicoLivros AS hl "
                      + "INNER JOIN hl.perfil AS p "
                      + "INNER JOIN p.usuario AS u "
-                     + "WHERE u.nome LIKE ";
+                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND u.nome LIKE ";
                 break;
             case "classificacao":
                 sql += "INNER JOIN l.tipoTexto tp "
-                     + "WHERE l.classificacao LIKE ";
+                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND l.classificacao LIKE ";
                 break;
             case "tipoTexto":
                 sql += "INNER JOIN l.tipoTexto tp  "
@@ -131,7 +134,7 @@ public class LivroDAO {
                 break;
             case "titulo":
                 sql += "INNER JOIN l.tipoTexto tp  "
-                     + "WHERE l.titulo LIKE ";
+                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND l.titulo LIKE ";
         }
         sql += "'%" + valorPesquisa + "%' ORDER BY l.tipoTexto";
                         
@@ -145,58 +148,10 @@ public class LivroDAO {
                 }
             }
         }
-        
-        
+                
         if (tmpLstLivro.isEmpty()) {
             throw new BibliotecaVirtualVaziaException("Não foi possível localizar livros com os critérios informados.");
         }
         return tmpLstLivro;
-    }    
-    
-    /**
-     * @return Um Map com os Livros da Biblioteca Virtual
-     * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso a Biblioteca Virtual esteja vazia
-     */
-    public Map<String,List<Livro>> getBibliotecaVirtual() throws BibliotecaVirtualVaziaException {
-        List<Livro> lstLivros = listarLivrosPublicados();        
-        return getMapBibliotecaVirtual(lstLivros);
-    }
-    
-    /**
-     * @param campoPesquisa O campo a ser pesquisado
-     * @param valorPesquisa O valor a ser pesquisado
-     * @return Um Map com os Livros da Biblioteca Virtual
-     * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso a Biblioteca Virtual esteja vazia
-     */
-    public Map<String,List<Livro>> getBibliotecaVirtual(String campoPesquisa, String valorPesquisa) 
-            throws BibliotecaVirtualVaziaException {
-        List<Livro> lstLivros = listarLivrosPublicados(campoPesquisa, valorPesquisa);        
-        return getMapBibliotecaVirtual(lstLivros);
-    }
-    
-    /**
-     * Monta um Map com base na lista de livros enviada
-     * @param lstLivros A lista com os livros
-     * @return Um objeto Map com base na lista de livros enviada     
-     */
-    private Map<String, List<Livro>> getMapBibliotecaVirtual(List<Livro> lstLivros) {
-        Map<String,List<Livro>> tmpBiblioteca = new HashMap();
-        List<Livro> lstLivrosTipoTexto = new ArrayList();
-        String key = lstLivros.get(0).getTipoTexto().toString();            
-        for (Livro livro : lstLivros) {            
-            if (key.equals(livro.getTipoTexto().toString())) {
-                lstLivrosTipoTexto.add(livro);
-            } else {
-                tmpBiblioteca.put(key, lstLivrosTipoTexto);
-
-                key = livro.getTipoTexto().toString();
-                lstLivrosTipoTexto = new ArrayList();
-                lstLivrosTipoTexto.add(livro);                    
-            }
-        }
-        tmpBiblioteca.put(key, lstLivrosTipoTexto);
-        return tmpBiblioteca;
-    }
-    
-    
+    }            
 }

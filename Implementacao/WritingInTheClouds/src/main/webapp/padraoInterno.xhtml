@@ -44,7 +44,7 @@
                 <h:panelGrid columns="1">
                     <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
                     <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
-                    <p:link outcome="bibliotecaVirtual.xhtml" value="Biblioteca Virtual" />
+                    <p:link outcome="#{livroBean.carregaBibliotecaVirtualCompleta()}" value="Biblioteca Virtual" />
                 </h:panelGrid>
             </p:layoutUnit>    
             <p:layoutUnit position="center">

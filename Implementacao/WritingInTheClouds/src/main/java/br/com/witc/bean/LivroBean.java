@@ -347,14 +347,17 @@ public class LivroBean {
     
     /**
      * Carrega todos os livros disponíveis na Biblioteca Virtual
+     * @return A próxima página a se visualizada pelo usuário
      */
-    public void carregaBibliotecaVirtualCompleta() {    
+    public String carregaBibliotecaVirtualCompleta() {    
         try {
-            this.bibliotecaVirtual = this.controlador.getBibliotecaVirtual();
-        } catch (BibliotecaVirtualVaziaException ex) {
+            this.bibliotecaVirtual = null;
+            this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtual();
+        } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
             this.bibliotecaVirtual = new HashMap();
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
         }        
+        return "bibliotecaVirtual";
     }
     
     /**
@@ -362,8 +365,9 @@ public class LivroBean {
      */
     public void carregaBibliotecaVirtualPesquisa() {
         try {
+            this.bibliotecaVirtual = null;
             this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtualPesquisa(campoPesquisa, valorPesquisa);
-        } catch (BibliotecaVirtualVaziaException ex) {
+        } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
             this.bibliotecaVirtual = new HashMap();
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
         }  

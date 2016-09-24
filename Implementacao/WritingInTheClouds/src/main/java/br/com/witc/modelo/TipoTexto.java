@@ -75,5 +75,5 @@ public class TipoTexto implements Serializable {
             return false;
         TipoTexto tipoTexto = (TipoTexto) obj;
         return this.getId() == tipoTexto.getId();
-    }            
+    }                    
 }
