@@ -3,23 +3,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
-        <ui:define name="conteudo">     
-            <div align="center"> 
-               <h1>Editor de texto</h1>
-               <h:form >  
-                   <p:outputLabel for="titulo" value="Título: "/>
-                   <p:inputText id="titulo" label="titulo"  value="#{editarBean.tituloLivro}" required="true" requiredMessage="Informe o titulo do livro!!"/> 
-                   <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.textoLivro}" width="600" />
-                     <h:panelGrid columns="3" style="margin-top: 10px">
-                         <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
-                        <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
-                        <p:commandButton value="Voltar"  action="#{editarBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />
-                    </h:panelGrid>                  
-    
-                </h:form>
-            </div>
+        <ui:define name="conteudo">        
+            <f:view>
+                <div align="center"> 
+                    <h:form>
+                        <p:growl id="msgs" showDetail="true" />
+                            <p:panel id="basic" header="Novo Livro"  style="margin-bottom:20px">
+                                <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="10" >
+                                    <p:inputText id="titulo" label="titulo"  value="#{editarBean.tituloLivro}" placeholder="Titulo do livro" required="true" requiredMessage="Informe o titulo do livro!!" style= "width:600px"/>
+                                    <h:panelGrid columns="2" cellpadding="30">
+                                    <p:selectOneMenu style="width: 200px;" value="" required="true">
+                                         <f:selectItem itemLabel="Tipo de texto" itemValue="" />
+                                         <f:selectItem itemLabel="Terror" itemValue="TERROR" />
+                                         <f:selectItem itemLabel="Fantasia" itemValue="FANTASIA" />
+                                         <f:selectItem itemLabel="Comédia" itemValue="COMEDIA" />
+                                         <f:selectItem itemLabel="Tipo Texto" itemValue="TIPOTEXTO" />
+                                     </p:selectOneMenu>
+                                     <p:selectOneMenu style="width: 200px;" value="" required="true">
+                                         <f:selectItem itemLabel="Genero do texto" itemValue="" />
+                                         <f:selectItem itemLabel="Conto" itemValue="CONTO" />
+                                         <f:selectItem itemLabel="Poesia" itemValue="POESIA" />
+                                         <f:selectItem itemLabel="Prosa" itemValue="PROSA" />
+                                         <f:selectItem itemLabel="Tipo Genero" itemValue="TIPOGENARO" />
+                                     </p:selectOneMenu>
+                                    </h:panelGrid>
+                                     <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{editarBean.salvarNovoLivro()}"/>
+                                </h:panelGrid>
+                            </p:panel>
+                    </h:form>
+                    <h:form>
+                         <p:commandButton value="Voltar" ajax="false" action="timeline"/>
+                    </h:form>
+                       
+                    
+                </div>
+            </f:view>  
         </ui:define>
     </ui:composition>
 </html>
