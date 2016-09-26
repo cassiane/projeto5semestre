@@ -55,6 +55,6 @@ public class TipoPerfil implements Serializable {
     }
 
     public void cadastrarTipoPerfil() {
-        dao.cadastrarTipoPerfil(this);
+        dao.salvarTipoPerfil(this);
     }
 }

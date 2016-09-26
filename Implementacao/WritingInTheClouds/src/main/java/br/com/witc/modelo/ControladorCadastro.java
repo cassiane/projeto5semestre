@@ -30,9 +30,17 @@ public class ControladorCadastro {
 
 
     private Usuario usuario;
-    
+    private TipoPerfil tipoPerfil; 
+    private final TipoPerfilDAO tipoDAO;
+    private final Perfil perfil;  
+    private final PerfilDAO perfilDAO; 
     public ControladorCadastro() {
         this.usuario = new Usuario();
+        this.tipoPerfil = new TipoPerfil();
+        this.tipoDAO = new TipoPerfilDAO();
+        this.tipoPerfil = tipoDAO.carregarTipoPerfilEscritor();  
+        this.perfil = new Perfil();
+        this.perfilDAO = new PerfilDAO();
     }
 
     /**
@@ -248,17 +256,10 @@ public class ControladorCadastro {
      * @param usuario 
      */
     public void criarPerfilPadrao(Usuario usuario){
-        TipoPerfil tipo = new TipoPerfil();
-        TipoPerfilDAO tipoDAO = new TipoPerfilDAO();
-        tipo = tipoDAO.carregarTipoPerfil(1);
-        Perfil perfil = new Perfil();       
-        PerfilDAO perfilDAO = new PerfilDAO();
-        perfil.setUsuario(usuario);
-        perfil.setPseudonimo(usuario.getNome());
-        perfil.setTipoPerfil(tipo);
-        perfil.setQualificacao(0);
-        perfilDAO.salvarPerfil(perfil);
-            
+        this.perfil.setUsuario(this.usuario);
+        this.perfil.setPseudonimo(this.usuario.getNome());
+        this.perfil.setTipoPerfil(this.tipoPerfil);
+        perfilDAO.salvarPerfil(this.perfil);
     }
     /**
      * @param tipoPerfil 
