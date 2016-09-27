@@ -22,7 +22,7 @@ public class Perfil implements Serializable {
     @Id
     @GeneratedValue
     private int id;
-    private int qualificacao;
+    private Integer qualificacao;
     private String pseudonimo;
     @ManyToOne
     @JoinColumn(name="idUsuario")
@@ -40,11 +40,11 @@ public class Perfil implements Serializable {
         this.id = id;
     }
 
-    public int getQualificacao() {
+    public Integer getQualificacao() {
         return qualificacao;
     }
 
-    public void setQualificacao(int qualificacao) {
+    public void setQualificacao(Integer qualificacao) {
         this.qualificacao = qualificacao;
     }
 
@@ -80,5 +80,12 @@ public class Perfil implements Serializable {
     public static Perfil retornarPerfilUsuarioLogado(Usuario usuario) {
         PerfilDAO dao = new PerfilDAO();
         return dao.carregarPerfil(usuario); 
+    }
+    
+    /**     
+     * @return O nome do usuario em formato ABNT
+     */
+    public String getNomeUsuarioABNT() {
+        return this.usuario.getNomeABNT();
     }
 }

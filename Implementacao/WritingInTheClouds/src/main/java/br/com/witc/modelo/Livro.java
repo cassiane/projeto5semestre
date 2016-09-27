@@ -5,11 +5,16 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.persistencia.LivroDAO;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -17,19 +22,17 @@ import javax.persistence.OneToOne;
  * @author root
  */
 @Entity
-public class Livro implements Serializable {
-
-    
+public class Livro implements Serializable {      
     @Id
     @GeneratedValue
     private int id;
     private String titulo;
-    private int nroPaginas;
+    private Integer nroPaginas;
     private byte[] capa;
     private String classificacao;
     private boolean disponivelBiblioteca;
     private boolean reportadoConteudoImproprio;
-    private int qualificacao;
+    private Integer qualificacao;
     private String texto;
     @OneToOne
     @JoinColumn(name="idTipoTexto")
@@ -37,6 +40,8 @@ public class Livro implements Serializable {
     @OneToOne
     @JoinColumn(name="idTipoGenero")
     private TipoGenero tipoGenero;
+    @OneToMany(mappedBy = "livro")
+    private List<HistoricoLivro> historicoLivros;
    
 
     public int getId() {
@@ -55,11 +60,11 @@ public class Livro implements Serializable {
         this.titulo = titulo;
     }
 
-    public int getNroPaginas() {
+    public Integer getNroPaginas() {
         return nroPaginas;
     }
 
-    public void setNroPaginas(int nroPaginas) {
+    public void setNroPaginas(Integer nroPaginas) {
         this.nroPaginas = nroPaginas;
     }
 
@@ -95,11 +100,11 @@ public class Livro implements Serializable {
         this.reportadoConteudoImproprio = reportadoConteudoImproprio;
     }
 
-    public int getQualificacao() {
+    public Integer getQualificacao() {
         return qualificacao;
     }
 
-    public void setQualificacao(int qualificacao) {
+    public void setQualificacao(Integer qualificacao) {
         this.qualificacao = qualificacao;
     }
 
@@ -114,9 +119,11 @@ public class Livro implements Serializable {
     public void criarLivro(Perfil[]autores){
         
     }
+    
     public void editarLivro(){
         
     }
+    
     public void carregarLivro(int id){
         
     }
@@ -135,8 +142,67 @@ public class Livro implements Serializable {
 
     public void setTipoGenero(TipoGenero tipoGenero) {
         this.tipoGenero = tipoGenero;
+    }        
+    
+    /**     
+     * @param idLivro O id do livro
+     * @return O array de byte que representa a imagem
+     */
+    public byte[] getCapaPorId(int idLivro) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.carregarLivro(idLivro).getCapa();
     }
 
+    /**
+     * @return the historicoLivros
+     */
+    public List<HistoricoLivro> getHistoricoLivros() {
+        return historicoLivros;
+    }
+
+    /**
+     * @param historicoLivros the historicoLivros to set
+     */
+    public void setHistoricoLivros(List<HistoricoLivro> historicoLivros) {
+        this.historicoLivros = historicoLivros;
+    }
     
+    /**     
+     * @return O(s) nome(s) do(s) autor(es) em formato ABNT
+     */
+    public String getAutores() {        
+        String autores = "";
+        if (!this.historicoLivros.isEmpty()) {
+            for (HistoricoLivro historico : this.historicoLivros) {
+                autores += historico.getNomeUsuarioABNT() + ";";
+            }
+        }        
+        return autores;
+    }
     
+    /**
+     * Lista os livros na biblioteca com o Tipo Texto enviado
+     * @param tp O Tipo Texto para pesquisa
+     * @return Uma lista de Livro
+     * @throws BibliotecaVirtualVaziaException Caso não seja encontrado nenhum livro com o critério informado
+     */
+    public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp) 
+            throws BibliotecaVirtualVaziaException {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.listarLivrosPorTipoTexto(tp);
+    }
+    
+    /**
+     * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
+     * @param tp O Tipo Texto para pesquisa
+     * @param campoPesquisa O campo a ser pesquisado
+     * @param valorPesquisa O valor a ser pesquisado
+     * @return Um objeto Map, com os livros encontrados
+     * @throws BibliotecaVirtualVaziaException Caso não sejam encontrados livros
+     */
+    public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
+            throws BibliotecaVirtualVaziaException {                        
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.listarLivrosPublicados(tp, campoPesquisa, valorPesquisa);
+    }    
 }

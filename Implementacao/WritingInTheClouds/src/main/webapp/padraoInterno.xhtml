@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>
+        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>        
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
     </h:head>
     <h:body>        
@@ -41,13 +41,11 @@
                 </h:form>
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="300">
-                <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
-
-                <br/>
-                <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
-
-                <br/>
-
+                <h:panelGrid columns="1">
+                    <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
+                    <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
+                    <p:link outcome="#{livroBean.carregaBibliotecaVirtualCompleta()}" value="Biblioteca Virtual" />
+                </h:panelGrid>
             </p:layoutUnit>    
             <p:layoutUnit position="center">
                 <ui:insert name="conteudo"/>

@@ -27,14 +27,12 @@ import org.apache.commons.mail.EmailException;
  */
 @Entity
 public class Usuario implements Serializable {
-
     @Id
     @GeneratedValue
     private int id;
     private String nome;
     private String sobrenome;
     private String email;
-
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataAniversario;
     private String genero;
@@ -166,7 +164,23 @@ public class Usuario implements Serializable {
      */
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }    
+    
+    /**     
+     * @return O nome do autor em formato ABNT
+     */
+    public String getNomeABNT() {
+        String tmpNome = this.nome.split(" ")[0];
+        String nomeABNT;
+        if (tmpNome.length() > 1) {
+            nomeABNT = tmpNome.substring(0, 1).toUpperCase() + tmpNome.substring(1).toLowerCase();
+        } else {
+            nomeABNT = tmpNome.toUpperCase();
+        }
+        return this.getSobrenome().split(" ")[this.getSobrenome().split(" ").length - 1].toUpperCase() + ", "  +
+                nomeABNT;
     }
+
     /**
      * Autentica um usuário no sistema
      *
