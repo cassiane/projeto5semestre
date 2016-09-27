@@ -70,4 +70,11 @@ public class Perfil implements Serializable {
     public void setTipoPerfil(TipoPerfil tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
+    
+    /**     
+     * @return O nome do usuario em formato ABNT
+     */
+    public String getNomeUsuarioABNT() {
+        return this.usuario.getNomeABNT();
+    }
 }

@@ -22,7 +22,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,6 +54,9 @@ import org.primefaces.model.UploadedFile;
 public class LivroBean {
 
     private Livro livro, livroCarregado;
+    // Livro selecionado na Biblioteca Virtual
+    private Livro livroSelecionado;
+
     private Usuario usuario;
     private Perfil perfilUsuario;
     private String textoLivro;
@@ -98,6 +100,20 @@ public class LivroBean {
         this.livro = livro;
     }
 
+/**
+     * @return the livroSelecionado
+     */
+    public Livro getLivroSelecionado() {
+        return livroSelecionado;
+    }
+
+    /**
+     * @param livroSelecionado the livroSelecionado to set
+     */
+    public void setLivroSelecionado(Livro livroSelecionado) {
+        this.livroSelecionado = livroSelecionado;
+    }    
+    
     public Usuario getUsuario() {
         return usuario;
     }
@@ -320,6 +336,36 @@ public class LivroBean {
     }    
     
     /**     
+     * @return Os autores do livro selecionado
+     */
+    public String getAutoresLivroSelecionado() {
+        if (this.livroSelecionado != null) {
+            return this.livroSelecionado.getAutores();
+        }
+        return null;
+    }
+    
+    /**     
+     * @return O texto do livro selecionado
+     */
+    public String getTextoLivroSelecionado() {
+        if (this.livroSelecionado != null) {
+            return this.livroSelecionado.getTexto();
+        }
+        return null;
+    }
+    
+/**     
+     * @return O título do livro selecionado
+     */
+    public String getTituloLivroSelecionado() {
+        if (this.livroSelecionado != null) {
+            return this.livroSelecionado.getTitulo();
+        }
+        return null;
+    }    
+    
+    /**     
      * @return A capa do livro em formato compatível com p:graphicImage
      */
     public StreamedContent getCapa() {                                                                 
@@ -381,5 +427,5 @@ public class LivroBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }           
+    }              
 }

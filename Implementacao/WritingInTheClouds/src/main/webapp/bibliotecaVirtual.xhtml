@@ -26,17 +26,47 @@
                 <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">
                     <p:carousel value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
                         <p:dataGrid value="#{livro}">
-                            <f:facet name="header">
-                                <p:graphicImage id="capa" height="100px" width="70px" value="#{livroBean.capa}" cache="false">
-                                    <f:param  name="livroId" value="#{livro.id}" />
-                                </p:graphicImage>
-                            </f:facet>
+                            <h:panelGrid columns="2">
+                                <f:facet name="header">
+                                    <p:graphicImage id="capa" height="100px" width="70px" value="#{livroBean.capa}" cache="false">
+                                        <f:param  name="livroId" value="#{livro.id}" />
+                                    </p:graphicImage>
+                                </f:facet>
 
-                            <h:outputText value="#{livro.titulo}" />
+                                <h:outputLabel for="titulo" value="Título:" />
+                                <h:outputText id="titulo" value="#{livro.titulo}" />
+                                <h:outputLabel for="autor" value="Autor(es):" />
+                                <p:commandButton update=":autoresDialog" oncomplete="PF('w_autoresDialog').show()" icon="ui-icon-pencil">
+                                    <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
+                                </p:commandButton>
+                                <h:outputLabel for="classificacao" value="Classificação: " />
+                                <h:outputText id="classificacao" value="#{livro.classificacao}" />
+                                
+                                <f:facet name="footer">
+                                    <p:commandButton ajax="false" action="lerLivro" value="Ler">                                        
+                                        <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
+                                    </p:commandButton>
+                                </f:facet>
+                            </h:panelGrid>
                         </p:dataGrid>
                     </p:carousel>
                 </c:forEach>
-            </h:form>                        
+            </h:form>            
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog id="autoresDialog" header="Autores" widgetVar="w_autoresDialog" modal="true"
+                      showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="autoresPanel">
+                    <h:outputText value="#{livroBean.autoresLivroSelecionado}" />
+                </p:outputPanel>
+            </p:dialog>
+            
+            <p:dialog id="textoDialog" header="#{livroBean.tituloLivroSelecionado}" widgetVar="w_textoDialog" modal="true"
+                      showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="textoPanel">
+                    <h:outputText value="#{livroBean.textoLivroSelecionado}" />
+                </p:outputPanel>
+            </p:dialog>
         </ui:define>
     </ui:composition>
 </html>

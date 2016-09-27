@@ -6,14 +6,10 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
-import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.persistencia.LivroDAO;
-import br.com.witc.persistencia.TipoTextoDAO;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -146,7 +142,7 @@ public class Livro implements Serializable {
 
     public void setTipoGenero(TipoGenero tipoGenero) {
         this.tipoGenero = tipoGenero;
-    }
+    }        
     
     /**     
      * @param idLivro O id do livro
@@ -169,6 +165,19 @@ public class Livro implements Serializable {
      */
     public void setHistoricoLivros(List<HistoricoLivro> historicoLivros) {
         this.historicoLivros = historicoLivros;
+    }
+    
+    /**     
+     * @return O(s) nome(s) do(s) autor(es) em formato ABNT
+     */
+    public String getAutores() {        
+        String autores = "";
+        if (!this.historicoLivros.isEmpty()) {
+            for (HistoricoLivro historico : this.historicoLivros) {
+                autores += historico.getNomeUsuarioABNT() + ";";
+            }
+        }        
+        return autores;
     }
     
     /**

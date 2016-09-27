@@ -88,4 +88,8 @@ public class HistoricoLivro implements Serializable {
         this.status = status;
     }
     
+    public String getNomeUsuarioABNT() {
+        return this.perfil.getNomeUsuarioABNT();
+    }
+    
 }
