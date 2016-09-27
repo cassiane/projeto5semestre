@@ -172,12 +172,14 @@ public class Livro implements Serializable {
      */
     public String getAutores() {        
         String autores = "";
-        if (!this.historicoLivros.isEmpty()) {
+        if ((this.historicoLivros != null) && (!this.historicoLivros.isEmpty())) {
             for (HistoricoLivro historico : this.historicoLivros) {
                 autores += historico.getNomeUsuarioABNT() + ";";
             }
+            return autores;
         }        
-        return autores;
+        return null;
+        
     }
     
     /**

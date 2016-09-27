@@ -400,9 +400,11 @@ public class LivroBean {
             this.bibliotecaVirtual = null;
             this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtual();
         } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
-            this.bibliotecaVirtual = new HashMap();
+            this.bibliotecaVirtual = null;
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
-        }        
+        }       
+        this.campoPesquisa = null;
+        this.valorPesquisa = null;
         return "bibliotecaVirtual";
     }
     
@@ -414,7 +416,7 @@ public class LivroBean {
             this.bibliotecaVirtual = null;
             this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtualPesquisa(campoPesquisa, valorPesquisa);
         } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
-            this.bibliotecaVirtual = new HashMap();
+            this.bibliotecaVirtual = null;
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
         }  
     }        

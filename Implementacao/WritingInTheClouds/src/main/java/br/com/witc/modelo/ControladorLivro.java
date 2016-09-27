@@ -95,7 +95,7 @@ public class ControladorLivro {
         }
         
         if (tmpMap.isEmpty()) {
-            throw new BibliotecaVirtualVaziaException("Nenhum livro foi publicado até o momento.");
+            throw new BibliotecaVirtualVaziaException("Nenhum livro encontrado com os critérios informados.");
         }
         return tmpMap;
     }
