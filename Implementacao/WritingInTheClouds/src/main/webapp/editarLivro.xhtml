@@ -9,21 +9,9 @@
         <ui:define name="conteudo">     
             <div align="center"> 
 
-               <h1>Editor de texto1</h1>
+               <h1>Editor de texto</h1>
                <h:form enctype="multipart/form-data">
-                   <h:panelGrid columns="2">
-                       <h:panelGrid columns="2">
-                            <p:outputLabel for="titulo" value="Título"/>
-                            <p:inputText id="titulo" label="titulo"  value="#{livroBean.livroCarregado.titulo}" required="true" requiredMessage="Informe o titulo do livro!!"/>                                            
-                       </h:panelGrid>
-                       <h:panelGrid columns="2">
-                            <p:outputLabel for="tipoTexto" value="Tipo de texto"/>
-                            <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" required="true" style="width: 150px">
-                                <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
-                                               itemValue="#{tipoTexto}"/>
-                            </p:selectOneMenu>
-                       </h:panelGrid>
-                   </h:panelGrid>
+                  
                    <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
                      <h:panelGrid columns="3" style="margin-top: 10px">
                         <p:commandButton value="Salvar"  actionListener="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
@@ -31,28 +19,7 @@
                         <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
                     </h:panelGrid>                  
                    <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
-    
-
-             
-                    <h:form id="editorForm" >  
-                       <p:growl id="message" showDetail="true" />
-                       <p:panel id="basic" header="Editor de Texto"  style="margin-bottom:20px">
-                       <h:panelGrid columns="1">
-                           <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.livroCarregado.texto}" width="600" height="600" />
-                            <h:panelGrid columns="3" style="margin-top: 10px">
-                                 <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
-                                 <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
-                                 <p:commandButton value="Voltar"  action="#{editarBean.biblioteca()}" icon="ui-icon-disk" ajax="false" >
-                                 <p:confirm header="confirmação" message="você deseja salvar o texto antes de voltar?" icon="ui-icon-alert" />
-                                 </p:commandButton>
-                            </h:panelGrid>      
-                       </h:panelGrid> 
-                       <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                          <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                          <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                       </p:confirmDialog>
-                       </p:panel>
-                   </h:form>
+               </h:form>
 
             </div>
         </ui:define>
