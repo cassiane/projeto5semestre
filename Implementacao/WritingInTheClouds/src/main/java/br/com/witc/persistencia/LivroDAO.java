@@ -5,13 +5,16 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.TipoTexto;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.TypedQuery;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -81,7 +84,72 @@ public class LivroDAO {
         
     }
     
+    /**
+     * Lista os livros publicados na Biblioteca Virtual
+     * @param tp O Tipo Texto para pesquisa
+     * @return Uma lista de livros publicados na Biblioteca Virtual
+     * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso não haja livros publicados na Biblioteca
+     */
+    public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp) throws BibliotecaVirtualVaziaException {
+        List<Livro> tmpLstLivro = sessao.createCriteria(Livro.class)
+                .add(Restrictions.like("disponivelBiblioteca", true))
+                .add(Restrictions.eq("tipoTexto", tp))
+                .addOrder(Order.asc("tipoTexto"))
+                .list();
+        
+        if (tmpLstLivro.isEmpty()) {
+            throw new BibliotecaVirtualVaziaException("Nenhum livro foi publicado até o momento.");
+        }
+        return tmpLstLivro;
+    }
     
-    
-    
+    /**
+     * Lista os livros publicados na Biblioteca Virtual     
+     * @param tp O Tipo Texto para pesquisa
+     * @param campoPesquisa O campo a ser pesquisado
+     * @param valorPesquisa O valor a ser pesquisado
+     * @return Uma lista de livros publicados na Biblioteca Virtual
+     * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso não haja livros publicados na Biblioteca
+     */    
+    public List<Livro> listarLivrosPublicados(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
+            throws BibliotecaVirtualVaziaException {        
+        String sql = "FROM Livro AS l ";
+        switch (campoPesquisa) {
+            case "autor":
+                sql += "INNER JOIN l.tipoTexto AS tp "
+                     + "INNER JOIN l.historicoLivros AS hl "
+                     + "INNER JOIN hl.perfil AS p "
+                     + "INNER JOIN p.usuario AS u "
+                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND u.nome LIKE ";
+                break;
+            case "classificacao":
+                sql += "INNER JOIN l.tipoTexto tp "
+                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND l.classificacao LIKE ";
+                break;
+            case "tipoTexto":
+                sql += "INNER JOIN l.tipoTexto tp  "
+                     + "WHERE tp.tipoTexto LIKE ";
+                break;
+            case "titulo":
+                sql += "INNER JOIN l.tipoTexto tp  "
+                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND l.titulo LIKE ";
+        }
+        sql += "'%" + valorPesquisa + "%' ORDER BY l.tipoTexto";
+                        
+        List<Livro> tmpLstLivro = new ArrayList();
+        List<Object[]> lstResult = sessao.createQuery(sql).list();
+        for (Object[] o : lstResult) {            
+            for (Object o1 : o) {
+                if (o1 instanceof Livro) {
+                    tmpLstLivro.add((Livro) o1);
+                    break;
+                }
+            }
+        }
+                
+        if (tmpLstLivro.isEmpty()) {
+            throw new BibliotecaVirtualVaziaException("Não foi possível localizar livros com os critérios informados.");
+        }
+        return tmpLstLivro;
+    }            
 }

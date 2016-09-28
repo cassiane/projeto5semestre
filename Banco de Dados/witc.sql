@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `witc`.`Usuario` (
   `genero` VARCHAR(20) NOT NULL,
   `foto` LONGBLOB NULL,
   `senha` VARCHAR(64) NOT NULL,
+  `ativo` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB;
@@ -124,14 +125,14 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `witc`.`Livro` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idTipoGenero` INT UNSIGNED NULL,
-  `idTipoTexto` INT UNSIGNED NULL,
+  `idTipoTexto` INT UNSIGNED NOT NULL,
   `titulo` VARCHAR(45) NOT NULL,
   `nroPaginas` INT NULL,
   `capa` BLOB NULL,
   `classificacao` VARCHAR(45) NOT NULL,
   `disponivelBiblioteca` TINYINT(1) NOT NULL,
   `reportadoConteudoImproprio` TINYINT(1) NOT NULL,
-  `qualificacao` INT NOT NULL,
+  `qualificacao` INT NULL,
   `texto` LONGTEXT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Livro_TipoGenero1_idx` (`idTipoGenero` ASC),
@@ -246,3 +247,13 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- Cria usuário da aplicação:
+
+CREATE USER 'USERWITCAPP'@'LOCALHOST' IDENTIFIED BY 'APPCTIWUSER';
+
+--
+-- Configura permissões do usuário da aplicação:
+--
+
+GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE, SHOW VIEW ON WITC.* TO 'USERWITCAPP'@'LOCALHOST';
