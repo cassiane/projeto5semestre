@@ -42,6 +42,7 @@ public class Livro implements Serializable {
     private TipoGenero tipoGenero;
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
+    private Usuario lock;
 
     public int getId() {
         return id;
@@ -160,6 +161,20 @@ public class Livro implements Serializable {
         this.historicoLivros = historicoLivros;
     }    
     
+    /**
+     * @return the lock
+     */
+    public Usuario getLock() {
+        return lock;
+    }
+
+    /**
+     * @param lock the lock to set
+     */
+    public void setLock(Usuario lock) {
+        this.lock = lock;
+    }    
+    
     /**     
      * @param idLivro O id do livro
      * @return O array de byte que representa a imagem
@@ -217,5 +232,5 @@ public class Livro implements Serializable {
             return null;
         }
         return livroDAO.listarLivrosPublicados(tp, campoPesquisa, valorPesquisa);
-    }       
+    }           
 }

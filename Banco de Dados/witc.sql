@@ -11,7 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema witc
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `witc` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `witc` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 USE `witc` ;
 
 -- -----------------------------------------------------
@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `witc`.`Livro` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idTipoGenero` INT UNSIGNED NULL,
   `idTipoTexto` INT UNSIGNED NOT NULL,
+  `lock` INT UNSIGNED NOT NULL DEFAULT 0,
   `titulo` VARCHAR(45) NOT NULL,
   `nroPaginas` INT NULL,
   `capa` BLOB NULL,
@@ -137,6 +138,7 @@ CREATE TABLE IF NOT EXISTS `witc`.`Livro` (
   PRIMARY KEY (`id`),
   INDEX `fk_Livro_TipoGenero1_idx` (`idTipoGenero` ASC),
   INDEX `fk_Livro_TipoTexto1_idx` (`idTipoTexto` ASC),
+  INDEX `fk_Livro_Usuario1_idx` (`lock` ASC),
   CONSTRAINT `fk_Livro_TipoGenero1`
     FOREIGN KEY (`idTipoGenero`)
     REFERENCES `witc`.`TipoGenero` (`id`)
@@ -145,6 +147,11 @@ CREATE TABLE IF NOT EXISTS `witc`.`Livro` (
   CONSTRAINT `fk_Livro_TipoTexto1`
     FOREIGN KEY (`idTipoTexto`)
     REFERENCES `witc`.`TipoTexto` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Livro_Usuario1`
+    FOREIGN KEY (`lock`)
+    REFERENCES `witc`.`Usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
