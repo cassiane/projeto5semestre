@@ -17,6 +17,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import org.apache.commons.mail.EmailException;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -38,7 +42,11 @@ public class ControladorCadastro {
         this.usuario = new Usuario();
         this.tipoPerfil = new TipoPerfil();
         this.tipoDAO = new TipoPerfilDAO();
-        this.tipoPerfil = tipoDAO.carregarTipoPerfilEscritor();  
+        try {  
+            this.tipoPerfil = tipoDAO.carregarTipoPerfilEscritor();
+        } catch (TipoPerfilException ex) {
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
         this.perfil = new Perfil();
         this.perfilDAO = new PerfilDAO();
     }
@@ -54,8 +62,12 @@ public class ControladorCadastro {
      */
     public void cadastrarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, 
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
+        
         usuario.consistirDados();
         usuario.cadastrarUsuario();
+        
+        
+                
     }
     /**
      * altera um usuário no sistema
@@ -68,6 +80,7 @@ public class ControladorCadastro {
      */
     public void alterarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, 
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
+        
         usuario.consistirDados();
         usuario.alterarUsuario();
     }
@@ -268,4 +281,15 @@ public class ControladorCadastro {
     public void cadastrarTipoPerfil(TipoPerfil tipoPerfil) throws TipoPerfilException{
         tipoPerfil.cadastrarTipoPerfil(); 
     }
+    
+    /**
+     * Envia à viewer uma mensagem com o status da operação
+     *
+     * @param sev A severidade da mensagem
+     * @param msg A mensagem a ser apresentada
+     */
+    private void enviarMensagem(FacesMessage.Severity sev, String msg) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(sev, msg, ""));
+    }     
 }

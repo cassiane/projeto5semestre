@@ -21,8 +21,7 @@ public class TipoPerfil implements Serializable {
     @GeneratedValue
     private int id;
     private String tipoPerfil;
-    private boolean ativo;
-    TipoPerfilDAO dao;
+    
     /**
      * @return 
      */
@@ -47,14 +46,9 @@ public class TipoPerfil implements Serializable {
     public void setTipoPerfil(String tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
-    /**
-     * @param b 
-     */
-    public void setAtivo(boolean b) {
-        this.ativo = b;
-    }
 
     public void cadastrarTipoPerfil() {
-        dao.salvarTipoPerfil(this);
+        TipoPerfilDAO daoTipoPerfil = new TipoPerfilDAO();
+        daoTipoPerfil.salvarTipoPerfil(this);
     }
 }

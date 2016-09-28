@@ -7,6 +7,7 @@ package br.com.witc.bean;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
+import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Usuario;
@@ -69,7 +70,7 @@ public class CadastrarBean {
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
-    public CadastrarBean() {
+    public CadastrarBean() throws TipoPerfilException {
         this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
     }

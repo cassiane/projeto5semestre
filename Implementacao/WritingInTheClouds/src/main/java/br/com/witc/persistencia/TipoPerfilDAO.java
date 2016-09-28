@@ -5,11 +5,16 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.excessao.LoginInvalidoException;
+import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.modelo.TipoPerfil;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.hql.internal.ast.QuerySyntaxException;
 
 /**
  *
@@ -44,11 +49,22 @@ public class TipoPerfilDAO {
     /**
      * Método usado para quando criar um usuário ele ter o perfil de escritor como padrão
      * @return 
+     * @throws br.com.witc.excessao.TipoPerfilException 
      */
-    public TipoPerfil carregarTipoPerfilEscritor(){
-        String consulta ="select * from tipoperfil where tipoperfil.tipoperfil like '%escritor%'"; 
-        return (TipoPerfil) sessao.createSQLQuery(consulta).uniqueResult();        
-    }
+    public TipoPerfil carregarTipoPerfilEscritor() throws TipoPerfilException, QuerySyntaxException{
+        try{
+            TipoPerfil tipoPerfilTmp = (TipoPerfil) sessao.createQuery("from TipoPerfil where tipoPerfil like '%escritor%'")
+                    .uniqueResult();
+            if (tipoPerfilTmp == null) {
+                throw new TipoPerfilException("Não existe um perfil de escritor.");            
+            }else{
+                return tipoPerfilTmp;
+            }
+        }catch(QuerySyntaxException ex){
+            throw new QuerySyntaxException(ex.getMessage());
+        }
+    }        
+    
     
     /**
      * Retorna uma lista de todos os campos da tabela tipo perfil

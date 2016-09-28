@@ -26,7 +26,7 @@ public class TipoPerfilBean {
     private TipoPerfil tipoPerfil;
     private TipoPerfilDAO dao; 
 
-    public TipoPerfilBean(ControladorCadastro controlador, TipoPerfil tipoPerfil) {
+    public TipoPerfilBean(ControladorCadastro controlador, TipoPerfil tipoPerfil){
         this.controlador = new ControladorCadastro();
         this.tipoPerfil = new TipoPerfil();
     }
@@ -34,8 +34,7 @@ public class TipoPerfilBean {
      * Cadastra um novo perfil
      * @return 
      */
-    public String cadastrarTipoPerfil(){
-        this.tipoPerfil.setAtivo(true);        
+    public String cadastrarTipoPerfil(){   
         try {
             this.controlador.cadastrarTipoPerfil(tipoPerfil);
             return "timelineAdmin"; 
