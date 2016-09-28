@@ -41,6 +41,7 @@
                 </h:form>
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="300">
+
                 <h:panelGrid columns="1">
                     <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
                     <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
@@ -49,6 +50,7 @@
                     <p:link outcome="novoLivro.xhtml" value="Criar Livro"/>
                     <p:link outcome="editarLivro.xhtml" value="Editor"/>
                 </h:panelGrid>
+
             </p:layoutUnit>    
             <p:layoutUnit position="center">
                 <ui:insert name="conteudo"/>
