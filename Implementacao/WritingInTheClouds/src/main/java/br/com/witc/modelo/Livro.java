@@ -6,9 +6,9 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.excessao.LivroException;
 import br.com.witc.persistencia.LivroDAO;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,7 +42,6 @@ public class Livro implements Serializable {
     private TipoGenero tipoGenero;
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
-   
 
     public int getId() {
         return id;
@@ -56,7 +55,10 @@ public class Livro implements Serializable {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
+    public void setTitulo(String titulo) throws LivroException {
+        if (titulo.length() > 45) {
+            throw new LivroException("O título do livro deve ter no máximo 45 caracteres!");
+        }
         this.titulo = titulo;
     }
 
@@ -144,15 +146,6 @@ public class Livro implements Serializable {
         this.tipoGenero = tipoGenero;
     }        
     
-    /**     
-     * @param idLivro O id do livro
-     * @return O array de byte que representa a imagem
-     */
-    public byte[] getCapaPorId(int idLivro) {
-        LivroDAO livroDAO = new LivroDAO();
-        return livroDAO.carregarLivro(idLivro).getCapa();
-    }
-
     /**
      * @return the historicoLivros
      */
@@ -165,19 +158,34 @@ public class Livro implements Serializable {
      */
     public void setHistoricoLivros(List<HistoricoLivro> historicoLivros) {
         this.historicoLivros = historicoLivros;
-    }
+    }    
     
     /**     
+     * @param idLivro O id do livro
+     * @return O array de byte que representa a imagem
+     */
+    public byte[] getCapaPorId(int idLivro) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.carregarLivro(idLivro).getCapa();
+    }
+
+    /**
+     * @param idLivro O id do livro
      * @return O(s) nome(s) do(s) autor(es) em formato ABNT
      */
-    public String getAutores() {        
+    public String getAutores(int idLivro) {        
         String autores = "";
-        if ((this.historicoLivros != null) && (!this.historicoLivros.isEmpty())) {
-            for (HistoricoLivro historico : this.historicoLivros) {
-                autores += historico.getNomeUsuarioABNT() + ";";
-            }
+        
+        HistoricoLivro historicoLivro = new HistoricoLivro();
+        for (HistoricoLivro historico : historicoLivro.listarHistoricoLivro(idLivro)) {
+            autores += historico.getNomeUsuarioABNT() + ";";
+        }
+                        
+        if (!autores.isEmpty()) {
+            // Retira o ultimo ;
+            autores =  autores.substring(0, autores.length() - 1);
             return autores;
-        }        
+        }
         return null;
         
     }
@@ -205,6 +213,9 @@ public class Livro implements Serializable {
     public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
             throws BibliotecaVirtualVaziaException {                        
         LivroDAO livroDAO = new LivroDAO();
+        if ((campoPesquisa.equals("tipoTexto")) && (!tp.getTipoTexto().toLowerCase().equals(valorPesquisa.toLowerCase()))) {
+            return null;
+        }
         return livroDAO.listarLivrosPublicados(tp, campoPesquisa, valorPesquisa);
-    }    
+    }       
 }

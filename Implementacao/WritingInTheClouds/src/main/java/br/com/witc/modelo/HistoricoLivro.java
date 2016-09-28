@@ -5,8 +5,10 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.persistencia.HistoricoLivroDAO;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -90,6 +92,15 @@ public class HistoricoLivro implements Serializable {
     
     public String getNomeUsuarioABNT() {
         return this.perfil.getNomeUsuarioABNT();
+    }
+    
+    /**     
+     * @param idLivro O id do livro pesquisado
+     * @return Uma lista com os registros daquele livro no BD
+     */ 
+    public List<HistoricoLivro> listarHistoricoLivro(int idLivro) {
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        return historicoLivroDAO.listarHistoricoLivro(idLivro);
     }
     
 }
