@@ -49,8 +49,8 @@ public class EditarBean {
     private PerfilDAO daoPerfil;
     private LivroDAO daoLivro;
     private HistoricoLivroDAO daoHistorico;
-    private List<Usuario> amigoEditor;
-    private List<Usuario> listaAmigoEditor;
+    private List<Perfil> amigoEditor;
+    private List<Perfil> listaAmigoEditor;
     
     
     public EditarBean() {
@@ -194,15 +194,15 @@ public class EditarBean {
         this.tituloLivro = tituloLivro;
     }
 
-    public List<Usuario> getAmigoEditor() {
+    public List<Perfil> getAmigoEditor() {
         return amigoEditor;
     }
 
-    public void setAmigoEditor(List<Usuario> AmigoEditor) {
+    public void setAmigoEditor(List<Perfil> AmigoEditor) {
         this.amigoEditor = AmigoEditor;
     }
 
-    public List<Usuario> getListaAmigoEditor() {
+    public List<Perfil> getListaAmigoEditor() {
         return listaAmigoEditor;
     }
     
@@ -220,5 +220,9 @@ public class EditarBean {
     
     public void carregarListaAmigoEditor() {
         this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor();
+    }
+    
+    public void convidarAmigoEditor() {
+        this.controlador.convidarAmigoEditor(this.perfilUsuario, this.amigoEditor, this.livroCarregado);
     }
 }

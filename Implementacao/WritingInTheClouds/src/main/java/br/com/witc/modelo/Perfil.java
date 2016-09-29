@@ -73,7 +73,7 @@ public class Perfil implements Serializable {
         this.tipoPerfil = tipoPerfil;
     }
 
-    public List<Usuario> carregarListaAmigoEditor() {
+    public List<Perfil> carregarListaAmigoEditor() {
         PerfilDAO dao = new PerfilDAO();
         return dao.carregarListaAmigoEdigor();
     }

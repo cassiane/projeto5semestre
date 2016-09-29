@@ -43,14 +43,14 @@ public class PerfilDAO {
         }
     }
 
-    public List<Usuario> carregarListaAmigoEdigor() {
-        List<Usuario> tmpPerfilUsuario = null;
+    public List<Perfil> carregarListaAmigoEdigor() {
+        List<Perfil> tmpPerfil = null;
         try {
-            tmpPerfilUsuario = sessao.createQuery("FROM Usuario").list();
+            tmpPerfil = sessao.createQuery("FROM Perfil").list();
         } catch (Exception ex) {
             
         }
-        return tmpPerfilUsuario;
+        return tmpPerfil;
     }
     
 

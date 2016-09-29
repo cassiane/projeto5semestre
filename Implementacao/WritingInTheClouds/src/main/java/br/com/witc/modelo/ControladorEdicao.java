@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -14,9 +15,19 @@ import java.util.List;
 public class ControladorEdicao {
     Livro livro;
 
-    public List<Usuario> carregarListaAmigoEditor() {
+    public List<Perfil> carregarListaAmigoEditor() {
         Perfil perfil = new Perfil();
         return perfil.carregarListaAmigoEditor();
+    }
+
+    public void convidarAmigoEditor(Perfil usuario, List<Perfil> convidado, Livro livro) {
+        ConvidadoPerfil convidar = new ConvidadoPerfil(Calendar.getInstance());
+        convidar.setIdPerfil(usuario);
+        convidar.setIdLivro(livro);
+        for (Perfil p : convidado) {
+            convidar.setIdPerfilConvidado(p);
+            convidar.salvar();
+        }
     }
     
 }
