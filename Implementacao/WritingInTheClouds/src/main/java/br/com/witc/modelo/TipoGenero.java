@@ -5,7 +5,12 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.excessao.TipoGeneroException;
+import br.com.witc.persistencia.TipoGeneroDAO;
+import br.com.witc.persistencia.TipoTextoDAO;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -35,6 +40,36 @@ public class TipoGenero implements Serializable {
 
     public void setTipoGenero(String tipoGenero) {
         this.tipoGenero = tipoGenero;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + this.id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TipoGenero other = (TipoGenero) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.tipoGenero, other.tipoGenero)) {
+            return false;
+        }
+        return true;
+    }
+
+    List<TipoGenero> getLstTipoGenero() throws TipoGeneroException {
+        TipoGeneroDAO tipoGeneroDAO = new TipoGeneroDAO();
+        return tipoGeneroDAO.getLstTipoGenero();
     }
     
 }

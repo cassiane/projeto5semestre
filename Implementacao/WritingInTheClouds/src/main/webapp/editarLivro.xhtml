@@ -19,6 +19,16 @@
                         <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
                     </h:panelGrid>                  
                    <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
+                   <p:growl id="message" showDetail="true" />
+ 
+    <p:commandButton value="Voltar" actionListener="#{dialogView.destroyWorld}" update="message">
+        <p:confirm header="Confirmação" message="Deseja salvar o texto antes de voltar?" icon="ui-icon-alert" />
+    </p:commandButton>
+ 
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Yes" actionListener="#{livroBean.salvarLivro()}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
                </h:form>
 
             </div>

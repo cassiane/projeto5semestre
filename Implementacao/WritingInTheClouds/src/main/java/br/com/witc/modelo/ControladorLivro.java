@@ -6,6 +6,7 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.excessao.TipoGeneroException;
 import br.com.witc.excessao.TipoTextoException;
 import java.util.HashMap;
 import java.util.List;
@@ -98,5 +99,10 @@ public class ControladorLivro {
             throw new BibliotecaVirtualVaziaException("Nenhum livro foi publicado até o momento.");
         }
         return tmpMap;
+    }
+
+    public List<TipoGenero> getLstTipoGenero() throws TipoGeneroException {
+        TipoGenero tipoGenero = new TipoGenero();
+        return tipoGenero.getLstTipoGenero();
     }
 }

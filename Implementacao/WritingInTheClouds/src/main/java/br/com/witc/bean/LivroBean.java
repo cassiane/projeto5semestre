@@ -6,11 +6,13 @@
 package br.com.witc.bean;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.excessao.TipoGeneroException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.modelo.ControladorLivro;
 import br.com.witc.modelo.HistoricoLivro;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.TipoGenero;
 import br.com.witc.modelo.TipoStatus;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
@@ -181,6 +183,16 @@ public class LivroBean {
         return tmpLstTipoTexto;
     }
     
+    public List<TipoGenero> getLstTipoGenero(){
+        List<TipoGenero> tmpLstTipoGenero = new ArrayList();
+        try {
+         tmpLstTipoGenero = this.controlador.getLstTipoGenero();
+        }catch (TipoGeneroException ex){
+            Logger.getLogger(LivroBean.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        return tmpLstTipoGenero;
+    }    
     public List<Livro> listarLivrosPerfil(){
         List<Livro> listaTemp = daoLivro.listarLivrosPerfil(this.perfilUsuario);
        

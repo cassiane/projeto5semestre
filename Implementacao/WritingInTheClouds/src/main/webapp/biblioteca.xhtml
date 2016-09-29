@@ -16,10 +16,8 @@
                 <h:form>
                   <p:growl id="msgs" showDetail="true" />
                     <p:panel id="basic" header="Biblioteca"  style="margin-bottom:20px">
-
-                        <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{editarBean.editorNovoLivro()}"/>
-                        <p:dataTable   value="#{editarBean.livros}"  var="lis" rows="10" paginator="true">
-
+                        <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{livroBean.editorNovoLivro()}"/>
+                        <p:dataTable   value="#{livroBean.livros}"  var="lis" rows="10" paginator="true">
                             <p:column headerText="ID" sortBy="#{lis.id}"   >
                             #{lis.id}
                          </p:column>
@@ -28,7 +26,7 @@
                          </p:column>
                             <p:column>
 
-                                <p:commandButton ajax="false" title="Consultar" value="Editar" action="#{editarBean.editarLivro(lis.id)}"/>
+                                <p:commandButton ajax="false" title="Consultar" value="Editar" action="#{livroBean.editarLivro(lis.id)}"/>
                                 <p:selectManyCheckbox id="basic" value="">
                                     <f:selectItem itemLabel="Revisão" itemValue="1" />
                                 </p:selectManyCheckbox>
