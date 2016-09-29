@@ -6,7 +6,6 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
-
         <ui:define name="conteudo">        
             <f:view>
                 <div align="center"> 
@@ -14,26 +13,17 @@
                         <p:growl id="msgs" showDetail="true" />
                             <p:panel id="basic" header="Novo Livro"  style="margin-bottom:20px">
                                 <h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="10" >
-                                    <p:inputText id="titulo" label="titulo"  value="#{livroBean.tituloLivro}" placeholder="Titulo do livro" required="true" requiredMessage="Informe o titulo do livro!!" style= "width:600px"/>
+                                    <p:outputLabel for="titulo" value="titulo do Livro"/>
+                                    <p:inputText id="titulo" label="Titulo"  value="#{livroBean.tituloLivro}" required="true" requiredMessage="Informe o titulo do livro!!" style= "width:600px"/>
                                     <h:panelGrid columns="2" cellpadding="30">
-                                        <p:selectOneMenu id="setor" value="#{livroBean.livro.tipoGenero}" converter="conversortipogenero" required="true" requiredMessage="Informe o Setor!!">
-                                <f:selectItem itemLabel="Selecione um tipo texto" noSelectionOption="true" itemValue="" />
-                                <f:selectItems value="#{livroBean.lstTipoGenero}" var ="genero" itemLabel="#{genero.tipoGenero}" itemValue="#{genero}" />
-                            </p:selectOneMenu>
-                                        <p:selectOneMenu style="width: 200px;" value="#{livroBean.livro.tipoTexto}" required="true">
-                                         <f:selectItem itemLabel="Tipo de texto" itemValue="" />
-                                         <f:selectItem itemLabel="Terror" itemValue="TERROR" />
-                                         <f:selectItem itemLabel="Fantasia" itemValue="FANTASIA" />
-                                         <f:selectItem itemLabel="Comédia" itemValue="COMEDIA" />
-                                         <f:selectItem itemLabel="Tipo Texto" itemValue="TIPOTEXTO" />
-                                     </p:selectOneMenu>
-                                        <p:selectOneMenu style="width: 200px;" value="#{livroBean.livro.tipoGenero}" required="true">
-                                         <f:selectItem itemLabel="Genero do texto" itemValue="" />
-                                         <f:selectItem itemLabel="Conto" itemValue="CONTO" />
-                                         <f:selectItem itemLabel="Poesia" itemValue="POESIA" />
-                                         <f:selectItem itemLabel="Prosa" itemValue="PROSA" />
-                                         <f:selectItem itemLabel="Tipo Genero" itemValue="TIPOGENARO" />
-                                     </p:selectOneMenu>
+                                        <p:outputLabel for="tipoGenero" value="tipo de Genero"/>
+                                        <p:selectOneMenu id="tipoGenero" value="#{livroBean.livro.tipoGenero}" required="true"style="width: 150px" >
+                                            <f:selectItems value="#{livroBean.lstTipoGenero}" var ="tipoGenero" itemLabel="#{tipoGenero.tipoGenero}" itemValue="#{tipoGenero}" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel for="tipoTexto" value="Tipo de texto"/>
+                                        <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" required="true" style="width: 150px">
+                                            <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" itemValue="#{tipoTexto}"/>
+                                        </p:selectOneMenu>                 
                                     </h:panelGrid>
                                      <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{editarBean.salvarNovoLivro()}"/>
                                 </h:panelGrid>
@@ -41,12 +31,9 @@
                     </h:form>
                     <h:form>
                          <p:commandButton value="Voltar" ajax="false" action="timeline"/>
-                    </h:form>
-                       
-                    
+                    </h:form> 
                 </div>
             </f:view>  
-
         </ui:define>
     </ui:composition>
 </html>
