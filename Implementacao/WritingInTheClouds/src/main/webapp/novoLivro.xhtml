@@ -29,7 +29,7 @@
                         <p:selectBooleanCheckbox value="#{livroBean.disponivelEdicaoAmigo}" />                        
                     </h:panelGrid>                  
                      <h:panelGrid columns="3" style="margin-top: 10px">
-                        <p:commandButton value="Salvar"  action="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Salvar"  actionListener="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
                         <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
                     </h:panelGrid>                                     

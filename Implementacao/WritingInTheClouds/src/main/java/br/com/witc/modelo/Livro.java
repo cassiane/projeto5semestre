@@ -42,7 +42,7 @@ public class Livro implements Serializable {
     private TipoGenero tipoGenero;
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
-    private int bookLock;
+    private int lock;
 
     public int getId() {
         return id;
@@ -162,17 +162,17 @@ public class Livro implements Serializable {
     }    
     
     /**
-     * @return the bookLock
+     * @return the lock
      */
-    public int getBookLock() {
-        return bookLock;
+    public int getLock() {
+        return lock;
     }
 
     /**
-     * @param bookLock the bookLock to set
+     * @param lock the lock to set
      */
-    public void setBookLock(int bookLock) {
-        this.bookLock = bookLock;
+    public void setLock(int lock) {
+        this.lock = lock;
     }    
     
     /**     
@@ -193,12 +193,12 @@ public class Livro implements Serializable {
         
         HistoricoLivro historicoLivro = new HistoricoLivro();
         for (HistoricoLivro historico : historicoLivro.listarHistoricoLivro(idLivro)) {
-            autores += historico.getNomeUsuarioABNT() + "; ";
+            autores += historico.getNomeUsuarioABNT() + ";";
         }
                         
         if (!autores.isEmpty()) {
             // Retira o ultimo ;
-            autores =  autores.substring(0, autores.length() - 2);
+            autores =  autores.substring(0, autores.length() - 1);
             return autores;
         }
         return null;
@@ -237,6 +237,9 @@ public class Livro implements Serializable {
     public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
             throws BibliotecaVirtualVaziaException {                        
         LivroDAO livroDAO = new LivroDAO();
+        if ((campoPesquisa.equals("tipoTexto")) && (!tp.getTipoTexto().toLowerCase().equals(valorPesquisa.toLowerCase()))) {
+            return null;
+        }
         return livroDAO.listarLivrosPublicados(tp, campoPesquisa, valorPesquisa);
     }      
     

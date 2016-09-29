@@ -5,11 +5,13 @@
  */
 package br.com.witc.modelo;
 
-import br.com.witc.bean.LivroBean;
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.TipoTextoException;
+import br.com.witc.persistencia.HistoricoLivroDAO;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -62,19 +64,12 @@ public class ControladorLivro {
      */
     public void criarLivro(Livro livro, boolean finalizado, Perfil perfil){    
         if (finalizado) {
-            HistoricoLivro historicoLivro = new HistoricoLivro();
-            historicoLivro.finalizarLivroUsuario(livro, perfil);
+            HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+            HistoricoLivro historico = historicoLivroDAO.carregarHistoricoLivroUsuario(livro, perfil);
             
-            boolean terminado = true;
-            for (HistoricoLivro hl : historicoLivro.listarHistoricoLivro(livro.getId())) {
-                if (hl.getDataConclusao() == null) {
-                    terminado = false;
-                    break;
-                }
-            }
-            
-            if (terminado) {
-                livro.setDisponivelBiblioteca(true);
+            if (finalizado) {
+                historico.setDataConclusao(Calendar.getInstance());
+                historicoLivroDAO.salvarHistorico(historico);
             }
         }
         this.livro.criarLivro(livro);
@@ -118,13 +113,10 @@ public class ControladorLivro {
         List<Livro> tmpLivros;
         for (TipoTexto tp : tipoTexto.getLstTipoTexto()) {
             try {
-                if ((campoPesquisa.equals(LivroBean.ITEM_PESQUISA_TIPO_TEXTO)) && 
-                   (!tp.getTipoTexto().toUpperCase().equals(valorPesquisa.toUpperCase()))) {
-                    tmpLivros = this.livro.listarLivrosPorTipoTexto(tp, campoPesquisa, valorPesquisa);
-                    if ((tmpLivros != null) && (!tmpLivros.isEmpty())) {
-                        tmpMap.put(tp.getTipoTexto(), tmpLivros);
-                    }                
-                }
+                tmpLivros = this.livro.listarLivrosPorTipoTexto(tp, campoPesquisa, valorPesquisa);
+                if ((tmpLivros != null) && (!tmpLivros.isEmpty())) {
+                    tmpMap.put(tp.getTipoTexto(), tmpLivros);
+                }                
             } catch (BibliotecaVirtualVaziaException ex) {}
         }
         
@@ -140,9 +132,8 @@ public class ControladorLivro {
      * @param idPerfil O id do perfil do usuário
      * @return True, caso o livro esteja disponível para edição e false, caso contrário
      */
-    public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {        
-        HistoricoLivro historicoLivro = new HistoricoLivro();
-        return this.livro.estaDisponivelEdicaoUsuario(idLivro, idPerfil) &&
-                !historicoLivro.estaFinalizadoUsuario(idLivro, idPerfil);
-    }    
+    public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        return historicoLivroDAO.estaFinalizadoUsuario(idLivro, idPerfil) && this.livro.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
+    }
 }
