@@ -61,7 +61,7 @@ public class HistoricoLivroDAO {
     }
     
     /**
-     * Carrega o histórico de um determinado livro e de um determinado perfil
+     * Verifica se o livro já foi finalizado pelo usuário
      * @param idLivro O id do livro buscado
      * @param idPerfil O id do perfil do usuário
      * @return Um objeto HistoricoLivro
@@ -72,6 +72,7 @@ public class HistoricoLivroDAO {
                 .setString("idPerfil", String.valueOf(idPerfil))
                 .uniqueResult();
         
+        sessao.refresh(historico);
         return historico.getDataConclusao() != null;
     }
 }

@@ -164,6 +164,7 @@ public class LivroDAO {
                 .setString("idLivro", String.valueOf(idLivro))                
                 .uniqueResult();
         
-        return (livro.getLock() == idPerfil) || (livro.getLock() == 0);
+        sessao.refresh(livro);
+        return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
     }
 }

@@ -28,9 +28,9 @@ public class HistoricoLivro implements Serializable {
     @Id
     @GeneratedValue
     private int id;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Calendar dataInicio;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Calendar  dataConclusao;        
     @ManyToOne
     @JoinColumn(name="idLivro")
@@ -112,5 +112,28 @@ public class HistoricoLivro implements Serializable {
     public HistoricoLivro carregarHistoricoLivroUsuario(Livro livro, Perfil perfil) {
         HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
         return historicoLivroDAO.carregarHistoricoLivroUsuario(livro, perfil);
+    }
+    
+    /**
+     * Verifica se o livro já foi finalizado pelo usuário
+     * @param idLivro O id do livro buscado
+     * @param idPerfil O id do perfil do usuário
+     * @return Um objeto HistoricoLivro
+     */
+    public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) {
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        return historicoLivroDAO.estaFinalizadoUsuario(idLivro, idPerfil);
+    }
+    
+    /**
+     * 
+     * @param livro O livro a ser persistido
+     * @param perfil O perfil do usuário criador do livro     */
+    public void finalizarLivroUsuario(Livro livro, Perfil perfil) {
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        HistoricoLivro historico = historicoLivroDAO.carregarHistoricoLivroUsuario(livro, perfil);
+
+        historico.setDataConclusao(Calendar.getInstance());
+        historicoLivroDAO.salvarHistorico(historico);
     }
 }

@@ -58,15 +58,9 @@
                                 <f:selectItem itemLabel="Masculino" itemValue="M" />
                             </p:selectOneRadio>
                             <h:column>
-                                <h:outputText value="Ao clicar em Abrir uma Conta, você concorda com os nossos " />
-                                <a href="http://www.google.com.br">Termos</a>                                                        
-                            </h:column>
-                            <h:column>
-                                <h:outputText value=" e que leu a nossa " />
-                                <a href="http://www.google.com.br">Política de Dados</a>
-                                <h:outputText value=" incluindo o nosso " />
-                                <a href="http://www.google.com.br">Uso de Cookies</a>
-                                <h:outputText value="." />
+                                <h:panelGrid width="100%">
+                                    <h:outputText style="text-align: justify;" value="Ao clicar em Abrir uma Conta, você concorda com nossa política de dados, incluindo o nosso uso de cookies, e com os nossos termos." />
+                                </h:panelGrid>
                             </h:column>
                             <p:commandButton ajax="false" value="Abrir uma Conta" style="width:200px; margin-left: 3px;"
                                          action="#{cadastrarBean.cadastrarUsuario()}" />
