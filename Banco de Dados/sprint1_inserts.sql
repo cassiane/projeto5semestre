@@ -1,16 +1,16 @@
-INSERT INTO `witc`.`tipoperfil`
+INSERT INTO `witc`.`TipoPerfil`
 (`tipoPerfil`)
 VALUES
 ("ESCRITOR");
 
 
-INSERT INTO `witc`.`tipostatus`
+INSERT INTO `witc`.`TipoStatus`
 (`tipoStatus`)
 VALUES
 ("PADRAO");
 
 
-INSERT INTO `witc`.`tipoperfil_tem_tipostatus`
+INSERT INTO `witc`.`TipoPerfil_tem_TipoStatus`
 (`TipoPerfil_id`,
 `TipoStatus_id`)
 VALUES

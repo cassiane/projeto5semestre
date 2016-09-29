@@ -17,13 +17,11 @@ USE `witc` ;
 -- Table `witc`.`ConvidadoPerfil`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `witc`.`ConvidadoPerfil` (
-  `idPerfil` INT UNSIGNED NOT NULL COMMENT '',
-  `idPerfilConvidado` INT UNSIGNED NOT NULL COMMENT '',
-  `idLivro` INT UNSIGNED NOT NULL COMMENT '',
-  `dataSolicitacao` DATE NOT NULL COMMENT '',
-  UNIQUE INDEX `idPerfil_UNIQUE` (`idPerfil` ASC)  COMMENT '',
-  UNIQUE INDEX `idPerfilConvidado_UNIQUE` (`idPerfilConvidado` ASC)  COMMENT '',
-  UNIQUE INDEX `idLivro_UNIQUE` (`idLivro` ASC)  COMMENT '',
+  `idPerfil` INT UNSIGNED NOT NULL,
+  `idPerfilConvidado` INT UNSIGNED NOT NULL,
+  `idLivro` INT UNSIGNED NOT NULL,
+  `dataSolicitacao` DATE NOT NULL,
+  PRIMARY KEY (`idPerfilConvidado`, `idPerfil`, `idLivro`),
   CONSTRAINT `fk_ConvidadoPerfil_1`
     FOREIGN KEY (`idPerfil`)
     REFERENCES `witc`.`Perfil` (`id`)
