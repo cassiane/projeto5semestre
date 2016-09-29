@@ -6,6 +6,7 @@
 package br.com.witc.bean;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.modelo.ControladorLivro;
 import br.com.witc.modelo.HistoricoLivro;
@@ -27,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -296,6 +296,8 @@ public class LivroBean {
             this.historico.setStatus(st);
             this.historico.setDataInicio(this.getPegaDataAtual());
             daoHistorico.salvarHistorico(this.historico);
+        } catch (LivroException ex) {
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         } catch (Exception ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
         }
@@ -340,7 +342,7 @@ public class LivroBean {
      */
     public String getAutoresLivroSelecionado() {
         if (this.livroSelecionado != null) {
-            return this.livroSelecionado.getAutores();
+            return this.livroSelecionado.getAutores(this.livroSelecionado.getId());
         }
         return null;
     }
@@ -396,13 +398,13 @@ public class LivroBean {
      * @return A próxima página a se visualizada pelo usuário
      */
     public String carregaBibliotecaVirtualCompleta() {    
-        try {
-            this.bibliotecaVirtual = null;
+        try {            
             this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtual();
         } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
             this.bibliotecaVirtual = null;
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
-        }       
+        }                   
+        
         this.campoPesquisa = null;
         this.valorPesquisa = null;
         return "bibliotecaVirtual";
@@ -410,15 +412,16 @@ public class LivroBean {
     
     /**
      * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
+     * @return A próxima página a se visualizada pelo usuário
      */
-    public void carregaBibliotecaVirtualPesquisa() {
-        try {
-            this.bibliotecaVirtual = null;
+    public String carregaBibliotecaVirtualPesquisa() {
+        try {            
             this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtualPesquisa(campoPesquisa, valorPesquisa);
         } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
             this.bibliotecaVirtual = null;
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
         }  
+        return null;
     }        
     
     /**

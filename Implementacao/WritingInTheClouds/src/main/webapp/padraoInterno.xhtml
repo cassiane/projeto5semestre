@@ -9,11 +9,11 @@
         <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>        
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
     </h:head>
-    <h:body>        
+    <h:body>              
         <p:layout fullPage="true">
             <p:layoutUnit position="north" size="144">
-                <f:facet name="header">                    
-                    <p:growl id="growl" severity="info, warn, error" globalOnly="true" />
+                <p:growl id="growl" severity="info, warn, error" globalOnly="true" />                    
+                <f:facet name="header">                                        
                     <div id="top" style="height: 70px;text-align: center;line-height: 70px;font-size: 40px">
                         <h:outputText value="WITC"/>
                     </div>                                
@@ -41,14 +41,18 @@
                 </h:form>
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="300">
-                <h:panelGrid columns="1">
-                    <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
-                    <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
-                    <p:link outcome="#{livroBean.carregaBibliotecaVirtualCompleta()}" value="Biblioteca Virtual" />
+                <h:panelGrid columns="1">                    
+                    <h:form>
+                        <p:menu>
+                            <p:menuitem value="Amigos" action="#{cadastrarBean.listarAmigos()}" ajax="false" />
+                            <p:menuitem value="Biblioteca" action="biblioteca.xhtml" ajax="false" />
+                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
+                        </p:menu>
+                    </h:form>
                 </h:panelGrid>
             </p:layoutUnit>    
             <p:layoutUnit position="center">
-                <ui:insert name="conteudo"/>
+                <ui:insert name="conteudo"/>                
             </p:layoutUnit>
         </p:layout>
         <ui:insert name="dialogos"/>

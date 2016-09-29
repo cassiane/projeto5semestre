@@ -88,9 +88,13 @@ public class ControladorLivro {
         Map<String,List<Livro>> tmpMap = new HashMap();
         
         TipoTexto tipoTexto = new TipoTexto();
+        List<Livro> tmpLivros;
         for (TipoTexto tp : tipoTexto.getLstTipoTexto()) {
             try {
-                tmpMap.put(tp.getTipoTexto(), this.livro.listarLivrosPorTipoTexto(tp, campoPesquisa, valorPesquisa));
+                tmpLivros = this.livro.listarLivrosPorTipoTexto(tp, campoPesquisa, valorPesquisa);
+                if ((tmpLivros != null) && (!tmpLivros.isEmpty())) {
+                    tmpMap.put(tp.getTipoTexto(), tmpLivros);
+                }                
             } catch (BibliotecaVirtualVaziaException ex) {}
         }
         

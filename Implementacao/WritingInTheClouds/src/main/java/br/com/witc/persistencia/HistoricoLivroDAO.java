@@ -7,7 +7,9 @@ package br.com.witc.persistencia;
 
 import br.com.witc.modelo.HistoricoLivro;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -33,5 +35,13 @@ public class HistoricoLivroDAO {
             } 
         }
      
-    
+    /**     
+     * @param idLivro O id do livro pesquisado
+     * @return Uma lista com os registros daquele livro no BD
+     */ 
+    public List<HistoricoLivro> listarHistoricoLivro(int idLivro) {
+        return sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro")
+                .setString("idLivro", String.valueOf(idLivro))
+                .list();
+    }
 }
