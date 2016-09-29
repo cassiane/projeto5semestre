@@ -15,7 +15,7 @@
                    <p:inputText id="titulo" label="titulo"  value="#{editarBean.livroCarregado.titulo}" required="true" requiredMessage="Informe o titulo do livro!!"/>                    
                    <p:editor id="editor" widgetVar="editorWidget" value="#{editarBean.livroCarregado.texto}" width="600" />
                      <h:panelGrid columns="4" style="margin-top: 10px">
-                         <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Salvar"  actionListener="#{editarBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
                         <p:commandButton value="Voltar"  action="#{editarBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />
@@ -32,18 +32,16 @@
                             <p:selectManyMenu id="advanced" value="#{editarBean.amigoEditor}" converter="perfilConverter"
                                               var="Editores" filter="true" filterMatchMode="startsWith" showCheckbox="true" scrollHeight="200">
                                 <f:selectItems value="#{editarBean.listaAmigoEditor}" var="selEditores" itemLabel="#{selEditores.pseudonimo}" itemValue="#{selEditores}" />
-                                <p:column>
-                                    <!--<p:graphicImage style="border-style: solid" id="img" width="30" height="30" value="#{editarBean.carregarFoto(Editores.id)}" cache="false" />-->
-                                </p:column>
+<!--                                <p:column>
+                                    <p:graphicImage style="border-style: solid" id="img" width="30" height="30" value="#{editarBean.carregarFoto(Editores.id)}" cache="false" />
+                                </p:column>-->
                                 <p:column>
                                     <h:outputText value="#{Editores.pseudonimo}" />
                                 </p:column>
                             </p:selectManyMenu>
                         </p:outputPanel>
                         <p:outputPanel>
-                            <p:commandButton value="Convidar" type="button" oncomplete="PF('ConAmiEdi').hide();" icon="ui-icon.disk">
-                                <p:ajax listener="#{editarBean.convidarAmigoEditor()}"/>
-                            </p:commandButton>
+                            <p:commandButton value="Convidar" actionListener="#{editarBean.convidarAmigoEditor()}" icon="ui-icon.disk" ajax="false" />
                             <p:commandButton value="Voltar" type="button" onclick="PF('ConAmiEdi').hide();" icon="ui-icon-disk" ajax="false" />
                         </p:outputPanel>
                     </h:panelGrid>

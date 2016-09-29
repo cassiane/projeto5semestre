@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.persistencia.TipoStatusDAO;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,6 +52,12 @@ public class TipoStatus implements Serializable {
         this.tipoStatus = tipoStatus;
     }
 
+    public void carregarTipoStatus(int id) {
+        TipoStatusDAO dao = new TipoStatusDAO();
+        TipoStatus temp = dao.carregarPerfil(id);
+        this.id = temp.id;
+        this.tipoStatus = temp.tipoStatus;
+    }
  
     
     

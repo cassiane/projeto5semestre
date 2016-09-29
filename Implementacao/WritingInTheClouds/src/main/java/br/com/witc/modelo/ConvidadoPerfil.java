@@ -24,13 +24,13 @@ import javax.persistence.Temporal;
 public class ConvidadoPerfil implements Serializable {
     @Id
     @OneToOne
-    @JoinColumn(name="idPerfil")
+    @JoinColumn(name="id")
     private Perfil idPerfil;
     @OneToOne
-    @JoinColumn(name="idPerfil")
+    @JoinColumn(name="id")
     private Perfil idPerfilConvidado;
     @OneToOne
-    @JoinColumn(name="idLivro")
+    @JoinColumn(name="id")
     private Livro idLivro;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataSolicitacao;
@@ -74,9 +74,9 @@ public class ConvidadoPerfil implements Serializable {
         this.dataSolicitacao = dataSolicitacao;
     }
     
-    public void salvar() {
+    public void salvar(ConvidadoPerfil salva) {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
-        dao.salvar(this);
+        dao.salvar(salva);
     }
     
     public List<ConvidadoPerfil> carregar(Perfil idPerfilConvidado) {
@@ -87,6 +87,28 @@ public class ConvidadoPerfil implements Serializable {
     }
     
     public void remover() {
+        ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
+        dao.remover(this);
+    }
+
+    public List<ConvidadoPerfil> listarSolicitacao() {
+        ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
+        return dao.carregar(this.idPerfilConvidado);
+    }
+
+    public void aceitarEdicao() {
+        HistoricoLivros historico = new HistoricoLivros();
+        historico.setLivro(this.idLivro);
+        historico.setPerfil(this.idPerfilConvidado);
+        TipoStatus status = new TipoStatus();
+        status.carregarTipoStatus(1);
+        historico.setStatus(status);
+        historico.setDataInicio(Calendar.getInstance());
+        historico.salvar();
+        this.negarEdicao();
+    }
+
+    public void negarEdicao() {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
         dao.remover(this);
     }

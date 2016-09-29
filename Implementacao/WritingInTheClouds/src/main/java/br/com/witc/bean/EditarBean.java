@@ -6,6 +6,7 @@
 package br.com.witc.bean;
 
 import br.com.witc.modelo.ControladorEdicao;
+import br.com.witc.modelo.ConvidadoPerfil;
 import br.com.witc.modelo.HistoricoLivros;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
@@ -51,6 +52,7 @@ public class EditarBean {
     private HistoricoLivroDAO daoHistorico;
     private List<Perfil> amigoEditor;
     private List<Perfil> listaAmigoEditor;
+    private List<ConvidadoPerfil> listaSolicitacaoEdicao;
     
     
     public EditarBean() {
@@ -205,6 +207,14 @@ public class EditarBean {
     public List<Perfil> getListaAmigoEditor() {
         return listaAmigoEditor;
     }
+
+    public List<ConvidadoPerfil> getListaSolicitacaoEdicao() {
+        return listaSolicitacaoEdicao;
+    }
+
+    public void setListaSolicitacaoEdicao(List<ConvidadoPerfil> listaSolicitacaoEdicao) {
+        this.listaSolicitacaoEdicao = listaSolicitacaoEdicao;
+    }
     
     public StreamedContent carregarFoto(int idfoto) {
         byte[] foto = null;
@@ -224,5 +234,19 @@ public class EditarBean {
     
     public void convidarAmigoEditor() {
         this.controlador.convidarAmigoEditor(this.perfilUsuario, this.amigoEditor, this.livroCarregado);
+    }
+    
+    public void carregarListaSolicitacaoEdicao() {
+        this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
+    }
+    
+    public String aceitarEdicao(ConvidadoPerfil ediLivro) {
+        this.controlador.aceitarEdicao(ediLivro);
+        return "biblioteca";
+    }
+    
+    public String negarEdicao(ConvidadoPerfil ediLivro) {
+        this.controlador.negarEdicao(ediLivro);
+        return "biblioteca";
     }
 }

@@ -21,13 +21,28 @@ public class ControladorEdicao {
     }
 
     public void convidarAmigoEditor(Perfil usuario, List<Perfil> convidado, Livro livro) {
-        ConvidadoPerfil convidar = new ConvidadoPerfil(Calendar.getInstance());
+        ConvidadoPerfil convidar = new ConvidadoPerfil();
         convidar.setIdPerfil(usuario);
         convidar.setIdLivro(livro);
+        //convidar.setDataSolicitacao(Calendar.getInstance());
         for (Perfil p : convidado) {
             convidar.setIdPerfilConvidado(p);
-            convidar.salvar();
+            convidar.salvar(convidar);
         }
+    }
+    
+    public List<ConvidadoPerfil> carregarListaSolicitacaoEdicao(Perfil perfilUsuario) {
+        ConvidadoPerfil lista = new ConvidadoPerfil();
+        lista.setIdPerfilConvidado(perfilUsuario);
+        return lista.listarSolicitacao();
+    }
+    
+    public void aceitarEdicao(ConvidadoPerfil editarLivro) {
+        editarLivro.aceitarEdicao();
+    }
+    
+    public void negarEdicao(ConvidadoPerfil editarLivro) {
+        editarLivro.negarEdicao();
     }
     
 }

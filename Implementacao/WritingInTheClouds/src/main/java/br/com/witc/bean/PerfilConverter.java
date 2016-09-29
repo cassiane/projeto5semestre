@@ -6,6 +6,7 @@
 package br.com.witc.bean;
 
 import br.com.witc.modelo.Perfil;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -23,7 +24,13 @@ public class PerfilConverter implements Converter{
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
             try {
-                return value;
+                EditarBean bean = (EditarBean) FacesContext.getCurrentInstance().getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().getELContext(), null, "editarBean");
+                for (Perfil lista : bean.getListaAmigoEditor()) {
+                    if (lista.getId() == Integer.parseInt(value)) {
+                        return lista;
+                    }
+                }
+                return null;
             } catch(NumberFormatException e) {
                 throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
             }

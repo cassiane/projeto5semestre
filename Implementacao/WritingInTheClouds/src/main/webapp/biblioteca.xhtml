@@ -36,5 +36,14 @@
                    </f:view>
           
         </ui:define>
+        <ui:define name="notificacao">
+            <h:form>
+                <p:dataScroller id="datEdiLivro" value="#{editarBean.listaSolicitacaoEdicao}" var="ediLivro" chunkSize="3">
+                    <h:outputText value="O usuario #{ediLivro.idPerfil.pseudonimo} convidou você para editar o texto #{ediLivro.idLivro.titulo}" />
+                    <p:commandButton ajax="false" value="Aceitar" action="#{editarBean.aceitarEdicao(ediLivro)}" />
+                    <p:commandButton ajax="false" value="Negar" action="#{editarBean.negarEdicao(ediLivro)}" />
+                </p:dataScroller>
+            </h:form>
+        </ui:define>
     </ui:composition>
 </html>
