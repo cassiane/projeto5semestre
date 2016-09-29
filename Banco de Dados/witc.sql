@@ -126,7 +126,6 @@ CREATE TABLE IF NOT EXISTS `witc`.`Livro` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idTipoGenero` INT UNSIGNED NULL,
   `idTipoTexto` INT UNSIGNED NOT NULL,
-  `bookLock` INT UNSIGNED NOT NULL DEFAULT 0,
   `titulo` VARCHAR(45) NOT NULL,
   `nroPaginas` INT NULL,
   `capa` BLOB NULL,
@@ -135,10 +134,10 @@ CREATE TABLE IF NOT EXISTS `witc`.`Livro` (
   `reportadoConteudoImproprio` TINYINT(1) NOT NULL,
   `qualificacao` INT NULL,
   `texto` LONGTEXT NOT NULL,
+  `bookLock` INT UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   INDEX `fk_Livro_TipoGenero1_idx` (`idTipoGenero` ASC),
   INDEX `fk_Livro_TipoTexto1_idx` (`idTipoTexto` ASC),
-  INDEX `fk_Livro_Usuario1_idx` (`bookLock` ASC),
   CONSTRAINT `fk_Livro_TipoGenero1`
     FOREIGN KEY (`idTipoGenero`)
     REFERENCES `witc`.`TipoGenero` (`id`)
@@ -147,11 +146,6 @@ CREATE TABLE IF NOT EXISTS `witc`.`Livro` (
   CONSTRAINT `fk_Livro_TipoTexto1`
     FOREIGN KEY (`idTipoTexto`)
     REFERENCES `witc`.`TipoTexto` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Livro_Usuario1`
-    FOREIGN KEY (`bookLock`)
-    REFERENCES `witc`.`Usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
