@@ -7,8 +7,11 @@ package br.com.witc.modelo;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.TipoTextoException;
+import br.com.witc.persistencia.HistoricoLivroDAO;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -51,6 +54,25 @@ public class ControladorLivro {
      */
     public byte[] getCapaPorId(int idLivro) {
         return this.livro.getCapaPorId(idLivro);
+    }
+    
+    /**
+     * Persiste um novo livro na BD
+     * @param livro O livro a ser persistido
+     * @param finalizado True, se o livro já foi finalizado pelo usuário ou false, caso contrário
+     * @param perfil O perfil do usuário criador do livro
+     */
+    public void criarLivro(Livro livro, boolean finalizado, Perfil perfil){    
+        if (finalizado) {
+            HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+            HistoricoLivro historico = historicoLivroDAO.carregarHistoricoLivroUsuario(livro, perfil);
+            
+            if (finalizado) {
+                historico.setDataConclusao(Calendar.getInstance());
+                historicoLivroDAO.salvarHistorico(historico);
+            }
+        }
+        this.livro.criarLivro(livro);
     }
     
     /**
@@ -102,5 +124,16 @@ public class ControladorLivro {
             throw new BibliotecaVirtualVaziaException("Nenhum livro encontrado com os critérios informados.");
         }
         return tmpMap;
+    }
+    
+    /**
+     * Verifica se o livro está disponível para edição do usuário logado
+     * @param idLivro O Livro
+     * @param idPerfil O id do perfil do usuário
+     * @return True, caso o livro esteja disponível para edição e false, caso contrário
+     */
+    public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        return historicoLivroDAO.estaFinalizadoUsuario(idLivro, idPerfil) && this.livro.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
     }
 }

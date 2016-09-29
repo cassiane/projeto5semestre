@@ -151,5 +151,19 @@ public class LivroDAO {
             throw new BibliotecaVirtualVaziaException("Não foi possível localizar livros com os critérios informados.");
         }
         return tmpLstLivro;
-    }            
+    }    
+    
+    /**
+     * Verifica se o livro está disponível para edição do usuário logado
+     * @param idLivro O id do Livro
+     * @param idPerfil O id do perfil do usuário logado
+     * @return True, caso o livro esteja disponível para edição e false, caso contrário
+     */
+    public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
+        Livro livro = (Livro) sessao.createQuery("FROM Livro WHERE id=:idLivro")
+                .setString("idLivro", String.valueOf(idLivro))                
+                .uniqueResult();
+        
+        return (livro.getLock() == idPerfil) || (livro.getLock() == 0);
+    }
 }

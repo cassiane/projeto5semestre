@@ -42,7 +42,7 @@ public class Livro implements Serializable {
     private TipoGenero tipoGenero;
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
-    private Usuario lock;
+    private int lock;
 
     public int getId() {
         return id;
@@ -164,14 +164,14 @@ public class Livro implements Serializable {
     /**
      * @return the lock
      */
-    public Usuario getLock() {
+    public int getLock() {
         return lock;
     }
 
     /**
      * @param lock the lock to set
      */
-    public void setLock(Usuario lock) {
+    public void setLock(int lock) {
         this.lock = lock;
     }    
     
@@ -206,6 +206,15 @@ public class Livro implements Serializable {
     }
     
     /**
+     * Persiste um novo livro na BD
+     * @param livro O livro a ser persistido
+     */
+    public void criarLivro(Livro livro){
+        LivroDAO livroDAO = new LivroDAO();
+        livroDAO.criarLivro(livro);
+    }
+    
+    /**
      * Lista os livros na biblioteca com o Tipo Texto enviado
      * @param tp O Tipo Texto para pesquisa
      * @return Uma lista de Livro
@@ -232,5 +241,16 @@ public class Livro implements Serializable {
             return null;
         }
         return livroDAO.listarLivrosPublicados(tp, campoPesquisa, valorPesquisa);
-    }           
+    }      
+    
+    /**
+     * Verifica se o livro está disponível para edição do usuário logado
+     * @param idLivro O id do Livro
+     * @param idPerfil O id do perfil do usuário logado
+     * @return True, caso o livro esteja disponível para edição e false, caso contrário
+     */
+    public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
+    }
 }

@@ -24,7 +24,9 @@
                         #{lis.titulo}
                          </p:column>
                             <p:column>
-                                <p:commandButton ajax="false" title="Consultar" value="Editar" action="#{livroBean.editarLivro(lis.id)}"/>                         
+                                <p:commandButton ajax="false" title="Consultar" value="Editar" 
+                                                 action="#{livroBean.editarLivro(lis.id)}"  
+                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
                         </p:column>
                         </p:dataTable>
     

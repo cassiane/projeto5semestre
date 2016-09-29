@@ -103,4 +103,14 @@ public class HistoricoLivro implements Serializable {
         return historicoLivroDAO.listarHistoricoLivro(idLivro);
     }
     
+    /**
+     * Carrega o histórico de um determinado livro e de um determinado perfil
+     * @param livro O livro buscado
+     * @param perfil O perfil do usuário
+     * @return Um objeto HistoricoLivro
+     */
+    public HistoricoLivro carregarHistoricoLivroUsuario(Livro livro, Perfil perfil) {
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        return historicoLivroDAO.carregarHistoricoLivroUsuario(livro, perfil);
+    }
 }

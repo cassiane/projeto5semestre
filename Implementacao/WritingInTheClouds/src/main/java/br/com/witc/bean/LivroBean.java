@@ -73,6 +73,8 @@ public class LivroBean {
     private String campoPesquisa;
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
+    private boolean disponivelEdicaoAmigo = false;
+    private boolean livroFinalizado = false;
 
     public LivroBean() {
         this.controlador = new ControladorLivro();
@@ -288,6 +290,7 @@ public class LivroBean {
             this.livro.setDisponivelBiblioteca(false);
             this.livro.setReportadoConteudoImproprio(false);
             this.livro.setQualificacao(0);
+            this.livro.setLock(this.perfilUsuario.getId());            
             daoLivro.criarLivro(livro);
             
             this.historico=new HistoricoLivro();
@@ -305,10 +308,15 @@ public class LivroBean {
     }
     
     public void salvarLivro(){
-        try {
+        try {                     
+            if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
+                this.livroCarregado.setLock(0);                
+            }
+            
             this.livroCarregado.setCapa(getImgBytes());
             this.livroCarregado.setTipoTexto(tipoTexto);
-            daoLivro.criarLivro(this.livroCarregado);
+            //daoLivro.criarLivro(this.livroCarregado);
+            this.controlador.criarLivro(livro, this.livroFinalizado, this.perfilUsuario);
         } catch (Exception ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
         }
@@ -365,6 +373,34 @@ public class LivroBean {
             return this.livroSelecionado.getTitulo();
         }
         return null;
+    }    
+    
+    /**
+     * @return the disponivelEdicaoAmigo
+     */
+    public boolean isDisponivelEdicaoAmigo() {
+        return disponivelEdicaoAmigo;
+    }
+
+    /**
+     * @param disponivelEdicaoAmigo the disponivelEdicaoAmigo to set
+     */
+    public void setDisponivelEdicaoAmigo(boolean disponivelEdicaoAmigo) {
+        this.disponivelEdicaoAmigo = disponivelEdicaoAmigo;
+    }    
+    
+    /**
+     * @return the livroFinalizado
+     */
+    public boolean isLivroFinalizado() {
+        return livroFinalizado;
+    }
+
+    /**
+     * @param livroFinalizado the livroFinalizado to set
+     */
+    public void setLivroFinalizado(boolean livroFinalizado) {
+        this.livroFinalizado = livroFinalizado;
     }    
     
     /**     
@@ -425,6 +461,15 @@ public class LivroBean {
     }        
     
     /**
+     * Verifica se o livro está disponível para edição do usuário logado
+     * @param idLivro O id do Livro     
+     * @return True, caso o livro esteja disponível para edição e false, caso contrário
+     */
+    public boolean estaDisponivelEdicaoUsuario(int idLivro) {
+        return this.controlador.estaDisponivelEdicaoUsuario(idLivro, this.perfilUsuario.getId());
+    }    
+    
+    /**
      * Envia à viewer uma mensagem com o status da operação
      * @param sev A severidade da mensagem
      * @param msg A mensagem a ser apresentada
@@ -432,5 +477,5 @@ public class LivroBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }              
+    }                 
 }
