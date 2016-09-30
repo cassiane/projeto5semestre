@@ -1,3 +1,5 @@
+-- inserts para testar a funcionalidade SB11 
+
 INSERT INTO `witc`.`tipoperfil`
 (`tipoPerfil`)
 VALUES
@@ -25,9 +27,6 @@ INSERT INTO `witc`.`tipostatus`
 (`tipoStatus`)
 VALUES
 ("PUBLICACAO");
-
-
-
 
 
 INSERT INTO `witc`.`tipoperfil_tem_tipostatus`
