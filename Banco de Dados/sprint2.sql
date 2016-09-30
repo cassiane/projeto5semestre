@@ -39,6 +39,21 @@ CREATE TABLE IF NOT EXISTS `witc`.`ConvidadoPerfil` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Procedure `proc_edicao` realizar a pesquisa de amigos para sugerir
+-- -----------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_edicao`(IN usuario INT)
+BEGIN
+START TRANSACTION;
+(SELECT * FROM witc.Perfil WHERE idUsuario IN 
+(SELECT id FROM witc.Usuario WHERE id IN 
+(SELECT a.idUsuario FROM witc.Usuario_tem_Amigo a WHERE a.idAmigo = usuario AND a.dataAceitacao IS NOT NULL AND a.amigoStatus = TRUE) OR id IN 
+(SELECT b.idAmigo FROM witc.Usuario_tem_Amigo b WHERE b.idUsuario = usuario AND b.dataAceitacao IS NOT NULL AND b.amigoStatus = TRUE)));
+COMMIT;
+END$$
+DELIMITER ;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
