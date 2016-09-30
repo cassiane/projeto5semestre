@@ -286,7 +286,7 @@ public class LivroBean {
             
             this.livro.setCapa(getImgBytes());
             this.livro.setTipoTexto(tipoTexto);
-            this.livro.setTexto(textoLivro);
+            this.livro.setTexto("");
             if(tituloLivro.isEmpty()){
                 tituloLivro="Novo Livro";
             }
