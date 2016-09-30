@@ -11,7 +11,7 @@
                 <center>
                     <h:form>                  
                         <p:panel id="basic" header="Minha Biblioteca"  style="margin-bottom:20px">
-                            <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{livroBean.editorNovoLivro()}"/>
+                            <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{livroBean.editarMetadadosLivro()}"/>
                             <p:dataTable   value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true">
                                 <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
                                     #{lis.titulo}

@@ -277,7 +277,7 @@ public class LivroBean {
         return this.bibliotecaVirtual;
    }
     
-    public String salvarNovoLivro(){        
+    public String salvarMetadadosLivro(){        
         try {
             this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);             
             TipoStatusDAO daoStatus = new TipoStatusDAO();
@@ -528,6 +528,10 @@ public class LivroBean {
         }
     }
     
+    public String editarMetadadosLivro(){
+        return "metadadosLivro";
+        
+    }
     /**
      * Envia à viewer uma mensagem com o status da operação
      * @param sev A severidade da mensagem
