@@ -8,6 +8,7 @@ package br.com.witc.modelo;
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
 import br.com.witc.excessao.TipoPerfilException;
+import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoPerfilDAO;
@@ -38,6 +39,8 @@ public class ControladorCadastro {
     private final TipoPerfilDAO tipoDAO;
     private final Perfil perfil;  
     private final PerfilDAO perfilDAO; 
+    private final TipoTexto tipoTexto;
+    
     public ControladorCadastro() {
         this.usuario = new Usuario();
         this.tipoPerfil = new TipoPerfil();
@@ -47,8 +50,9 @@ public class ControladorCadastro {
         } catch (TipoPerfilException ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
-        this.perfil = new Perfil();
+        this.perfil    = new Perfil();
         this.perfilDAO = new PerfilDAO();
+        this.tipoTexto = new TipoTexto();
     }
 
     /**
@@ -300,4 +304,31 @@ public class ControladorCadastro {
     public List<TipoPerfil> listarTipoPerfil() {
         return this.tipoPerfil.listarTipoPerfil();
     }
+    
+    /**
+     * Cadastra um tipo de texto
+     * @param tipoTexto
+     * @throws TipoTextoException 
+     */
+    public void cadastrarTipoTexto(TipoTexto tipoTexto) throws TipoTextoException {
+        this.tipoTexto.salvarTipoTexto(tipoTexto);
+    }
+    
+    /**
+     * Retorna os dados de um tipo de texto
+     * @param id
+     * @return 
+     */
+    public TipoTexto carregarTipoTexto(int id) {
+        return this.tipoTexto.carregarTipoTexto(id);
+    }
+    
+    /**
+     * Lista os tipos de texto
+     * @return 
+     */
+    public List<TipoTexto> listarTipoTexto() {
+        return this.tipoTexto.listarTipoTexto();
+    }
+    
 }
