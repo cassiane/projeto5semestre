@@ -17,5 +17,6 @@
     <mapping class="br.com.witc.modelo.HistoricoLivros"/>
     <mapping class="br.com.witc.modelo.ConvidadoUsuario"/>
     <mapping class="br.com.witc.modelo.TipoPerfil"/>
+    <mapping class="br.com.witc.modelo.ConvidadoPerfil"/>
   </session-factory>
 </hibernate-configuration>

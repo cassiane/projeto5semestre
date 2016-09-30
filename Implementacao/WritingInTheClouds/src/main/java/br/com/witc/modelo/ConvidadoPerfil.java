@@ -24,13 +24,13 @@ import javax.persistence.Temporal;
 public class ConvidadoPerfil implements Serializable {
     @Id
     @OneToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="idPerfil")
     private Perfil idPerfil;
     @OneToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="idPerfilConvidado")
     private Perfil idPerfilConvidado;
     @OneToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="idLivro")
     private Livro idLivro;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar dataSolicitacao;

@@ -24,7 +24,7 @@ public class ControladorEdicao {
         ConvidadoPerfil convidar = new ConvidadoPerfil();
         convidar.setIdPerfil(usuario);
         convidar.setIdLivro(livro);
-        //convidar.setDataSolicitacao(Calendar.getInstance());
+        convidar.setDataSolicitacao(Calendar.getInstance());
         for (Perfil p : convidado) {
             convidar.setIdPerfilConvidado(p);
             convidar.salvar(convidar);

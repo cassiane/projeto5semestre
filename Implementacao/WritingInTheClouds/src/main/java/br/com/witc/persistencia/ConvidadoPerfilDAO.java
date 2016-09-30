@@ -33,6 +33,6 @@ public class ConvidadoPerfilDAO {
     }
     
     public void remover(ConvidadoPerfil convite) {
-        sessao.saveOrUpdate(convite);
+        sessao.delete(convite);
     }
 }
