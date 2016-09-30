@@ -42,7 +42,7 @@ public class Livro implements Serializable {
     private TipoGenero tipoGenero;
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
-    private Usuario lock;
+    private int bookLock;
 
     public int getId() {
         return id;
@@ -162,17 +162,17 @@ public class Livro implements Serializable {
     }    
     
     /**
-     * @return the lock
+     * @return the bookLock
      */
-    public Usuario getLock() {
-        return lock;
+    public int getBookLock() {
+        return bookLock;
     }
 
     /**
-     * @param lock the lock to set
+     * @param bookLock the bookLock to set
      */
-    public void setLock(Usuario lock) {
-        this.lock = lock;
+    public void setBookLock(int bookLock) {
+        this.bookLock = bookLock;
     }    
     
     /**     
@@ -193,16 +193,25 @@ public class Livro implements Serializable {
         
         HistoricoLivro historicoLivro = new HistoricoLivro();
         for (HistoricoLivro historico : historicoLivro.listarHistoricoLivro(idLivro)) {
-            autores += historico.getNomeUsuarioABNT() + ";";
+            autores += historico.getNomeUsuarioABNT() + "; ";
         }
                         
         if (!autores.isEmpty()) {
             // Retira o ultimo ;
-            autores =  autores.substring(0, autores.length() - 1);
+            autores =  autores.substring(0, autores.length() - 2);
             return autores;
         }
         return null;
         
+    }
+    
+    /**
+     * Persiste um novo livro na BD
+     * @param livro O livro a ser persistido
+     */
+    public void criarLivro(Livro livro){
+        LivroDAO livroDAO = new LivroDAO();
+        livroDAO.criarLivro(livro);
     }
     
     /**
@@ -228,9 +237,17 @@ public class Livro implements Serializable {
     public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
             throws BibliotecaVirtualVaziaException {                        
         LivroDAO livroDAO = new LivroDAO();
-        if ((campoPesquisa.equals("tipoTexto")) && (!tp.getTipoTexto().toLowerCase().equals(valorPesquisa.toLowerCase()))) {
-            return null;
-        }
         return livroDAO.listarLivrosPublicados(tp, campoPesquisa, valorPesquisa);
-    }           
+    }      
+    
+    /**
+     * Verifica se o livro está disponível para edição do usuário logado
+     * @param idLivro O id do Livro
+     * @param idPerfil O id do perfil do usuário logado
+     * @return True, caso o livro esteja disponível para edição e false, caso contrário
+     */
+    public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
+    }
 }

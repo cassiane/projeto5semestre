@@ -73,6 +73,13 @@ public class LivroBean {
     private String campoPesquisa;
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
+    private boolean disponivelEdicaoAmigo = false;
+    private boolean livroFinalizado = false;
+    
+    // Itens de pesquisa
+    public static final String ITEM_PESQUISA_AUTOR = "autor";
+    public static final String ITEM_PESQUISA_TITULO = "titulo";
+    public static final String ITEM_PESQUISA_TIPO_TEXTO = "tipoTexto";
 
     public LivroBean() {
         this.controlador = new ControladorLivro();
@@ -270,7 +277,7 @@ public class LivroBean {
         return this.bibliotecaVirtual;
    }
     
-    public void salvarNovoLivro(){        
+    public String salvarNovoLivro(){        
         try {
             this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);             
             TipoStatusDAO daoStatus = new TipoStatusDAO();
@@ -288,7 +295,13 @@ public class LivroBean {
             this.livro.setDisponivelBiblioteca(false);
             this.livro.setReportadoConteudoImproprio(false);
             this.livro.setQualificacao(0);
-            daoLivro.criarLivro(livro);
+            if (this.disponivelEdicaoAmigo) {
+                this.livro.setBookLock(0);
+            } else {
+                this.livro.setBookLock(this.perfilUsuario.getId());            
+            }
+            this.controlador.criarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);
+            //daoLivro.criarLivro(livro);
             
             this.historico=new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
@@ -296,22 +309,38 @@ public class LivroBean {
             this.historico.setStatus(st);
             this.historico.setDataInicio(this.getPegaDataAtual());
             daoHistorico.salvarHistorico(this.historico);
+            
+            if (this.disponivelEdicaoAmigo) {
+                return "biblioteca.xhtml?faces-redirect=true";
+            }
         } catch (LivroException ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         } catch (Exception ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
         }
- 
+        return null; 
     }
     
-    public void salvarLivro(){
-        try {
+    public String salvarLivro(){
+        try {                     
+            if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
+                this.livroCarregado.setBookLock(0);                
+            } else {
+                this.livroCarregado.setBookLock(this.perfilUsuario.getId());
+            }
+            
             this.livroCarregado.setCapa(getImgBytes());
             this.livroCarregado.setTipoTexto(tipoTexto);
-            daoLivro.criarLivro(this.livroCarregado);
+            //daoLivro.criarLivro(this.livroCarregado);
+            this.controlador.criarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);
+            
+            if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
+                return "biblioteca.xhtml?faces-redirect=true";
+            }
         } catch (Exception ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
         }
+        return null;
     }        
 
     /**     
@@ -366,6 +395,55 @@ public class LivroBean {
         }
         return null;
     }    
+    
+    /**
+     * @return the disponivelEdicaoAmigo
+     */
+    public boolean isDisponivelEdicaoAmigo() {
+        return disponivelEdicaoAmigo;
+    }
+
+    /**
+     * @param disponivelEdicaoAmigo the disponivelEdicaoAmigo to set
+     */
+    public void setDisponivelEdicaoAmigo(boolean disponivelEdicaoAmigo) {
+        this.disponivelEdicaoAmigo = disponivelEdicaoAmigo;
+    }    
+    
+    /**
+     * @return the livroFinalizado
+     */
+    public boolean isLivroFinalizado() {
+        return livroFinalizado;
+    }
+
+    /**
+     * @param livroFinalizado the livroFinalizado to set
+     */
+    public void setLivroFinalizado(boolean livroFinalizado) {
+        this.livroFinalizado = livroFinalizado;        
+    }    
+    
+    /**
+     * @return the ITEM_PESQUISA_AUTOR
+     */
+    public String getITEM_PESQUISA_AUTOR() {
+        return ITEM_PESQUISA_AUTOR;
+    }
+    
+    /**
+     * @return the ITEM_PESQUISA_TITULO
+     */
+    public String getITEM_PESQUISA_TITULO() {
+        return ITEM_PESQUISA_TITULO;
+    }
+    
+    /**
+     * @return the ITEM_PESQUISA_TIPO_TEXTO
+     */
+    public String getITEM_PESQUISA_TIPO_TEXTO() {
+        return ITEM_PESQUISA_TIPO_TEXTO;
+    }
     
     /**     
      * @return A capa do livro em formato compatível com p:graphicImage
@@ -425,6 +503,32 @@ public class LivroBean {
     }        
     
     /**
+     * Verifica se o livro está disponível para edição do usuário logado
+     * @param idLivro O id do Livro     
+     * @return True, caso o livro esteja disponível para edição e false, caso contrário
+     */
+    public boolean estaDisponivelEdicaoUsuario(int idLivro) {
+        return this.controlador.estaDisponivelEdicaoUsuario(idLivro, this.perfilUsuario.getId());
+    }    
+    
+    /**
+     * Verifica se o livro está disponível para edição do usuário logado     
+     * @return True, caso o livro esteja disponível para edição e false, caso contrário
+     */
+    public boolean estaDisponivelEdicaoUsuario() {
+        return estaDisponivelEdicaoUsuario(this.livroCarregado.getId());
+    }        
+    
+    /**
+     * Atualiza a disponibilidade para edição do amigo, caso o check box de finalizaçã seja alterado
+     */
+    public void onLivroFinalizadoStatusChange() {
+        if (this.livroFinalizado) {
+            this.disponivelEdicaoAmigo = true;        
+        }
+    }
+    
+    /**
      * Envia à viewer uma mensagem com o status da operação
      * @param sev A severidade da mensagem
      * @param msg A mensagem a ser apresentada
@@ -432,5 +536,5 @@ public class LivroBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }              
+    }                 
 }

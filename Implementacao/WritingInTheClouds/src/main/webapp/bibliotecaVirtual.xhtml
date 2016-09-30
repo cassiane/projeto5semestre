@@ -13,9 +13,9 @@
                 <h:panelGrid columns="3">
                     <p:selectOneMenu style="width: 200px;" value="#{livroBean.campoPesquisa}" required="true">
                         <f:selectItem itemLabel="Selecione" itemValue="" />
-                        <f:selectItem itemLabel="Autor" itemValue="autor" />                        
-                        <f:selectItem itemLabel="Título" itemValue="titulo" />
-                        <f:selectItem itemLabel="Tipo de Texto" itemValue="tipoTexto" />
+                        <f:selectItem itemLabel="Autor" itemValue="#{livroBean.ITEM_PESQUISA_AUTOR}" />                        
+                        <f:selectItem itemLabel="Título" itemValue="#{livroBean.ITEM_PESQUISA_TITULO}" />
+                        <f:selectItem itemLabel="Tipo de Texto" itemValue="#{livroBean.ITEM_PESQUISA_TIPO_TEXTO}" />
                     </p:selectOneMenu>
                     <p:inputText value="#{livroBean.valorPesquisa}" style="width: 200px;"/>
                     <p:commandButton ajax="false" action="#{livroBean.carregaBibliotecaVirtualPesquisa()}"

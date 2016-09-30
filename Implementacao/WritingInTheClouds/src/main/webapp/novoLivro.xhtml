@@ -24,11 +24,15 @@
                        </h:panelGrid>
                    </h:panelGrid>
                    <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.textoLivro}" width="600" />
+                   <h:panelGrid columns="2" style="margin-top: 10px">                        
+                        <h:outputText value="Disponível para Edição: " />
+                        <p:selectBooleanCheckbox value="#{livroBean.disponivelEdicaoAmigo}" />                        
+                    </h:panelGrid>                  
                      <h:panelGrid columns="3" style="margin-top: 10px">
-                        <p:commandButton value="Salvar"  actionListener="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Salvar"  action="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
                         <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
-                    </h:panelGrid>                  
+                    </h:panelGrid>                                     
                    <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
     
                 </h:form>

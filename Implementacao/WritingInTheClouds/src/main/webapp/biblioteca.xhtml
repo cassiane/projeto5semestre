@@ -7,33 +7,34 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">     
-           
-              
-                   <f:view>
-
-<center>
-                 
-                <h:form>                  
-                    <p:panel id="basic" header="Biblioteca"  style="margin-bottom:20px">
-                        <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{livroBean.editorNovoLivro()}"/>
-                        <p:dataTable   value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true">
-                            <p:column headerText="ID" sortBy="#{lis.id}"   >
-                            #{lis.id}
-                         </p:column>
-                            <p:column headerText="Titulo" sortBy="#{lis.titulo}">
-                        #{lis.titulo}
-                         </p:column>
-                            <p:column>
-                                <p:commandButton ajax="false" title="Consultar" value="Editar" action="#{livroBean.editarLivro(lis.id)}"/>                         
-                        </p:column>
-                        </p:dataTable>
-    
-                   </p:panel>
-                     <p:commandButton value="Voltar" ajax="false" action="timeline"/>
-                </h:form>
-            </center>
-                   </f:view>
-          
+            <f:view>
+                <center>
+                    <h:form>                  
+                        <p:panel id="basic" header="Minha Biblioteca"  style="margin-bottom:20px">
+                            <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{livroBean.editorNovoLivro()}"/>
+                            <p:dataTable   value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true">
+                                <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
+                                    #{lis.titulo}
+                                </p:column>                                
+                                <p:column width="90">
+                                    <p:commandButton title="Editar" 
+                                                     ajax="false"                                         
+                                                     icon="ui-icon-pencil" 
+                                                     action="#{livroBean.editarLivro(lis.id)}"                                                      
+                                                     disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
+                                    <p:commandButton ajax="false" 
+                                                     title="Ler" 
+                                                     icon="ui-icon-document" 
+                                                     action="lerLivro">
+                                        <f:setPropertyActionListener value="#{lis}" target="#{livroBean.livroSelecionado}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                        <p:commandButton value="Voltar" ajax="false" action="timeline"/>
+                    </h:form>
+                </center>
+            </f:view>
         </ui:define>
     </ui:composition>
 </html>

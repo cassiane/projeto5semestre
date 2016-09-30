@@ -6,6 +6,8 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.modelo.HistoricoLivro;
+import br.com.witc.modelo.Livro;
+import br.com.witc.modelo.Perfil;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -43,5 +45,34 @@ public class HistoricoLivroDAO {
         return sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro")
                 .setString("idLivro", String.valueOf(idLivro))
                 .list();
+    }
+    
+    /**
+     * Carrega o histórico de um determinado livro e de um determinado perfil
+     * @param livro O livro buscado
+     * @param perfil O perfil do usuário
+     * @return Um objeto HistoricoLivro
+     */
+    public HistoricoLivro carregarHistoricoLivroUsuario(Livro livro, Perfil perfil) {
+        return (HistoricoLivro) sessao.createCriteria(HistoricoLivro.class)
+                .add(Restrictions.eq("livro", livro))
+                .add(Restrictions.eq("perfil", perfil))
+                .uniqueResult();
+    }
+    
+    /**
+     * Verifica se o livro já foi finalizado pelo usuário
+     * @param idLivro O id do livro buscado
+     * @param idPerfil O id do perfil do usuário
+     * @return Um objeto HistoricoLivro
+     */
+    public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) {
+        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil")
+                .setString("idLivro", String.valueOf(idLivro))
+                .setString("idPerfil", String.valueOf(idPerfil))
+                .uniqueResult();
+        
+        sessao.refresh(historico);
+        return historico.getDataConclusao() != null;
     }
 }
