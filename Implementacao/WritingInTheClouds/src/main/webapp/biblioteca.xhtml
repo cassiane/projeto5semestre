@@ -12,7 +12,7 @@
                     <h:form>                  
                         <p:panel id="basic" header="Minha Biblioteca"  style="margin-bottom:20px">
                             <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{livroBean.editorNovoLivro()}"/>
-                            <p:dataTable   value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true">
+                            <p:dataTable   value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
                                 <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
                                     #{lis.titulo}
                                 </p:column>                                
@@ -20,7 +20,7 @@
                                     <p:commandButton title="Editar" 
                                                      ajax="false"                                         
                                                      icon="ui-icon-pencil" 
-                                                     action="#{livroBean.editarLivro(lis.id)}"                                                      
+                                                     action="#{livroBean.atualizarLockLivro(lis.id)}"                                                      
                                                      disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
                                     <p:commandButton ajax="false" 
                                                      title="Ler" 

@@ -31,7 +31,7 @@ public class TipoStatusDAO {
              
             } 
         }
-    public TipoStatus carregarPerfil (int id){
+    public TipoStatus carregarTipoStatus (int id){
         
        TipoStatus s = (TipoStatus) sessao.createQuery("FROM TipoStatus WHERE id=:id ").setInteger("id",id)               
                 .uniqueResult();

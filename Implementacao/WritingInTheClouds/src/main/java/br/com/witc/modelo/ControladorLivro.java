@@ -7,6 +7,7 @@ package br.com.witc.modelo;
 
 import br.com.witc.bean.LivroBean;
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoTextoException;
 import java.util.HashMap;
 import java.util.List;
@@ -49,8 +50,9 @@ public class ControladorLivro {
     /**     
      * @param idLivro O id do livro
      * @return O array de byte que representa a imagem
+     * @throws br.com.witc.excessao.LivroException Caso o livro não seja encontrado
      */
-    public byte[] getCapaPorId(int idLivro) {
+    public byte[] getCapaPorId(int idLivro) throws LivroException {
         return this.livro.getCapaPorId(idLivro);
     }
     
@@ -60,7 +62,7 @@ public class ControladorLivro {
      * @param finalizado True, se o livro já foi finalizado pelo usuário ou false, caso contrário
      * @param perfil O perfil do usuário criador do livro
      */
-    public void criarLivro(Livro livro, boolean finalizado, Perfil perfil){    
+    public void salvarLivro(Livro livro, boolean finalizado, Perfil perfil){    
         if (finalizado) {
             HistoricoLivro historicoLivro = new HistoricoLivro();
             historicoLivro.finalizarLivroUsuario(livro, perfil);
@@ -77,7 +79,26 @@ public class ControladorLivro {
                 livro.setDisponivelBiblioteca(true);
             }
         }
-        this.livro.criarLivro(livro);
+        this.livro.salvarLivro(livro);
+    }
+    
+    /**
+     * Carrega um livro 
+     * @param idLivro O id do livro a ser carregado
+     * @return Livro Um objeto livro
+     * @throws br.com.witc.excessao.LivroException Caso o livro não seja encontrado
+     */
+    public Livro carregarLivro(int idLivro) throws LivroException {
+        return this.livro.carregarLivro(idLivro);
+    }
+    
+    public List<Livro> listarLivrosPerfil(Perfil perfil){
+        return this.livro.listarLivrosPerfil(perfil);
+    }
+    
+    public Perfil carregarPerfil (Usuario usuario){
+        Perfil perfil = new Perfil();
+        return perfil.carregarPerfil(usuario);
     }
     
     /**
@@ -145,4 +166,14 @@ public class ControladorLivro {
         return this.livro.estaDisponivelEdicaoUsuario(idLivro, idPerfil) &&
                 !historicoLivro.estaFinalizadoUsuario(idLivro, idPerfil);
     }    
+    
+    public void salvarHistorico(HistoricoLivro hist){
+        HistoricoLivro historicoLivro = new HistoricoLivro();
+        historicoLivro.salvarHistorico(hist);
+    }
+    
+    public TipoStatus carregarTipoStatus (int id) {
+        TipoStatus tipoStatus = new TipoStatus();
+        return tipoStatus.carregarTipoStatus(id);
+    }
 }
