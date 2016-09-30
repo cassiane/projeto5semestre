@@ -292,4 +292,12 @@ public class ControladorCadastro {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     }     
+    
+    /**
+     * Retorna a lista de tipo de perfil
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfil() {
+        return this.tipoPerfil.listarTipoPerfil();
+    }
 }

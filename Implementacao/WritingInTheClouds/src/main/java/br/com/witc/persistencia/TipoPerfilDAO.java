@@ -70,10 +70,9 @@ public class TipoPerfilDAO {
      * Retorna uma lista de todos os campos da tabela tipo perfil
      * @return 
      */
-    public List<TipoPerfil> listarTiposPerfil() {
-        String consulta ="select * from tipoperfil"; 
-        List<TipoPerfil> lista ;
-        lista = (List<TipoPerfil>) sessao.createSQLQuery(consulta);
+    public List<TipoPerfil> listarTiposPerfil() {  
+        List<TipoPerfil> lista;
+        lista = (List<TipoPerfil>) sessao.createQuery("from TipoPerfil").list();        
         return lista;
     }
 }

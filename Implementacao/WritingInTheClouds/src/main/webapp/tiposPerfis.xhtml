@@ -4,14 +4,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="padraoInternoAdmin.xhtml">        
+    <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo"> 
             <center> 
                 <h:form>
                     <p:growl id="perfis" showDetail="true" />
                     <p:panel id="basic" header="Perfis de Usuários"  style="margin-bottom:20px">
                         <p:commandButton ajax="false" title="Novo Perfil"  value="Novo" action="#{tipoPerfilBean.novoPerfil()}"/>
-                        <p:dataTable   value="#{tipoPerfilBean.listarTipoPerfil}"  var="lis" rows="10" paginator="true">
+                        <p:dataTable   value="#{tipoPerfilBean.listarTipoPerfil()}"  var="lis" rows="10" paginator="true">
                             <p:column visible="false" headerText="Código" sortBy="#{lis.id}">
                                 #{lis.id}
                             </p:column>
@@ -23,7 +23,7 @@
                             </p:column>
                         </p:dataTable>
                     </p:panel>
-                    <p:commandButton value="Voltar" ajax="false" action="timelineAdmin"/>  
+                    <p:commandButton value="Voltar" ajax="false" action="timeline"/>  
                 </h:form>
             </center>
         </ui:define>

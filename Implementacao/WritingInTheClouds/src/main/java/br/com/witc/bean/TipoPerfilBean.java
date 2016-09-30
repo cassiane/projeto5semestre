@@ -26,7 +26,7 @@ public class TipoPerfilBean {
     private TipoPerfil tipoPerfil;
     private TipoPerfilDAO dao; 
 
-    public TipoPerfilBean(ControladorCadastro controlador, TipoPerfil tipoPerfil){
+    public TipoPerfilBean(){
         this.controlador = new ControladorCadastro();
         this.tipoPerfil = new TipoPerfil();
     }
@@ -37,11 +37,11 @@ public class TipoPerfilBean {
     public String cadastrarTipoPerfil(){   
         try {
             this.controlador.cadastrarTipoPerfil(tipoPerfil);
-            return "timelineAdmin"; 
+            return "tiposPerfis"; 
         } catch (TipoPerfilException ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR,"Não foi possível cadastrar este perfil - "+ex.getMessage());
         }
-        return "index"; 
+        return "timeline"; 
     }
     
     /**
@@ -49,17 +49,16 @@ public class TipoPerfilBean {
      * @return 
      */
     public String novoPerfil(){
-        return "novoPerfil"; 
+        this.tipoPerfil = new TipoPerfil();
+        return "novoTipoPerfil"; 
     }
     
     /**
      * Retorna uma lista de perfis
      * @return 
      */
-    public List<TipoPerfil> listarTipoPerfil(){
-        dao = new TipoPerfilDAO();
-        List<TipoPerfil> listaTemp = dao.listarTiposPerfil();
-        return listaTemp;
+    public List<TipoPerfil> listarTipoPerfil(){   
+        return this.controlador.listarTipoPerfil();
     }
     
     /**
@@ -72,13 +71,6 @@ public class TipoPerfilBean {
         return "novoTipoPerfil";
     }
     
-    /**
-     * retorna chamada para a tela de lista do tipo de perfil
-     * @return 
-     */
-    public String telaTipoPerfil(){
-        return "perfisUsuarios"; 
-    }
     /**
      * Envia à viewer uma mensagem com o status da operação
      *

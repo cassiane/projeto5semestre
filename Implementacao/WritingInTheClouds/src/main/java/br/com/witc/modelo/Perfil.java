@@ -5,8 +5,6 @@
  */
 package br.com.witc.modelo;
 
-import br.com.witc.excessao.DadosUsuarioInvalidoException;
-import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.persistencia.PerfilDAO;
 import java.io.Serializable;
 import javax.persistence.Entity;

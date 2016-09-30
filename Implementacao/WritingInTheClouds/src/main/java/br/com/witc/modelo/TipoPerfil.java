@@ -7,6 +7,7 @@ package br.com.witc.modelo;
 
 import br.com.witc.persistencia.TipoPerfilDAO;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -46,9 +47,21 @@ public class TipoPerfil implements Serializable {
     public void setTipoPerfil(String tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
-
+    
+    /**
+     * Cadastra o tipo de perfil
+     */
     public void cadastrarTipoPerfil() {
         TipoPerfilDAO daoTipoPerfil = new TipoPerfilDAO();
         daoTipoPerfil.salvarTipoPerfil(this);
+    }
+    
+    /**
+     * Listar tipos de perfis
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfil() {
+       TipoPerfilDAO dao = new TipoPerfilDAO();
+       return dao.listarTiposPerfil();        
     }
 }

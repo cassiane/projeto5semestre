@@ -41,13 +41,9 @@
                 </h:form>
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="300">
-                <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
-
-                <br/>
-                <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
-
-                <br/>
-
+                <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" /><br/>
+                <p:link outcome="biblioteca.xhtml" value="Biblioteca" /><br/>
+                <p:link outcome="tiposPerfis.xhtml" value="Perfis de Usuários" rendered="#{autenticarBean.verificarAdministrador()}" /><br/>
             </p:layoutUnit>    
             <p:layoutUnit position="center">
                 <ui:insert name="conteudo"/>

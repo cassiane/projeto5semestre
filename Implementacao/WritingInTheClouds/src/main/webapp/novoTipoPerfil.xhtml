@@ -11,8 +11,8 @@
                    <p:outputLabel for="Descricao" value="Descrição: "/>
                    <p:inputText id="Descricao" label="Descrição"  value="#{tipoPerfilBean.tipoPerfil.tipoPerfil}"/>
                     <h:panelGrid columns="2" style="margin-top: 10px">
-                        <p:commandButton value="Voltar" action="#{tipoPerfilBean.telaTipoPerfil()}" icon="ui-icon-disk" ajax="false" />
-                        <p:commandButton value="Salvar" actionListener="#{tipoPerfilBean.cadastrarTipoPerfil}" icon="ui-icon-disk" ajax="false" />                        
+                        <p:commandButton value="Voltar" action="tiposPerfis.xhtml" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Salvar" action="#{tipoPerfilBean.cadastrarTipoPerfil()}" icon="ui-icon-disk" ajax="false" />                        
                     </h:panelGrid>                      
                 </h:form>
             </div>
