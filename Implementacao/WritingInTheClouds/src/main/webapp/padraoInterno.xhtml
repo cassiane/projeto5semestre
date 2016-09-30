@@ -48,6 +48,7 @@
                             <p:menuitem value="Biblioteca" action="biblioteca.xh" ajax="false" />
                             <p:menuitem value="Biblioteca Virtual" action="#{livean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
                             <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis"  rendered="#{autenticarBean.verificarAdministrador()}"/>
+                            <p:menuitem value="Tipos de Texto" outcome="tiposTexto"  rendered="#{autenticarBean.verificarAdministrador()}"/>
                         </p:menu>
                     </h:form>
                 </h:panelGrid>

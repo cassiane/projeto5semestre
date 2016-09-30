@@ -11,6 +11,7 @@ import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
  *
@@ -35,5 +36,36 @@ public class TipoTextoDAO {
             throw new TipoTextoException("Nenhum tipo de texto cadastrado no sistema");
         }
         return lstTipoTexto;
-    }    
+    }
+    
+    /**
+     * Retorna um objeto tipo texto com os dados daquele objeto do banco de dados
+     * @param id
+     * @return 
+     */
+    public TipoTexto carregarTipoTexto(int id){
+       return  (TipoTexto) sessao.load(TipoTexto.class,id);
+    }
+    
+    /**
+     * 
+     * @param aThis 
+     */
+    public void salvarTipoTexto(TipoTexto aThis) {       
+        try{
+            sessao.saveOrUpdate(aThis);
+        }catch(ConstraintViolationException e){
+             sessao.clear();
+        }    
+    }
+    
+    /**
+     * Retorna uma lista de todos os campos da tabela tipo perfil
+     * @return 
+     */
+    public List<TipoTexto> listarTiposTexto() {  
+        List<TipoTexto> lista;
+        lista = (List<TipoTexto>) sessao.createQuery("from TipoTexto").list();        
+        return lista;
+    }
 }

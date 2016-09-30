@@ -8,6 +8,7 @@ package br.com.witc.modelo;
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
 import br.com.witc.excessao.TipoPerfilException;
+import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoPerfilDAO;
@@ -279,6 +280,41 @@ public class ControladorCadastro {
     }
     
     /**
+     * Retorna a lista de tipo de perfil
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfil() {
+        return this.tipoPerfil.listarTipoPerfil();
+    }
+    
+    /**
+     * Cadastra um tipo de texto
+     * @param tipoTexto
+     * @throws TipoTextoException 
+     */
+    public void cadastrarTipoTexto(TipoTexto tipoTexto) throws TipoTextoException {
+        this.tipoTexto.salvarTipoTexto(tipoTexto);
+    }
+    
+    /**
+     * Retorna os dados de um tipo de texto
+     * @param id
+     * @return 
+     */
+    public TipoTexto carregarTipoTexto(int id) {
+        return this.tipoTexto.carregarTipoTexto(id);
+    }
+    
+    /**
+     * Lista os tipos de texto
+     * @return 
+     * @throws br.com.witc.excessao.TipoTextoException 
+     */
+    public List<TipoTexto> listarTipoTexto() throws TipoTextoException {
+        return this.tipoTexto.getLstTipoTexto();
+    }
+    
+    /**
      * Envia à viewer uma mensagem com o status da operação
      *
      * @param sev A severidade da mensagem
@@ -287,13 +323,5 @@ public class ControladorCadastro {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }     
-    
-    /**
-     * Retorna a lista de tipo de perfil
-     * @return 
-     */
-    public List<TipoPerfil> listarTipoPerfil() {
-        return this.tipoPerfil.listarTipoPerfil();
-    }
+    } 
 }
