@@ -17,7 +17,7 @@
                         </h:panelGrid>
                         <h:panelGrid columns="2">
                             <p:outputLabel for="tipoTexto" value="Tipo de texto"/>
-                            <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" required="true" style="width: 150px">
+                            <p:selectOneMenu id="tipoTexto" value="#{livroBean.livroCarregado.tipoTexto}" required="true" style="width: 150px">
                                 <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
                                                itemValue="#{tipoTexto}"/>
                             </p:selectOneMenu>

@@ -88,4 +88,9 @@ public class Perfil implements Serializable {
     public String getNomeUsuarioABNT() {
         return this.usuario.getNomeABNT();
     }
+    
+    public Perfil carregarPerfil (Usuario usuario){
+        PerfilDAO perfilDAO = new PerfilDAO();
+        return perfilDAO.carregarPerfil(usuario);
+    }
 }

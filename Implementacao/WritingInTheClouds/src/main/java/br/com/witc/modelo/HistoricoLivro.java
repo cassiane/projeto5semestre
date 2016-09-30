@@ -94,6 +94,11 @@ public class HistoricoLivro implements Serializable {
         return this.perfil.getNomeUsuarioABNT();
     }
     
+    public void salvarHistorico(HistoricoLivro hist){
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        historicoLivroDAO.salvarHistorico(hist);
+    }
+    
     /**     
      * @param idLivro O id do livro pesquisado
      * @return Uma lista com os registros daquele livro no BD

@@ -6,6 +6,7 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
+import br.com.witc.excessao.LivroException;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.TipoTexto;
@@ -35,7 +36,7 @@ public class LivroDAO {
      *
      * @param livro
      */
-    public void criarLivro(Livro livro){
+    public void salvarLivro(Livro livro){
         
         try {
            sessao.saveOrUpdate(livro);
@@ -56,32 +57,19 @@ public class LivroDAO {
        
 
     }
+
     /**
-     *
-     * @param livro
+     * Carrega um livro 
+     * @param idLivro O id do livro a ser carregado
+     * @return Livro Um objeto livro
+     * @throws br.com.witc.excessao.LivroException Caso o livro não seja encontrado
      */
-    public void editarLivro(Livro livro){
-        //update livro no banco
-         try {
-           sessao.saveOrUpdate(livro);
-           
-            } catch (ConstraintViolationException e) {
-          
-                sessao.clear();
-             
-            } 
+    public Livro carregarLivro(int idLivro) throws LivroException {        
+        Livro tmpLivro = (Livro) sessao.load(Livro.class, idLivro);
+        if (tmpLivro == null) {
+            throw new LivroException("Nenhum livro encontrado com id " + idLivro);
         }
-    
-    
-    /**
-     *
-     * @param id
-     * @return Livro
-     */
-    public Livro carregarLivro(int id){
-        //carrega livro no banco
-        return (Livro) sessao.load(Livro.class, id);
-        
+        return tmpLivro;
     }
     
     /**

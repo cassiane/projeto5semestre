@@ -119,18 +119,6 @@ public class Livro implements Serializable {
         this.texto = texto;
     }
     
-    public void criarLivro(Perfil[]autores){
-        
-    }
-    
-    public void editarLivro(){
-        
-    }
-    
-    public void carregarLivro(int id){
-        
-    }
-
     public TipoTexto getTipoTexto() {
         return tipoTexto;
     }
@@ -178,8 +166,9 @@ public class Livro implements Serializable {
     /**     
      * @param idLivro O id do livro
      * @return O array de byte que representa a imagem
+     * @throws br.com.witc.excessao.LivroException Caso o livro não seja encontrado
      */
-    public byte[] getCapaPorId(int idLivro) {
+    public byte[] getCapaPorId(int idLivro) throws LivroException {
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.carregarLivro(idLivro).getCapa();
     }
@@ -206,12 +195,28 @@ public class Livro implements Serializable {
     }
     
     /**
+     * Carrega um livro 
+     * @param idLivro O id do livro a ser carregado
+     * @return Livro Um objeto livro
+     * @throws br.com.witc.excessao.LivroException Caso o livro não seja encontrado
+     */
+    public Livro carregarLivro(int idLivro) throws LivroException{
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.carregarLivro(idLivro);
+    }
+
+    public List<Livro> listarLivrosPerfil(Perfil perfil){
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.listarLivrosPerfil(perfil);
+    }
+    
+    /**
      * Persiste um novo livro na BD
      * @param livro O livro a ser persistido
      */
-    public void criarLivro(Livro livro){
+    public void salvarLivro(Livro livro){
         LivroDAO livroDAO = new LivroDAO();
-        livroDAO.criarLivro(livro);
+        livroDAO.salvarLivro(livro);
     }
     
     /**

@@ -15,10 +15,6 @@ import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.TipoStatus;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
-import br.com.witc.persistencia.HistoricoLivroDAO;
-import br.com.witc.persistencia.LivroDAO;
-import br.com.witc.persistencia.PerfilDAO;
-import br.com.witc.persistencia.TipoStatusDAO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,8 +26,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -63,18 +57,15 @@ public class LivroBean {
     private String tituloLivro;
     private HistoricoLivro historico;
     private TipoTexto tipoTexto;
-    private List<Livro> livros;
-    private final PerfilDAO daoPerfil;
-    private final LivroDAO daoLivro;
-    private final HistoricoLivroDAO daoHistorico;        
+    private List<Livro> livros;        
     private final ControladorLivro controlador;    
     private UploadedFile file;
     private static final String CAMINHO_CAPA_DEFAULT = "/resources/imagens/semCapa.png";
     private String campoPesquisa;
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
-    private boolean disponivelEdicaoAmigo = false;
-    private boolean livroFinalizado = false;
+    private boolean disponivelEdicaoAmigo;
+    private boolean livroFinalizado;
     
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -89,14 +80,9 @@ public class LivroBean {
         AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
         
-        this.usuario = autenticarBean.usuarioLogado();        
-        
-        daoPerfil = new PerfilDAO();
-        daoLivro = new LivroDAO();
-        daoHistorico = new HistoricoLivroDAO();
-        
-        this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);
-        this.livros=daoLivro.listarLivrosPerfil(this.perfilUsuario);                
+        this.usuario = autenticarBean.usuarioLogado();                                        
+        this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
+        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);                
     }
     
     public Livro getLivro() {
@@ -183,25 +169,23 @@ public class LivroBean {
         try {
             tmpLstTipoTexto = this.controlador.getLstTipoTexto();
         } catch (TipoTextoException ex) {
-            Logger.getLogger(LivroBean.class.getName()).log(Level.SEVERE, null, ex);
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
         return tmpLstTipoTexto;
     }
     
     public List<Livro> listarLivrosPerfil(){
-        List<Livro> listaTemp = daoLivro.listarLivrosPerfil(this.perfilUsuario);
-       
-            return listaTemp;
-        
+        List<Livro> listaTemp = this.controlador.listarLivrosPerfil(this.perfilUsuario);       
+        return listaTemp;        
     }            
     
     public  Calendar getPegaDataAtual(){
-		Calendar calendar = new GregorianCalendar();
-		Date trialTime = new Date();
-		calendar.setTime(trialTime);
-                return  calendar;
-	
+        Calendar calendar = new GregorianCalendar();
+        Date trialTime = new Date();
+        calendar.setTime(trialTime);
+        return  calendar;	
     }
+    
     public String biblioteca(){
         return "biblioteca";
     }  
@@ -210,12 +194,6 @@ public class LivroBean {
         this.livro=new Livro();
         this.textoLivro="";
         return "novoLivro";
-    }
-
-    public String editarLivro(int id){
-        livroCarregado = new Livro();
-        livroCarregado=daoLivro.carregarLivro(id);
-        return "editarLivro";
     }
 
     public Livro getLivroCarregado() {
@@ -279,9 +257,9 @@ public class LivroBean {
     
     public String salvarNovoLivro(){        
         try {
-            this.perfilUsuario = daoPerfil.carregarPerfil(this.usuario);             
-            TipoStatusDAO daoStatus = new TipoStatusDAO();
-            TipoStatus st =daoStatus.carregarPerfil(1);
+            this.livroFinalizado = false;
+            this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);                         
+            TipoStatus st = this.controlador.carregarTipoStatus(1);
             this.livro = new Livro();
             
             this.livro.setCapa(getImgBytes());
@@ -298,20 +276,19 @@ public class LivroBean {
             if (this.disponivelEdicaoAmigo) {
                 this.livro.setBookLock(0);
             } else {
-                this.livro.setBookLock(this.perfilUsuario.getId());            
+                this.livro.setBookLock(this.perfilUsuario.getId());
             }
-            this.controlador.criarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);
-            //daoLivro.criarLivro(livro);
+            this.controlador.salvarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);            
             
             this.historico=new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
             this.historico.setLivro(this.livro);
             this.historico.setStatus(st);
             this.historico.setDataInicio(this.getPegaDataAtual());
-            daoHistorico.salvarHistorico(this.historico);
+            this.controlador.salvarHistorico(this.historico);
             
             if (this.disponivelEdicaoAmigo) {
-                return "biblioteca.xhtml?faces-redirect=true";
+                return "biblioteca.xhtml?faces-redirect=true";                
             }
         } catch (LivroException ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
@@ -325,17 +302,14 @@ public class LivroBean {
         try {                     
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
                 this.livroCarregado.setBookLock(0);                
-            } else {
-                this.livroCarregado.setBookLock(this.perfilUsuario.getId());
             }
             
             this.livroCarregado.setCapa(getImgBytes());
-            this.livroCarregado.setTipoTexto(tipoTexto);
-            //daoLivro.criarLivro(this.livroCarregado);
-            this.controlador.criarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);
+            //this.livroCarregado.setTipoTexto(tipoTexto);            
+            this.controlador.salvarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);
             
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
-                return "biblioteca.xhtml?faces-redirect=true";
+                return "biblioteca.xhtml?faces-redirect=true";                
             }
         } catch (Exception ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
@@ -460,15 +434,15 @@ public class LivroBean {
             livroId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("livroId"));
         } catch(NumberFormatException ex) {}        
         
-        /*
-        Necessario tratamento para o caso de img null
-        */
-        //byte[] img = this.controlador.getCapaPorId(livroId);
-        byte[] img = daoLivro.carregarLivro(livroId).getCapa();
+        try {
+            byte[] img;
+            img = this.controlador.carregarLivro(livroId).getCapa();
+            InputStream is = new ByteArrayInputStream(img);               
+            StreamedContent capa = new DefaultStreamedContent(is);        
+            return capa;
+        } catch (LivroException ex) {}
         
-        InputStream is = new ByteArrayInputStream(img);               
-        StreamedContent capa = new DefaultStreamedContent(is);        
-        return capa;
+        return new DefaultStreamedContent();
     }  
     
     /**
@@ -480,7 +454,7 @@ public class LivroBean {
             this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtual();
         } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
             this.bibliotecaVirtual = null;
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }                   
         
         this.campoPesquisa = null;
@@ -497,7 +471,7 @@ public class LivroBean {
             this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtualPesquisa(campoPesquisa, valorPesquisa);
         } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
             this.bibliotecaVirtual = null;
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, ex.getMessage());
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }  
         return null;
     }        
@@ -526,6 +500,34 @@ public class LivroBean {
         if (this.livroFinalizado) {
             this.disponivelEdicaoAmigo = true;        
         }
+    }
+    
+    /**
+     * Seta o bookLock do livro para o usuário que pressionou o botão de editar, e também verifica
+     * se o livro já não está com lock setado.
+     * @param idLivro O id do livro a ter o bookLock setado
+     * @return A próxima página a ser visualizada pelo usuário
+     */
+    public String atualizarLockLivro(int idLivro) {
+        try {
+            this.disponivelEdicaoAmigo = false;
+            this.livroFinalizado = false;
+            this.livroCarregado = this.controlador.carregarLivro(idLivro);
+            if ((this.livroCarregado.getBookLock() != 0) && 
+                (this.livroCarregado.getBookLock() != this.perfilUsuario.getId())){
+                enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, 
+                        "O livro já está sendo editado por outro usuário!");
+                return null;
+            
+            } else if (this.livroCarregado.getBookLock() != this.perfilUsuario.getId()) {
+                this.livroCarregado.setBookLock(this.perfilUsuario.getId());            
+                this.controlador.salvarLivro(livroCarregado, livroFinalizado, perfilUsuario);
+            }                                    
+            return "editarLivro";
+        } catch(LivroException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+        return null;
     }
     
     /**
