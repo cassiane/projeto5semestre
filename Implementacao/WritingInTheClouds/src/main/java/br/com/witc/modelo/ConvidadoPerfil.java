@@ -70,32 +70,51 @@ public class ConvidadoPerfil implements Serializable {
     public ConvidadoPerfil() {
     }
 
+    /**
+     * Construtor setando a data
+     * @param dataSolicitacao 
+     */
     public ConvidadoPerfil(Calendar dataSolicitacao) {
         this.dataSolicitacao = dataSolicitacao;
     }
     
-    public void salvar(ConvidadoPerfil salva) {
+    /**
+     * Metodo para persistir o registro da solicitação de edição
+     */
+    public void salvar() {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
-        dao.salvar(salva);
+        dao.salvar(this);
     }
     
+    /*
     public List<ConvidadoPerfil> carregar(Perfil idPerfilConvidado) {
         List<ConvidadoPerfil> list = new ArrayList<ConvidadoPerfil>();
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
         list = dao.carregar(idPerfilConvidado);
         return list;
     }
+    */
     
+    /**
+     * Deletar da tabela o registro atual
+     */
     public void remover() {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
         dao.remover(this);
     }
 
-    public List<ConvidadoPerfil> listarSolicitacao() {
+    /**
+     * Buscar a lista de solicitações de edição do usuario ativo
+     * @return a lista de solicitações do usuario ativo
+     */
+    public List<ConvidadoPerfil> carregarlista() {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
         return dao.carregar(this.idPerfilConvidado);
     }
 
+    /**
+     * Metodo para gravar a aceitação da solicitação
+     */
     public void aceitarEdicao() {
         HistoricoLivros historico = new HistoricoLivros();
         historico.setLivro(this.idLivro);
@@ -105,9 +124,12 @@ public class ConvidadoPerfil implements Serializable {
         historico.setStatus(status);
         historico.setDataInicio(Calendar.getInstance());
         historico.salvar();
-        this.negarEdicao();
+        this.remover();
     }
 
+    /**
+     * Metodo para remover a solicitação
+     */
     public void negarEdicao() {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
         dao.remover(this);

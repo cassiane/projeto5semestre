@@ -50,8 +50,11 @@ public class EditarBean {
     private PerfilDAO daoPerfil;
     private LivroDAO daoLivro;
     private HistoricoLivroDAO daoHistorico;
+    // lista de amigos selecionados para solicitação
     private List<Perfil> amigoEditor;
+    // lista de amigos editores
     private List<Perfil> listaAmigoEditor;
+    // lista de solicitações para edição do usuario
     private List<ConvidadoPerfil> listaSolicitacaoEdicao;
     
     
@@ -228,25 +231,46 @@ public class EditarBean {
         return image;
     }
     
+    /**
+     * Preencher a variavel com a lista de amigos editores
+     */
     public void carregarListaAmigoEditor() {
-        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor();
+        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor(this.perfilUsuario);
     }
     
+    /**
+     * Metodo para gerar a solicitação de edição
+     */
     public void convidarAmigoEditor() {
         this.controlador.convidarAmigoEditor(this.perfilUsuario, this.amigoEditor, this.livroCarregado);
     }
     
+    /**
+     * Preencher a variavel com as solicitações de edição
+     */
     public void carregarListaSolicitacaoEdicao() {
         this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
     }
     
+    /**
+     * Metodo para aceitar a solicitação de edição
+     * @param ediLivro livro a ser compartilhado para edição
+     * @return a pagina para refresh
+     */
     public String aceitarEdicao(ConvidadoPerfil ediLivro) {
         this.controlador.aceitarEdicao(ediLivro);
+        this.carregarListaSolicitacaoEdicao();
         return "biblioteca";
     }
     
+    /**
+     * Metodo para negar a solicitação de edição
+     * @param ediLivro livro negado para compartilhamento de edição
+     * @return a pagina para refresh
+     */
     public String negarEdicao(ConvidadoPerfil ediLivro) {
         this.controlador.negarEdicao(ediLivro);
+        this.carregarListaSolicitacaoEdicao();
         return "biblioteca";
     }
 }

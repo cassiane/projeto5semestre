@@ -43,10 +43,18 @@ public class PerfilDAO {
         }
     }
 
-    public List<Perfil> carregarListaAmigoEdigor() {
+    /**
+     * Acessar a tabela e buscar a lista de amigos
+     * @return lista de amigos editores
+     */
+    public List<Perfil> carregarListaAmigoEditor(int idUsuario) {
         List<Perfil> tmpPerfil = null;
         try {
-            tmpPerfil = sessao.createQuery("FROM Perfil").list();
+            Query query = sessao.createSQLQuery("CALL witc.proc_edicao(:idusu)")
+                .addEntity(Perfil.class)
+                .setParameter("idusu", idUsuario);
+            //tmpPerfil = sessao.createQuery("FROM Perfil").list();
+            tmpPerfil = query.list();
         } catch (Exception ex) {
             
         }

@@ -73,8 +73,12 @@ public class Perfil implements Serializable {
         this.tipoPerfil = tipoPerfil;
     }
 
+    /**
+     * Persistir a busca de amigos editores
+     * @return lista de amigos editores
+     */
     public List<Perfil> carregarListaAmigoEditor() {
         PerfilDAO dao = new PerfilDAO();
-        return dao.carregarListaAmigoEdigor();
+        return dao.carregarListaAmigoEditor(this.getUsuario().getId());
     }
 }

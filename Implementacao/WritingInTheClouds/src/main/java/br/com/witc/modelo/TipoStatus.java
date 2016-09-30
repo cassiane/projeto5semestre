@@ -52,6 +52,10 @@ public class TipoStatus implements Serializable {
         this.tipoStatus = tipoStatus;
     }
 
+    /**
+     * Metodo para buscar o tipostatus
+     * @param id codigo do tipostatus
+     */
     public void carregarTipoStatus(int id) {
         TipoStatusDAO dao = new TipoStatusDAO();
         TipoStatus temp = dao.carregarPerfil(id);
