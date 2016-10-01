@@ -331,9 +331,17 @@ public class Usuario implements Serializable {
      *
      * @param idAmizade Identificador do solicitante ou amigo
      */
-    void removerAmizade(int idAmizade) {
+    public void removerAmizade(int idAmizade) {
         UsuarioDAO dao = new UsuarioDAO();
-        dao.removerAmizade(this.getId(), idAmizade);
+        dao.removerAmizade(this.getId(),idAmizade);
+    }
+    
+    /**
+     * Acessar o dao para remover as amizades do usuário que está excluindo a conta     
+     */
+    public void removerAmizades() {
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.removerAmizades(this.getId());
     }
 
     @Override

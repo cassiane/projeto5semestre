@@ -168,6 +168,13 @@ public class ControladorCadastro {
     public void removerAmizade(int idAmizade) {
         this.usuario.removerAmizade(idAmizade);
     }
+    
+    /**
+     * Metodo do controlador para remover todas as amizades do usuário que está excluindo a conta
+     */
+    public void removerAmizades() {
+        this.usuario.removerAmizades();
+    }
 
     /**
      * Metodo do controlador para enviar a solicitação de amizade

@@ -181,6 +181,23 @@ public class UsuarioDAO {
                 .setParameter("amigo", idAmizade)
                 .executeUpdate();
     }
+    
+    /**
+     * Exclui o registro de solicitação ou amizade na tabela
+     * @param id Identificador do usuario
+     */
+    public void removerAmizades(int id) {
+        // Executa a exclusão caso o usuario estaja como usuario
+        sessao.createSQLQuery("DELETE FROM Usuario_tem_Amigo "
+                + "WHERE idUsuario = :usuario")
+                .setParameter("usuario", id)
+                .executeUpdate();
+        // Executa a exclusão caso o usuario esteja como amigo
+        sessao.createSQLQuery("DELETE FROM Usuario_tem_Amigo "
+                + "WHERE idAmigo = :usuario")
+                .setParameter("usuario", id)
+                .executeUpdate();
+    }
 
     /**
      * Realiza a consulta na tabela usuario

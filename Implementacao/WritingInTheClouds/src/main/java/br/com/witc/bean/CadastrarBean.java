@@ -592,10 +592,15 @@ public class CadastrarBean {
         }
         return null;
     }
+    /***
+     * 
+     * @return 
+     */
     public String excluirUsuario(){        
         try {
             this.usuario.setAtivo(false);
-            this.controlador.excluirUsuario(usuario);             
+            this.controlador.excluirUsuario(usuario);   
+            this.controlador.removerAmizades();
         } catch (DadosUsuarioInvalidoException ex) {
             Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
