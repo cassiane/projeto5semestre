@@ -7,6 +7,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="padraoInterno.xhtml">
+        <ui:define name="css">
+            <h:outputStylesheet name="css/font-awesome.min.css" />
+            <h:outputStylesheet name="css/witc.css" />
+            <h:outputScript name="js/jquery-3.1.1.min.js" />
+            <h:outputScript name="js/witc.js" />   
+        </ui:define>
         <ui:define name="conteudo">             
             <h:outputText value="Pesquisa" />
             <h:form>
