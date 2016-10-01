@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `witc`.`ConvidadoPerfil` (
   `idPerfilConvidado` INT UNSIGNED NOT NULL,
   `idLivro` INT UNSIGNED NOT NULL,
   `dataSolicitacao` DATE NOT NULL,
-  PRIMARY KEY (`idPerfilConvidado`, `idPerfil`, `idLivro`),
+  UNIQUE KEY `un_ConvidadoPerfil_1` (`idPerfilConvidado`, `idLivro`),
   CONSTRAINT `fk_ConvidadoPerfil_1`
     FOREIGN KEY (`idPerfil`)
     REFERENCES `witc`.`Perfil` (`id`)
@@ -53,6 +53,9 @@ START TRANSACTION;
 COMMIT;
 END$$
 DELIMITER ;
+
+ALTER TABLE `witc`.`historicolivros` 
+ADD UNIQUE INDEX `ui_HistoricoLivros_PerfilLivro` (`idPerfil` ASC, `idLivro` ASC);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
