@@ -7,12 +7,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="padraoInterno.xhtml">
-        <ui:define name="css">
-            <h:outputStylesheet name="css/font-awesome.min.css" />
-            <h:outputStylesheet name="css/witc.css" />
-            <h:outputScript name="js/jquery-3.1.1.min.js" />
-            <h:outputScript name="js/witc.js" />   
-        </ui:define>
         <ui:define name="conteudo">             
             <h:outputText value="Pesquisa" />
             <h:form>
@@ -35,8 +29,8 @@
                         <h:panelGrid columns="1" style="width: 100%; height: 250px;">
                             <f:facet name="header">
                                 <p:graphicImage id="capa" style="height: 100px; width: 70px;" value="#{livroBean.capa}" cache="false">
-                                    <f:param  name="livroId" value="#{livro.id}" />
-                                    <f:param  name="key" value="#{entry.key}" />
+                                    <f:param name="livroId" value="#{livro.id}" />
+                                    <f:param name="key" value="#{entry.key}" />
                                 </p:graphicImage>
                             </f:facet>                            
                             
@@ -66,4 +60,3 @@
         </ui:define>
     </ui:composition>
 </html>
-

@@ -256,8 +256,7 @@ public class LivroBean {
    }
     
     public String salvarNovoLivro(){        
-        try {
-            this.livroFinalizado = false;
+        try {            
             this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);                         
             TipoStatus st = this.controlador.carregarTipoStatus(1);
             this.livro = new Livro();
@@ -285,11 +284,13 @@ public class LivroBean {
             this.historico.setLivro(this.livro);
             this.historico.setStatus(st);
             this.historico.setDataInicio(this.getPegaDataAtual());
-            this.controlador.salvarHistorico(this.historico);
+            this.controlador.salvarHistorico(this.historico);                        
             
             if (this.disponivelEdicaoAmigo) {
+                this.livroFinalizado = false;
+                this.disponivelEdicaoAmigo = false;
                 return "biblioteca.xhtml?faces-redirect=true";                
-            }
+            }            
         } catch (LivroException ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
         } catch (Exception ex) {
@@ -306,9 +307,11 @@ public class LivroBean {
             
             this.livroCarregado.setCapa(getImgBytes());
             //this.livroCarregado.setTipoTexto(tipoTexto);            
-            this.controlador.salvarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);
+            this.controlador.salvarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);                        
             
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
+                this.livroFinalizado = false;
+                this.disponivelEdicaoAmigo = false;
                 return "biblioteca.xhtml?faces-redirect=true";                
             }
         } catch (Exception ex) {
