@@ -31,6 +31,9 @@
                         <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizado}">
                             <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
                         </p:selectBooleanCheckbox>
+                        <p:selectBooleanCheckbox id="livroFinalizadoEdicao" value="#{livroBean.livroFinalizado}">
+                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
+                        </p:selectBooleanCheckbox>
                     </h:panelGrid> 
                     <h:panelGrid columns="3" style="margin-top: 10px">
                         <p:commandButton value="Salvar"  action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />

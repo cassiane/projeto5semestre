@@ -155,4 +155,13 @@ public class LivroDAO {
         sessao.refresh(livro);
         return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
     }
+    
+    public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {
+        Livro livro = (Livro) sessao.createQuery("FROM Livro WHERE id=:idLivro")
+                .setString("idLivro", String.valueOf(idLivro))                
+                .uniqueResult();
+        
+        sessao.refresh(livro);
+        return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
+    }
 }

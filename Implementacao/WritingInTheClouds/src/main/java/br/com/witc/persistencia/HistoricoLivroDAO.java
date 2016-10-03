@@ -8,6 +8,7 @@ package br.com.witc.persistencia;
 import br.com.witc.modelo.HistoricoLivro;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.TipoStatus;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -70,6 +71,23 @@ public class HistoricoLivroDAO {
         HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil")
                 .setString("idLivro", String.valueOf(idLivro))
                 .setString("idPerfil", String.valueOf(idPerfil))
+                .uniqueResult();
+        
+        sessao.refresh(historico);
+        return historico.getDataConclusao() != null;
+    }
+    
+    public HistoricoLivro carregarHistoricoLivroEdicao(Livro livro, TipoStatus status) {
+        return (HistoricoLivro) sessao.createCriteria(HistoricoLivro.class)
+                .add(Restrictions.eq("livro", livro))
+                .add(Restrictions.eq("status", status))
+                .uniqueResult();
+    }
+    
+    public boolean estaFinalizadoEdicao(int idLivro, int idStatus) {
+        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idStatus=:idStatus")
+                .setString("idLivro", String.valueOf(idLivro))
+                .setString("idStatus", String.valueOf(idStatus))
                 .uniqueResult();
         
         sessao.refresh(historico);
