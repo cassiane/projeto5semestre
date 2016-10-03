@@ -193,7 +193,7 @@ public class LivroBean {
     public String editorNovoLivro(){
         this.livro=new Livro();
         this.textoLivro="";
-        return "novoLivro";
+        return "metadadosLivro";
     }
 
     public Livro getLivroCarregado() {
