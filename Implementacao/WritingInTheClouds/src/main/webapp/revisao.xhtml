@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="padraoInterno.xhtml">        
+        <ui:define name="conteudo">     
+            <f:view>
+                <center>
+                    <h:form>                  
+                        <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> <!Lista todos os livros aptos para revisao>
+                            <p:dataTable   value="#{livroBean.listarLivrosRevisao()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
+                                <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
+                                    #{lis.titulo}
+                                </p:column>                                
+                                <p:column width="90">
+                                    <p:commandButton title="Revisar" <!Seleciona um livro para revisao>
+                                                     ajax="false"                                         
+                                                     icon="ui-icon-pencil" 
+                                                     action="#{livroBean.atualizarLockLivro(lis.id)}"      <!atualiza o lock para quem pegou para revisao>                                                
+                                                     disabled="#{!livroBean.estaDisponivelRevisaoUsuario(lis.id)}" /> <!desabilita para quem não é o revisor>
+                                    <p:commandButton ajax="false" 
+                                                     title="Ler" 
+                                                     icon="ui-icon-document" 
+                                                     action="lerLivro">
+                                        <f:setPropertyActionListener value="#{lis}" target="#{livroBean.livroSelecionado}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                        <p:commandButton value="Voltar" ajax="false" action="timeline"/>
+                    </h:form>
+                </center>
+            </f:view>
+        </ui:define>
+    </ui:composition>
+</html>
