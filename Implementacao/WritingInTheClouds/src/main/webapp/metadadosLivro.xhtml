@@ -20,6 +20,7 @@
                             <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" style="width: 150px">
                                 <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
                                                itemValue="#{tipoTexto}"/>
+<<<<<<< 3b6c68662c1dfa329b2b22e648acbd335b7e6fc6
                             </p:selectOneMenu>  
                         </h:panelGrid>
                         <h:panelGrid columns="2">
@@ -28,6 +29,22 @@
                         </h:panelGrid> 
                     </h:panelGrid>              
                     <h:panelGrid columns="3" style="margin-top: 10px">
+=======
+                            </p:selectOneMenu>
+                       </h:panelGrid>
+                   </h:panelGrid>
+                   <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.textoLivro}" width="600" />
+                   <h:panelGrid columns="2" style="margin-top: 10px">                        
+                        <h:outputText value="Disponível para Edição: " />
+                        <p:selectBooleanCheckbox value="#{livroBean.disponivelEdicaoAmigo}" />  
+                        
+                    </h:panelGrid> 
+                   <h:panelGrid columns="2" style="margin-top: 10px">                        
+                        <h:outputText value="Disponível para Revisao: " />
+                        <p:selectBooleanCheckbox value="" />                        
+                    </h:panelGrid> 
+                     <h:panelGrid columns="3" style="margin-top: 10px">
+>>>>>>> Implementação controle de revisao de texto SB12
                         <p:commandButton value="Salvar"  action="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
                     </h:panelGrid>                     
