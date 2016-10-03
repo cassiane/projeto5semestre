@@ -32,7 +32,7 @@ public class Livro implements Serializable {
     private String classificacao;
     private boolean disponivelBiblioteca;
     private boolean reportadoConteudoImproprio;
-    private Integer qualificacao;
+    private float qualificacao;
     private String texto;
     @OneToOne
     @JoinColumn(name="idTipoTexto")
@@ -43,6 +43,7 @@ public class Livro implements Serializable {
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
     private int bookLock;    
+    private int qtdAvaliacoes;
 
     public int getId() {
         return id;
@@ -103,11 +104,11 @@ public class Livro implements Serializable {
         this.reportadoConteudoImproprio = reportadoConteudoImproprio;
     }
 
-    public Integer getQualificacao() {
+    public float getQualificacao() {
         return qualificacao;
     }
 
-    public void setQualificacao(Integer qualificacao) {
+    public void setQualificacao(float qualificacao) {
         this.qualificacao = qualificacao;
     }
 
@@ -162,6 +163,20 @@ public class Livro implements Serializable {
     public void setBookLock(int bookLock) {
         this.bookLock = bookLock;
     }    
+    
+    /**
+     * @return the qtdAvaliacoes
+     */
+    public int getQtdAvaliacoes() {
+        return qtdAvaliacoes;
+    }
+
+    /**
+     * @param qtdAvaliacoes the qtdAvaliacoes to set
+     */
+    public void setQtdAvaliacoes(int qtdAvaliacoes) {
+        this.qtdAvaliacoes = qtdAvaliacoes;
+    }
     
     /**     
      * @param idLivro O id do livro
@@ -255,6 +270,10 @@ public class Livro implements Serializable {
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
     }
+    
+    public void atualizaQualificacao(float nota) {
+        LivroDAO livroDAO = new LivroDAO();        
+    }
 
     @Override
     public int hashCode() {
@@ -275,7 +294,5 @@ public class Livro implements Serializable {
         }
         final Livro other = (Livro) obj;
         return this.id == other.id;
-    }
-    
-    
+    }            
 }

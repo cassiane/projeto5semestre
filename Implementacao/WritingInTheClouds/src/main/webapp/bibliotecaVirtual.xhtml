@@ -7,9 +7,15 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="padraoInterno.xhtml">
+        <ui:define name="css">            
+            <h:outputStylesheet name="css/font-awesome.min.css" />
+            <h:outputStylesheet name="css/raterater.css" />            
+            <h:outputScript name="js/raterater.jquery.js" />            
+            <h:outputScript name="js/witc.js" />
+        </ui:define>
         <ui:define name="conteudo">             
             <h:outputText value="Pesquisa" />
-            <h:form>
+            <h:form id="frmPesquisa">
                 <h:panelGrid columns="3">
                     <p:selectOneMenu style="width: 200px;" value="#{livroBean.campoPesquisa}" required="true">
                         <f:selectItem itemLabel="Selecione" itemValue="" />
@@ -23,32 +29,44 @@
                 </h:panelGrid>    
             </h:form>
             
-            <h:form>    
+            <h:form id="frmBiblioteca" >    
                 <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">                    
-                    <p:carousel value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
-                        <h:panelGrid columns="1" style="width: 100%; height: 250px;">
-                            <f:facet name="header">
-                                <p:graphicImage id="capa" style="height: 100px; width: 70px;" value="#{livroBean.capa}" cache="false">
-                                    <f:param name="livroId" value="#{livro.id}" />
-                                    <f:param name="key" value="#{entry.key}" />
-                                </p:graphicImage>
-                            </f:facet>                            
-                            
-                            <h:outputText id="titulo" value="#{livro.titulo}" />                                                            
+                    <p:carousel id="crsBiblioteca" value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
+                        <h:panelGrid columns="1" style="width: 100%; height: auto;">
+                            <h:panelGrid columns="1" style="width: 100%;">                                
+                                <f:facet name="header">
+                                    <p:graphicImage id="capa" style="height: 100px; width: 70px;" value="#{livroBean.capa}" cache="false">
+                                        <f:param name="livroId" value="#{livro.id}" />
+                                        <f:param name="key" value="#{entry.key}" />
+                                    </p:graphicImage>
+                                </f:facet>                            
 
-                            <p:commandButton value="Autores" id="autores" update=":autoresDialog" oncomplete="PF('w_autoresDialog').show()">
-                                <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                            </p:commandButton>                            
+                                <h:outputText id="titulo" value="#{livro.titulo}" />                                                            
+
+                                <p:commandButton value="Autores" id="autores" update=":autoresDialog" oncomplete="PF('w_autoresDialog').show()">
+                                    <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
+                                </p:commandButton>       
+                            </h:panelGrid>
 
                             <f:facet name="footer">
-                                <p:commandButton ajax="false" action="lerLivro" value="Ler">                                        
-                                    <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                                </p:commandButton>
+                                <h:panelGrid columns="1" columnClasses="text-align:center" style="width: 100%;">
+                                    <p:commandButton ajax="false" action="lerLivro" value="Ler">                                        
+                                        <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
+                                    </p:commandButton>                                                                        
+                                    <div class="ratebox" data-id="#{livro.id}" data-rating="#{livro.qualificacao}" 
+                                         style="margin-left: auto; margin-right: auto;" />                                      
+                                    <div id="#{livro.id}">
+                                        <h:inputText id="pontuacao" value="#{livroBean.bookRatingByUser}" style="display:none;">
+                                            <p:ajax event="change" listener="#{livroBean.teste(livro)}" />
+                                        </h:inputText>
+                                    </div>
+                                    <h:outputText value="#{livro.qtdAvaliacoes} #{livro.qtdAvaliacoes eq 1 ? 'avalição' : 'avaliações'}" />
+                                </h:panelGrid>
                             </f:facet>                            
                         </h:panelGrid>
                     </p:carousel>                    
                 </c:forEach>
-            </h:form>            
+            </h:form>                       
         </ui:define>
         <ui:define name="dialogos">
             <p:dialog id="autoresDialog" header="Autores" widgetVar="w_autoresDialog" modal="true"

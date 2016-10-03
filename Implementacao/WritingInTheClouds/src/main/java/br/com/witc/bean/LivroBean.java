@@ -66,6 +66,7 @@ public class LivroBean {
     private Map<String,List<Livro>> bibliotecaVirtual;
     private boolean disponivelEdicaoAmigo;
     private boolean livroFinalizado;
+    private float bookRatingByUser;    
     
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -83,6 +84,10 @@ public class LivroBean {
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
         this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);                
+    }
+    
+    public void teste(Livro livro) {
+        System.out.println(this.bookRatingByUser);
     }
     
     public Livro getLivro() {
@@ -271,7 +276,7 @@ public class LivroBean {
             this.livro.setClassificacao("LIVRE");
             this.livro.setDisponivelBiblioteca(false);
             this.livro.setReportadoConteudoImproprio(false);
-            this.livro.setQualificacao(0);
+            this.livro.setQualificacao(0f);
             if (this.disponivelEdicaoAmigo) {
                 this.livro.setBookLock(0);
             } else {
@@ -399,6 +404,20 @@ public class LivroBean {
      */
     public void setLivroFinalizado(boolean livroFinalizado) {
         this.livroFinalizado = livroFinalizado;        
+    }    
+    
+    /**
+     * @return the bookRatingByUser
+     */
+    public float getBookRatingByUser() {
+        return bookRatingByUser;
+    }
+
+    /**
+     * @param bookRatingByUser the bookRatingByUser to set
+     */
+    public void setBookRatingByUser(float bookRatingByUser) {
+        this.bookRatingByUser = bookRatingByUser;
     }    
     
     /**
