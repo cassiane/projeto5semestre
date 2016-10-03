@@ -432,17 +432,17 @@ public class LivroBean {
         Integer livroId = null;
         try {
             livroId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("livroId"));
-        } catch(NumberFormatException ex) {}        
+        } catch(NumberFormatException ex) {}                        
+        String key = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("key");       
         
-        try {
-            byte[] img;
-            img = this.controlador.carregarLivro(livroId).getCapa();
-            InputStream is = new ByteArrayInputStream(img);               
-            StreamedContent capa = new DefaultStreamedContent(is);        
-            return capa;
-        } catch (LivroException ex) {}
+        List<Livro> lstLivros = this.bibliotecaVirtual.get(key);
+        Livro livroCapa = new Livro();
+        livroCapa.setId(livroId);        
         
-        return new DefaultStreamedContent();
+        byte[] img = lstLivros.get(lstLivros.indexOf(livroCapa)).getCapa();        
+        InputStream is = new ByteArrayInputStream(img);               
+        StreamedContent capa = new DefaultStreamedContent(is);        
+        return capa;        
     }  
     
     /**

@@ -7,7 +7,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>        
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        <ui:insert name="css" />
     </h:head>
     <h:body>              
         <p:layout fullPage="true">
@@ -45,8 +45,10 @@
                     <h:form>
                         <p:menu>
                             <p:menuitem value="Amigos" action="#{cadastrarBean.listarAmigos()}" ajax="false" />
-                            <p:menuitem value="Biblioteca" action="biblioteca.xhtml" ajax="false" />
-                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
+                            <p:menuitem value="Biblioteca" action="biblioteca.xh" ajax="false" />
+                            <p:menuitem value="Biblioteca Virtual" action="#{livean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
+                            <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis"  rendered="#{autenticarBean.verificarAdministrador()}"/>
+                            <p:menuitem value="Tipos de Texto" outcome="tiposTexto"  rendered="#{autenticarBean.verificarAdministrador()}"/>
                         </p:menu>
                     </h:form>
                 </h:panelGrid>

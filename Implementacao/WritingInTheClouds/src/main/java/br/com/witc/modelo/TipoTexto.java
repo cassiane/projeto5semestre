@@ -55,7 +55,29 @@ public class TipoTexto implements Serializable {
         return tipoTextoDAO.getLstTipoTexto();
     }
     
-    // Utilizado para a implementação do convert
+    /**
+     * retorna os dados daquele tipo de texto
+     * @param id
+     * @return 
+     */
+    public TipoTexto carregarTipoTexto(int id) {
+        TipoTextoDAO dao = new TipoTextoDAO();
+        return dao.carregarTipoTexto(id);
+    }
+    
+    /**
+     * Persiste o tipo de texto no banco de dados
+     * @param tipoTexto 
+     */
+    public void salvarTipoTexto(TipoTexto tipoTexto) {
+        TipoTextoDAO dao = new TipoTextoDAO();
+        dao.salvarTipoTexto(tipoTexto);
+    }
+    
+    /**
+     * // Utilizado para a implementação do convert
+     * @return 
+     */    
     @Override
     public int hashCode() {
         final int primo = 19;
@@ -63,8 +85,12 @@ public class TipoTexto implements Serializable {
         resultado = primo * resultado + this.getId();
         return resultado;
     }
-
-    // Utilizado para a implementação do convert
+    
+    /**
+     * / Utilizado para a implementação do convert
+     * @param obj
+     * @return 
+     */    
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -75,5 +101,5 @@ public class TipoTexto implements Serializable {
             return false;
         TipoTexto tipoTexto = (TipoTexto) obj;
         return this.getId() == tipoTexto.getId();
-    }                    
+    }      
 }

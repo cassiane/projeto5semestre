@@ -12,7 +12,6 @@ import br.com.witc.modelo.ConvidadoUsuario;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
-import static javax.faces.context.FacesContext.getCurrentInstance;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;

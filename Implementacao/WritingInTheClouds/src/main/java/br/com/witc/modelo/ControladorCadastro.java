@@ -7,6 +7,8 @@ package br.com.witc.modelo;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
+import br.com.witc.excessao.TipoPerfilException;
+import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoPerfilDAO;
@@ -16,6 +18,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import org.apache.commons.mail.EmailException;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -29,9 +33,24 @@ public class ControladorCadastro {
 
 
     private Usuario usuario;
+    private TipoPerfil tipoPerfil; 
+    private final TipoPerfilDAO tipoDAO;
+    private final Perfil perfil;  
+    private final PerfilDAO perfilDAO; 
+    private final TipoTexto tipoTexto;
 
     public ControladorCadastro() {
         this.usuario = new Usuario();
+        this.tipoPerfil = new TipoPerfil();
+        this.tipoDAO = new TipoPerfilDAO();
+        try {  
+            this.tipoPerfil = tipoDAO.carregarTipoPerfilEscritor();
+        } catch (TipoPerfilException ex) {
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+        this.perfil    = new Perfil();
+        this.perfilDAO = new PerfilDAO();
+        this.tipoTexto = new TipoTexto();
     }
 
     /**
@@ -45,12 +64,8 @@ public class ControladorCadastro {
      */
     public void cadastrarUsuario(Usuario usuario) throws DadosUsuarioInvalidoException, 
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
-        
         usuario.consistirDados();
         usuario.cadastrarUsuario();
-        
-        
-                
     }
     /**
      * altera um usuário no sistema
@@ -246,17 +261,67 @@ public class ControladorCadastro {
         recuperar.salvar();
     }
     
+    /** 
+     * @param usuario 
+     */
     public void criarPerfilPadrao(Usuario usuario){
-        TipoPerfil tipo = new TipoPerfil();
-        TipoPerfilDAO tipoDAO = new TipoPerfilDAO();
-        tipo = tipoDAO.carregarTipoPerfil(1);
-        Perfil perfil = new Perfil();       
-        PerfilDAO perfilDAO = new PerfilDAO();
-        perfil.setUsuario(usuario);
-        perfil.setPseudonimo(usuario.getNome());
-        perfil.setTipoPerfil(tipo);
-        perfil.setQualificacao(0);
-        perfilDAO.salvarPerfil(perfil);
-            
+        this.perfil.setUsuario(this.usuario);
+        this.perfil.setPseudonimo(this.usuario.getNome());
+        this.perfil.setTipoPerfil(this.tipoPerfil);
+        perfilDAO.salvarPerfil(this.perfil);
     }
+
+    /**
+     * @param tipoPerfil 
+     * @throws TipoPerfilException 
+     */
+    public void cadastrarTipoPerfil(TipoPerfil tipoPerfil) throws TipoPerfilException{
+        tipoPerfil.cadastrarTipoPerfil(); 
+    }
+    
+    /**
+     * Retorna a lista de tipo de perfil
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfil() {
+        return this.tipoPerfil.listarTipoPerfil();
+    }
+    
+    /**
+     * Cadastra um tipo de texto
+     * @param tipoTexto
+     * @throws TipoTextoException 
+     */
+    public void cadastrarTipoTexto(TipoTexto tipoTexto) throws TipoTextoException {
+        this.tipoTexto.salvarTipoTexto(tipoTexto);
+    }
+    
+    /**
+     * Retorna os dados de um tipo de texto
+     * @param id
+     * @return 
+     */
+    public TipoTexto carregarTipoTexto(int id) {
+        return this.tipoTexto.carregarTipoTexto(id);
+    }
+    
+    /**
+     * Lista os tipos de texto
+     * @return 
+     * @throws br.com.witc.excessao.TipoTextoException 
+     */
+    public List<TipoTexto> listarTipoTexto() throws TipoTextoException {
+        return this.tipoTexto.getLstTipoTexto();
+    }
+    
+    /**
+     * Envia à viewer uma mensagem com o status da operação
+     *
+     * @param sev A severidade da mensagem
+     * @param msg A mensagem a ser apresentada
+     */
+    private void enviarMensagem(FacesMessage.Severity sev, String msg) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(sev, msg, ""));
+    } 
 }

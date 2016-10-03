@@ -7,9 +7,15 @@ package br.com.witc.bean;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
+import br.com.witc.excessao.TipoPerfilException;
+import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
+import br.com.witc.modelo.TipoPerfil;
+import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
+import br.com.witc.persistencia.TipoPerfilDAO;
+import br.com.witc.persistencia.TipoTextoDAO;
 import java.awt.image.BufferedImage;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -66,14 +72,22 @@ public class CadastrarBean {
     private CroppedImage croppedImage;
     private boolean exibeBotao = true;
     private UploadedFile file;
+    private TipoPerfil tipoPerfil;
+    private TipoPerfilDAO tipoPerfildao;
+    public TipoTexto tipoTexto;
+    public TipoTextoDAO tipoTextoDAO;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
+        this.tipoPerfil = new TipoPerfil();
+        this.tipoPerfildao = new TipoPerfilDAO();
+        this.tipoTexto = new TipoTexto();
+        this.tipoTextoDAO = new TipoTextoDAO();
     }
-
+    
     /**
      * @return the usuario
      */
@@ -246,11 +260,56 @@ public class CadastrarBean {
     public StreamedContent getFoto() {                 
         if (this.usuario.getFoto() == null) {
             return carregarFotoDefault();
-        }
-        
+        }        
         InputStream is = new ByteArrayInputStream(this.usuario.getFoto());               
         StreamedContent image = new DefaultStreamedContent(is);        
         return image;
+    }
+    
+    public TipoPerfil getTipoPerfil() {
+        return tipoPerfil;
+    }
+    
+    public void setTipoPerfil(TipoPerfil tipoPerfil) {
+        this.tipoPerfil = tipoPerfil;
+    }
+
+    public TipoPerfilDAO getTipoPerfildao() {
+        return tipoPerfildao;
+    }
+
+    public void setTipoPerfildao(TipoPerfilDAO tipoPerfildao) {
+        this.tipoPerfildao = tipoPerfildao;
+    }
+    
+      
+
+    /**
+     * @return the tipoTexto
+     */
+    public TipoTexto getTipoTexto() {
+        return tipoTexto;
+    }
+
+    /**
+     * @param tipoTexto the tipoTexto to set
+     */
+    public void setTipoTexto(TipoTexto tipoTexto) {
+        this.tipoTexto = tipoTexto;
+    }
+
+    /**
+     * @return the tipoTextoDAO
+     */
+    public TipoTextoDAO getTipoTextoDAO() {
+        return tipoTextoDAO;
+    }
+
+    /**
+     * @param tipoTextoDAO the tipoTextoDAO to set
+     */
+    public void setTipoTextoDAO(TipoTextoDAO tipoTextoDAO) {
+        this.tipoTextoDAO = tipoTextoDAO;
     }
     
     /**
@@ -761,7 +820,88 @@ public class CadastrarBean {
             return new DefaultStreamedContent();
         }        
     }    
-
+    
+    /**
+     * Cadastra um novo perfil
+     * @return 
+     */
+    public String cadastrarTipoPerfil(){   
+        try {
+            this.controlador.cadastrarTipoPerfil(tipoPerfil);
+            return "tiposPerfis"; 
+        } catch (TipoPerfilException ex) {
+            enviarMensagem(FacesMessage.SEVERITY_ERROR,"Não foi possível cadastrar este perfil - "+ex.getMessage());
+        }
+        return "timeline"; 
+    }
+    //sigmaliv uma dose unica de 2,5ml todas as noites 
+    /**
+     * Chamada para a tela de criação de um novo perfil 
+     * @return 
+     */
+    public String novoPerfil(){
+        this.tipoPerfil = new TipoPerfil();
+        return "novoTipoPerfil"; 
+    }
+    
+    /**
+     * Retorna uma lista de perfis
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfil(){   
+        return this.controlador.listarTipoPerfil();
+    }
+    
+    /**
+     * Retorna a tela de edição do perfil selecionado na lista
+     * @param id
+     * @return 
+     */
+    public String editarPerfil(int id){      
+        this.tipoPerfil = this.tipoPerfildao.carregarTipoPerfil(id);
+        return "novoTipoPerfil";
+    }
+    /**
+     * Cadastra um novo perfil
+     * @return 
+     */
+    public String cadastrarTipoTexto(){   
+        try {
+            this.controlador.cadastrarTipoTexto(tipoTexto);
+            return "tiposTexto"; 
+        } catch (TipoTextoException ex) {
+            enviarMensagem(FacesMessage.SEVERITY_ERROR,"Não foi possível cadastrar este tipo de texto. - "+ex.getMessage());
+        }
+        return "timeline"; 
+    }
+    
+    /**
+     * Chamada para a tela de criação de um novo perfil 
+     * @return 
+     */
+    public String novoTipoTexto(){
+        this.tipoTexto = new TipoTexto();
+        return "novoTipoTexto"; 
+    }
+    /**
+     * Retorna uma lista de perfis
+     * @return 
+     */
+    public List<TipoTexto> listarTipoTexto() throws TipoTextoException{   
+        return this.controlador.listarTipoTexto();
+    }
+    
+    /**
+     * Retorna a tela de edição do perfil selecionado na lista
+     * @param id
+     * @return 
+     */
+    public String editarTipoTexto(int id){ 
+        tipoTexto = this.controlador.carregarTipoTexto(id);
+        return "novoTipoTexto";
+    }
+    
+    
     /**
      * Envia à viewer uma mensagem com o status da operação
      *
@@ -771,5 +911,5 @@ public class CadastrarBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }        
+    } 
 }
