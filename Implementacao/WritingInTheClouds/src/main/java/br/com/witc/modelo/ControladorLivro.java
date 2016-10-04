@@ -104,6 +104,11 @@ public class ControladorLivro {
         return this.livro.listarLivrosPerfil(perfil);
     }
     
+     public List<Livro> listarLivrosStatus(TipoStatus status){
+        return this.livro.listarLivrosStatus(status);
+    }
+    
+    
     public Perfil carregarPerfil (Usuario usuario){
         Perfil perfil = new Perfil();
         return perfil.carregarPerfil(usuario);

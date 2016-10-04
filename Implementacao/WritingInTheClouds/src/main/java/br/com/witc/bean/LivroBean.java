@@ -66,7 +66,10 @@ public class LivroBean {
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
     private boolean disponivelEdicaoAmigo;
-    private boolean livroFinalizado;    
+
+    private boolean livroFinalizado;
+    private boolean disponivelRevisao;
+
     
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -83,8 +86,11 @@ public class LivroBean {
         
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
-        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);                
-    }    
+
+        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);  
+        this.disponivelRevisao=false;
+    }
+
     
     public Livro getLivro() {
         return livro;
@@ -178,7 +184,13 @@ public class LivroBean {
     public List<Livro> listarLivrosPerfil(){
         List<Livro> listaTemp = this.controlador.listarLivrosPerfil(this.perfilUsuario);       
         return listaTemp;        
-    }            
+    }   
+    
+     public List<Livro> listarLivrosRevisao(){
+         TipoStatus status = this.controlador.carregarTipoStatus(2);
+        List<Livro> listaTemp = this.controlador.listarLivrosStatus(status);       
+        return listaTemp;        
+    }  
     
     public  Calendar getPegaDataAtual(){
         Calendar calendar = new GregorianCalendar();
@@ -285,11 +297,21 @@ public class LivroBean {
             this.historico.setLivro(this.livro);
             this.historico.setStatus(st);
             this.historico.setDataInicio(this.getPegaDataAtual());
-            this.controlador.salvarHistorico(this.historico);                        
-            
+
+            this.controlador.salvarHistorico(this.historico);
+            this.tituloLivro="";
+            if(this.disponivelRevisao){
+              HistoricoLivro hist=new HistoricoLivro();
+              TipoStatus stTemp = this.controlador.carregarTipoStatus(2);
+              hist.setPerfil(this.perfilUsuario);
+              hist.setLivro(this.livro);
+              hist.setStatus(stTemp);
+              hist.setDataInicio(this.getPegaDataAtual());
+              this.controlador.salvarHistorico(hist);    
+            }
             if (this.disponivelEdicaoAmigo) {
-                this.livroFinalizado = false;
-                this.disponivelEdicaoAmigo = false;
+              
+
                 return "biblioteca.xhtml?faces-redirect=true";                
             }            
         } catch (LivroException ex) {
@@ -575,4 +597,14 @@ public class LivroBean {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     }                 
+
+    public boolean isDisponivelRevisao() {
+        return disponivelRevisao;
+    }
+
+    public void setDisponivelRevisao(boolean disponivelRevisao) {
+        this.disponivelRevisao = disponivelRevisao;
+    }
+    
+ 
 }
