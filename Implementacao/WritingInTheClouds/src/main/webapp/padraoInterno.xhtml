@@ -190,10 +190,17 @@
                     <h:form>
                         <p:menu>
                             <p:menuitem value="Amigos" action="#{cadastrarBean.listarAmigos()}" ajax="false" />
+<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
                             <p:menuitem value="Minha Biblioteca" action="biblioteca.xhtml" ajax="false" />
                             <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />  
                             <p:menuitem value= "Revisao" action="revisao.xhtml" ajax="false"/>    
                                             
+=======
+
+                            <p:menuitem value="Minha Biblioteca" action="biblioteca.xhtml" ajax="false" />
+                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />  
+                            <p:menuitem value= "Revisao" action="revisao.xhtml" ajax="false"/>                                      
+>>>>>>> Rebase master 1
                             <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis"  rendered="#{autenticarBean.verificarAdministrador()}"/>
                             <p:menuitem value="Tipos de Texto" outcome="tiposTexto"  rendered="#{autenticarBean.verificarAdministrador()}"/>
                         </p:menu>

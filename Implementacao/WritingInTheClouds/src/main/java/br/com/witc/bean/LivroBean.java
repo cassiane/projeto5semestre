@@ -856,8 +856,15 @@ public class LivroBean {
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
     private boolean disponivelEdicaoAmigo;
+<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
     private boolean livroFinalizado;
     private boolean disponivelRevisao;
+=======
+
+    private boolean livroFinalizado;
+    private boolean disponivelRevisao;
+
+>>>>>>> Rebase master 1
     
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -874,9 +881,17 @@ public class LivroBean {
         
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
+<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
         this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);  
         this.disponivelRevisao=false;
     }
+=======
+
+        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);  
+        this.disponivelRevisao=false;
+    }
+
+>>>>>>> Rebase master 1
     
     public Livro getLivro() {
         return livro;
@@ -1084,6 +1099,10 @@ public class LivroBean {
             this.historico.setLivro(this.livro);
             this.historico.setStatus(st);
             this.historico.setDataInicio(this.getPegaDataAtual());
+<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
+=======
+
+>>>>>>> Rebase master 1
             this.controlador.salvarHistorico(this.historico);
             this.tituloLivro="";
             if(this.disponivelRevisao){
@@ -1097,6 +1116,10 @@ public class LivroBean {
             }
             if (this.disponivelEdicaoAmigo) {
               
+<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
+=======
+
+>>>>>>> Rebase master 1
                 return "biblioteca.xhtml?faces-redirect=true";                
             }
         } catch (LivroException ex) {

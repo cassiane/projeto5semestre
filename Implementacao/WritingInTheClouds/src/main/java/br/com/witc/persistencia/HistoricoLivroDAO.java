@@ -159,6 +159,7 @@ public class HistoricoLivroDAO {
                 .setString("idLivro", String.valueOf(idLivro))
                 .setString("idPerfil", String.valueOf(idPerfil))
                 .setInteger("idTipoStatus",1)
+<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
                 .uniqueResult();
         
         sessao.refresh(historico);
@@ -176,6 +177,8 @@ public class HistoricoLivroDAO {
         HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idStatus=:idStatus")
                 .setString("idLivro", String.valueOf(idLivro))
                 .setString("idStatus", String.valueOf(idStatus))
+=======
+>>>>>>> Rebase master 1
                 .uniqueResult();
         
         sessao.refresh(historico);

@@ -10,16 +10,21 @@
             <f:view>
                 <center>
                     <h:form>                  
+<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
 <<<<<<< c1231be511e5e0446af66423df1e4cf2313970f5
                         <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> 
 =======
                         <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> <!Lista todos os livros aptos para revisao>
 >>>>>>> Implmentacao tela revisao livro
+=======
+                        <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> 
+>>>>>>> Rebase master 1
                             <p:dataTable   value="#{livroBean.listarLivrosRevisao()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
                                 <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
                                     #{lis.titulo}
                                 </p:column>                                
                                 <p:column width="90">
+<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
 <<<<<<< c1231be511e5e0446af66423df1e4cf2313970f5
                                     <p:commandButton title="Revisar" 
                                                      ajax="false"                                         
@@ -33,6 +38,13 @@
                                                      action="#{livroBean.atualizarLockLivro(lis.id)}"      <!atualiza o lock para quem pegou para revisao>                                                
                                                      disabled="#{!livroBean.estaDisponivelRevisaoUsuario(lis.id)}" /> <!desabilita para quem não é o revisor>
 >>>>>>> Implmentacao tela revisao livro
+=======
+                                    <p:commandButton title="Revisar" 
+                                                     ajax="false"                                         
+                                                     icon="ui-icon-pencil" 
+                                                     action="#{livroBean.atualizarLockLivro(lis.id)}"                                                     
+                                                     disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" /> 
+>>>>>>> Rebase master 1
                                     <p:commandButton ajax="false" 
                                                      title="Ler" 
                                                      icon="ui-icon-document" 
