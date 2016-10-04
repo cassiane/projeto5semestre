@@ -9,6 +9,11 @@ INSERT INTO `witc`.`tipostatus`
 VALUES
 ("PADRAO");
 
+INSERT INTO `witc`.`tipostatus`
+(`tipoStatus`)
+VALUES
+("REVISAO");
+
 
 INSERT INTO `witc`.`tipoperfil_tem_tipostatus`
 (`TipoPerfil_id`,

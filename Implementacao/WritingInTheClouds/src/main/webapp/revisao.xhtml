@@ -10,17 +10,17 @@
             <f:view>
                 <center>
                     <h:form>                  
-                        <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> <!Lista todos os livros aptos para revisao>
+                        <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> 
                             <p:dataTable   value="#{livroBean.listarLivrosRevisao()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
                                 <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
                                     #{lis.titulo}
                                 </p:column>                                
                                 <p:column width="90">
-                                    <p:commandButton title="Revisar" <!Seleciona um livro para revisao>
+                                    <p:commandButton title="Revisar" 
                                                      ajax="false"                                         
                                                      icon="ui-icon-pencil" 
-                                                     action="#{livroBean.atualizarLockLivro(lis.id)}"      <!atualiza o lock para quem pegou para revisao>                                                
-                                                     disabled="#{!livroBean.estaDisponivelRevisaoUsuario(lis.id)}" /> <!desabilita para quem não é o revisor>
+                                                     action="#{livroBean.atualizarLockLivro(lis.id)}"                                                     
+                                                     disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" /> 
                                     <p:commandButton ajax="false" 
                                                      title="Ler" 
                                                      icon="ui-icon-document" 

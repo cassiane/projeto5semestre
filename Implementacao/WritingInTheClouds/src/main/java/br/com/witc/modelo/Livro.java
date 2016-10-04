@@ -210,6 +210,11 @@ public class Livro implements Serializable {
         return livroDAO.listarLivrosPerfil(perfil);
     }
     
+     public List<Livro> listarLivrosStatus(TipoStatus status){
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.listarLivrosStatus(status);
+     }
+    
     /**
      * Persiste um novo livro na BD
      * @param livro O livro a ser persistido
