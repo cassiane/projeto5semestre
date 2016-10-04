@@ -56,6 +56,14 @@ public class ControladorLivro {
         return this.livro.getCapaPorId(idLivro);
     }
     
+/**
+     * Persiste um novo livro na BD
+     * @param livro O livro a ser persistido
+     */
+    public void salvarLivro(Livro livro){    
+        this.livro.salvarLivro(livro);
+    }    
+    
     /**
      * Persiste um novo livro na BD
      * @param livro O livro a ser persistido
@@ -80,7 +88,7 @@ public class ControladorLivro {
             }
         }
         this.livro.salvarLivro(livro);
-    }
+    }    
     
     /**
      * Carrega um livro 
@@ -139,8 +147,9 @@ public class ControladorLivro {
         List<Livro> tmpLivros;
         for (TipoTexto tp : tipoTexto.getLstTipoTexto()) {
             try {
-                if ((campoPesquisa.equals(LivroBean.ITEM_PESQUISA_TIPO_TEXTO)) && 
-                   (!tp.getTipoTexto().toUpperCase().equals(valorPesquisa.toUpperCase()))) {
+                if ((!campoPesquisa.equals(LivroBean.ITEM_PESQUISA_TIPO_TEXTO)) || 
+                   ((campoPesquisa.equals(LivroBean.ITEM_PESQUISA_TIPO_TEXTO)) &&
+                   (tp.getTipoTexto().toUpperCase().contains(valorPesquisa.toUpperCase())))) {
                     tmpLivros = this.livro.listarLivrosPorTipoTexto(tp, campoPesquisa, valorPesquisa);
                     if ((tmpLivros != null) && (!tmpLivros.isEmpty())) {
                         tmpMap.put(tp.getTipoTexto(), tmpLivros);

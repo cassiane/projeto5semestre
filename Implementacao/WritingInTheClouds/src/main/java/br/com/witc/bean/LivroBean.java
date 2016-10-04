@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.PatternSyntaxException;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -65,8 +66,7 @@ public class LivroBean {
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
     private boolean disponivelEdicaoAmigo;
-    private boolean livroFinalizado;
-    private float bookRatingByUser;    
+    private boolean livroFinalizado;    
     
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -84,11 +84,7 @@ public class LivroBean {
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
         this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);                
-    }
-    
-    public void teste(Livro livro) {
-        System.out.println(this.bookRatingByUser);
-    }
+    }    
     
     public Livro getLivro() {
         return livro;
@@ -276,7 +272,7 @@ public class LivroBean {
             this.livro.setClassificacao("LIVRE");
             this.livro.setDisponivelBiblioteca(false);
             this.livro.setReportadoConteudoImproprio(false);
-            this.livro.setQualificacao(0f);
+            this.livro.setAvaliacao(0f);
             if (this.disponivelEdicaoAmigo) {
                 this.livro.setBookLock(0);
             } else {
@@ -404,20 +400,6 @@ public class LivroBean {
      */
     public void setLivroFinalizado(boolean livroFinalizado) {
         this.livroFinalizado = livroFinalizado;        
-    }    
-    
-    /**
-     * @return the bookRatingByUser
-     */
-    public float getBookRatingByUser() {
-        return bookRatingByUser;
-    }
-
-    /**
-     * @param bookRatingByUser the bookRatingByUser to set
-     */
-    public void setBookRatingByUser(float bookRatingByUser) {
-        this.bookRatingByUser = bookRatingByUser;
     }    
     
     /**
@@ -551,6 +533,38 @@ public class LivroBean {
         }
         return null;
     }
+    
+    /**
+     * Recebe o id e a nota dada pelo usuário ao livro. Esse método é chamado em witc.js     
+     */
+    public void bookRating() {        
+        try {
+            String[] avaliacao = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap()
+                .get("bookRating").split("-");
+            String key = avaliacao[0];
+            int idLivro = Integer.parseInt(avaliacao[1]);
+            float rating = Float.parseFloat(avaliacao[2]);
+                    
+            Livro tmpLivro = new Livro();
+            tmpLivro.setId(idLivro);
+            int indexLivro = this.bibliotecaVirtual.get(key).indexOf(tmpLivro);
+            tmpLivro = this.bibliotecaVirtual.get(key).get(indexLivro);
+            
+            int qtdAvaliacoes = tmpLivro.getQtdAvaliacoes() + 1;
+            float somaAvaliacoes = tmpLivro.getSomaAvaliacoes() + rating;
+            float novaAvaliacao = somaAvaliacoes / qtdAvaliacoes;
+            
+            tmpLivro.setAvaliacao(novaAvaliacao);
+            tmpLivro.setQtdAvaliacoes(qtdAvaliacoes);
+            tmpLivro.setSomaAvaliacoes(somaAvaliacoes);
+            
+            this.controlador.salvarLivro(tmpLivro);                        
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException | 
+                NullPointerException | PatternSyntaxException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Erro ao qualificar o livro. Seu voto não foi computado!");
+        }        
+    }            
     
     /**
      * Envia à viewer uma mensagem com o status da operação

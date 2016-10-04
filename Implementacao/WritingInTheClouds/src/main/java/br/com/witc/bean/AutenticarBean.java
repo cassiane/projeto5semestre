@@ -104,7 +104,12 @@ public class AutenticarBean {
      * @return 
      */
     public boolean verificarAdministrador(){
-        return this.controlador.getPerfil().getTipoPerfil().getTipoPerfil().toLowerCase().contains("admin");
+        try {
+            return this.controlador.getTipoPerfil().toLowerCase().contains("admin");        
+        } catch(NullPointerException ex) {
+            // cadastro de usuario
+            return false;
+        }
     }
     
     /**

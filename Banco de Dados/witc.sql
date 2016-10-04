@@ -132,7 +132,9 @@ CREATE TABLE IF NOT EXISTS `witc`.`Livro` (
   `classificacao` VARCHAR(45) NOT NULL,
   `disponivelBiblioteca` TINYINT(1) NOT NULL,
   `reportadoConteudoImproprio` TINYINT(1) NOT NULL,
-  `qualificacao` INT NULL,
+  `avaliacao` FLOAT UNSIGNED NULL DEFAULT 0,
+  `qtdAvaliacoes` INT UNSIGNED NULL DEFAULT 0,
+  `somaAvaliacoes` FLOAT UNSIGNED NULL DEFAULT 0,
   `texto` LONGTEXT NOT NULL,
   `bookLock` INT UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
@@ -248,6 +250,8 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
 
 -- Cria usuário da aplicação:
 

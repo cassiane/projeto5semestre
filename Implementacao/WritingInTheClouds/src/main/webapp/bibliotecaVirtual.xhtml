@@ -26,10 +26,10 @@
                     <p:inputText value="#{livroBean.valorPesquisa}" style="width: 200px;"/>
                     <p:commandButton ajax="false" action="#{livroBean.carregaBibliotecaVirtualPesquisa()}"
                                      style="width:30px; height: 31px;" icon="ui-icon-search" />
-                </h:panelGrid>    
+                </h:panelGrid>                   
             </h:form>
             
-            <h:form id="frmBiblioteca" >    
+            <h:form id="frmBiblioteca">    
                 <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">                    
                     <p:carousel id="crsBiblioteca" value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
                         <h:panelGrid columns="1" style="width: 100%; height: auto;">
@@ -48,19 +48,17 @@
                                 </p:commandButton>       
                             </h:panelGrid>
 
-                            <f:facet name="footer">
+                            <f:facet name="footer">                                
                                 <h:panelGrid columns="1" columnClasses="text-align:center" style="width: 100%;">
                                     <p:commandButton ajax="false" action="lerLivro" value="Ler">                                        
                                         <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
                                     </p:commandButton>                                                                        
-                                    <div class="ratebox" data-id="#{livro.id}" data-rating="#{livro.qualificacao}" 
-                                         style="margin-left: auto; margin-right: auto;" />                                      
-                                    <div id="#{livro.id}">
-                                        <h:inputText id="pontuacao" value="#{livroBean.bookRatingByUser}" style="display:none;">
-                                            <p:ajax event="change" listener="#{livroBean.teste(livro)}" />
-                                        </h:inputText>
-                                    </div>
-                                    <h:outputText value="#{livro.qtdAvaliacoes} #{livro.qtdAvaliacoes eq 1 ? 'avalição' : 'avaliações'}" />
+                                    <p:remoteCommand name="callBeanMethod" update=":frmBiblioteca" 
+                                                     actionListener="#{livroBean.bookRating()}" oncomplete="initializeRatebox();" />
+                                    <div class="ratebox" data-id="#{entry.key}-#{livro.id}" data-rating="#{livro.avaliacao}" 
+                                          style="margin-left: auto; margin-right: auto;">                                        
+                                    </div>                                        
+                                    <h:outputText id="qtdAvaliacoes" value="#{livro.qtdAvaliacoes} #{livro.qtdAvaliacoes eq 1 ? 'avalição' : 'avaliações'}" />                                                                        
                                 </h:panelGrid>
                             </f:facet>                            
                         </h:panelGrid>
