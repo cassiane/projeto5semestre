@@ -8,17 +8,23 @@
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">     
             <div align="center"> 
+<<<<<<< 485cffe3b3e7e9c42067d6e8c865ed794939e534
 <<<<<<< 4c92b75dff30a6f67df4cf615203f437683d9199
+=======
+>>>>>>> Implementacao SB12 - lista revisao
                 <h1>Metadados do Livro</h1>
                 <h:form id= "formMetadados" enctype="multipart/form-data">
                     <h:panelGrid columns="1">
                         <h:panelGrid columns="2">
+<<<<<<< 485cffe3b3e7e9c42067d6e8c865ed794939e534
 =======
                <h1>Metadados do Livro</h1>
                <h:form enctype="multipart/form-data">  
                    <h:panelGrid columns="2">
                        <h:panelGrid columns="2">
 >>>>>>> Metadados livro
+=======
+>>>>>>> Implementacao SB12 - lista revisao
                             <p:outputLabel for="titulo" value="Título"/>
                             <p:inputText id="titulo" label="titulo" maxlength="45" value="#{livroBean.tituloLivro}"/>                                            
                         </h:panelGrid>
@@ -27,6 +33,7 @@
                             <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" style="width: 150px">
                                 <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
                                                itemValue="#{tipoTexto}"/>
+<<<<<<< 485cffe3b3e7e9c42067d6e8c865ed794939e534
 <<<<<<< 3b6c68662c1dfa329b2b22e648acbd335b7e6fc6
                             </p:selectOneMenu>  
                         </h:panelGrid>
@@ -52,6 +59,21 @@
                     </h:panelGrid> 
                      <h:panelGrid columns="3" style="margin-top: 10px">
 >>>>>>> Implementação controle de revisao de texto SB12
+=======
+                            </p:selectOneMenu>  
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="capa" value="Tipo de texto"/>
+                            <p:fileUpload id="capa" value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
+                        </h:panelGrid> 
+                        <h:panelGrid columns="2">
+                        <h:outputText value="disponivel para Revisao: " />
+                        <p:selectBooleanCheckbox value="#{livroBean.disponivelRevisao}" />
+                        </h:panelGrid>
+                    </h:panelGrid>
+                  
+                    <h:panelGrid columns="3" style="margin-top: 10px">
+>>>>>>> Implementacao SB12 - lista revisao
                         <p:commandButton value="Salvar"  action="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
                     </h:panelGrid>                     

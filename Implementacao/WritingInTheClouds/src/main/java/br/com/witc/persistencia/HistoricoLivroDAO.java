@@ -154,10 +154,11 @@ public class HistoricoLivroDAO {
      * @param idPerfil O id do perfil do usuário
      * @return Um objeto HistoricoLivro
      */
-    public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) {
-        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil")
+    public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) { // Inclusao do idTipoStatus para que o retorno seja unico
+        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil AND idTipoStatus=:idTipoStatus")
                 .setString("idLivro", String.valueOf(idLivro))
                 .setString("idPerfil", String.valueOf(idPerfil))
+                .setInteger("idTipoStatus",1)
                 .uniqueResult();
         
         sessao.refresh(historico);

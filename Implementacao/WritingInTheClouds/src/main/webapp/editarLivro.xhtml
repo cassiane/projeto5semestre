@@ -81,16 +81,13 @@
                 <h:form enctype="multipart/form-data">
                     <h:panelGrid columns="2">
                         <h:panelGrid columns="2">
-                            <p:outputLabel for="titulo" value="Título"/>
-                            <p:inputText id="titulo" label="titulo" maxlength="45" value="#{livroBean.livroCarregado.titulo}" required="true" requiredMessage="Informe o titulo do livro!!"/>                                            
+                             <h:outputText  value="Título: "/>
+                            <h:outputText value="#{livroBean.livroCarregado.titulo}"/>                                                
                         </h:panelGrid>
                         <h:panelGrid columns="2">
-                            <p:outputLabel for="tipoTexto" value="Tipo de texto"/>
-                            <p:selectOneMenu id="tipoTexto" value="#{livroBean.livroCarregado.tipoTexto}" required="true" style="width: 150px">
-                                <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
-                                               itemValue="#{tipoTexto}"/>
-                            </p:selectOneMenu>
-                        </h:panelGrid>
+                             <h:outputText  value="Tipo Texto: "/>
+                            <h:outputText  value="#{livroBean.livroCarregado.tipoTexto.tipoTexto}"/>
+                         </h:panelGrid>
                     </h:panelGrid>
                     <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
                     <h:panelGrid columns="2" style="margin-top: 10px">                        
@@ -100,6 +97,7 @@
                         <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizado}">
                             <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
                         </p:selectBooleanCheckbox>
+                        <h:outputText value="Finalizado Revisao: " />
                         <p:selectBooleanCheckbox id="livroFinalizadoEdicao" value="#{livroBean.livroFinalizado}">
                             <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
                         </p:selectBooleanCheckbox>

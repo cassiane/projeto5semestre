@@ -192,6 +192,7 @@ import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.LivroException;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
+import br.com.witc.modelo.TipoStatus;
 import br.com.witc.modelo.TipoTexto;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.ArrayList;
@@ -236,6 +237,16 @@ public class LivroDAO {
         String consulta ="select livro.* from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
        List<Livro> lista ;
         lista= sessao.createSQLQuery(consulta).addEntity("livro",Livro.class).setInteger("id",perfil.getId()).list();
+        return lista;
+       
+
+    }
+    
+    public List<Livro> listarLivrosStatus(TipoStatus status){
+
+        String consulta ="select livro.* from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join TipoStatus on TipoStatus.id = historicolivros.idTipoStatus  where idTipoStatus=:id";
+       List<Livro> lista ;
+        lista= sessao.createSQLQuery(consulta).addEntity("livro",Livro.class).setInteger("id",status.getId()).list();
         return lista;
        
 
