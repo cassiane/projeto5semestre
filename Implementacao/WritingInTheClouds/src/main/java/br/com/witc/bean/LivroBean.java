@@ -86,7 +86,6 @@ public class LivroBean {
         
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
-
         this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);  
         this.disponivelRevisao=false;
     }
