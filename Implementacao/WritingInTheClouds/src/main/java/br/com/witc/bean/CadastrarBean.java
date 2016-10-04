@@ -520,9 +520,9 @@ public class CadastrarBean {
 
             setDataNascimento();
             this.usuario.setAtivo(true);
-            this.controlador.cadastrarUsuario(usuario);
+            this.controlador.cadastrarUsuario(this.usuario);
             setDataNascimento();                  
-            this.controlador.criarPerfilPadrao(usuario);
+            this.controlador.criarPerfilPadrao(this.usuario);
 
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()

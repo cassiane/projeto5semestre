@@ -265,8 +265,8 @@ public class ControladorCadastro {
      * @param usuario 
      */
     public void criarPerfilPadrao(Usuario usuario){
-        this.perfil.setUsuario(this.usuario);
-        this.perfil.setPseudonimo(this.usuario.getNome());
+        this.perfil.setUsuario(usuario);
+        this.perfil.setPseudonimo(usuario.getNome());
         this.perfil.setTipoPerfil(this.tipoPerfil);
         perfilDAO.salvarPerfil(this.perfil);
     }
