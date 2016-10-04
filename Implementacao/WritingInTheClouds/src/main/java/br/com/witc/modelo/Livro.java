@@ -32,7 +32,9 @@ public class Livro implements Serializable {
     private String classificacao;
     private boolean disponivelBiblioteca;
     private boolean reportadoConteudoImproprio;
-    private Integer qualificacao;
+    private float avaliacao;
+    private int qtdAvaliacoes;
+    private float somaAvaliacoes;
     private String texto;
     @OneToOne
     @JoinColumn(name="idTipoTexto")
@@ -42,7 +44,7 @@ public class Livro implements Serializable {
     private TipoGenero tipoGenero;
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
-    private int bookLock;    
+    private int bookLock;        
 
     public int getId() {
         return id;
@@ -103,13 +105,41 @@ public class Livro implements Serializable {
         this.reportadoConteudoImproprio = reportadoConteudoImproprio;
     }
 
-    public Integer getQualificacao() {
-        return qualificacao;
+    public float getAvaliacao() {
+        return avaliacao;
     }
 
-    public void setQualificacao(Integer qualificacao) {
-        this.qualificacao = qualificacao;
+    public void setAvaliacao(float avaliacao) {
+        this.avaliacao = avaliacao;
     }
+    
+/**
+     * @return the qtdAvaliacoes
+     */
+    public int getQtdAvaliacoes() {
+        return qtdAvaliacoes;
+    }
+
+    /**
+     * @param qtdAvaliacoes the qtdAvaliacoes to set
+     */
+    public void setQtdAvaliacoes(int qtdAvaliacoes) {
+        this.qtdAvaliacoes = qtdAvaliacoes;
+    }
+    
+    /**
+     * @return the somaAvaliacoes
+     */
+    public float getSomaAvaliacoes() {
+        return somaAvaliacoes;
+    }
+
+    /**
+     * @param somaAvaliacoes the somaAvaliacoes to set
+     */
+    public void setSomaAvaliacoes(float somaAvaliacoes) {
+        this.somaAvaliacoes = somaAvaliacoes;
+    }        
 
     public String getTexto() {
         return texto;
@@ -161,7 +191,7 @@ public class Livro implements Serializable {
      */
     public void setBookLock(int bookLock) {
         this.bookLock = bookLock;
-    }    
+    }            
     
     /**     
      * @param idLivro O id do livro
@@ -255,7 +285,7 @@ public class Livro implements Serializable {
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -275,7 +305,5 @@ public class Livro implements Serializable {
         }
         final Livro other = (Livro) obj;
         return this.id == other.id;
-    }
-    
-    
+    }               
 }

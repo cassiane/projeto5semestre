@@ -45,9 +45,10 @@ public class ControladorAutenticacao {
     /**
      * @return 
      */
-    public Perfil getPerfil() {
-        return perfil;
+    public String getTipoPerfil() {
+        return perfil.getTipoPerfil().getTipoPerfil();
     }
+    
     /**
      * @param perfil 
      */

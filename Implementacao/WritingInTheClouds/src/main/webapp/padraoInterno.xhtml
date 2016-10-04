@@ -22,7 +22,7 @@
                     </div>                                
 
                     <div id="botton" style="height: 20px;text-align: right; padding-bottom: 5px;">
-                        <h:form>                            
+                        <h:form id="frmCabecalho">                            
                             <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
                             <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
                                 <p:menuitem value="Editar minha conta" outcome="editarConta"/>
@@ -33,7 +33,7 @@
                 </f:facet>                
             </p:layoutUnit>
             <p:layoutUnit position="east" resizable="true" size="300">
-                <h:form>
+                <h:form id="frmChat">
                     <p:stack icon="/resources/imagens/chat.png" expanded="true">
                         <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
                         <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
@@ -42,12 +42,12 @@
             </p:layoutUnit>            
             <p:layoutUnit position="west" resizable="true" size="250">
                 <h:panelGrid columns="1">                    
-                    <h:form>
+                    <h:form id="frmMenu">
                         <p:menu>
                             <p:menuitem value="Amigos" action="#{cadastrarBean.listarAmigos()}" ajax="false" />
                             <p:menuitem value="Biblioteca" action="biblioteca.xhtml" ajax="false" />
-                            <p:menuitem value="Biblioteca Virtual" action="#{livean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
-                            <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis"  rendered="#{autenticarBean.verificarAdministrador()}"/>
+                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
+                            <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis" rendered="#{autenticarBean.verificarAdministrador()}"/>
                             <p:menuitem value="Tipos de Texto" outcome="tiposTexto"  rendered="#{autenticarBean.verificarAdministrador()}"/>
                         </p:menu>
                     </h:form>
