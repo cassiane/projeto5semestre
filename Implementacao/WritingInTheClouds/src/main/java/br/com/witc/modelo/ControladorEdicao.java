@@ -19,8 +19,8 @@ public class ControladorEdicao {
      * Buscar a lista de amigos editores
      * @return a lista de amigos
      */
-    public List<Perfil> carregarListaAmigoEditor(Perfil perfil) {
-        return perfil.carregarListaAmigoEditor();
+    public List<Perfil> carregarListaAmigoEditor(Perfil perfil, int idLivro) {
+        return perfil.carregarListaAmigoEditor(idLivro);
     }
 
     /**

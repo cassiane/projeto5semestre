@@ -77,8 +77,8 @@ public class Perfil implements Serializable {
      * Persistir a busca de amigos editores
      * @return lista de amigos editores
      */
-    public List<Perfil> carregarListaAmigoEditor() {
+    public List<Perfil> carregarListaAmigoEditor(int idLivro) {
         PerfilDAO dao = new PerfilDAO();
-        return dao.carregarListaAmigoEditor(this.getUsuario().getId());
+        return dao.carregarListaAmigoEditor(this.getUsuario().getId(), idLivro);
     }
 }

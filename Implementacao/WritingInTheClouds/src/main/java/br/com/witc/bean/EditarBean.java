@@ -212,6 +212,7 @@ public class EditarBean {
     }
 
     public List<ConvidadoPerfil> getListaSolicitacaoEdicao() {
+        this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
         return listaSolicitacaoEdicao;
     }
 
@@ -235,7 +236,7 @@ public class EditarBean {
      * Preencher a variavel com a lista de amigos editores
      */
     public void carregarListaAmigoEditor() {
-        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor(this.perfilUsuario);
+        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor(this.perfilUsuario, this.livroCarregado.getId());
     }
     
     /**
@@ -259,7 +260,7 @@ public class EditarBean {
      */
     public String aceitarEdicao(ConvidadoPerfil ediLivro) {
         this.controlador.aceitarEdicao(ediLivro);
-        this.carregarListaSolicitacaoEdicao();
+        //this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
         return "biblioteca";
     }
     

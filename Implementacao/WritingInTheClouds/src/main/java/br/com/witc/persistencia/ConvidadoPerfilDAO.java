@@ -47,5 +47,6 @@ public class ConvidadoPerfilDAO {
      */
     public void remover(ConvidadoPerfil convite) {
         sessao.delete(convite);
+        sessao.flush();
     }
 }

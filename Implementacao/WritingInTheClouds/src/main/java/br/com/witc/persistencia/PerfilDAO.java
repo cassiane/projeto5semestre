@@ -18,48 +18,49 @@ import org.hibernate.exception.ConstraintViolationException;
  * @author 00026108
  */
 public class PerfilDAO {
+
     Session sessao;
 
     public PerfilDAO() {
         this.sessao = getSessionFactory().getCurrentSession();
     }
-    
-    public Perfil carregarPerfil (Usuario usuario){
-        
-       Perfil p = (Perfil) sessao.createQuery("FROM Perfil WHERE idUsuario=:idUsuario ").setInteger("idUsuario",usuario.getId())               
+
+    public Perfil carregarPerfil(Usuario usuario) {
+
+        Perfil p = (Perfil) sessao.createQuery("FROM Perfil WHERE idUsuario=:idUsuario ").setInteger("idUsuario", usuario.getId())
                 .uniqueResult();
-                
-        if (p==null){
-        return null; // lançar excessao
-    }
+
+        if (p == null) {
+            return null; // lançar excessao
+        }
         return p;
     }
 
-    public void salvarPerfil(Perfil perfil){
-        try{
+    public void salvarPerfil(Perfil perfil) {
+        try {
             sessao.save(perfil);
-        }catch(ConstraintViolationException e){
-             sessao.clear();
+        } catch (ConstraintViolationException e) {
+            sessao.clear();
         }
     }
 
     /**
      * Acessar a tabela e buscar a lista de amigos
+     *
      * @return lista de amigos editores
      */
-    public List<Perfil> carregarListaAmigoEditor(int idUsuario) {
+    public List<Perfil> carregarListaAmigoEditor(int idUsuario, int idLivro) {
         List<Perfil> tmpPerfil = null;
         try {
-            Query query = sessao.createSQLQuery("CALL witc.proc_edicao(:idusu)")
-                .addEntity(Perfil.class)
-                .setParameter("idusu", idUsuario);
-            //tmpPerfil = sessao.createQuery("FROM Perfil").list();
+            Query query = sessao.createSQLQuery("CALL witc.proc_edicao(:idusu, :idliv)")
+                    .addEntity(Perfil.class)
+                    .setParameter("idusu", idUsuario)
+                    .setParameter("idliv", idLivro);
             tmpPerfil = query.list();
         } catch (Exception ex) {
-            
+
         }
         return tmpPerfil;
     }
-    
 
 }
