@@ -119,8 +119,8 @@ public class ConvidadoPerfil implements Serializable {
         HistoricoLivro historico = new HistoricoLivro();
         historico.setLivro(this.idLivro);
         historico.setPerfil(this.idPerfilConvidado);
-        TipoStatus status = new TipoStatus();
-        status.carregarTipoStatus(1);
+        TipoStatus status = new TipoStatus().carregarTipoStatus(1);
+        //status.carregarTipoStatus(1);
         historico.setStatus(status);
         historico.setDataInicio(Calendar.getInstance());
         historico.salvarHistorico(historico);

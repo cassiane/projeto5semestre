@@ -9,7 +9,7 @@
         <ui:define name="conteudo">     
             <f:view>
                 <center>
-                    <h:form>                  
+                    <h:form id="formMBibli">                  
                         <p:panel id="basic" header="Minha Biblioteca"  style="margin-bottom:20px">
                             <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{livroBean.editorNovoLivro()}"/>
                             <p:dataTable   value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
@@ -40,8 +40,8 @@
                     <p:dataScroller id="datEdiLivro" value="#{livroBean.listaSolicitacaoEdicao}" var="ediLivro" chunkSize="3">
                         <h:outputText value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
                         <br />
-                        <p:commandButton ajax="false" value="Aceitar" action="#{livroBean.aceitarEdicao(ediLivro)}" update="solEdicao:datEdiLivro" />
-                        <p:commandButton ajax="false" value="Negar" action="#{livroBean.negarEdicao(ediLivro)}" update="solEdicao:datEdiLivro" />
+                        <p:commandButton ajax="false" value="Aceitar" action="#{livroBean.aceitarEdicao(ediLivro)}" update="solEdicao:datEdiLivro, formMBibli" />
+                        <p:commandButton ajax="false" value="Negar" action="#{livroBean.negarEdicao(ediLivro)}" update="solEdicao:datEdiLivro, formMBibli" />
                     </p:dataScroller>
                 </h:form>
             </f:view>
