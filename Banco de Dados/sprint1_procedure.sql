@@ -34,7 +34,7 @@ BEGIN
 START TRANSACTION;
 (SELECT * FROM witc.Usuario WHERE id NOT IN 
 (SELECT a.idUsuario FROM witc.Usuario_tem_Amigo a WHERE a.idAmigo = usuario) AND id NOT IN 
-(SELECT b.idAmigo FROM witc.Usuario_tem_Amigo b WHERE b.idUsuario = usuario) AND id <> usuario);
+(SELECT b.idAmigo FROM witc.Usuario_tem_Amigo b WHERE b.idUsuario = usuario) AND id <> usuario AND ativo = 1);
 COMMIT;
 END$$
 DELIMITER ;
@@ -43,23 +43,6 @@ DELIMITER ;
 -- Procedure `proc_convite` realizar a pesquisa de convites existente e grava na solicitação
 -- -----------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_convite` (IN email VARCHAR(150))
-BEGIN
-START TRANSACTION;
-INSERT INTO witc.Usuario_tem_Amigo (idUsuario, idAmigo, dataSolicitacao)
- SELECT a.idUsuario, b.id, a.dataSolicitacao FROM witc.ConvidadoUsuario a
- JOIN witc.Usuario b ON a.emailConvidado = b.email
- WHERE a.emailConvidado = email;
-COMMIT;
-END$$
-DELIMITER ;
-
--- -----------------------------------------------------
--- Procedure `proc_convite` Ajuste para limpar a tabela apos realizar a pesquisa de convites existente e grava na solicitação
--- -----------------------------------------------------
-DROP procedure IF EXISTS `proc_convite`;
-
-DELIMITER $$
 USE `witc`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_convite`(IN email VARCHAR(150))
 BEGIN
@@ -67,7 +50,7 @@ START TRANSACTION;
 INSERT INTO witc.Usuario_tem_Amigo (idUsuario, idAmigo, dataSolicitacao)
  SELECT a.idUsuario, b.id, a.dataSolicitacao FROM witc.ConvidadoUsuario a
  JOIN witc.Usuario b ON a.emailConvidado = b.email
- WHERE a.emailConvidado = email;
+ WHERE a.emailConvidado = email AND b.ativo = 1;
 DELETE FROM witc.ConvidadoUsuario WHERE emailConvidado = email;
 COMMIT;
 END$$

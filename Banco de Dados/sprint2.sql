@@ -59,8 +59,8 @@ COMMIT;
 END$$
 DELIMITER ;
 
-ALTER TABLE `witc`.`historicolivros` 
-ADD UNIQUE INDEX `ui_HistoricoLivros_PerfilLivro` (`idPerfil` ASC, `idLivro` ASC);
+ALTER TABLE `witc`.`HistoricoLivros` 
+ADD UNIQUE INDEX `ui_HistoricoLivro_PerfilLivro` (`idPerfil` ASC, `idLivro` ASC);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
