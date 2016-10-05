@@ -23,11 +23,11 @@
                             </p:selectOneMenu>  
                         </h:panelGrid>
                         <h:panelGrid columns="2">
-                            <p:outputLabel for="capa" value="Tipo de texto"/>
+                            <p:outputLabel for="capa" value="Capa "/>
                             <p:fileUpload id="capa" value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
                         </h:panelGrid> 
                         <h:panelGrid columns="2">
-                        <h:outputText value="disponivel para Revisao: " />
+                        <h:outputText value="Disponivel para Revisao: " />
                         <p:selectBooleanCheckbox value="#{livroBean.disponivelRevisao}" />
                         </h:panelGrid>
                     </h:panelGrid>
