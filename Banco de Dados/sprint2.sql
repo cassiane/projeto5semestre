@@ -43,13 +43,18 @@ ENGINE = InnoDB;
 -- Procedure `proc_edicao` realizar a pesquisa de amigos para sugerir
 -- -----------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_edicao`(IN usuario INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_edicao`(IN usuario INT, IN livro INT)
 BEGIN
 START TRANSACTION;
-(SELECT * FROM witc.Perfil WHERE idUsuario IN 
-(SELECT id FROM witc.Usuario WHERE id IN 
-(SELECT a.idUsuario FROM witc.Usuario_tem_Amigo a WHERE a.idAmigo = usuario AND a.dataAceitacao IS NOT NULL AND a.amigoStatus = TRUE) OR id IN 
-(SELECT b.idAmigo FROM witc.Usuario_tem_Amigo b WHERE b.idUsuario = usuario AND b.dataAceitacao IS NOT NULL AND b.amigoStatus = TRUE)));
+(SELECT a.* FROM witc.Perfil a WHERE a.idUsuario IN 
+	(SELECT id FROM witc.Usuario b WHERE b.id IN 
+		(SELECT c.idUsuario FROM witc.Usuario_tem_Amigo c WHERE c.idAmigo = usuario AND c.dataAceitacao IS NOT NULL AND c.amigoStatus = TRUE) 
+		OR b.id IN 
+		(SELECT d.idAmigo FROM witc.Usuario_tem_Amigo d WHERE d.idUsuario = usuario AND d.dataAceitacao IS NOT NULL AND d.amigoStatus = TRUE)) 
+	AND a.id NOT IN 
+		(SELECT e.idPerfil FROM witc.HistoricoLivros e WHERE e.idLivro = livro) 
+	AND a.id NOT IN 
+		(SELECT f.idPerfilConvidado FROM witc.ConvidadoPerfil f WHERE f.idLivro = livro));
 COMMIT;
 END$$
 DELIMITER ;
