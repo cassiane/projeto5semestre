@@ -9,6 +9,7 @@ import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.modelo.ControladorLivro;
+import br.com.witc.modelo.ConvidadoPerfil;
 import br.com.witc.modelo.HistoricoLivro;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
@@ -72,6 +73,14 @@ public class LivroBean {
     public static final String ITEM_PESQUISA_AUTOR = "autor";
     public static final String ITEM_PESQUISA_TITULO = "titulo";
     public static final String ITEM_PESQUISA_TIPO_TEXTO = "tipoTexto";
+    
+    // Itens de compartilhamento de edição
+    // lista de amigos selecionados para solicitação
+    private List<Perfil> amigoEditor;
+    // lista de amigos editores
+    private List<Perfil> listaAmigoEditor;
+    // lista de solicitações para edição do usuario
+    private List<ConvidadoPerfil> listaSolicitacaoEdicao;
 
     public LivroBean() {
         this.controlador = new ControladorLivro();
@@ -423,6 +432,27 @@ public class LivroBean {
         return ITEM_PESQUISA_TIPO_TEXTO;
     }
     
+    public List<Perfil> getAmigoEditor() {
+        return amigoEditor;
+    }
+
+    public void setAmigoEditor(List<Perfil> AmigoEditor) {
+        this.amigoEditor = AmigoEditor;
+    }
+
+    public List<Perfil> getListaAmigoEditor() {
+        return listaAmigoEditor;
+    }
+
+    public List<ConvidadoPerfil> getListaSolicitacaoEdicao() {
+        this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
+        return listaSolicitacaoEdicao;
+    }
+
+    public void setListaSolicitacaoEdicao(List<ConvidadoPerfil> listaSolicitacaoEdicao) {
+        this.listaSolicitacaoEdicao = listaSolicitacaoEdicao;
+    }
+    
     /**     
      * @return A capa do livro em formato compatível com p:graphicImage
      */
@@ -565,6 +595,49 @@ public class LivroBean {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Erro ao qualificar o livro. Seu voto não foi computado!");
         }        
     }            
+    
+    /**
+     * Preencher a variavel com a lista de amigos editores
+     */
+    public void carregarListaAmigoEditor() {
+        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor(this.perfilUsuario, this.livroCarregado.getId());
+    }
+    
+    /**
+     * Metodo para gerar a solicitação de edição
+     */
+    public void convidarAmigoEditor() {
+        this.controlador.convidarAmigoEditor(this.perfilUsuario, this.amigoEditor, this.livroCarregado);
+    }
+    
+    /**
+     * Preencher a variavel com as solicitações de edição
+     */
+    public void carregarListaSolicitacaoEdicao() {
+        this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
+    }
+    
+    /**
+     * Metodo para aceitar a solicitação de edição
+     * @param ediLivro livro a ser compartilhado para edição
+     * @return a pagina para refresh
+     */
+    public String aceitarEdicao(ConvidadoPerfil ediLivro) {
+        this.controlador.aceitarEdicao(ediLivro);
+        //this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
+        return "biblioteca";
+    }
+    
+    /**
+     * Metodo para negar a solicitação de edição
+     * @param ediLivro livro negado para compartilhamento de edição
+     * @return a pagina para refresh
+     */
+    public String negarEdicao(ConvidadoPerfil ediLivro) {
+        this.controlador.negarEdicao(ediLivro);
+        this.carregarListaSolicitacaoEdicao();
+        return "biblioteca";
+    }
     
     /**
      * Envia à viewer uma mensagem com o status da operação

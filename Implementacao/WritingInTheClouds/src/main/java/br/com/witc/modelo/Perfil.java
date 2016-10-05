@@ -93,9 +93,11 @@ public class Perfil implements Serializable {
     public Perfil carregarPerfil (Usuario usuario){
         PerfilDAO perfilDAO = new PerfilDAO();
         return perfilDAO.carregarPerfil(usuario);
-
+    }
+    
     /**
      * Persistir a busca de amigos editores
+     * @param idLivro
      * @return lista de amigos editores
      */
     public List<Perfil> carregarListaAmigoEditor(int idLivro) {

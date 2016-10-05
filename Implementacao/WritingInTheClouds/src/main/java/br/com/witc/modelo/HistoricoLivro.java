@@ -23,7 +23,7 @@ import javax.persistence.Temporal;
  * @author root
  */
 @Entity
-@Table(name = "historicolivros")
+@Table(name = "HistoricoLivros")
 public class HistoricoLivro implements Serializable {
     @Id
     @GeneratedValue

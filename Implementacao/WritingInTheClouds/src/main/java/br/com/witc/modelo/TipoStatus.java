@@ -55,15 +55,12 @@ public class TipoStatus implements Serializable {
      * Metodo para buscar o tipostatus
      * @param id codigo do tipostatus
      */
-    public void carregarTipoStatus(int id) {
-        TipoStatusDAO dao = new TipoStatusDAO();
-        TipoStatus temp = dao.carregarPerfil(id);
-        this.id = temp.id;
-        this.tipoStatus = temp.tipoStatus;
-    }
- 
-    
-    
+//    public void carregarTipoStatus(int id) {
+//        TipoStatusDAO dao = new TipoStatusDAO();
+//        TipoStatus temp = dao.carregarPerfil(id);
+//        this.id = temp.id;
+//        this.tipoStatus = temp.tipoStatus;
+//    }
     public TipoStatus carregarTipoStatus (int id) {
         TipoStatusDAO tipoStatusDAO = new TipoStatusDAO();
         return tipoStatusDAO.carregarTipoStatus(id);

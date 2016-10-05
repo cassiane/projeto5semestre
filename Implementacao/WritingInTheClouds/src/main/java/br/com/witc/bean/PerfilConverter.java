@@ -6,7 +6,6 @@
 package br.com.witc.bean;
 
 import br.com.witc.modelo.Perfil;
-import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -24,7 +23,7 @@ public class PerfilConverter implements Converter{
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if(value != null && value.trim().length() > 0) {
             try {
-                EditarBean bean = (EditarBean) FacesContext.getCurrentInstance().getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().getELContext(), null, "editarBean");
+                LivroBean bean = (LivroBean) FacesContext.getCurrentInstance().getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().getELContext(), null, "livroBean");
                 for (Perfil lista : bean.getListaAmigoEditor()) {
                     if (lista.getId() == Integer.parseInt(value)) {
                         return lista;

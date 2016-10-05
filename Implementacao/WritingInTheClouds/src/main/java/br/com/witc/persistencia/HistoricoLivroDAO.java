@@ -25,7 +25,7 @@ public class HistoricoLivroDAO {
         this.sessao = getSessionFactory().getCurrentSession();
     }
     
-     public void salvarHistorico(HistoricoLivros hist){
+     public void salvarHistorico(HistoricoLivro hist){
          
           try {
            sessao.saveOrUpdate(hist);
