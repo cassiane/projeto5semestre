@@ -15,7 +15,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class ControladorAutenticacao {
     private Usuario usuario;
-
+    private Perfil perfil;
+    
     public ControladorAutenticacao() {
         this.usuario = new Usuario();
     }        
@@ -41,6 +42,19 @@ public class ControladorAutenticacao {
     public String getNomeUsuario() {
         return this.usuario.getNome().split(" ")[0];
     }
+    /**
+     * @return 
+     */
+    public String getTipoPerfil() {
+        return perfil.getTipoPerfil().getTipoPerfil();
+    }
+    
+    /**
+     * @param perfil 
+     */
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
     
     /**
      * Autentica um usuário no sistema
@@ -53,5 +67,8 @@ public class ControladorAutenticacao {
     public void efetuarLogin(String email, String senha) 
             throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {                
         this.setUsuario(Usuario.efetuarLogin(email, senha));
+    }
+    public void retornarPerfilUsuarioLogado(){
+       this.setPerfil(Perfil.retornarPerfilUsuarioLogado(this.getUsuario()));
     }
 }

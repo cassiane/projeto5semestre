@@ -47,8 +47,13 @@ public class UsuarioDAO {
                 .uniqueResult();
         if (tmpUsuario == null) {
             throw new LoginInvalidoException("Email ou senha incorretos!");
+        }else{
+            if(tmpUsuario.isAtivo() == false){
+                throw new LoginInvalidoException("Usuário inativo!");
+            }else{
+                return tmpUsuario;
+            }
         }
-        return tmpUsuario;
     }
 
     /**
@@ -75,12 +80,9 @@ public class UsuarioDAO {
      */
     public void ExcluirUsuario(Usuario usuario) throws UsuarioInvalidoException{
         try{
-            sessao.delete(usuario);
+            sessao.saveOrUpdate(usuario);           
         }catch (ConstraintViolationException e) {
-            if (e.getSQLException().getMessage().contains("email")) {
-                sessao.clear();
-                throw new UsuarioInvalidoException("Email já está sendo utilizado realize o login ou clique em esqueceu a senha.");
-            }
+            throw new UsuarioInvalidoException("Não foi possivel excluir sua conta - "+e.getMessage());            
         }
     }
 

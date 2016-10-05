@@ -8,8 +8,7 @@
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">     
             <!-- Seta o usuario logado -->
-            <f:event listener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" type="preRenderView" />
-            <p:growl id="growl" severity="error" globalOnly="true" />             
+            <f:event listener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" type="preRenderView" />            
             <h:form id="convEmail">
                 <p:panelGrid columns="2" style="width: 100%;margin: 10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank">
                     <f:facet name="header">

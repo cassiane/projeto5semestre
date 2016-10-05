@@ -89,14 +89,28 @@ public class AutenticarBean {
     public String efetuarLogin() {        
         try {
             this.controlador.efetuarLogin(this.email, this.senha);
+            this.controlador.retornarPerfilUsuarioLogado();          
             return "timeline";
         } catch(LoginInvalidoException e) {
-            enviarMensagem(SEVERITY_ERROR, e.getMessage());                        
+            enviarMensagem(SEVERITY_ERROR, e.getMessage());            
         } catch(NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            enviarMensagem(SEVERITY_ERROR, "Problemas na geração do hash da senha!");            
+            enviarMensagem(SEVERITY_ERROR, "Problemas na geração do hash da senha!");     
         }
         return "index";
-    }    
+    }   
+    
+    /**
+     * Verifica se o usuário logado é administrador 
+     * @return 
+     */
+    public boolean verificarAdministrador(){
+        try {
+            return this.controlador.getTipoPerfil().toLowerCase().contains("admin");        
+        } catch(NullPointerException ex) {
+            // cadastro de usuario
+            return false;
+        }
+    }
     
     /**
      * Realiza o logout do usuário

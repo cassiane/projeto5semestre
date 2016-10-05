@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="padraoInterno.xhtml">        
+        <ui:define name="conteudo">     
+            <div align="center"> 
+               <h1>Editor de texto</h1>
+               <h:form enctype="multipart/form-data">  
+                   <h:panelGrid columns="2">
+                       <h:panelGrid columns="2">
+                            <p:outputLabel for="titulo" value="Título"/>
+                            <p:inputText id="titulo" label="titulo" maxlength="45" value="#{livroBean.tituloLivro}" required="true" requiredMessage="Informe o titulo do livro!!"/>                                            
+                       </h:panelGrid>
+                       <h:panelGrid columns="2">
+                            <p:outputLabel for="tipoTexto" value="Tipo de texto"/>
+                            <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" required="true" style="width: 150px">
+                                <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
+                                               itemValue="#{tipoTexto}"/>
+                            </p:selectOneMenu>
+                       </h:panelGrid>
+                   </h:panelGrid>
+                   <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.textoLivro}" width="600" />
+                   <h:panelGrid columns="2" style="margin-top: 10px">                        
+                        <h:outputText value="Disponível para Edição: " />
+                        <p:selectBooleanCheckbox value="#{livroBean.disponivelEdicaoAmigo}" />                        
+                    </h:panelGrid>                  
+                     <h:panelGrid columns="3" style="margin-top: 10px">
+                        <p:commandButton value="Salvar"  action="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+                        <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
+                    </h:panelGrid>                                     
+                   <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
+    
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

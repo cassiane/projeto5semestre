@@ -10,7 +10,6 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -65,4 +64,8 @@ public class TipoStatus implements Serializable {
  
     
     
+    public TipoStatus carregarTipoStatus (int id) {
+        TipoStatusDAO tipoStatusDAO = new TipoStatusDAO();
+        return tipoStatusDAO.carregarTipoStatus(id);
+    }        
 }

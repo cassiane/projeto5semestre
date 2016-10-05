@@ -6,13 +6,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>
-        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>        
+        <ui:insert name="css" />
     </h:head>
-    <h:body>        
+    <h:body>              
         <p:layout fullPage="true">
             <p:layoutUnit position="north" size="144">
-                <f:facet name="header">                    
+                <p:growl id="growl" severity="info, warn, error" globalOnly="true" />                    
+                <f:facet name="header">                                        
                     <div id="top" style="height: 70px;text-align: center;line-height: 70px;font-size: 40px">
                         <h:outputText value="WITC"/>
                     </div>                                
@@ -21,9 +22,8 @@
                     </div>                                
 
                     <div id="botton" style="height: 20px;text-align: right; padding-bottom: 5px;">
-                        <h:form>
-                            <p:growl id="messages" showDetail="true" />
-                                <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
+                        <h:form id="frmCabecalho">                            
+                            <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
                             <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
                                 <p:menuitem value="Editar minha conta" outcome="editarConta"/>
                                 <p:menuitem value="Logoff" action="#{autenticarBean.efetuarLogoff()}" update="messages" ajax="false" />
@@ -33,25 +33,28 @@
                 </f:facet>                
             </p:layoutUnit>
             <p:layoutUnit position="east" resizable="true" size="300">
-                <ui:insert name="notificacao" />
-                <h:form>
+                <h:form id="frmChat">
                     <p:stack icon="/resources/imagens/chat.png" expanded="true">
                         <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
                         <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
                     </p:stack>
                 </h:form>
             </p:layoutUnit>            
-            <p:layoutUnit position="west" resizable="true" size="300">
-                <p:link outcome="#{cadastrarBean.listarAmigos()}" value="Amigos" />
-
-                <br/>
-                <p:link outcome="biblioteca.xhtml" value="Biblioteca" />
-
-                <br/>
-
+            <p:layoutUnit position="west" resizable="true" size="250">
+                <h:panelGrid columns="1">                    
+                    <h:form id="frmMenu">
+                        <p:menu>
+                            <p:menuitem value="Amigos" action="#{cadastrarBean.listarAmigos()}" ajax="false" />
+                            <p:menuitem value="Biblioteca" action="biblioteca.xhtml" ajax="false" />
+                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
+                            <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis" rendered="#{autenticarBean.verificarAdministrador()}"/>
+                            <p:menuitem value="Tipos de Texto" outcome="tiposTexto"  rendered="#{autenticarBean.verificarAdministrador()}"/>
+                        </p:menu>
+                    </h:form>
+                </h:panelGrid>
             </p:layoutUnit>    
             <p:layoutUnit position="center">
-                <ui:insert name="conteudo"/>
+                <ui:insert name="conteudo"/>                
             </p:layoutUnit>
         </p:layout>
         <ui:insert name="dialogos"/>

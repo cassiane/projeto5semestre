@@ -5,8 +5,9 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/witc?zeroDateTimeBehavior=convertToNull</property>
-    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.username">USERWITCAPP</property>
     <property name="hibernate.current_session_context_class">managed</property>
+    <property name="hibernate.connection.password">APPCTIWUSER</property>
     <mapping class="br.com.witc.modelo.Usuario"/>
     <mapping class="br.com.witc.modelo.RecuperarConta"/>
     <mapping class="br.com.witc.modelo.Perfil"/>
@@ -14,7 +15,7 @@
     <mapping class="br.com.witc.modelo.TipoGenero"/>
     <mapping class="br.com.witc.modelo.TipoStatus"/>
     <mapping class="br.com.witc.modelo.TipoTexto"/>
-    <mapping class="br.com.witc.modelo.HistoricoLivros"/>
+    <mapping class="br.com.witc.modelo.HistoricoLivro"/>
     <mapping class="br.com.witc.modelo.ConvidadoUsuario"/>
     <mapping class="br.com.witc.modelo.TipoPerfil"/>
     <mapping class="br.com.witc.modelo.ConvidadoPerfil"/>
