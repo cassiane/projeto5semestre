@@ -10,19 +10,6 @@
             <div align="center"> 
                 <h1>Editor de texto</h1>
                 <h:form enctype="multipart/form-data">
-                    <h:panelGrid columns="2">
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="titulo" value="Título"/>
-                            <p:inputText id="titulo" label="titulo" maxlength="45" value="#{livroBean.livroCarregado.titulo}" required="true" requiredMessage="Informe o titulo do livro!!"/>                                            
-                        </h:panelGrid>
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="tipoTexto" value="Tipo de texto"/>
-                            <p:selectOneMenu id="tipoTexto" value="#{livroBean.livroCarregado.tipoTexto}" required="true" style="width: 150px">
-                                <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
-                                               itemValue="#{tipoTexto}"/>
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-                    </h:panelGrid>
                     <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
                     <h:panelGrid columns="2" style="margin-top: 10px">                        
                         <h:outputText value="Disponível para Edição: " />

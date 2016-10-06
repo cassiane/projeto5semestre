@@ -260,7 +260,7 @@ public class LivroBean {
         try {            
             this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);                         
             TipoStatus st = this.controlador.carregarTipoStatus(1);
-            this.livro = new Livro();
+          this.livroCarregado = new Livro();
             
             this.livro.setCapa(getImgBytes());
             this.livro.setTipoTexto(tipoTexto);
@@ -279,14 +279,15 @@ public class LivroBean {
                 this.livro.setBookLock(this.perfilUsuario.getId());
             }
             this.controlador.salvarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);            
-            
             this.historico=new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
             this.historico.setLivro(this.livro);
             this.historico.setStatus(st);
             this.historico.setDataInicio(this.getPegaDataAtual());
             this.controlador.salvarHistorico(this.historico);                        
-            
+            this.livroCarregado = this.livro;
+            this.tituloLivro="";
+            this.textoLivro="";
             if (this.disponivelEdicaoAmigo) {
                 this.livroFinalizado = false;
                 this.disponivelEdicaoAmigo = false;
@@ -297,7 +298,8 @@ public class LivroBean {
         } catch (Exception ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
         }
-        return null; 
+      
+        return "editarLivro"; 
     }
     
     public String salvarLivro(){
