@@ -7,6 +7,7 @@ package br.com.witc.persistencia;
 
 import br.com.witc.modelo.ConvidadoPerfil;
 import br.com.witc.modelo.Perfil;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,8 +40,11 @@ public class ConvidadoPerfilDAO {
      * @return lista de solicitações
      */
     public List<ConvidadoPerfil> carregar(Perfil idPerfilConvidado) {
-        List<ConvidadoPerfil> listConvPerf = new ArrayList<ConvidadoPerfil>();
-        listConvPerf = (List<ConvidadoPerfil>) sessao.createQuery("FROM ConvidadoPerfil WHERE idPerfilConvidado = :convidado").setInteger("convidado", idPerfilConvidado.getId()).list();
+        //List<ConvidadoPerfil> listConvPerf = new ArrayList<ConvidadoPerfil>();
+        List<ConvidadoPerfil> listConvPerf = new ArrayList();
+        
+        //listConvPerf = (List<ConvidadoPerfil>) sessao.createQuery("FROM ConvidadoPerfil WHERE idPerfilConvidado = :convidado").setInteger("convidado", idPerfilConvidado.getId()).list();
+        
         //listConvPerf = sessao.createCriteria(ConvidadoPerfil.class).add(Restrictions.eq("idPerfilConvidado", idPerfilConvidado)).list();
         
 //        SQLQuery sql = sessao.createSQLQuery("SELECT * FROM ConvidadoPerfil WHERE idPerfilConvidado = :con");
@@ -59,6 +63,20 @@ public class ConvidadoPerfilDAO {
 //                //}
 //            //}
 //        }
+        
+        String sql = "FROM ConvidadoPerfil WHERE idPerfilConvidado = :con";
+        //listConvPerf = sessao.createSQLQuery(sql).addEntity(ConvidadoPerfil.class).setInteger("con", idPerfilConvidado.getId()).list();
+        
+        List<Object[]> resultado = sessao.createQuery(sql).setInteger("con", idPerfilConvidado.getId()).list();
+        for(Object[] obj : resultado) {
+            for(Object ob : obj) {
+                if (ob instanceof ConvidadoPerfil) {
+                    listConvPerf.add((ConvidadoPerfil) ob);
+                }
+            }
+        }
+        
+        
         return listConvPerf;
     }
     

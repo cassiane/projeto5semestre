@@ -38,12 +38,14 @@
             <f:view>
                 <center>
                     <h:form id="solEdicao" rendered="#{livroBean.listaSolicitacaoEdicao.size() > 0 ? 'true' : 'false' }">
-                        <p:dataScroller id="datEdiLivro" value="#{livroBean.listaSolicitacaoEdicao}" var="ediLivro" chunkSize="3">
-                            <h:outputText value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
-                            <br />
-                            <p:commandButton ajax="false" value="Aceitar" action="#{livroBean.aceitarEdicao(ediLivro)}" update="solEdicao:datEdiLivro, formMBibli" />
-                            <p:commandButton ajax="false" value="Negar" action="#{livroBean.negarEdicao(ediLivro)}" update="solEdicao:datEdiLivro, formMBibli" />
-                        </p:dataScroller>
+                        <p:panel id="psol" header="Minha Socilitação"  style="margin-bottom:20px">
+                            <p:dataScroller id="datEdiLivro" value="#{livroBean.listaSolicitacaoEdicao}" var="ediLivro" chunkSize="3">
+                                <h:outputText value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
+                                <br />
+                                <p:commandButton ajax="false" value="Aceitar" action="#{livroBean.aceitarEdicao(ediLivro)}" update="solEdicao:datEdiLivro, formMBibli" />
+                                <p:commandButton ajax="false" value="Negar" action="#{livroBean.negarEdicao(ediLivro)}" update="solEdicao:datEdiLivro, formMBibli" />
+                            </p:dataScroller>
+                        </p:panel>
                     </h:form>
                 </center>
             </f:view>
