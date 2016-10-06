@@ -12,21 +12,24 @@
         <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />
         <h:outputScript name="jquery-3.1.1/js/jquery-3.1.1.min.js" />        
     </h:head>
-    <h:body>        
+    <h:body>          
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-brand">
                     <h:link class="navbar-brand" outcome="index.xhtml" value="Writing in the Clouds" />
                 </div>
-                <h:form class="navbar-form navbar-right">
+                <h:form styleClass="navbar-form navbar-right">
                     <div class="form-group">
-                        <h:inputText id="iptEmail" a:placeholder="Email" class="form-control" maxlength="150" required="true" value="#{autenticarBean.email}" />                      
+                        <h:inputText id="iptEmail" a:placeholder="Email" styleClass="form-control" 
+                                     maxlength="150" required="true" value="#{autenticarBean.email}" />                      
                     </div>
                     <div class="form-group">
-                        <h:inputSecret id="pwdSenha" a:placeholder="Senha" class="form-control" maxlength="120" required="true" value="#{autenticarBean.senha}" />
+                        <h:inputSecret id="pwdSenha" a:placeholder="Senha" styleClass="form-control" 
+                                       maxlength="120" required="true" value="#{autenticarBean.senha}" />
                     </div>
                     #{' '}
-                    <h:commandButton class="btn btn-success" value="Entrar" action="#{autenticarBean.efetuarLogin()}" />                    
+                    <h:commandButton styleClass="btn btn-success" value="Entrar" 
+                                     action="#{autenticarBean.efetuarLogin()}" />                    
                     <div>
                         <h:link outcome="recuperarConta.xhtml" value="Esqueceu a conta?" />
                     </div>
