@@ -11,6 +11,7 @@ import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -39,10 +40,12 @@ public class ConvidadoPerfilDAO {
      * @param idPerfilConvidado perfil do usuario ativo
      * @return lista de solicitações
      */
-    public List<ConvidadoPerfil> carregar(Perfil idPerfilConvidado) {
-        //List<ConvidadoPerfil> listConvPerf = new ArrayList<ConvidadoPerfil>();
-        List<ConvidadoPerfil> listConvPerf = new ArrayList();
-        
+    public List<ConvidadoPerfil> carregar(int idPerfilConvidado) {
+        List<ConvidadoPerfil> listConvPerf = new ArrayList<ConvidadoPerfil>();
+        //List<ConvidadoPerfil> listConvPerf = new ArrayList();
+        Query select = sessao.createSQLQuery("CALL witc.proc_soliedicao(:idper)")
+                //.addEntity(ConvidadoPerfil.class)
+                .setParameter("idper", idPerfilConvidado);
         //listConvPerf = (List<ConvidadoPerfil>) sessao.createQuery("FROM ConvidadoPerfil WHERE idPerfilConvidado = :convidado").setInteger("convidado", idPerfilConvidado.getId()).list();
         
         //listConvPerf = sessao.createCriteria(ConvidadoPerfil.class).add(Restrictions.eq("idPerfilConvidado", idPerfilConvidado)).list();
@@ -64,19 +67,20 @@ public class ConvidadoPerfilDAO {
 //            //}
 //        }
         
-        String sql = "FROM ConvidadoPerfil WHERE idPerfilConvidado = :con";
+//        String sql = "FROM ConvidadoPerfil WHERE idPerfilConvidado = :con";
         //listConvPerf = sessao.createSQLQuery(sql).addEntity(ConvidadoPerfil.class).setInteger("con", idPerfilConvidado.getId()).list();
         
-        List<Object[]> resultado = sessao.createQuery(sql).setInteger("con", idPerfilConvidado.getId()).list();
-        for(Object[] obj : resultado) {
-            for(Object ob : obj) {
-                if (ob instanceof ConvidadoPerfil) {
-                    listConvPerf.add((ConvidadoPerfil) ob);
-                }
-            }
-        }
+//        List<Object[]> resultado = sessao.createQuery(sql).setInteger("con", idPerfilConvidado.getId()).list();
+//        for(Object[] obj : resultado) {
+//            for(Object ob : obj) {
+//                if (ob instanceof ConvidadoPerfil) {
+//                    listConvPerf.add((ConvidadoPerfil) ob);
+//                }
+//            }
+//        }
         
-        
+        List retorno = select.list();
+        listConvPerf = (List<ConvidadoPerfil>) retorno;
         return listConvPerf;
     }
     

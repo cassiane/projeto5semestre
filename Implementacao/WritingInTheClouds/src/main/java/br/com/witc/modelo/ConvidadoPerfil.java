@@ -109,7 +109,7 @@ public class ConvidadoPerfil implements Serializable {
      */
     public List<ConvidadoPerfil> carregarlista() {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
-        return dao.carregar(this.idPerfilConvidado);
+        return dao.carregar(this.idPerfilConvidado.getId());
     }
 
     /**
