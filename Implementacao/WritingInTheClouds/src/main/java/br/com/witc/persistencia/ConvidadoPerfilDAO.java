@@ -8,8 +8,11 @@ package br.com.witc.persistencia;
 import br.com.witc.modelo.ConvidadoPerfil;
 import br.com.witc.modelo.Perfil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -27,7 +30,7 @@ public class ConvidadoPerfilDAO {
      * @param convite dados da solicitação
      */
     public void salvar(ConvidadoPerfil convite) {
-        sessao.saveOrUpdate(convite);
+        sessao.save(convite);
     }
     
     /**
@@ -38,6 +41,24 @@ public class ConvidadoPerfilDAO {
     public List<ConvidadoPerfil> carregar(Perfil idPerfilConvidado) {
         List<ConvidadoPerfil> listConvPerf = new ArrayList<ConvidadoPerfil>();
         listConvPerf = (List<ConvidadoPerfil>) sessao.createQuery("FROM ConvidadoPerfil WHERE idPerfilConvidado = :convidado").setInteger("convidado", idPerfilConvidado.getId()).list();
+        //listConvPerf = sessao.createCriteria(ConvidadoPerfil.class).add(Restrictions.eq("idPerfilConvidado", idPerfilConvidado)).list();
+        
+//        SQLQuery sql = sessao.createSQLQuery("SELECT * FROM ConvidadoPerfil WHERE idPerfilConvidado = :con");
+//        sql.setInteger("con", idPerfilConvidado.getId());
+//        List<Object[]> resultado = sql.list();
+//        for(Object[] ob : resultado) {
+//            ConvidadoPerfil o = new ConvidadoPerfil();
+//            o.getIdPerfil().setId(Integer.parseInt(ob[0].toString()));
+//            o.getIdPerfilConvidado().setId((int) ob[1]);
+//            o.getIdLivro().setId((int) ob[2]);
+//            o.getDataSolicitacao().setTime(new Date(ob[3].toString()));
+//            //for(Object o : ob) {
+//                //if (o instanceof ConvidadoPerfil) {
+//            listConvPerf.add(o);
+//                    //break;
+//                //}
+//            //}
+//        }
         return listConvPerf;
     }
     

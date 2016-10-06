@@ -44,7 +44,7 @@
                 <h:panelGrid columns="1">                    
                     <h:form id="frmMenu">
                         <p:menu>
-                            <p:menuitem value="Amigos" action="#{cadastrarBean.listarAmigos()}" ajax="false" />
+                            <p:menuitem value="Amigos" actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" action="listarAmigos" ajax="false" />
                             <p:menuitem value="Biblioteca" action="biblioteca.xhtml" ajax="false" />
                             <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
                             <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis" rendered="#{autenticarBean.verificarAdministrador()}"/>
