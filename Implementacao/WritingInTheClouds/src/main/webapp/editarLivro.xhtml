@@ -11,19 +11,7 @@
             <div align="center"> 
                 <h1>Editor de texto</h1>
                 <h:form enctype="multipart/form-data">
-                    <h:panelGrid columns="2">
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="titulo" value="Título"/>
-                            <p:inputText id="titulo" label="titulo" maxlength="45" value="#{livroBean.livroCarregado.titulo}" required="true" requiredMessage="Informe o titulo do livro!!"/>                                            
-                        </h:panelGrid>
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="tipoTexto" value="Tipo de texto"/>
-                            <p:selectOneMenu id="tipoTexto" value="#{livroBean.livroCarregado.tipoTexto}" required="true" style="width: 150px">
-                                <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
-                                               itemValue="#{tipoTexto}"/>
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-                    </h:panelGrid>
+                    <p:growl id="message" showDetail="true" />
                     <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
                     <h:panelGrid columns="2" style="margin-top: 10px">                        
                         <h:outputText value="Disponível para Edição: " />
@@ -37,10 +25,17 @@
                         <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Salvar"  action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
-                        <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
+                        <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" /> 
+                        <p:commandButton value="Voltar" onclick="PF('dlg1').show();" type="button" /> 
                     </h:panelGrid>                     
                     <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
+                     <p:dialog header="Atenção" widgetVar="dlg1" showEffect="pop">
+                        <h:outputText value="Deseja salvar antes de voltar ?" />
+                        <p:commandButton value="SIM"  action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="NÃO"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" /> 
+                     </p:dialog>
                 </h:form>
+               
             </div>
         </ui:define>
         <ui:define name="dialogos">

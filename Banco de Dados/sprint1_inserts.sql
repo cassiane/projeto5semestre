@@ -17,8 +17,12 @@ VALUES
 (1,1);
 
 
-INSERT INTO `witc`.`TipoTexto`
+INSERT INTO `witc`.`tipotexto`
 (`tipoTexto`)
 VALUES
 ("TERROR");
 
+INSERT INTO `witc`.`tipotexto`
+(`tipoTexto`)
+VALUES
+("BIOGRAFIA");
