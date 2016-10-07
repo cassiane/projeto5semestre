@@ -5,22 +5,14 @@
  */
 package br.com.witc.persistencia;
 
-import br.com.witc.excessao.LivroException;
 import br.com.witc.modelo.ConvidadoPerfil;
 import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 /**
  *

@@ -202,7 +202,9 @@ public class LivroBean {
     
     public String editorNovoLivro(){
         this.livro=new Livro();
-        this.textoLivro="";
+        this.textoLivro= null;
+        this.tituloLivro = null;
+        this.tipoTexto = new TipoTexto();
         return "metadadosLivro";
     }
 
