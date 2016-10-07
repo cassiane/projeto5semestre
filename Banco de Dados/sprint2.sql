@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `witc`.`ConvidadoPerfil` (
   `idPerfil` INT UNSIGNED NOT NULL,
   `idPerfilConvidado` INT UNSIGNED NOT NULL,
   `idLivro` INT UNSIGNED NOT NULL,
-  `dataSolicitacao` DATE NOT NULL,
+  `dataSolicitacao` DATETIME NOT NULL,
   UNIQUE KEY `un_ConvidadoPerfil_1` (`idPerfilConvidado`, `idLivro`),
   CONSTRAINT `fk_ConvidadoPerfil_1`
     FOREIGN KEY (`idPerfil`)
@@ -62,6 +62,23 @@ DELIMITER ;
 ALTER TABLE `witc`.`HistoricoLivros` 
 ADD UNIQUE INDEX `ui_HistoricoLivro_PerfilLivro` (`idPerfil` ASC, `idLivro` ASC);
 
+-- -----------------------------------------------------
+-- Procedure `proc_historico_convite` realizar a pesquisa de convites existente e grava na solicitação
+-- -----------------------------------------------------
+DELIMITER $$
+USE `witc`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_historico_convite`(IN perfil INT, IN livro INT)
+BEGIN
+START TRANSACTION;
+INSERT INTO witc.HistoricoLivros (idPerfil, idTipoStatus, idLivro, dataInicio)
+ SELECT a.idPerfilConvidado, b.id, a.idLivro, a.dataSolicitacao
+  FROM witc.ConvidadoPerfil a INNER JOIN witc.TipoStatus b
+  WHERE a.idPerfilConvidado = perfil AND a.idLivro = livro AND b.id = 1;
+DELETE FROM witc.ConvidadoPerfil WHERE idPerfilConvidado = perfil AND idLivro = livro;
+COMMIT;
+END$$
+
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
