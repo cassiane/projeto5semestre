@@ -7,6 +7,7 @@ package br.com.witc.persistencia;
 
 import br.com.witc.excessao.LivroException;
 import br.com.witc.modelo.ConvidadoPerfil;
+import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Perfil;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.text.SimpleDateFormat;
@@ -49,6 +50,12 @@ public class ConvidadoPerfilDAO {
         List<ConvidadoPerfil> listConvPerf = new ArrayList<ConvidadoPerfil>();
         Query sql = sessao.createSQLQuery("SELECT * FROM ConvidadoPerfil WHERE idPerfilConvidado = :con").setParameter("con", idPerfilConvidado.getId());
         List<Object[]> resultado = sql.list();
+        
+        // Parar a verificação
+        if (resultado.isEmpty()) {
+            return null;
+        }
+        
         List<String> busca = new ArrayList<>();
         for(Object[] ob : resultado) {
             for(Object o : ob) {
@@ -61,15 +68,18 @@ public class ConvidadoPerfilDAO {
                     percon = Integer.parseInt(busca.get(i++)),
                     liv = Integer.parseInt(busca.get(i++));
             ConvidadoPerfil carrega = new ConvidadoPerfil();
+            /*carrega = (ConvidadoPerfil) sessao.createQuery("FROM ConvidadoPerfil"
+                    + " WHERE idPerfilConvidado=:percon"
+                    + " AND idLivro=:liv")
+                    //.setInteger("per", per)
+                    .setInteger("percon", percon)
+                    .setInteger("liv", liv)
+                    .uniqueResult();*/
             PerfilDAO preenche = new PerfilDAO();
             LivroDAO preenche2 = new LivroDAO();
             carrega.setIdPerfil(preenche.carregaPerfilID(per));
             carrega.setIdPerfilConvidado(preenche.carregaPerfilID(percon));
-            //try {
-                carrega.setIdLivro(preenche2.carregarHistoricoConvite(liv));
-            //} catch (LivroException ex) {
-                //Logger.getLogger(ConvidadoPerfilDAO.class.getName()).log(Level.SEVERE, null, ex);
-            //}
+            carrega.setIdLivro(preenche2.carregarHistoricoConvite(liv));
             String formata = busca.get(i);
             int dia = Integer.parseInt(formata.substring(8, 10));
             int mes = Integer.parseInt(formata.substring(5, 7));
@@ -92,5 +102,16 @@ public class ConvidadoPerfilDAO {
     public void remover(ConvidadoPerfil convite) {
         sessao.delete(convite);
         //sessao.flush();
+    }
+    
+    public ConvidadoPerfil carregar(Perfil perfil, Livro livro) {
+        ConvidadoPerfil carrega = new ConvidadoPerfil();
+        carrega = (ConvidadoPerfil) sessao.createQuery("FROM ConvidadoPerfil"
+                + " WHERE idPerfilConvidado=:percon"
+                + " AND idLivro=:liv")
+                .setInteger("percon", perfil.getId())
+                .setInteger("liv", livro.getId())
+                .uniqueResult();
+        return carrega;
     }
 }

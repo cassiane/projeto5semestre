@@ -622,8 +622,9 @@ public class LivroBean {
      * @param ediLivro livro a ser compartilhado para edição
      * @return a pagina para refresh
      */
-    public String aceitarEdicao(ConvidadoPerfil ediLivro) {
-        this.controlador.aceitarEdicao(ediLivro);
+    //public String aceitarEdicao(ConvidadoPerfil ediLivro) {
+    public String aceitarEdicao(Perfil perfil, Livro livro) {
+        this.controlador.aceitarEdicao(perfil, livro);
         //this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
         return "biblioteca";
     }

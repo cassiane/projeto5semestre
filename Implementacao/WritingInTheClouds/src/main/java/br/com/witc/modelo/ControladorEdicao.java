@@ -54,9 +54,9 @@ public class ControladorEdicao {
      * Metodo para aceitar a solicitação de edição
      * @param editarLivro livro a ser compartilhado
      */
-    public void aceitarEdicao(ConvidadoPerfil editarLivro) {
-        editarLivro.aceitarEdicao();
-    }
+//    public void aceitarEdicao(ConvidadoPerfil editarLivro) {
+//        editarLivro.aceitarEdicao();
+//    }
     
     /**
      * Metodo para negar a solicitação de edição

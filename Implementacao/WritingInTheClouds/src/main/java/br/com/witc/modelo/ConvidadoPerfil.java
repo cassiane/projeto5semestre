@@ -98,9 +98,10 @@ public class ConvidadoPerfil implements Serializable {
     /**
      * Deletar da tabela o registro atual
      */
-    public void remover() {
+    public void remover(Perfil perfil, Livro livro) {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
-        dao.remover(this);
+        ConvidadoPerfil remove = dao.carregar(perfil, livro);
+        dao.remover(remove);
     }
 
     /**
@@ -115,16 +116,17 @@ public class ConvidadoPerfil implements Serializable {
     /**
      * Metodo para gravar a aceitação da solicitação
      */
-    public void aceitarEdicao() {
+    public void aceitarEdicao(Perfil perfil, Livro livro) {
         HistoricoLivro historico = new HistoricoLivro();
-        //historico.setLivro(this.idLivro);
-        //historico.setPerfil(this.idPerfilConvidado);
-        //TipoStatus status = new TipoStatus().carregarTipoStatus(1);
-        //status.carregarTipoStatus(1);
-        //historico.setStatus(status);
-        //historico.setDataInicio(Calendar.getInstance());
-        historico.salvarHistoricoConvite(this.idPerfilConvidado.getId(), this.idLivro.getId());
-        //this.remover();
+        historico.setLivro(livro);
+        historico.setPerfil(perfil);
+        TipoStatus status = new TipoStatus().carregarTipoStatus(1);
+        status.carregarTipoStatus(1);
+        historico.setStatus(status);
+        historico.setDataInicio(Calendar.getInstance());
+        historico.salvarHistorico(historico);
+        this.remover(perfil, livro);
+        //historico.salvarHistoricoConvite(this.idPerfilConvidado.getId(), this.idLivro.getId());
     }
 
     /**
