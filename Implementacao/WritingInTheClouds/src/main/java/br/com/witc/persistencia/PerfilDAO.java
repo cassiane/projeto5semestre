@@ -63,4 +63,7 @@ public class PerfilDAO {
         return tmpPerfil;
     }
 
+    public Perfil carregaPerfilID(int id) {
+        return (Perfil) sessao.createQuery("FROM Perfil WHERE id=:idp").setInteger("idp", id).uniqueResult();
+    }
 }

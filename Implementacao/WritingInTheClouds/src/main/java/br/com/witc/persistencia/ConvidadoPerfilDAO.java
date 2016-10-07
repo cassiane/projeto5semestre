@@ -5,12 +5,17 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.excessao.LivroException;
 import br.com.witc.modelo.ConvidadoPerfil;
 import br.com.witc.modelo.Perfil;
 import com.sun.javafx.scene.control.skin.VirtualFlow;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -40,47 +45,43 @@ public class ConvidadoPerfilDAO {
      * @param idPerfilConvidado perfil do usuario ativo
      * @return lista de solicitações
      */
-    public List<ConvidadoPerfil> carregar(int idPerfilConvidado) {
+    public List<ConvidadoPerfil> carregar(Perfil idPerfilConvidado) {
         List<ConvidadoPerfil> listConvPerf = new ArrayList<ConvidadoPerfil>();
-        //List<ConvidadoPerfil> listConvPerf = new ArrayList();
-        Query select = sessao.createSQLQuery("CALL witc.proc_soliedicao(:idper)")
-                //.addEntity(ConvidadoPerfil.class)
-                .setParameter("idper", idPerfilConvidado);
-        //listConvPerf = (List<ConvidadoPerfil>) sessao.createQuery("FROM ConvidadoPerfil WHERE idPerfilConvidado = :convidado").setInteger("convidado", idPerfilConvidado.getId()).list();
+        Query sql = sessao.createSQLQuery("SELECT * FROM ConvidadoPerfil WHERE idPerfilConvidado = :con").setParameter("con", idPerfilConvidado.getId());
+        List<Object[]> resultado = sql.list();
+        List<String> busca = new ArrayList<>();
+        for(Object[] ob : resultado) {
+            for(Object o : ob) {
+                busca.add(o.toString());
+            }
+        }
         
-        //listConvPerf = sessao.createCriteria(ConvidadoPerfil.class).add(Restrictions.eq("idPerfilConvidado", idPerfilConvidado)).list();
-        
-//        SQLQuery sql = sessao.createSQLQuery("SELECT * FROM ConvidadoPerfil WHERE idPerfilConvidado = :con");
-//        sql.setInteger("con", idPerfilConvidado.getId());
-//        List<Object[]> resultado = sql.list();
-//        for(Object[] ob : resultado) {
-//            ConvidadoPerfil o = new ConvidadoPerfil();
-//            o.getIdPerfil().setId(Integer.parseInt(ob[0].toString()));
-//            o.getIdPerfilConvidado().setId((int) ob[1]);
-//            o.getIdLivro().setId((int) ob[2]);
-//            o.getDataSolicitacao().setTime(new Date(ob[3].toString()));
-//            //for(Object o : ob) {
-//                //if (o instanceof ConvidadoPerfil) {
-//            listConvPerf.add(o);
-//                    //break;
-//                //}
-//            //}
-//        }
-        
-//        String sql = "FROM ConvidadoPerfil WHERE idPerfilConvidado = :con";
-        //listConvPerf = sessao.createSQLQuery(sql).addEntity(ConvidadoPerfil.class).setInteger("con", idPerfilConvidado.getId()).list();
-        
-//        List<Object[]> resultado = sessao.createQuery(sql).setInteger("con", idPerfilConvidado.getId()).list();
-//        for(Object[] obj : resultado) {
-//            for(Object ob : obj) {
-//                if (ob instanceof ConvidadoPerfil) {
-//                    listConvPerf.add((ConvidadoPerfil) ob);
-//                }
-//            }
-//        }
-        
-        List retorno = select.list();
-        listConvPerf = (List<ConvidadoPerfil>) retorno;
+        for(int i=0; i<busca.size(); i++) {
+            int per = Integer.parseInt(busca.get(i++)),
+                    percon = Integer.parseInt(busca.get(i++)),
+                    liv = Integer.parseInt(busca.get(i++));
+            ConvidadoPerfil carrega = new ConvidadoPerfil();
+            PerfilDAO preenche = new PerfilDAO();
+            LivroDAO preenche2 = new LivroDAO();
+            carrega.setIdPerfil(preenche.carregaPerfilID(per));
+            carrega.setIdPerfilConvidado(preenche.carregaPerfilID(percon));
+            //try {
+                carrega.setIdLivro(preenche2.carregarHistoricoConvite(liv));
+            //} catch (LivroException ex) {
+                //Logger.getLogger(ConvidadoPerfilDAO.class.getName()).log(Level.SEVERE, null, ex);
+            //}
+            String formata = busca.get(i);
+            int dia = Integer.parseInt(formata.substring(8, 10));
+            int mes = Integer.parseInt(formata.substring(5, 7));
+            int ano = Integer.parseInt(formata.substring(0, 4));
+            int hora = Integer.parseInt(formata.substring(11, 13));
+            int minuto = Integer.parseInt(formata.substring(14, 16));
+            int segundo = Integer.parseInt(formata.substring(17, 19));
+            Calendar dat = Calendar.getInstance();
+            dat.set(ano, mes, dia, hora, minuto, segundo);
+            carrega.setDataSolicitacao(dat);
+            listConvPerf.add(carrega);
+        }
         return listConvPerf;
     }
     
@@ -90,6 +91,6 @@ public class ConvidadoPerfilDAO {
      */
     public void remover(ConvidadoPerfil convite) {
         sessao.delete(convite);
-        sessao.flush();
+        //sessao.flush();
     }
 }

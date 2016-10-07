@@ -155,4 +155,10 @@ public class LivroDAO {
         sessao.refresh(livro);
         return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
     }
+    
+    public Livro carregarHistoricoConvite(int livro) {
+        return (Livro) sessao.createQuery("FROM Livro WHERE id=:liv")
+                .setParameter("liv", livro)
+                .uniqueResult();
+    }
 }

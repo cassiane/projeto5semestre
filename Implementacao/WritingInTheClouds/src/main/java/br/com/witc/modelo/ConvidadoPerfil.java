@@ -32,7 +32,7 @@ public class ConvidadoPerfil implements Serializable {
     @OneToOne
     @JoinColumn(name="idLivro")
     private Livro idLivro;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Calendar dataSolicitacao;
 
     public Perfil getIdPerfil() {
@@ -109,7 +109,7 @@ public class ConvidadoPerfil implements Serializable {
      */
     public List<ConvidadoPerfil> carregarlista() {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
-        return dao.carregar(this.idPerfilConvidado.getId());
+        return dao.carregar(this.idPerfilConvidado);
     }
 
     /**
@@ -117,14 +117,14 @@ public class ConvidadoPerfil implements Serializable {
      */
     public void aceitarEdicao() {
         HistoricoLivro historico = new HistoricoLivro();
-        historico.setLivro(this.idLivro);
-        historico.setPerfil(this.idPerfilConvidado);
-        TipoStatus status = new TipoStatus().carregarTipoStatus(1);
+        //historico.setLivro(this.idLivro);
+        //historico.setPerfil(this.idPerfilConvidado);
+        //TipoStatus status = new TipoStatus().carregarTipoStatus(1);
         //status.carregarTipoStatus(1);
-        historico.setStatus(status);
-        historico.setDataInicio(Calendar.getInstance());
-        historico.salvarHistorico(historico);
-        this.remover();
+        //historico.setStatus(status);
+        //historico.setDataInicio(Calendar.getInstance());
+        historico.salvarHistoricoConvite(this.idPerfilConvidado.getId(), this.idLivro.getId());
+        //this.remover();
     }
 
     /**

@@ -75,4 +75,11 @@ public class HistoricoLivroDAO {
         sessao.refresh(historico);
         return historico.getDataConclusao() != null;
     }
+
+    public void salvarHistoricoConvite(int perfil, int livro) {
+        sessao.createQuery("CALL witc.proc_historico_convite(:per, :liv)")
+                .setParameter("per", perfil)
+                .setParameter("liv", livro)
+                .executeUpdate();
+    }
 }

@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.persistencia.ConvidadoPerfilDAO;
 import br.com.witc.persistencia.HistoricoLivroDAO;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -140,5 +141,10 @@ public class HistoricoLivro implements Serializable {
 
         historico.setDataConclusao(Calendar.getInstance());
         historicoLivroDAO.salvarHistorico(historico);
+    }
+    
+    public void salvarHistoricoConvite(int perfil, int livro) {
+        HistoricoLivroDAO dao = new HistoricoLivroDAO();
+        dao.salvarHistoricoConvite(perfil, livro);
     }
 }
