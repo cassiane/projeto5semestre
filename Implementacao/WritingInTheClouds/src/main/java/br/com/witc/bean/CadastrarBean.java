@@ -910,7 +910,7 @@ public class CadastrarBean {
         }
         return "timeline"; 
     }
-    //sigmaliv uma dose unica de 2,5ml todas as noites 
+    
     /**
      * Chamada para a tela de criação de um novo perfil 
      * @return 
