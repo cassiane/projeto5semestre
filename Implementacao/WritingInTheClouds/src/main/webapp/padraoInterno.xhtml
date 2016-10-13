@@ -3,60 +3,62 @@
 <html xmlns="http://www.w3.org/1999/xhtml"      
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>        
+        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>  
+        <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap.min.css" />
+        <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap-theme.min.css" /> 
+        <h:outputStylesheet name="css/witc.css" /> 
+        <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
         <ui:insert name="css" />
     </h:head>
-    <h:body>              
-        <p:layout fullPage="true">
-            <p:layoutUnit position="north" size="144">
-                <p:growl id="growl" severity="info, warn, error" globalOnly="true" />                    
-                <f:facet name="header">                                        
-                    <div id="top" style="height: 70px;text-align: center;line-height: 70px;font-size: 40px">
-                        <h:outputText value="WITC"/>
-                    </div>                                
-                    <div id="middle" style="height: 25px;text-align: center;">
-                        <h:outputText value="Olá, #{autenticarBean.nomeUsuario}"/>
-                    </div>                                
-
-                    <div id="botton" style="height: 20px;text-align: right; padding-bottom: 5px;">
-                        <h:form id="frmCabecalho">                            
-                            <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
-                            <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
-                                <p:menuitem value="Editar minha conta" outcome="editarConta"/>
-                                <p:menuitem value="Logoff" action="#{autenticarBean.efetuarLogoff()}" update="messages" ajax="false" />
-                            </p:tieredMenu>
-                        </h:form>                        
-                    </div>                    
-                </f:facet>                
-            </p:layoutUnit>
-            <p:layoutUnit position="east" resizable="true" size="300">
+    <h:body> 
+        <div class="container">            
+            <p:growl id="growl" severity="error" globalOnly="true" /> 
+            <div class="clearfix" />
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="timeline.xhtml">Writing in the Clouds</a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <h:form>
+                            <ul class="nav navbar-nav navbar-right">                               
+                                <li><h:link value="Minha Biblioteca" outcome="biblioteca.xhtml" /></li>
+                                <li><h:commandLink value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
+                                <li><h:link value="Perfis de Usuários" outcome="tiposPerfis.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
+                                <li><h:link value="Tipos de Texto" outcome="tiposTexto.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opções <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><h:link value="Editar minha conta" outcome="editarConta.xhtml" /></li>                                                                
+                                        <li><h:commandLink value="Logoff" action="#{autenticarBean.efetuarLogoff()}" /></li>                                    
+                                    </ul>
+                                </li>                            
+                            </ul>        
+                        </h:form>
+                    </div>
+                </div>                
+            </nav>
+            <div class="col-md-3">
+                <div style="width: 100%; height: 300px; border: 1px solid;">                    
+                    <h:graphicImage styleClass="img-wallpaper" value="resources/imagens/semWallpaper.png" />                     
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p:layoutUnit position="center">
+                    <ui:insert name="conteudo"/>                
+                </p:layoutUnit>        
+            </div>
+            <div class="col-md-3">
                 <h:form id="frmChat">
                     <p:stack icon="/resources/imagens/chat.png" expanded="true">
                         <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
                         <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
                     </p:stack>
                 </h:form>
-            </p:layoutUnit>            
-            <p:layoutUnit position="west" resizable="true" size="250">
-                <h:panelGrid columns="1">                    
-                    <h:form id="frmMenu">
-                        <p:menu>
-                            <p:menuitem value="Amigos" action="#{cadastrarBean.listarAmigos()}" ajax="false" />
-                            <p:menuitem value="Biblioteca" action="biblioteca.xhtml" ajax="false" />
-                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
-                            <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis" rendered="#{autenticarBean.verificarAdministrador()}"/>
-                            <p:menuitem value="Tipos de Texto" outcome="tiposTexto"  rendered="#{autenticarBean.verificarAdministrador()}"/>
-                        </p:menu>
-                    </h:form>
-                </h:panelGrid>
-            </p:layoutUnit>    
-            <p:layoutUnit position="center">
-                <ui:insert name="conteudo"/>                
-            </p:layoutUnit>
-        </p:layout>
-        <ui:insert name="dialogos"/>
+            </div>        
+            <ui:insert name="dialogos"/>            
+        </div>
     </h:body>    
 </html>

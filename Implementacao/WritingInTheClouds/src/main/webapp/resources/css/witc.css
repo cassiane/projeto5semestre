@@ -71,3 +71,10 @@ and open the template in the editor.
     top: 50%;
     transform: translateY(-50%);
 }
+
+.img-wallpaper {
+    display: block;
+    width: 100%;
+    max-height: 40%;
+    height: auto;        
+}

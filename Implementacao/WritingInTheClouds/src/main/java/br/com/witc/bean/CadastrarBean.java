@@ -40,6 +40,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import java.io.FileOutputStream;
 import java.io.*;
 import static javax.faces.context.FacesContext.getCurrentInstance;
+import javax.faces.event.PhaseId;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import org.apache.commons.io.IOUtils;
@@ -78,6 +79,7 @@ public class CadastrarBean {
     public TipoTextoDAO tipoTextoDAO;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
+    private static final String CAMINHO_WALLPAPER_DEFAULT = "/resources/imagens/semWallpaper.png";
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro();
@@ -258,12 +260,36 @@ public class CadastrarBean {
     }
     
     public StreamedContent getFoto() {                 
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        
         if (this.usuario.getFoto() == null) {
-            return carregarFotoDefault();
+            return carregarImagemDefault(CAMINHO_FOTO_DEFAULT);
         }        
         InputStream is = new ByteArrayInputStream(this.usuario.getFoto());               
         StreamedContent image = new DefaultStreamedContent(is);        
         return image;
+    }
+    
+    public StreamedContent getWallpaper() {                 
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        
+        return carregarImagemDefault(CAMINHO_WALLPAPER_DEFAULT);
+        /*
+        if (this.usuario.getFoto() == null) {
+            return carregarImagemDefault();
+        }        
+        InputStream is = new ByteArrayInputStream(this.usuario.getFoto());               
+        StreamedContent image = new DefaultStreamedContent(is);        
+        return image;
+        */
     }
     
     public TipoPerfil getTipoPerfil() {
@@ -596,13 +622,7 @@ public class CadastrarBean {
         try {
             this.usuario.setAtivo(false);
             this.controlador.excluirUsuario(usuario);             
-        } catch (DadosUsuarioInvalidoException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UsuarioInvalidoException ex) {
+        } catch (DadosUsuarioInvalidoException | NoSuchAlgorithmException | UnsupportedEncodingException | UsuarioInvalidoException ex) {
             Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.usuario = new Usuario();
@@ -658,12 +678,10 @@ public class CadastrarBean {
             this.controlador.redefinirSenha(this.emailRecuperacaoSenha, this.hashRedefinicao, this.senhaRedefinicao);
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso");
             return "index.xhtml";
-        } catch (DadosUsuarioInvalidoException ex) {
+        } catch (DadosUsuarioInvalidoException | LinkRecuperacaoInvalidoException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash para redefinição de senha!");
-        } catch (LinkRecuperacaoInvalidoException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
 
         return null;
@@ -797,24 +815,25 @@ public class CadastrarBean {
     
     /**
      * Converte uma imagem para apresentar em um componente p:graphicImage     
+     * @param path O caminho da imagem a ser carregada
      * @return Um objeto StreamedContent
      */
-    public StreamedContent carregarFotoDefault() {        
-        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_FOTO_DEFAULT));            
+    public StreamedContent carregarImagemDefault(String path) {        
+        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(path));            
         
         // Converte o arquivo em um array de bytes
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        byte[] fotoCliente = null;
+        byte[] imagemDefault = null;
         try {            
             BufferedImage imagem = ImageIO.read(imgFile);
             ImageIO.write(imagem, "PNG", bos);
             bos.flush();  
-            fotoCliente = bos.toByteArray();                
+            imagemDefault = bos.toByteArray();                
         } catch (IOException e) {            
         }        
         
         try {
-            return new DefaultStreamedContent(new ByteArrayInputStream(fotoCliente));
+            return new DefaultStreamedContent(new ByteArrayInputStream(imagemDefault));
         } catch(NullPointerException e) {
             // Nao foi possivel localizar nenhuma foto ...
             return new DefaultStreamedContent();

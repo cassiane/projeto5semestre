@@ -24,7 +24,7 @@ import static javax.faces.context.FacesContext.getCurrentInstance;
 @ManagedBean
 @SessionScoped
 public class AutenticarBean {
-    private ControladorAutenticacao controlador;
+    private final ControladorAutenticacao controlador;
     private String email;
     private String senha;
 
