@@ -282,8 +282,6 @@ public class CadastrarBean {
         this.tipoPerfildao = tipoPerfildao;
     }
     
-      
-
     /**
      * @return the tipoTexto
      */
@@ -318,17 +316,17 @@ public class CadastrarBean {
      * @param arquivo 
      */
     public void criaArquivo(byte[] bytes, String arquivo) {
-      FileOutputStream fos;
-      try {
-         fos = new FileOutputStream(arquivo);
-         fos.write(bytes);
-         fos.close();
-      } catch (FileNotFoundException ex) {
-          enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
-      } catch (IOException ex) {
-         enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
-      }
-   }
+        FileOutputStream fos;
+        try {
+            fos = new FileOutputStream(arquivo);
+            fos.write(bytes);
+            fos.close();
+        } catch (FileNotFoundException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        } catch (IOException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+    }
     /**
      * Evento de enviar a imagem utilizado no primefaces
      * O método enviarImagem(FileUploadEvent event) é utilizado no atributo 
@@ -337,28 +335,28 @@ public class CadastrarBean {
      * arquivos, etc.
      * @param event 
      */
-   public void enviarImagem(FileUploadEvent event) {       
-      byte[] img = event.getFile().getContents();
-       
-      imagemTemporaria = event.getFile().getFileName();
-      FacesContext facesContext = FacesContext.getCurrentInstance();      
-      ServletContext scontext; 
-      scontext = (ServletContext) facesContext.getExternalContext().getContext();
-      String arquivo = scontext.getRealPath("/Upload/" + imagemTemporaria);
-      arquivo = "C:\\Temp\\"+imagemTemporaria;
-      criaArquivo(img, arquivo);
-      setExibeBotao(true);
-   }
-   /**
+    public void enviarImagem(FileUploadEvent event) {
+        byte[] img = event.getFile().getContents();
+        
+        imagemTemporaria = event.getFile().getFileName();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ServletContext scontext;
+        scontext = (ServletContext) facesContext.getExternalContext().getContext();
+        String arquivo = scontext.getRealPath("/Upload/" + imagemTemporaria);
+        arquivo = "C:\\Temp\\"+imagemTemporaria;
+        criaArquivo(img, arquivo);
+        setExibeBotao(true);
+    }
+    /**
     * método crop() para coletar a imagem recortada e jogar dentro da 
     * imagemEnviada que é do tipo StreamedContent, que pode ser trabalhado 
     * dinamicamente com o um p:graphicImage.
     * Seta a imagem no ImaggeCropper
     */
-   public void crop() {
-      setImagemEnviada(new DefaultStreamedContent(new ByteArrayInputStream(croppedImage.getBytes())));      
-   }
-   
+    public void crop() {
+        setImagemEnviada(new DefaultStreamedContent(new ByteArrayInputStream(croppedImage.getBytes())));
+    }
+    
     /**
      * Busca e atualiza a lista de amigos
      *
@@ -422,6 +420,7 @@ public class CadastrarBean {
      * @return Lista de usuarios do sistema
      */
     public List<Usuario> getUsuarios() {
+        this.usuarios = this.controlador.listarUsuarios();
         return usuarios;
     }
 
@@ -439,8 +438,85 @@ public class CadastrarBean {
         this.convidarEmail = convidarEmail;
     }
 
-    public StreamedContent getFoto(Usuario usufoto) {
-        return this.controlador.getAmigosFoto(usufoto);
+    public StreamedContent getFotos(Usuario user) {
+        try {
+            if (user.getFoto() == null) {
+                return carregarFotoDefault();
+            }
+            InputStream is = new ByteArrayInputStream(user.getFoto());
+            StreamedContent image = new DefaultStreamedContent(is);
+            return image;
+        } catch(NumberFormatException ex) {
+            return carregarFotoDefault();
+        }
+    }
+    
+    public StreamedContent getFotoAmigo() {
+        int idfoto = 0;
+        try {
+            idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
+        } catch (NumberFormatException ex) {
+            return carregarFotoDefault();
+        }
+        Usuario usu = new Usuario();
+        for (Usuario us : this.amigos) {
+            if (us.getId() == idfoto) {
+                usu = us;
+                break;
+            }
+        }
+        return this.getFotos(usu);
+    }
+    
+    public StreamedContent getFotoSugestao() {
+        int idfoto = 0;
+        try {
+            idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
+        } catch (NumberFormatException ex) {
+            return carregarFotoDefault();
+        }
+        Usuario usu = new Usuario();
+        for (Usuario us : this.sugestao) {
+            if (us.getId() == idfoto) {
+                usu = us;
+                break;
+            }
+        }
+        return this.getFotos(usu);
+    }
+    
+    public StreamedContent getFotoSolicitacao() {
+        int idfoto = 0;
+        try {
+            idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
+        } catch (NumberFormatException ex) {
+            return carregarFotoDefault();
+        }
+        Usuario usu = new Usuario();
+        for (Usuario us : this.solicitacao) {
+            if (us.getId() == idfoto) {
+                usu = us;
+                break;
+            }
+        }
+        return this.getFotos(usu);
+    }
+    
+    public StreamedContent getFotoConvidar() {
+        int idfoto = 0;
+        try {
+            idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
+        } catch (NumberFormatException ex) {
+            return carregarFotoDefault();
+        }
+        Usuario usu = new Usuario();
+        for (Usuario us : this.usuarios) {
+            if (us.getId() == idfoto) {
+                usu = us;
+                break;
+            }
+        }
+        return this.getFotos(usu);
     }
 
     /**

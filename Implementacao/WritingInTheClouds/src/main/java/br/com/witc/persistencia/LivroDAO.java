@@ -50,9 +50,9 @@ public class LivroDAO {
     
     public List<Livro> listarLivrosPerfil(Perfil perfil){
 
-        String consulta ="select livro.* from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
+        String consulta ="select Livro.* from Livro inner join HistoricoLivros on Livro.id=HistoricoLivros.idLivro inner join Perfil on Perfil.id = HistoricoLivros.idPerfil  where idPerfil=:id";
        List<Livro> lista ;
-        lista= sessao.createSQLQuery(consulta).addEntity("livro",Livro.class).setInteger("id",perfil.getId()).list();
+        lista= sessao.createSQLQuery(consulta).addEntity("Livro",Livro.class).setInteger("id",perfil.getId()).list();
         return lista;
        
 

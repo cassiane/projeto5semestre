@@ -7,7 +7,6 @@ package br.com.witc.modelo;
 
 import br.com.witc.persistencia.ConvidadoPerfilDAO;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.Entity;
@@ -22,13 +21,14 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class ConvidadoPerfil implements Serializable {
-    @Id
     @OneToOne
     @JoinColumn(name="idPerfil")
     private Perfil idPerfil;
+    @Id
     @OneToOne
     @JoinColumn(name="idPerfilConvidado")
     private Perfil idPerfilConvidado;
+    @Id
     @OneToOne
     @JoinColumn(name="idLivro")
     private Livro idLivro;
@@ -86,17 +86,10 @@ public class ConvidadoPerfil implements Serializable {
         dao.salvar(this);
     }
     
-    /*
-    public List<ConvidadoPerfil> carregar(Perfil idPerfilConvidado) {
-        List<ConvidadoPerfil> list = new ArrayList<ConvidadoPerfil>();
-        ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
-        list = dao.carregar(idPerfilConvidado);
-        return list;
-    }
-    */
-    
     /**
      * Deletar da tabela o registro atual
+     * @param perfil
+     * @param livro
      */
     public void remover(Perfil perfil, Livro livro) {
         ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
@@ -115,6 +108,8 @@ public class ConvidadoPerfil implements Serializable {
 
     /**
      * Metodo para gravar a aceitação da solicitação
+     * @param perfil
+     * @param livro
      */
     public void aceitarEdicao(Perfil perfil, Livro livro) {
         HistoricoLivro historico = new HistoricoLivro();

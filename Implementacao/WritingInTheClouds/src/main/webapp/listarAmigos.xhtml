@@ -22,7 +22,9 @@
                                         itemValue="#{convidado}" converter="convidarConverter"
                                         maxResults="6" forceSelection="true">
                             <p:column>
-                                <p:graphicImage name="imagens/chat-green.png" width="40" height="50" />
+                                <p:graphicImage value="#{cadastrarBean.fotoConvidar}" width="40" height="50" cache="false">
+                                    <f:param name="userfoto" value="#{convidado.id}" />
+                                </p:graphicImage>
                             </p:column>
 
                             <p:column>
@@ -40,7 +42,9 @@
                 <p:carousel id="carSolicitacao" value="#{cadastrarBean.solicitacao}" headerText="Solicitação de amizade" var="solAmizade" itemStyle="text-align:center" responsive="true">
                     <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank" rendered="#{cadastrarBean.temSolicitacao}">
                         <f:facet name="header">
-                            <p:graphicImage height="75px" name="imagens/chat-green.png" />
+                            <p:graphicImage height="75px" value="#{cadastrarBean.fotoSolicitacao}" cache="false">
+                                <f:param name="userfoto" value="#{solAmizade.id}" />
+                            </p:graphicImage>
                             <h:outputText value="#{solAmizade.nome}" />
                         </f:facet>
                         <p:commandButton value="Aceitar Amizade" id="btnAceAmizade" actionListener="#{cadastrarBean.aceitarAmizade(solAmizade.id)}" update="frmSol:carSolicitacao, frmAmi" icon="ui-icon-closethick" style="width:90px; margin-left: 3px; font-size: small" ajax="false" />
@@ -54,7 +58,9 @@
                         <h:outputText value="Lista de amigos"/>
                     </f:facet>
                     <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail" rendered="#{cadastrarBean.temAmigos}">
-                        <p:graphicImage height="75px" name="imagens/email.png" />
+                        <p:graphicImage height="75px" value="#{cadastrarBean.fotoAmigo}" cache="false">
+                            <f:param name="userfoto" value="#{amigo.id}" />
+                        </p:graphicImage>
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputPanel>
@@ -70,7 +76,9 @@
                 <p:carousel id="carSugestao" value="#{cadastrarBean.sugestao}" headerText="Sugestões de amizade" var="sugAmizade" itemStyle="text-align:center" responsive="true">
                     <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank" rendered="#{cadastrarBean.temSugestao}">
                         <f:facet name="header">
-                            <p:graphicImage height="95px" name="imagens/chat.png" />
+                            <p:graphicImage height="95px" value="#{cadastrarBean.fotoSugestao}" cache="false">
+                                <f:param name="userfoto" value="#{sugAmizade.id}" />
+                            </p:graphicImage>
                             <h:outputText value="#{sugAmizade.nome}" />
                         </f:facet>
                         <p:commandButton value="Solicitar Amizade" id="btnSolAmizade" actionListener="#{cadastrarBean.solicitarAmizade(sugAmizade.id)}" update="frmSug:carSugestao" icon="ui-icon-closethick" style="width:90px; margin-left: 3px; font-size: small" ajax="false" />

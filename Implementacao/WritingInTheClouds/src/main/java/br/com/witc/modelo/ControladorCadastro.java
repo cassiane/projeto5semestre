@@ -21,16 +21,12 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.apache.commons.mail.EmailException;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-
 
 /**
  *
  * @author marcelo.lima
  */
 public class ControladorCadastro {
-
 
     private Usuario usuario;
     private TipoPerfil tipoPerfil; 
@@ -105,20 +101,6 @@ public class ControladorCadastro {
      */
     public List<Usuario> listarAmigos() {
         return this.usuario.listarAmigos();
-    }
-
-    /**
-     * Retorna a imagem do amigo do usuario
-     *
-     * @param usufoto Usuario amigo
-     * @return A imagem
-     */
-    public StreamedContent getAmigosFoto(Usuario usufoto) {
-        if (usufoto.getFoto() == null) {
-            return null;
-        }
-        StreamedContent foto = new DefaultStreamedContent(new ByteArrayInputStream(usufoto.getFoto()), "image/png");
-        return foto;
     }
 
     /**

@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,6 +83,8 @@ public class LivroBean {
     // lista de solicitações para edição do usuario
     private List<ConvidadoPerfil> listaSolicitacaoEdicao;
 
+    private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
+
     public LivroBean() {
         this.controlador = new ControladorLivro();
         
@@ -103,7 +106,7 @@ public class LivroBean {
         this.livro = livro;
     }
 
-/**
+    /**
      * @return the livroSelecionado
      */
     public Livro getLivroSelecionado() {
@@ -232,7 +235,7 @@ public class LivroBean {
         this.file = file;
     }    
     
-/**
+    /**
      * @return the campoPesquisa
      */
     public String getCampoPesquisa() {
@@ -265,7 +268,7 @@ public class LivroBean {
      */
     public Map<String,List<Livro>> getBibliotecaVirtual() {                
         return this.bibliotecaVirtual;
-   }
+    }
     
     public String salvarNovoLivro(){        
         try {            
@@ -377,7 +380,7 @@ public class LivroBean {
         return null;
     }
     
-/**     
+    /**
      * @return O título do livro selecionado
      */
     public String getTituloLivroSelecionado() {
@@ -449,7 +452,6 @@ public class LivroBean {
     }
 
     public List<ConvidadoPerfil> getListaSolicitacaoEdicao() {
-        this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
         return listaSolicitacaoEdicao;
     }
 
@@ -604,7 +606,8 @@ public class LivroBean {
      * Preencher a variavel com a lista de amigos editores
      */
     public void carregarListaAmigoEditor() {
-        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor(this.perfilUsuario, this.livroCarregado.getId());
+        this.amigoEditor = new ArrayList();
+        this.listaAmigoEditor = this.controlador.carregarListaAmigoEditor(this.perfilUsuario, this.getLivroCarregado().getId());
     }
     
     /**
@@ -623,26 +626,79 @@ public class LivroBean {
     
     /**
      * Metodo para aceitar a solicitação de edição
-     * @param ediLivro livro a ser compartilhado para edição
-     * @return a pagina para refresh
+     * @param livro livro a ser compartilhado para edição
      */
-    //public String aceitarEdicao(ConvidadoPerfil ediLivro) {
-    public String aceitarEdicao(Perfil perfil, Livro livro) {
-        this.controlador.aceitarEdicao(perfil, livro);
-        //this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
-        return "biblioteca";
+    public void aceitarEdicao(Livro livro) {
+        this.controlador.aceitarEdicao(this.perfilUsuario, livro);
+        this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
+        //return "biblioteca";
     }
     
     /**
      * Metodo para negar a solicitação de edição
      * @param ediLivro livro negado para compartilhamento de edição
-     * @return a pagina para refresh
      */
-    public String negarEdicao(ConvidadoPerfil ediLivro) {
+    public void negarEdicao(ConvidadoPerfil ediLivro) {
         this.controlador.negarEdicao(ediLivro);
         this.carregarListaSolicitacaoEdicao();
-        return "biblioteca";
+        //return "biblioteca";
     }
+    
+    public StreamedContent getFotos(Usuario user) {
+        try {
+            if (user.getFoto() == null) {
+                return carregarFotoDefault();
+            }
+            InputStream is = new ByteArrayInputStream(user.getFoto());
+            StreamedContent image = new DefaultStreamedContent(is);
+            return image;
+        } catch(NumberFormatException ex) {
+            return carregarFotoDefault();
+        }
+    }
+    
+    public StreamedContent getFotoEditores() {
+        int idfoto = 0;
+        try {
+            idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
+        } catch (NumberFormatException ex) {
+            return carregarFotoDefault();
+        }
+        Usuario usu = new Usuario();
+        for (Perfil us : this.listaAmigoEditor) {
+            if (us.getUsuario().getId() == idfoto) {
+                usu = us.getUsuario();
+                break;
+            }
+        }
+        return this.getFotos(usu);
+    }
+
+    /**
+     * Converte uma imagem para apresentar em um componente p:graphicImage     
+     * @return Um objeto StreamedContent
+     */
+    public StreamedContent carregarFotoDefault() {        
+        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_FOTO_DEFAULT));            
+        
+        // Converte o arquivo em um array de bytes
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] fotoCliente = null;
+        try {            
+            BufferedImage imagem = ImageIO.read(imgFile);
+            ImageIO.write(imagem, "PNG", bos);
+            bos.flush();  
+            fotoCliente = bos.toByteArray();                
+        } catch (IOException e) {            
+        }        
+        
+        try {
+            return new DefaultStreamedContent(new ByteArrayInputStream(fotoCliente));
+        } catch(NullPointerException e) {
+            // Nao foi possivel localizar nenhuma foto ...
+            return new DefaultStreamedContent();
+        }        
+    }    
     
     /**
      * Envia à viewer uma mensagem com o status da operação

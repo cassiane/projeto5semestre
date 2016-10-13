@@ -60,13 +60,6 @@ public class ConvidadoPerfilDAO {
                     percon = Integer.parseInt(busca.get(i++)),
                     liv = Integer.parseInt(busca.get(i++));
             ConvidadoPerfil carrega = new ConvidadoPerfil();
-            /*carrega = (ConvidadoPerfil) sessao.createQuery("FROM ConvidadoPerfil"
-                    + " WHERE idPerfilConvidado=:percon"
-                    + " AND idLivro=:liv")
-                    //.setInteger("per", per)
-                    .setInteger("percon", percon)
-                    .setInteger("liv", liv)
-                    .uniqueResult();*/
             PerfilDAO preenche = new PerfilDAO();
             LivroDAO preenche2 = new LivroDAO();
             carrega.setIdPerfil(preenche.carregaPerfilID(per));
@@ -93,7 +86,7 @@ public class ConvidadoPerfilDAO {
      */
     public void remover(ConvidadoPerfil convite) {
         sessao.delete(convite);
-        //sessao.flush();
+        sessao.flush();
     }
     
     public ConvidadoPerfil carregar(Perfil perfil, Livro livro) {

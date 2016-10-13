@@ -46,7 +46,9 @@
                                               var="Editores" filter="true" filterMatchMode="startsWith" showCheckbox="true" scrollHeight="200">
                                 <f:selectItems value="#{livroBean.listaAmigoEditor}" var="selEditores" itemLabel="#{selEditores.pseudonimo}" itemValue="#{selEditores}" />
                                 <p:column>
-                                    <p:graphicImage style="border-style: solid" id="img" width="30" height="30" value="#{cadastrarBean.foto}" cache="false" />
+                                    <p:graphicImage style="border-style: solid" id="img" width="30" height="30" value="#{livroBean.fotoEditores}" cache="false">
+                                        <f:param name="userfoto" value="#{Editores.usuario.id}" />
+                                    </p:graphicImage>
                                 </p:column>
                                 <p:column>
                                     <h:outputText value="#{Editores.pseudonimo}" />

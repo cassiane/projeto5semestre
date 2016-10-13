@@ -5,7 +5,6 @@
  */
 package br.com.witc.modelo;
 
-import br.com.witc.persistencia.ConvidadoPerfilDAO;
 import br.com.witc.persistencia.HistoricoLivroDAO;
 import java.io.Serializable;
 import java.util.Calendar;
