@@ -335,6 +335,46 @@ public class Usuario implements Serializable {
         UsuarioDAO dao = new UsuarioDAO();
         dao.removerAmizade(this.getId(), idAmizade);
     }
+    
+    /**
+     * Acessar o dao para remover as amizades do usuário que está apagando a conta
+     *
+     * @param idAmizade Identificador do solicitante ou amigo
+     */
+    void removerTodasAmizades(int idUsuario) {
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.removerTodasAmizades(idUsuario);
+    }
+    
+    /**
+     * Método para salvar os tipos de texto em que o usuário se identifica
+     * @param tiposTextoUsuario lista dos tipos de textos
+     * @param idUsuario 
+     */    
+    void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.salvarTipoTextoUsuario(tiposTextoUsuario,idUsuario);
+    }
+    
+    /**
+     * Exclui um registro de um tipo de texto em que o usuario nao se identifica mais
+     * @param idUsuario
+     * @param idTipoTexto 
+     */
+    void excluirTipoTextoUsuario(int idUsuario, int idTipoTexto){
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.excluirTipoTextoUsuario(idUsuario, idTipoTexto);
+    }
+    
+    /**
+     * Exclui todos os registros de tipo de texto em que o usuario se identifica 
+     * quando este apaga sua conta 
+     * @param idUsuario 
+     */
+    void excluirTodosTipoTextoUsuario(int idUsuario){
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.excluirTodosTipoTextoUsuario(idUsuario);
+    }
 
     @Override
     public String toString() {

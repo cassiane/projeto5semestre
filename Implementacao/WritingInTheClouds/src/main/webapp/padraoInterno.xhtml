@@ -49,6 +49,7 @@
                             <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />                    
                             <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis" rendered="#{autenticarBean.verificarAdministrador()}"/>
                             <p:menuitem value="Tipos de Texto" outcome="tiposTexto"  rendered="#{autenticarBean.verificarAdministrador()}"/>
+                            <p:menuitem value="Tipos de Texto com que me identifico" actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" action="tiposTextoUsuario"/>
                         </p:menu>
                     </h:form>
                 </h:panelGrid>

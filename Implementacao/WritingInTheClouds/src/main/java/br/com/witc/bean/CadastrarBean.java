@@ -66,6 +66,8 @@ public class CadastrarBean {
     private List<Usuario> sugestao;
     private List<Usuario> solicitacao;
     private List<Usuario> usuarios;
+    public List<TipoTexto> tiposTextoUsuario;
+    public List<TipoTexto> selectedTiposTextoUsuario;
     private String convidarEmail;
     private StreamedContent imagemEnviada = new DefaultStreamedContent();
     private String imagemTemporaria;
@@ -309,6 +311,8 @@ public class CadastrarBean {
     public void setTipoTextoDAO(TipoTextoDAO tipoTextoDAO) {
         this.tipoTextoDAO = tipoTextoDAO;
     }
+    
+    
     
     /**
      * Cria o arquivo temporário
@@ -671,7 +675,9 @@ public class CadastrarBean {
     public String excluirUsuario(){        
         try {
             this.usuario.setAtivo(false);
-            this.controlador.excluirUsuario(usuario);             
+            this.controlador.excluirUsuario(usuario); 
+            removerTodasAmizades(this.usuario.getId());
+            excluirTodosTipoTextoUsuario(this.usuario.getId());
         } catch (DadosUsuarioInvalidoException ex) {
             Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {
@@ -685,7 +691,7 @@ public class CadastrarBean {
         this.diaNascimento = null;
         this.mesNascimento = null;
         this.anoNascimento = null;
-        this.emailVerificado = null;
+        this.emailVerificado = null;  
         getCurrentInstance().getExternalContext().invalidateSession();
         return "index.xhtml?faces-redirect=true";        
     }
@@ -815,6 +821,15 @@ public class CadastrarBean {
      */
     public void removerAmizade(int idAmizade) {
         this.controlador.removerAmizade(idAmizade);
+    }
+    
+    /**
+     * Exclui todas as amizades do usuário que está apagando a conta
+     *
+     * @param idUsuario id do usuario que esta apagando a conta
+     */
+    public void removerTodasAmizades(int idUsuario) {
+        this.controlador.removerTodasAmizades(idUsuario);
     }
 
     /**
@@ -962,8 +977,9 @@ public class CadastrarBean {
     /**
      * Retorna uma lista de perfis
      * @return 
+     * @throws br.com.witc.excessao.TipoTextoException 
      */
-    public List<TipoTexto> listarTipoTexto() throws TipoTextoException{   
+    public List<TipoTexto> listarTipoTexto() throws TipoTextoException{        
         return this.controlador.listarTipoTexto();
     }
     
@@ -977,6 +993,35 @@ public class CadastrarBean {
         return "novoTipoTexto";
     }
     
+    /**
+     * Método para salvar o tipo de texto ao usuário para identificar com quais
+     * tipos de texto ele se identifica
+     */
+    public String salvarTipoTextoUsuario(){
+        this.controlador.salvarTipoTextoUsuario(this.selectedTiposTextoUsuario, this.usuario.getId());
+        return "timeline"; 
+    }
+    
+    /**
+     * Método para excluir um tipo de texto em que o usuário nao se 
+     * identifica mais
+     * @param idTipoTexto
+     * @return 
+     */
+    public String excluirTipoTextoUsuario(int idTipoTexto){
+        this.controlador.excluirTipoTextoUsuario(this.usuario.getId(), idTipoTexto);
+        return "index.xhtml?faces-redirect=true";
+    }
+    
+    /**
+     * Método para excluir todos os tipo de texto com ligação ao usuário que está 
+     * apagando a conta 
+     * @param idUsuario
+     */
+    public void excluirTodosTipoTextoUsuario(int idUsuario){
+        this.controlador.excluirTodosTipoTextoUsuario(idUsuario);        
+    }
+    
     
     /**
      * Envia à viewer uma mensagem com o status da operação
@@ -988,4 +1033,32 @@ public class CadastrarBean {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     } 
+
+    /**
+     * @return the tiposTextoUsuario
+     */
+    public List<TipoTexto> getTiposTextoUsuario() {
+        return tiposTextoUsuario;
+    }
+
+    /**
+     * @param tiposTextoUsuario the tiposTextoUsuario to set
+     */
+    public void setTiposTextoUsuario(List<TipoTexto> tiposTextoUsuario) {
+        this.tiposTextoUsuario = tiposTextoUsuario;
+    }
+
+    /**
+     * @return the selectedTiposTextoUsuario
+     */
+    public List<TipoTexto> getSelectedTiposTextoUsuario() {
+        return selectedTiposTextoUsuario;
+    }
+
+    /**
+     * @param selectedTiposTextoUsuario the selectedTiposTextoUsuario to set
+     */
+    public void setSelectedTiposTextoUsuario(List<TipoTexto> selectedTiposTextoUsuario) {
+        this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
+    }
 }

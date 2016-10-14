@@ -9,6 +9,7 @@ import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LoginInvalidoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ConvidadoUsuario;
+import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
@@ -181,7 +182,66 @@ public class UsuarioDAO {
                 .setParameter("amigo", idAmizade)
                 .executeUpdate();
     }
-
+    
+    /**
+     * Exclui todos os registros de solicitação ou amizade na tabela
+     * @param id Identificador do usuario
+     */
+    public void removerTodasAmizades(int id) {
+        // Executa a exclusão caso o usuario estaja como usuario
+        sessao.createSQLQuery("DELETE FROM Usuario_tem_Amigo "
+                + "WHERE idUsuario = :usuario")
+                .setParameter("usuario", id)                
+                .executeUpdate();
+        // Executa a exclusão caso o usuario esteja como amigo
+        sessao.createSQLQuery("DELETE FROM Usuario_tem_Amigo "
+                + "WHERE idAmigo = :usuario")
+                .setParameter("usuario", id)
+                .executeUpdate();
+    }
+    
+    /**
+     * Salva vários registros na tabela de ligação entre usuário e tipo de texto
+     * para identificar os tipos de texto em que o usuário se identifica
+     * @param tiposTextoUsuario lista de tipos de texto que foram selecionados
+     * @param idUsuario 
+     */
+    public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
+        for(TipoTexto tipo : tiposTextoUsuario){
+            sessao.createSQLQuery("INSERT INTO usuario_tem_tipotexto(idUsuario,idTipoTexto) "
+                + "VALUES(:usuario,:tipoTexto);")
+                .setInteger("usuario", idUsuario)
+                .setInteger("tipoTexto", tipo.getId())
+                .executeUpdate();
+        }              
+    }
+    
+    /**
+     * Exclui um registro na tabela de ligação entre usuário e tipo de texto
+     * para identificar os tipos de texto em que o usuário se identifica
+     * @param idUsuario
+     * @param idTipoTexto 
+     */
+    public void excluirTipoTextoUsuario(int idUsuario, int idTipoTexto){
+        sessao.createSQLQuery("DELETE FROM usuario_tem_tipotexto"
+                + "WHERE idUsuario = :usuario and idTipoTexto = :tipoTexto;")
+                .setParameter("usuario", idUsuario)
+                .setParameter("tipoTexto", idTipoTexto)
+                .executeUpdate();
+    }
+    
+    /**
+     * Exclui todos os registros do tipo de texto com que o usuario se identifica
+     * quando ele exclui sua conta 
+     * @param idUsuario 
+     */
+    public void excluirTodosTipoTextoUsuario(int idUsuario){
+        sessao.createSQLQuery("DELETE FROM usuario_tem_tipotexto"
+            + "WHERE idUsuario = :usuario;")
+            .setParameter("usuario", idUsuario)        
+            .executeUpdate();
+    }
+    
     /**
      * Realiza a consulta na tabela usuario
      * @return Lista de usuarios do sistema
