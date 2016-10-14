@@ -397,4 +397,6 @@ public class Usuario implements Serializable {
         UsuarioDAO dao = new UsuarioDAO();
         dao.verificarConvite(email);
     }
+    
+    
 }

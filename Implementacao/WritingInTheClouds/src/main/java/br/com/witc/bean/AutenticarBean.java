@@ -11,9 +11,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import br.com.witc.modelo.ControladorAutenticacao;
+import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Usuario;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 
@@ -70,9 +72,20 @@ public class AutenticarBean {
     /**     
      * @return O email do usuário logado no sistema
      */
-    public String getNomeUsuario() {
-        return this.controlador.getNomeUsuario();
+    public String getNomeCompletoUsuario() {
+        return this.controlador.getNomeCompletoUsuario();
     }
+    
+    /**     
+     * @return A quantidade de amigos do usuário logado no sistema
+     */
+    public String getNumeroAmigosUsuarioLogado() {
+        int numAmigos = this.controlador.getNumeroAmigosUsuarioLogado();
+        if (numAmigos == 0) {
+            return "Você ainda não possui amigos!";
+        }
+        return String.valueOf(numAmigos) + " amigos.";
+    }        
     
     /**
      * Unica forma que achei para buscar o usuario

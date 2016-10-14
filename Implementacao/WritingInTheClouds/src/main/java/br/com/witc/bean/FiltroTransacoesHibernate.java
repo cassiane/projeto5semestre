@@ -42,7 +42,7 @@ public class FiltroTransacoesHibernate implements Filter {
             String nome = null;
             if ((sessaoHTTP.getAttribute("autenticarBean")) != null) {
                 AutenticarBean bean = ((br.com.witc.bean.AutenticarBean)(sessaoHTTP.getAttribute("autenticarBean")));
-                nome = bean.getNomeUsuario();
+                nome = bean.getNomeCompletoUsuario();
             }
             if (nome == null) {
                 // redireciona para a pagina de login

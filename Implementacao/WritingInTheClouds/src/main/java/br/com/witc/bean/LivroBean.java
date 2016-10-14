@@ -566,6 +566,13 @@ public class LivroBean {
         }        
     }            
     
+    /**     
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> getLivrosPublicadosPerfil() {
+        return this.controlador.listarLivrosPublicadosPerfil(this.perfilUsuario.getId());
+    }    
+    
     /**
      * Envia à viewer uma mensagem com o status da operação
      * @param sev A severidade da mensagem

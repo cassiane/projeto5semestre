@@ -74,5 +74,5 @@ public class HistoricoLivroDAO {
         
         sessao.refresh(historico);
         return historico.getDataConclusao() != null;
-    }
+    }            
 }

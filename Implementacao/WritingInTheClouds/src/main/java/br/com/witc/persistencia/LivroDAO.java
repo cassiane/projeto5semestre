@@ -155,4 +155,16 @@ public class LivroDAO {
         sessao.refresh(livro);
         return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
     }
+    
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {
+        return (List<Livro>) sessao.createQuery("FROM Livro AS l "
+                + "INNER JOIN l.historicoLivros AS hl "
+                + "WHERE h1.perfil=:idPerfil AND l.disponivelBiblioteca = true")                 
+                .setString("idPerfil", String.valueOf(idPerfil))
+                .list();
+    }
 }

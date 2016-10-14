@@ -9,6 +9,7 @@ import br.com.witc.bean.LivroBean;
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoTextoException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,5 +185,13 @@ public class ControladorLivro {
     public TipoStatus carregarTipoStatus (int id) {
         TipoStatus tipoStatus = new TipoStatus();
         return tipoStatus.carregarTipoStatus(id);
+    }
+    
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
+        return this.livro.listarLivrosPublicadosPerfil(idPerfil);
     }
 }

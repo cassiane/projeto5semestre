@@ -140,5 +140,5 @@ public class HistoricoLivro implements Serializable {
 
         historico.setDataConclusao(Calendar.getInstance());
         historicoLivroDAO.salvarHistorico(historico);
-    }
+    }    
 }

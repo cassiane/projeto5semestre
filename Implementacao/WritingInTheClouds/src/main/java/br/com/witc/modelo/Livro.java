@@ -286,6 +286,15 @@ public class Livro implements Serializable {
         return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
     }
     
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.listarLivrosPublicadosPerfil(idPerfil);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;
