@@ -83,7 +83,7 @@ public class LivroBean {
         
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
-        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);                
+        atualizarListaLivrosPerfil();
     }    
     
     public Livro getLivro() {
@@ -313,6 +313,7 @@ public class LivroBean {
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
                 this.livroFinalizado = false;
                 this.disponivelEdicaoAmigo = false;
+                atualizarListaLivrosPerfil();
                 return "biblioteca.xhtml?faces-redirect=true";                
             }
         } catch (Exception ex) {
@@ -569,9 +570,32 @@ public class LivroBean {
     /**     
      * @return Uma lista de livros publicados pelo usuário
      */
-    public List<Livro> getLivrosPublicadosPerfil() {
+    public List<Livro> listarLivrosPublicadosPerfil() {
         return this.controlador.listarLivrosPublicadosPerfil(this.perfilUsuario.getId());
     }    
+    
+    public StreamedContent getCapaLivroConvertida() {                        
+        FacesContext context = FacesContext.getCurrentInstance();        
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return new DefaultStreamedContent();            
+        }        
+        
+        int idLivro = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idLivro"));
+        byte[] capa = null;
+        for (Livro lvr : this.livros) {
+            if (lvr.getId() == idLivro) {
+                capa = lvr.getCapa();
+                break;
+            }
+        }
+        InputStream is = new ByteArrayInputStream(capa);               
+        StreamedContent imagem = new DefaultStreamedContent(is);        
+        return imagem;
+    }
+    
+    private void atualizarListaLivrosPerfil() {
+        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);
+    }
     
     /**
      * Envia à viewer uma mensagem com o status da operação

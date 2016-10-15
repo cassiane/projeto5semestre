@@ -161,10 +161,22 @@ public class LivroDAO {
      * @return Uma lista de livros publicados pelo usuário
      */
     public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {
-        return (List<Livro>) sessao.createQuery("FROM Livro AS l "
-                + "INNER JOIN l.historicoLivros AS hl "
-                + "WHERE h1.perfil=:idPerfil AND l.disponivelBiblioteca = true")                 
+        List<Object[]> lstObjetos = sessao.createQuery("FROM Livro AS l "
+                + "INNER JOIN l.historicoLivros AS hl "                
+                + "INNER JOIN hl.perfil AS p "
+                + "WHERE p.id=:idPerfil AND l.disponivelBiblioteca = true")                 
                 .setString("idPerfil", String.valueOf(idPerfil))
                 .list();
+        
+        List<Livro> lstLivro = new ArrayList();
+        for (Object[] arrObj : lstObjetos) {
+            for (Object obj : arrObj) {
+                if (obj instanceof Livro) {
+                    lstLivro.add((Livro)obj);
+                }
+            }
+        }
+        
+        return lstLivro;
     }
 }

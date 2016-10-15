@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>  
         <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap.min.css" />
@@ -31,7 +32,7 @@
         <div class="container">            
             <p:growl id="growl" severity="error" globalOnly="true" /> 
             <div class="clearfix" />
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <a class="navbar-brand" href="timeline.xhtml">Writing in the Clouds</a>
@@ -100,11 +101,13 @@
                             <div style="padding-top: 10px;">
                                 <h:outputText style="font-weight: bold; font-size: 15px;" value="Livros Publicados" />
                             </div>
-                            <div style="padding-top: 10px;">                                
-                                <c:forEach var="livro" items="#{livroBean.livrosPublicadosPerfil}">
-                                    <h:outputText value="#{livro.titulo}" />
-                                </c:forEach>                                
-                            </div>
+                        </div>
+                        <div style="padding-top: 10px; padding-bottom: 10px;">                                
+                            <c:forEach var="livro" items="#{livroBean.listarLivrosPublicadosPerfil()}">
+                                <p:graphicImage style="width: 25%; height: 20%; padding: 5px;" value="#{livroBean.capaLivroConvertida}">
+                                    <f:param name="idLivro" value="#{livro.id}" />
+                                </p:graphicImage>
+                            </c:forEach>                                
                         </div>                        
                     </div>
                 </div>

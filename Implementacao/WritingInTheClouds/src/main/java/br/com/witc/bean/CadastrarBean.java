@@ -282,15 +282,7 @@ public class CadastrarBean {
         }
         
         return carregarImagemDefault(CAMINHO_WALLPAPER_DEFAULT);
-        /*
-        if (this.usuario.getFoto() == null) {
-            return carregarImagemDefault();
-        }        
-        InputStream is = new ByteArrayInputStream(this.usuario.getFoto());               
-        StreamedContent image = new DefaultStreamedContent(is);        
-        return image;
-        */
-    }
+    }        
     
     public TipoPerfil getTipoPerfil() {
         return tipoPerfil;
@@ -338,53 +330,6 @@ public class CadastrarBean {
         this.tipoTextoDAO = tipoTextoDAO;
     }
     
-    /**
-     * Cria o arquivo temporário
-     * @param bytes
-     * @param arquivo 
-     */
-    public void criaArquivo(byte[] bytes, String arquivo) {
-      FileOutputStream fos;
-      try {
-         fos = new FileOutputStream(arquivo);
-         fos.write(bytes);
-         fos.close();
-      } catch (FileNotFoundException ex) {
-          enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
-      } catch (IOException ex) {
-         enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
-      }
-   }
-    /**
-     * Evento de enviar a imagem utilizado no primefaces
-     * O método enviarImagem(FileUploadEvent event) é utilizado no atributo 
-     * fileUploadListener para ser executado sempre que uma imagem estiver sendo 
-     * enviada. É neste método onde poderemos fazer conversões, criação de 
-     * arquivos, etc.
-     * @param event 
-     */
-   public void enviarImagem(FileUploadEvent event) {       
-      byte[] img = event.getFile().getContents();
-       
-      imagemTemporaria = event.getFile().getFileName();
-      FacesContext facesContext = FacesContext.getCurrentInstance();      
-      ServletContext scontext; 
-      scontext = (ServletContext) facesContext.getExternalContext().getContext();
-      String arquivo = scontext.getRealPath("/Upload/" + imagemTemporaria);
-      arquivo = "C:\\Temp\\"+imagemTemporaria;
-      criaArquivo(img, arquivo);
-      setExibeBotao(true);
-   }
-   /**
-    * método crop() para coletar a imagem recortada e jogar dentro da 
-    * imagemEnviada que é do tipo StreamedContent, que pode ser trabalhado 
-    * dinamicamente com o um p:graphicImage.
-    * Seta a imagem no ImaggeCropper
-    */
-   public void crop() {
-      setImagemEnviada(new DefaultStreamedContent(new ByteArrayInputStream(croppedImage.getBytes())));      
-   }
-   
     /**
      * Busca e atualiza a lista de amigos
      *
