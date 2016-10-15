@@ -47,16 +47,17 @@ public class LivroDAO {
              
             } 
         }
-    
+    /**
+     * 
+     * @param perfil
+     * @return 
+     
     public List<Livro> listarLivrosPerfil(Perfil perfil){
-
-        String consulta ="select Livro.* from Livro inner join HistoricoLivros on Livro.id=HistoricoLivros.idLivro inner join Perfil on Perfil.id = HistoricoLivros.idPerfil  where idPerfil=:id";
-       List<Livro> lista ;
-        lista= sessao.createSQLQuery(consulta).addEntity("Livro",Livro.class).setInteger("id",perfil.getId()).list();
+        String consulta ="select livro.* from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
+        List<Livro> lista ;
+        lista= sessao.createSQLQuery(consulta).addEntity("livro",Livro.class).setInteger("id",perfil.getId()).list();
         return lista;
-       
-
-    }
+    }*/
 
     /**
      * Carrega um livro 
@@ -154,6 +155,18 @@ public class LivroDAO {
         
         sessao.refresh(livro);
         return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
+    }
+    
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {
+        return (List<Livro>) sessao.createQuery("FROM Livro AS l "
+                + "INNER JOIN l.historicoLivros AS hl "
+                + "WHERE h1.perfil=:idPerfil AND l.disponivelBiblioteca = true")                 
+                .setString("idPerfil", String.valueOf(idPerfil))
+                .list();
     }
     
     public Livro carregarHistoricoConvite(int livro) {

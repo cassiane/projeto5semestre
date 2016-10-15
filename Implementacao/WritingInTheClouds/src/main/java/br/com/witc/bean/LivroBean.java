@@ -192,6 +192,17 @@ public class LivroBean {
         return listaTemp;        
     }            
     
+    /**     
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> getLivrosPublicadosPerfil() {
+        if(this.perfilUsuario == null){
+            ArrayList<Livro> livros = new ArrayList<>();
+            return livros;
+        }else
+        return this.controlador.listarLivrosPublicadosPerfil(this.perfilUsuario.getId());
+    }   
+    
     public  Calendar getPegaDataAtual(){
         Calendar calendar = new GregorianCalendar();
         Date trialTime = new Date();

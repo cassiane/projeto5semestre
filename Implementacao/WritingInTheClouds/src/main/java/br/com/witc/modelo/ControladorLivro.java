@@ -105,6 +105,14 @@ public class ControladorLivro {
         return this.livro.listarLivrosPerfil(perfil);
     }
     
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
+        return this.livro.listarLivrosPublicadosPerfil(idPerfil);
+    }
+    
     public Perfil carregarPerfil (Usuario usuario){
         Perfil perfil = new Perfil();
         return perfil.carregarPerfil(usuario);
@@ -126,7 +134,7 @@ public class ControladorLivro {
             } catch (BibliotecaVirtualVaziaException ex) {}
         }
         
-        if (tmpMap.isEmpty()) {
+        if (tmpMap == null || tmpMap.isEmpty()) {
             throw new BibliotecaVirtualVaziaException("Nenhum livro foi publicado até o momento.");
         }
         return tmpMap;

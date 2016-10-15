@@ -8,6 +8,7 @@ package br.com.witc.modelo;
 import br.com.witc.excessao.LoginInvalidoException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  *
@@ -39,9 +40,21 @@ public class ControladorAutenticacao {
     /**     
      * @return O nome do usuário logado no sistema
      */
-    public String getNomeUsuario() {
-        return this.usuario.getNome().split(" ")[0];
+    public String getNomeCompletoUsuario() {
+        return this.usuario.getNome() + " " + this.usuario.getSobrenome();
     }
+    
+    /**     
+     * @return A quantidade de amigos do usuário logado no sistema
+     */
+    public int getNumeroAmigosUsuarioLogado() {
+        List<Usuario> lstAmigos = this.usuario.listarAmigos();
+        if (lstAmigos != null) {
+            return lstAmigos.size();
+        }
+        return 0;
+    }        
+    
     /**
      * @return 
      */

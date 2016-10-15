@@ -9,6 +9,7 @@ import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.LivroException;
 import br.com.witc.persistencia.LivroDAO;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -234,10 +235,12 @@ public class Livro implements Serializable {
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.carregarLivro(idLivro);
     }
-
+    
     public List<Livro> listarLivrosPerfil(Perfil perfil){
         LivroDAO livroDAO = new LivroDAO();
-        return livroDAO.listarLivrosPerfil(perfil);
+        ArrayList<Livro> array = new ArrayList<>();
+        return array;
+        //return livroDAO.listarLivrosPerfil(perfil);
     }
     
     /**
@@ -284,6 +287,15 @@ public class Livro implements Serializable {
     public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
+    }
+    
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.listarLivrosPublicadosPerfil(idPerfil);
     }
     
     @Override

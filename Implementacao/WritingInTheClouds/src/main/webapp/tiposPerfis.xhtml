@@ -4,10 +4,55 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="padraoInterno.xhtml">        
+    <ui:composition template="padraoInterno.xhtml">  
+        <ui:define name="css">            
+            <h:outputStylesheet name="fontawesome-4.6.3/css/font-awesome.min.css" />
+            <h:outputStylesheet name="raterater/css/raterater.css" />                        
+            <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap.min.css" />
+        <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap-theme.min.css" />
+        <h:outputScript name="raterater/js/raterater.jquery.js" />            
+        <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
+            <h:outputScript name="js/witc.js" />
+        </ui:define>        
         <ui:define name="conteudo"> 
             <center> 
                 <h:form>
+                    <div class="row">                    
+                    <div class="col-lg-6">
+                        <div class="form-group input-group">
+                            <input type="text" class="form-control">
+                            <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="fa fa-search"></i></button></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <!--<button type="button" class="btn btn-primary">+</button>-->
+                        <h:commandButton class="btn btn-primary" type="button" title="+"  value="Novo" action="#{cadastrarBean.novoPerfil()}"/>
+                    </div>
+                </div>                
+                <!-- /.row -->
+                <div class="row">                    
+                    <div class="col-lg-6">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Ativo</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Administrador</td>
+                                        <td>Sim</td>
+                                        <td><i class="fa fa-pencil"></i></td>                                        
+                                    </tr>                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
                     <p:growl id="perfis" showDetail="true" />
                     <p:panel id="basic" header="Perfis de Usuários"  style="margin-bottom:20px">
                         <p:commandButton ajax="false" title="Novo Perfil"  value="Novo" action="#{cadastrarBean.novoPerfil()}"/>
