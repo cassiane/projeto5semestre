@@ -95,7 +95,7 @@ public class LivroBean {
         
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
-        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);                
+        atualizarListaLivrosPerfil();
     }    
     
     public Livro getLivro() {
@@ -329,6 +329,7 @@ public class LivroBean {
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
                 this.livroFinalizado = false;
                 this.disponivelEdicaoAmigo = false;
+                atualizarListaLivrosPerfil();
                 return "biblioteca.xhtml?faces-redirect=true";                
             }
         } catch (Exception ex) {
