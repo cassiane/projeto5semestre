@@ -700,6 +700,36 @@ public class LivroBean {
         }        
     }    
     
+    /**     
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil() {
+        return this.controlador.listarLivrosPublicadosPerfil(this.perfilUsuario.getId());
+    }    
+    
+    public StreamedContent getCapaLivroConvertida() {                        
+        FacesContext context = FacesContext.getCurrentInstance();        
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return new DefaultStreamedContent();            
+        }        
+        
+        int idLivro = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idLivro"));
+        byte[] capa = null;
+        for (Livro lvr : this.livros) {
+            if (lvr.getId() == idLivro) {
+                capa = lvr.getCapa();
+                break;
+            }
+        }
+        InputStream is = new ByteArrayInputStream(capa);               
+        StreamedContent imagem = new DefaultStreamedContent(is);        
+        return imagem;
+    }
+    
+    private void atualizarListaLivrosPerfil() {
+        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);
+    }
+    
     /**
      * Envia à viewer uma mensagem com o status da operação
      * @param sev A severidade da mensagem

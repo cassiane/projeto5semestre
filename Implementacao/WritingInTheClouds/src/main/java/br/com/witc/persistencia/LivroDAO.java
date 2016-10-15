@@ -179,4 +179,10 @@ public class LivroDAO {
         
         return lstLivro;
     }
+    
+    public Livro carregarHistoricoConvite(int livro) {
+        return (Livro) sessao.createQuery("FROM Livro WHERE id=:liv")
+                .setParameter("liv", livro)
+                .uniqueResult();
+    }    
 }

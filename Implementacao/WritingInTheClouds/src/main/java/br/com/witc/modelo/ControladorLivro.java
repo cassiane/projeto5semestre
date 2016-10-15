@@ -240,4 +240,11 @@ public class ControladorLivro {
         editarLivro.negarEdicao();
     }
     
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
+        return this.livro.listarLivrosPublicadosPerfil(idPerfil);
+    }    
 }
