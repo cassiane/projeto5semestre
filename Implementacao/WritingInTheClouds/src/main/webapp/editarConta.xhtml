@@ -52,7 +52,7 @@
                             <p:commandButton ajax="false" value="Salvar Configurações" style="width:200px; margin-left: 3px;"
                                              action="#{cadastrarBean.alterarUsuario()}" />
                             <h:form>                                
-                                <p:commandButton value="Excluir minha conta" action="#{cadastrarBean.excluirUsuario()}">
+                                <p:commandButton value="Excluir minha conta" actionListener="#{cadastrarBean.excluirUsuario()}" update="message">
                                     <p:confirm header="Confirmação" message="Você tem certeza?" icon="ui-icon-alert" />
                                 </p:commandButton>
 

@@ -50,9 +50,9 @@ public class LivroDAO {
     
     public List<Livro> listarLivrosPerfil(Perfil perfil){
 
-        String consulta ="select Livro.* from Livro inner join HistoricoLivros on Livro.id=HistoricoLivros.idLivro inner join Perfil on Perfil.id = HistoricoLivros.idPerfil  where idPerfil=:id";
+        String consulta ="select livro.* from livro inner join historicolivros on livro.id=historicolivros.idLivro inner join perfil on perfil.id = historicolivros.idPerfil  where idPerfil=:id";
        List<Livro> lista ;
-        lista= sessao.createSQLQuery(consulta).addEntity("Livro",Livro.class).setInteger("id",perfil.getId()).list();
+        lista= sessao.createSQLQuery(consulta).addEntity("livro",Livro.class).setInteger("id",perfil.getId()).list();
         return lista;
        
 
@@ -156,9 +156,27 @@ public class LivroDAO {
         return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
     }
     
-    public Livro carregarHistoricoConvite(int livro) {
-        return (Livro) sessao.createQuery("FROM Livro WHERE id=:liv")
-                .setParameter("liv", livro)
-                .uniqueResult();
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Uma lista de livros publicados pelo usuário
+     */
+    public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {
+        List<Object[]> lstObjetos = sessao.createQuery("FROM Livro AS l "
+                + "INNER JOIN l.historicoLivros AS hl "                
+                + "INNER JOIN hl.perfil AS p "
+                + "WHERE p.id=:idPerfil AND l.disponivelBiblioteca = true")                 
+                .setString("idPerfil", String.valueOf(idPerfil))
+                .list();
+        
+        List<Livro> lstLivro = new ArrayList();
+        for (Object[] arrObj : lstObjetos) {
+            for (Object obj : arrObj) {
+                if (obj instanceof Livro) {
+                    lstLivro.add((Livro)obj);
+                }
+            }
+        }
+        
+        return lstLivro;
     }
 }

@@ -2,46 +2,50 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">      
     <h:head>
-        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>
-        <h:outputStylesheet library="css" name="witc.css" />
+        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>        
+        <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+        <meta name="viewport" content="width = device-width, initial-scale = 1" />
+        <h:outputStylesheet name="css/witc.css" />
+        <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap.min.css" />
+        <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap-theme.min.css" /> 
+        <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
+        <h:outputScript name="js/witc.js" />        
     </h:head>
-    <h:body>
-        <p:layout fullPage="true">
-            <p:layoutUnit position="north">                
-                <f:facet name="header">                    
-                    <ui:insert name="header"/>
-                    <h:form>
-                        <h:panelGrid columns="2" columnClasses="column1,column2">
-                            <h:column>
-                                <h:graphicImage class="logo_img" name="imagens/logo.png" />
-                            </h:column>
-                            <h:column>
-                                <h:panelGrid columns="3" columnClasses="colunaDireita">
-                                    <p:outputLabel for="iptEmail" value="Email" />                                    
-                                    <p:outputLabel for="pwdSenha" value="Senha" />
-                                </h:panelGrid>
-                                <h:panelGrid columns="3">
-                                    <p:inputText id="iptEmail" maxlength="150" required="true" value="#{autenticarBean.email}" />
-                                    <p:password id="pwdSenha" maxlength="120" required="true" value="#{autenticarBean.senha}" />
-                                    <p:commandButton ajax="false" value="Entrar" action="#{autenticarBean.efetuarLogin()}" />
-                                </h:panelGrid>
-                                <h:panelGrid columns="3">
-                                    <p:link href="recuperarConta.xhtml">Esqueceu a conta?</p:link>
-                                </h:panelGrid>
-                            </h:column>
-                        </h:panelGrid>
-                    </h:form>                          
-                </f:facet>
-            </p:layoutUnit>            
-            <p:layoutUnit position="center">
-                <ui:insert name="conteudo"/>
-            </p:layoutUnit>            
-        </p:layout>
-        <ui:insert name="dialogos"/>
+    <h:body>            
+        
+        <div class="clearfix" />
+        <div class="collapse navbar-collapse">
+            <nav class="navbar navbar-inverse">                
+                <div class="container-fluid">
+                    <div class="navbar-brand">
+                        <h:link class="navbar-brand" outcome="index.xhtml" value="Writing in the Clouds" />
+                    </div>
+                    <h:form id="form" styleClass="navbar-form navbar-right">                    
+                        <div class="form-group">
+                            <h:inputText id="iptEmail" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
+                                         a:placeholder="Email" styleClass="form-control" maxlength="150" required="true" 
+                                         value="#{autenticarBean.email}" />                      
+                        </div>
+                        <div class="form-group">
+                            <h:inputSecret id="pwdSenha" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
+                                           a:placeholder="Senha" styleClass="form-control" maxlength="120" required="true" 
+                                           value="#{autenticarBean.senha}" />
+                        </div>
+                        #{' '}                        
+                        <h:commandButton styleClass="btn btn-success" value="Entrar" onclick="" action="#{autenticarBean.efetuarLogin()}" />
+                        <div>
+                            <h:link outcome="recuperarConta.xhtml" value="Esqueceu a conta?" />
+                        </div>
+                    </h:form>                
+                </div>
+            </nav>
+        </div>
+        <ui:insert name="body">             
+        </ui:insert>
     </h:body>
 </html>
 

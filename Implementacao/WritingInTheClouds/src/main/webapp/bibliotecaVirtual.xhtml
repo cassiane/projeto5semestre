@@ -8,9 +8,12 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="padraoInterno.xhtml">
         <ui:define name="css">            
-            <h:outputStylesheet name="css/font-awesome.min.css" />
-            <h:outputStylesheet name="css/raterater.css" />            
-            <h:outputScript name="js/raterater.jquery.js" />            
+            <h:outputStylesheet name="fontawesome-4.6.3/css/font-awesome.min.css" />
+            <h:outputStylesheet name="raterater/css/raterater.css" />                        
+            <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap.min.css" />
+        <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap-theme.min.css" />
+        <h:outputScript name="raterater/js/raterater.jquery.js" />            
+        <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
             <h:outputScript name="js/witc.js" />
         </ui:define>
         <ui:define name="conteudo">             
@@ -31,7 +34,7 @@
             
             <h:form id="frmBiblioteca">    
                 <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">                    
-                    <p:carousel id="crsBiblioteca" value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
+                    <p:carousel styleClass="carousel" id="crsBiblioteca" value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
                         <h:panelGrid columns="1" style="width: 100%; height: auto;">
                             <h:panelGrid columns="1" style="width: 100%;">                                
                                 <f:facet name="header">
