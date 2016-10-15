@@ -247,5 +247,5 @@ public class ControladorLivro {
     public void negarEdicao(ConvidadoPerfil editarLivro) {
         editarLivro.negarEdicao();
     }
-    
+        
 }
