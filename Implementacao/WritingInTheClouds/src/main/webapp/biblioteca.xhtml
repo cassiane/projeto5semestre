@@ -6,50 +6,52 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
-        <ui:define name="conteudo">
-            <f:event listener="#{livroBean.carregarListaSolicitacaoEdicao()}" type="preRenderView" />
-            <f:view>
-                <center>
-                    <h:form id="formMBibli">                  
-                        <p:panel id="basic" header="Minha Biblioteca"  style="margin-bottom:20px">
-                            <p:commandButton ajax="false" title="Novo Livro"  value="Novo" action="#{livroBean.editorNovoLivro()}"/>
-                            <p:dataTable   value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
-                                <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
-                                    #{lis.titulo}
-                                </p:column>                                
-                                <p:column width="90">
-                                    <p:commandButton title="Editar" 
-                                                     ajax="false"                                         
-                                                     icon="ui-icon-pencil" 
-                                                     action="#{livroBean.atualizarLockLivro(lis.id)}"                                                      
-                                                     disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
-                                    <p:commandButton ajax="false" 
-                                                     title="Ler" 
-                                                     icon="ui-icon-document" 
-                                                     action="lerLivro">
-                                        <f:setPropertyActionListener value="#{lis}" target="#{livroBean.livroSelecionado}" />
-                                    </p:commandButton>
-                                </p:column>
-                            </p:dataTable>
-                        </p:panel>
-                        <p:commandButton value="Voltar" ajax="false" action="timeline"/>
-                    </h:form>
-                </center>
-            </f:view>
-            <f:view>
-                <center>
-                    <h:form id="solEdicao" rendered="#{livroBean.listaSolicitacaoEdicao.size() > 0 ? 'true' : 'false' }">
-                        <p:panel id="psol" header="Minha Socilitação"  style="margin-bottom:20px">
-                            <p:dataScroller id="datEdiLivro" value="#{livroBean.listaSolicitacaoEdicao}" var="ediLivro" chunkSize="3">
-                                <h:outputText value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
-                                <br />
-                                <p:commandButton ajax="false" id="btnAceEdicao" value="Aceitar" actionListener="#{livroBean.aceitarEdicao(ediLivro.idLivro)}" update="formMBibli, solEdicao" />
-                                <p:commandButton ajax="false" id="btnNegEdicao" value="Negar" actionListener="#{livroBean.negarEdicao(ediLivro)}" update="solEdicao" />
-                            </p:dataScroller>
-                        </p:panel>
-                    </h:form>
-                </center>
-            </f:view>
+        <ui:define name="conteudo">            
+            <f:event listener="#{livroBean.carregarListaSolicitacaoEdicao()}" type="preRenderView" />                                    
+            <div style="width: 100%">
+                <h:form id="formMBibli">                  
+                    <div style="text-align: center;">
+                        <h:outputText class="text-info" style="font-size: 20px;" value="Minha Biblioteca" />
+                    </div>
+                    <div style="text-align: center; margin-top: 5px;">
+                        <h:commandButton styleClass="btn btn-success" title="Novo Livro" value="Novo Livro" action="#{livroBean.editorNovoLivro()}"/>
+                    </div>       
+                    <div style="margin-top: 5px;">
+                        <p:dataTable value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
+                            <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center; width: 80%;">
+                                #{lis.titulo}
+                            </p:column>                                
+                            <p:column style="text-align: center; width: 20%">
+                                <p:commandButton title="Editar" 
+                                                 ajax="false"                                         
+                                                 icon="ui-icon-pencil" 
+                                                 action="#{livroBean.atualizarLockLivro(lis.id)}"                                                      
+                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
+                                #{' '}
+                                <p:commandButton ajax="false" 
+                                                 title="Ler" 
+                                                 icon="ui-icon-document" 
+                                                 action="lerLivro">
+                                    <f:setPropertyActionListener value="#{lis}" target="#{livroBean.livroSelecionado}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </h:form>   
+            </div>
+            <div style="width: 100%;">
+                <h:form id="solEdicao" rendered="#{livroBean.listaSolicitacaoEdicao.size() > 0 ? 'true' : 'false' }">                    
+                    <div style="text-align: center; margin-bottom:20px">
+                        <h:outputText class="text-info" style="font-size: 20px;" value="Minha Socilitação" />
+                    </div>
+                    <p:dataScroller id="datEdiLivro" value="#{livroBean.listaSolicitacaoEdicao}" var="ediLivro" chunkSize="3">
+                        <h:outputText value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
+                        <br />
+                        <p:commandButton ajax="false" id="btnAceEdicao" value="Aceitar" actionListener="#{livroBean.aceitarEdicao(ediLivro.idLivro)}" update="formMBibli, solEdicao" />
+                        <p:commandButton ajax="false" id="btnNegEdicao" value="Negar" actionListener="#{livroBean.negarEdicao(ediLivro)}" update="solEdicao" />
+                    </p:dataScroller>                    
+                </h:form>              
+            </div>                        
         </ui:define>
     </ui:composition>
 </html>

@@ -6,32 +6,29 @@
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="padraoUsuarioNaoLogado.xhtml">        
-        <ui:define name="body">                        
+        <ui:define name="conteudo">                                    
             <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />            
             <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
                 <p:graphicImage name="imagens/ajaxloadingbar.gif" />
             </p:dialog>
-            <h:form> 
-                <div class="container-fluid">  
-                    <div class="row center-block">
-                        <div class="col-md-6">
-                            <h:outputText value="Recupere sua conta" styleClass="text-info" style="font-size: 20px;" />
-                            <div class="form-group center-block">                        
-                                <div class="inner-addon left-addon">                            
-                                    <i class="glyphicon glyphicon-envelope"></i>
-                                    <h:inputText id="iptEmail" required="true" styleClass="form-control" a:placeHolder="Email" 
-                                             style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" size="40" 
-                                             value="#{cadastrarBean.emailRecuperacaoSenha}"/>
-                                </div>                         
+            <div class="row">
+                <h:form>                                 
+                    <div style="width: 250px;">
+                        <h:outputText value="Recupere sua conta" styleClass="text-info" style="font-size: 20px;" />
+                        <div class="form-group">                        
+                            <div class="inner-addon left-addon">                            
+                                <i class="glyphicon glyphicon-envelope"></i>
+                                <h:inputText id="iptEmail" required="true" styleClass="form-control" a:placeHolder="Email" 
+                                         style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
+                                         value="#{cadastrarBean.emailRecuperacaoSenha}"/>
                             </div>
-                            <div class="form-group">
-                                <h:commandButton value="Enviar" styleClass="form-control" action="#{cadastrarBean.recuperarConta()}" />
-                                <h:button value="Cancelar" styleClass="form-control" outcome="index.xhtml" />
-                            </div>           
+                            <div style="width: 100px; margin-top: 5px;">
+                                <h:commandButton value="Enviar" styleClass="form-control btn btn-success" action="#{cadastrarBean.recuperarConta()}" />                                
+                            </div>  
                         </div>
-                    </div>
-                </div>
-            </h:form>
+                    </div>                
+                </h:form>            
+            </div>
         </ui:define>
     </ui:composition>
 </html>

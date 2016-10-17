@@ -67,7 +67,7 @@ and open the template in the editor.
 .right-addon input { padding-right: 30px; }
 
 .vertical-align {
-    position: relative;
+    position: absolute;
     top: 50%;
     transform: translateY(-50%);
 }
