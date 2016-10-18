@@ -10,6 +10,7 @@ import br.com.witc.excessao.LivroException;
 import br.com.witc.persistencia.LivroDAO;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -262,17 +263,15 @@ public class Livro implements Serializable {
     }
     
     /**
-     * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
-     * @param tp O Tipo Texto para pesquisa
-     * @param campoPesquisa O campo a ser pesquisado
+     * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa     
      * @param valorPesquisa O valor a ser pesquisado
      * @return Um objeto Map, com os livros encontrados
      * @throws BibliotecaVirtualVaziaException Caso não sejam encontrados livros
      */
-    public List<Livro> listarLivrosPorTipoTexto(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
+    public Map<String, List<Livro>> carregaBibliotecaVirtualPesquisa(String valorPesquisa)     
             throws BibliotecaVirtualVaziaException {                        
         LivroDAO livroDAO = new LivroDAO();
-        return livroDAO.listarLivrosPublicados(tp, campoPesquisa, valorPesquisa);
+        return livroDAO.listarLivrosPublicadosPesquisa(valorPesquisa);
     }      
     
     /**

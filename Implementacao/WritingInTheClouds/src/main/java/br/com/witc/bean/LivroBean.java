@@ -508,8 +508,8 @@ public class LivroBean {
      * @return A próxima página a se visualizada pelo usuário
      */
     public String carregaBibliotecaVirtualPesquisa() {
-        try {            
-            this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtualPesquisa(campoPesquisa, valorPesquisa);
+        try {                        
+            this.bibliotecaVirtual = this.controlador.carregaBibliotecaVirtualPesquisa(valorPesquisa);
         } catch (BibliotecaVirtualVaziaException | TipoTextoException ex) {
             this.bibliotecaVirtual = null;
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());

@@ -12,7 +12,9 @@ import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.TipoTexto;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -93,52 +95,43 @@ public class LivroDAO {
     
     /**
      * Lista os livros publicados na Biblioteca Virtual     
-     * @param tp O Tipo Texto para pesquisa
-     * @param campoPesquisa O campo a ser pesquisado
      * @param valorPesquisa O valor a ser pesquisado
-     * @return Uma lista de livros publicados na Biblioteca Virtual
+     * @return Um objeto Map, com os livros encontrados
      * @throws br.com.witc.excessao.BibliotecaVirtualVaziaException Caso não haja livros publicados na Biblioteca
      */    
-    public List<Livro> listarLivrosPublicados(TipoTexto tp, String campoPesquisa, String valorPesquisa) 
+    public Map<String, List<Livro>> listarLivrosPublicadosPesquisa(String valorPesquisa) 
             throws BibliotecaVirtualVaziaException {        
-        String sql = "FROM Livro AS l ";
-        switch (campoPesquisa) {
-            case "autor":
-                sql += "INNER JOIN l.tipoTexto AS tp "
-                     + "INNER JOIN l.historicoLivros AS hl "
-                     + "INNER JOIN hl.perfil AS p "
-                     + "INNER JOIN p.usuario AS u "
-                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND u.nome LIKE ";
-                break;
-            case "classificacao":
-                sql += "INNER JOIN l.tipoTexto tp "
-                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND l.classificacao LIKE ";
-                break;
-            case "tipoTexto":
-                sql += "INNER JOIN l.tipoTexto tp  "
-                     + "WHERE tp.tipoTexto LIKE ";
-                break;
-            case "titulo":
-                sql += "INNER JOIN l.tipoTexto tp  "
-                     + "WHERE tp.tipoTexto = '" + tp.getTipoTexto() + "' AND l.titulo LIKE ";
-        }
-        sql += "'%" + valorPesquisa + "%' ORDER BY l.tipoTexto";
-                        
-        List<Livro> tmpLstLivro = new ArrayList();
-        List<Object[]> lstResult = sessao.createQuery(sql).list();
-        for (Object[] o : lstResult) {            
-            for (Object o1 : o) {
-                if (o1 instanceof Livro) {
-                    tmpLstLivro.add((Livro) o1);
-                    break;
-                }
-            }
+        String sql = "SELECT DISTINCT l FROM Livro l "
+                + "INNER JOIN l.tipoTexto AS tp "
+                + "INNER JOIN l.historicoLivros AS hl "
+                + "INNER JOIN hl.perfil AS p "
+                + "INNER JOIN p.usuario AS u "
+                + "WHERE ("
+                + "u.nome LIKE '%" + valorPesquisa + "%' OR "
+                + "l.classificacao LIKE '%" + valorPesquisa + "%' OR "
+                + "tp.tipoTexto LIKE '%" + valorPesquisa + "%' OR "
+                + "l.titulo LIKE '%" + valorPesquisa + "%') AND "
+                + "l.disponivelBiblioteca = true "
+                + "ORDER BY l.tipoTexto";
+        
+        String newKey;
+        String oldKey = "";
+        Map<String, List<Livro>> tmpMap = new HashMap();
+        List<Livro> tmpLstLivro =  new ArrayList();
+        for (Livro livro : (List<Livro>) sessao.createQuery(sql).list())  {
+            newKey = livro.getTipoTexto().getTipoTexto();
+            if (!newKey.equals(oldKey)) {
+                tmpLstLivro = new ArrayList();
+                oldKey = newKey;
+            } 
+            tmpLstLivro.add(livro);                    
+            tmpMap.put(newKey, tmpLstLivro);                    
         }
                 
-        if (tmpLstLivro.isEmpty()) {
+        if (tmpMap.isEmpty()) {
             throw new BibliotecaVirtualVaziaException("Não foi possível localizar livros com os critérios informados.");
-        }
-        return tmpLstLivro;
+        }        
+        return tmpMap;
     }    
     
     /**

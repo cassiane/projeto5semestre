@@ -7,67 +7,55 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="padraoInterno.xhtml">
-        <ui:define name="css">            
-            <h:outputStylesheet name="fontawesome-4.6.3/css/font-awesome.min.css" />
-            <h:outputStylesheet name="raterater/css/raterater.css" />                        
-            <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap.min.css" />
-        <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap-theme.min.css" />
-        <h:outputScript name="raterater/js/raterater.jquery.js" />            
-        <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
-            <h:outputScript name="js/witc.js" />
-        </ui:define>
-        <ui:define name="conteudo">             
-            <h:outputText value="Pesquisa" />
-            <h:form id="frmPesquisa">
-                <h:panelGrid columns="3">
-                    <p:selectOneMenu style="width: 200px;" value="#{livroBean.campoPesquisa}" required="true">
-                        <f:selectItem itemLabel="Selecione" itemValue="" />
-                        <f:selectItem itemLabel="Autor" itemValue="#{livroBean.ITEM_PESQUISA_AUTOR}" />                        
-                        <f:selectItem itemLabel="Título" itemValue="#{livroBean.ITEM_PESQUISA_TITULO}" />
-                        <f:selectItem itemLabel="Tipo de Texto" itemValue="#{livroBean.ITEM_PESQUISA_TIPO_TEXTO}" />
-                    </p:selectOneMenu>
-                    <p:inputText value="#{livroBean.valorPesquisa}" style="width: 200px;"/>
-                    <p:commandButton ajax="false" action="#{livroBean.carregaBibliotecaVirtualPesquisa()}"
-                                     style="width:30px; height: 31px;" icon="ui-icon-search" />
-                </h:panelGrid>                   
-            </h:form>
+        <ui:define name="conteudo">                         
+            <div class="form-group form-inline">                    
+                <h:outputText styleClass="text-info" value="Pesquisa" />            
+                <h:form id="frmPesquisa">                                                                                        
+                    <h:inputText styleClass="form-control" style="width: 93%;" value="#{livroBean.valorPesquisa}" />                    
+                    <h:commandLink styleClass="form-control" style="width: 7%;" action="#{livroBean.carregaBibliotecaVirtualPesquisa()}">               
+                        <i class="glyphicon glyphicon-search"></i>
+                    </h:commandLink>                
+                </h:form>
+            </div>
             
-            <h:form id="frmBiblioteca">    
-                <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">                    
-                    <p:carousel styleClass="carousel" id="crsBiblioteca" value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
-                        <h:panelGrid columns="1" style="width: 100%; height: auto;">
-                            <h:panelGrid columns="1" style="width: 100%;">                                
-                                <f:facet name="header">
-                                    <p:graphicImage id="capa" style="height: 100px; width: 70px;" value="#{livroBean.capa}" cache="false">
-                                        <f:param name="livroId" value="#{livro.id}" />
-                                        <f:param name="key" value="#{entry.key}" />
-                                    </p:graphicImage>
-                                </f:facet>                            
+            <div>
+                <h:form id="frmBiblioteca">    
+                    <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">                    
+                        <p:carousel styleClass="carousel" id="crsBiblioteca" value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
+                            <h:panelGrid columns="1" style="width: 100%; height: auto;">
+                                <h:panelGrid columns="1" style="width: 100%;">                                                                    
+                                    <f:facet name="header">
+                                        <p:graphicImage id="capa" style="height: 100px; width: 70px;" value="#{livroBean.capa}" cache="false">
+                                            <f:param name="livroId" value="#{livro.id}" />
+                                            <f:param name="key" value="#{entry.key}" />
+                                        </p:graphicImage>
+                                    </f:facet>                                                                
+                                        
+                                    <h:outputText styleClass="text-info" id="titulo" value="#{livro.titulo}" />                                                            
 
-                                <h:outputText id="titulo" value="#{livro.titulo}" />                                                            
-
-                                <p:commandButton value="Autores" id="autores" update=":autoresDialog" oncomplete="PF('w_autoresDialog').show()">
-                                    <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                                </p:commandButton>       
-                            </h:panelGrid>
-
-                            <f:facet name="footer">                                
-                                <h:panelGrid columns="1" columnClasses="text-align:center" style="width: 100%;">
-                                    <p:commandButton ajax="false" action="lerLivro" value="Ler">                                        
+                                    <p:commandButton value="Autores" id="autores" update=":autoresDialog" oncomplete="PF('w_autoresDialog').show()">
                                         <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                                    </p:commandButton>                                                                        
-                                    <p:remoteCommand name="callBeanMethod" update=":frmBiblioteca" 
-                                                     actionListener="#{livroBean.bookRating()}" oncomplete="initializeRatebox();" />
-                                    <div class="ratebox" data-id="#{entry.key}-#{livro.id}" data-rating="#{livro.avaliacao}" 
-                                          style="margin-left: auto; margin-right: auto;">                                        
-                                    </div>                                        
-                                    <h:outputText id="qtdAvaliacoes" value="#{livro.qtdAvaliacoes} #{livro.qtdAvaliacoes eq 1 ? 'avalição' : 'avaliações'}" />                                                                        
+                                    </p:commandButton>       
                                 </h:panelGrid>
-                            </f:facet>                            
-                        </h:panelGrid>
-                    </p:carousel>                    
-                </c:forEach>
-            </h:form>                       
+
+                                <f:facet name="footer">                                
+                                    <h:panelGrid columns="1" columnClasses="text-align:center" style="width: 100%;">
+                                        <p:commandButton ajax="false" action="lerLivro" value="Ler">                                        
+                                            <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
+                                        </p:commandButton>                                                                        
+                                        <p:remoteCommand name="callBeanMethod" update=":frmBiblioteca" 
+                                                         actionListener="#{livroBean.bookRating()}" oncomplete="initializeRatebox();" />
+                                        <div class="ratebox" data-id="#{entry.key}-#{livro.id}" data-rating="#{livro.avaliacao}" 
+                                              style="margin-left: auto; margin-right: auto;">                                        
+                                        </div>                                        
+                                        <h:outputText id="qtdAvaliacoes" value="#{livro.qtdAvaliacoes} #{livro.qtdAvaliacoes eq 1 ? 'avalição' : 'avaliações'}" />                                                                        
+                                    </h:panelGrid>
+                                </f:facet>                            
+                            </h:panelGrid>
+                        </p:carousel>                    
+                    </c:forEach>
+                </h:form> 
+            </div>
         </ui:define>
         <ui:define name="dialogos">
             <p:dialog id="autoresDialog" header="Autores" widgetVar="w_autoresDialog" modal="true"

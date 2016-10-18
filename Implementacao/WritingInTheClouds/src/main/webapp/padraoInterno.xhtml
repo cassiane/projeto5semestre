@@ -11,8 +11,11 @@
         <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap.min.css" />
         <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap-theme.min.css" /> 
         <h:outputStylesheet name="css/witc.css" /> 
+        <h:outputStylesheet name="raterater/css/raterater.css" /> 
+        <h:outputStylesheet name="fontawesome-4.6.3/css/font-awesome.min.css" />
         <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
-        <ui:insert name="css" />
+        <h:outputScript name="raterater/js/raterater.jquery.js" />
+        <h:outputScript name="js/witc.js" />        
         <style>
             .img-circle {
                 position: absolute;
@@ -107,15 +110,21 @@
                             </div>
                         </div>
                         <div style="padding-top: 10px; padding-bottom: 10px;">                                
-                            <c:forEach var="livro" items="#{livroBean.listarLivrosPublicadosPerfil()}">
-                                <p:graphicImage style="width: 25%; height: 20%; padding: 5px;" value="#{livroBean.capaLivroConvertida}">
-                                    <f:param name="idLivro" value="#{livro.id}" />
-                                </p:graphicImage>
-                            </c:forEach>                                
+                            <h:form>
+                                <c:forEach var="livro" items="#{livroBean.listarLivrosPublicadosPerfil()}">
+                                    <h:commandLink action="lerLivro">
+                                        <p:graphicImage style="width: 25%; height: 20%; padding: 5px;" 
+                                                        value="#{livroBean.capaLivroConvertida}" title="#{livro.titulo}">
+                                            <f:param name="idLivro" value="#{livro.id}" />
+                                        </p:graphicImage>
+                                        <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
+                                    </h:commandLink>
+                                </c:forEach>                                
+                            </h:form>
                         </div>                        
                     </div>
                 </div>
-                <div class="col-md-6">                                       
+                <div class="col-md-6">                                                           
                     <ui:insert name="conteudo" />                                    
                 </div>
                 <div class="col-md-3">

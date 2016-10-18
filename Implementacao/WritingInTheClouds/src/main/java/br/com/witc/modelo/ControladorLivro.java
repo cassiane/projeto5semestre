@@ -5,7 +5,6 @@
  */
 package br.com.witc.modelo;
 
-import br.com.witc.bean.LivroBean;
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoTextoException;
@@ -134,35 +133,14 @@ public class ControladorLivro {
     
     /**
      * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
-     * @param campoPesquisa O campo a ser pesquisado
      * @param valorPesquisa O valor a ser pesquisado
      * @return Um objeto Map, com os livros encontrados
      * @throws BibliotecaVirtualVaziaException Caso não sejam encontrados livros
      * @throws br.com.witc.excessao.TipoTextoException Caso não haja Tipos de Textos cadastrados no sistema
      */
-    public Map<String, List<Livro>> carregaBibliotecaVirtualPesquisa(String campoPesquisa, String valorPesquisa) 
-            throws BibliotecaVirtualVaziaException, TipoTextoException {
-        Map<String,List<Livro>> tmpMap = new HashMap();
-        
-        TipoTexto tipoTexto = new TipoTexto();
-        List<Livro> tmpLivros;
-        for (TipoTexto tp : tipoTexto.getLstTipoTexto()) {
-            try {
-                if ((!campoPesquisa.equals(LivroBean.ITEM_PESQUISA_TIPO_TEXTO)) || 
-                   ((campoPesquisa.equals(LivroBean.ITEM_PESQUISA_TIPO_TEXTO)) &&
-                   (tp.getTipoTexto().toUpperCase().contains(valorPesquisa.toUpperCase())))) {
-                    tmpLivros = this.livro.listarLivrosPorTipoTexto(tp, campoPesquisa, valorPesquisa);
-                    if ((tmpLivros != null) && (!tmpLivros.isEmpty())) {
-                        tmpMap.put(tp.getTipoTexto(), tmpLivros);
-                    }                
-                }
-            } catch (BibliotecaVirtualVaziaException ex) {}
-        }
-        
-        if (tmpMap.isEmpty()) {
-            throw new BibliotecaVirtualVaziaException("Nenhum livro encontrado com os critérios informados.");
-        }
-        return tmpMap;
+    public Map<String, List<Livro>> carregaBibliotecaVirtualPesquisa(String valorPesquisa) 
+            throws BibliotecaVirtualVaziaException, TipoTextoException {                
+        return this.livro.carregaBibliotecaVirtualPesquisa(valorPesquisa);
     }
     
     /**
