@@ -81,10 +81,10 @@ public class AutenticarBean {
      */
     public String getNumeroAmigosUsuarioLogado() {
         int numAmigos = this.controlador.getNumeroAmigosUsuarioLogado();
-        if (numAmigos == 0) {
-            return "Você ainda não possui amigos!";
+        if (numAmigos == 1) {
+            return "1 amigo";
         }
-        return String.valueOf(numAmigos) + " amigos.";
+        return String.valueOf(numAmigos) + " amigos";
     }        
     
     /**
