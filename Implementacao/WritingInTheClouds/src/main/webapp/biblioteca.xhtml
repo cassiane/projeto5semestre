@@ -41,14 +41,15 @@
             </div>
             <div style="width: 100%;">
                 <h:form id="solEdicao" rendered="#{livroBean.listaSolicitacaoEdicao.size() > 0 ? 'true' : 'false' }">                    
-                    <div style="text-align: center; margin-bottom:20px">
+                    <div style="text-align: center; margin-top: 20px; margin-bottom:20px">
                         <h:outputText class="text-info" style="font-size: 20px;" value="Minha Socilitação" />
                     </div>
                     <p:dataScroller id="datEdiLivro" value="#{livroBean.listaSolicitacaoEdicao}" var="ediLivro" chunkSize="3">
-                        <h:outputText value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
-                        <br />
-                        <p:commandButton ajax="false" id="btnAceEdicao" value="Aceitar" actionListener="#{livroBean.aceitarEdicao(ediLivro.idLivro)}" update="formMBibli, solEdicao" />
-                        <p:commandButton ajax="false" id="btnNegEdicao" value="Negar" actionListener="#{livroBean.negarEdicao(ediLivro)}" update="solEdicao" />
+                        <h:outputText styleClass="text-primary" value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
+                        <br />                                                                                                
+                        <h:commandButton id="btnAceEdicao" styleClass="btn btn-success" value="Aceitar" actionListener="#{livroBean.aceitarEdicao(ediLivro.idLivro)}" />
+                        #{' '}
+                        <h:commandButton id="btnNegEdicao" styleClass="btn btn-danger" value="Negar" actionListener="#{livroBean.negarEdicao(ediLivro)}" />
                     </p:dataScroller>                    
                 </h:form>              
             </div>                        

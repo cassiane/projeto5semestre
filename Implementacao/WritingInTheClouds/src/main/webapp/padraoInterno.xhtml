@@ -25,7 +25,7 @@
                 width: auto;     
                 height: auto;                
                 margin:auto;
-            }
+            }                                   
         </style>
     </h:head>
     <h:body>         
@@ -68,7 +68,11 @@
                                 <h:outputText style="font-weight: bold;" value="#{autenticarBean.nomeCompletoUsuario}" />
                             </div>
                             <div>
-                                <h:link value="#{autenticarBean.numeroAmigosUsuarioLogado}" outcome="biblioteca.xhtml" />
+                                <h:form>
+                                    <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}" 
+                                                   actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" 
+                                                   action="listarAmigos.xhtml" />
+                                </h:form>
                             </div>
                         </div>
                     </div>                  
@@ -111,10 +115,8 @@
                         </div>                        
                     </div>
                 </div>
-                <div class="col-md-6">                    
-                    <p:layoutUnit position="center">
-                        <ui:insert name="conteudo"/>                
-                    </p:layoutUnit>                            
+                <div class="col-md-6">                                       
+                    <ui:insert name="conteudo" />                                    
                 </div>
                 <div class="col-md-3">
                     <h:form id="frmChat">
