@@ -24,8 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.faces.bean.SessionScoped;
 import javax.servlet.http.HttpServletRequest;
@@ -34,14 +32,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.CroppedImage;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
-import java.io.FileOutputStream;
 import java.io.*;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.UploadedFile;
 
@@ -311,56 +306,7 @@ public class CadastrarBean {
     public void setTipoTextoDAO(TipoTextoDAO tipoTextoDAO) {
         this.tipoTextoDAO = tipoTextoDAO;
     }
-    
-    
-    
-    /**
-     * Cria o arquivo temporário
-     * @param bytes
-     * @param arquivo 
-     */
-    public void criaArquivo(byte[] bytes, String arquivo) {
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(arquivo);
-            fos.write(bytes);
-            fos.close();
-        } catch (FileNotFoundException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
-        } catch (IOException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
-        }
-    }
-    /**
-     * Evento de enviar a imagem utilizado no primefaces
-     * O método enviarImagem(FileUploadEvent event) é utilizado no atributo 
-     * fileUploadListener para ser executado sempre que uma imagem estiver sendo 
-     * enviada. É neste método onde poderemos fazer conversões, criação de 
-     * arquivos, etc.
-     * @param event 
-     */
-    public void enviarImagem(FileUploadEvent event) {
-        byte[] img = event.getFile().getContents();
-        
-        imagemTemporaria = event.getFile().getFileName();
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ServletContext scontext;
-        scontext = (ServletContext) facesContext.getExternalContext().getContext();
-        String arquivo = scontext.getRealPath("/Upload/" + imagemTemporaria);
-        arquivo = "C:\\Temp\\"+imagemTemporaria;
-        criaArquivo(img, arquivo);
-        setExibeBotao(true);
-    }
-    /**
-    * método crop() para coletar a imagem recortada e jogar dentro da 
-    * imagemEnviada que é do tipo StreamedContent, que pode ser trabalhado 
-    * dinamicamente com o um p:graphicImage.
-    * Seta a imagem no ImaggeCropper
-    */
-    public void crop() {
-        setImagemEnviada(new DefaultStreamedContent(new ByteArrayInputStream(croppedImage.getBytes())));
-    }
-    
+           
     /**
      * Busca e atualiza a lista de amigos
      *
@@ -672,20 +618,14 @@ public class CadastrarBean {
         }
         return null;
     }
-    public String excluirUsuario(){        
+    public String excluirUsuario(){                
         try {
             this.usuario.setAtivo(false);
-            this.controlador.excluirUsuario(usuario); 
+            this.controlador.excluirUsuario(this.usuario); 
             removerTodasAmizades(this.usuario.getId());
             excluirTodosTipoTextoUsuario(this.usuario.getId());
-        } catch (DadosUsuarioInvalidoException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UsuarioInvalidoException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DadosUsuarioInvalidoException | NoSuchAlgorithmException | UnsupportedEncodingException | UsuarioInvalidoException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
         this.usuario = new Usuario();
         this.diaNascimento = null;
@@ -693,7 +633,7 @@ public class CadastrarBean {
         this.anoNascimento = null;
         this.emailVerificado = null;  
         getCurrentInstance().getExternalContext().invalidateSession();
-        return "index.xhtml?faces-redirect=true";        
+        return "index.xhtml?faces-redirect=true";   
     }
     /**
      * Envia o link de redefinição de senha para o usuário
