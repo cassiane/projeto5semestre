@@ -39,6 +39,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.FileOutputStream;
 import java.io.*;
+import java.util.Base64;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -441,7 +442,7 @@ public class CadastrarBean {
     public void setConvidarEmail(String convidarEmail) {
         this.convidarEmail = convidarEmail;
     }
-
+    
     public StreamedContent getFotos(Usuario user) {
         try {
             if (user.getFoto() == null) {
@@ -583,6 +584,8 @@ public class CadastrarBean {
      * Retorna a data de nascimento
      */
     public void retornarDataNasc() {
+        // Passei aqui e quiz atualizar o status
+        this.atualizarStatusUsuario(1);
         this.preencherDataNasc();
     }
 
@@ -599,6 +602,7 @@ public class CadastrarBean {
             }
 
             setDataNascimento();
+            this.usuario.setStatus("Pensando");
             this.usuario.setAtivo(true);
             this.controlador.cadastrarUsuario(this.usuario);
             setDataNascimento();                  
@@ -674,6 +678,7 @@ public class CadastrarBean {
     }
     public String excluirUsuario(){        
         try {
+            this.usuario.setStatus("");
             this.usuario.setAtivo(false);
             this.controlador.excluirUsuario(usuario); 
             removerTodasAmizades(this.usuario.getId());
@@ -802,6 +807,8 @@ public class CadastrarBean {
      * @param idSugestao Identificação do usuario que deseja-se tornar amigo
      */
     public void solicitarAmizade(int idSugestao) {
+        // Status do usuario
+        this.atualizarStatusUsuario(1);
         this.controlador.solicitarAmizade(idSugestao);
     }
 
@@ -811,6 +818,8 @@ public class CadastrarBean {
      * @param idAceitar Identificador do solicitante da amizade
      */
     public void aceitarAmizade(int idAceitar) {
+        // Status do usuario
+        this.atualizarStatusUsuario(1);
         this.controlador.aceitarAmizade(idAceitar);
     }
 
@@ -820,6 +829,8 @@ public class CadastrarBean {
      * @param idAmizade Identificador do solicitante da amizade
      */
     public void removerAmizade(int idAmizade) {
+        // Status do usuario
+        this.atualizarStatusUsuario(1);
         this.controlador.removerAmizade(idAmizade);
     }
     
@@ -836,6 +847,8 @@ public class CadastrarBean {
      * Metodo para capiturar o email e a url para enviar o convite
      */
     public void enviarConvite() {
+        // Status do usuario
+        this.atualizarStatusUsuario(1);
         try {
             // Capitura o email para convidar
             String email = this.getConvidarEmail();
@@ -1060,5 +1073,13 @@ public class CadastrarBean {
      */
     public void setSelectedTiposTextoUsuario(List<TipoTexto> selectedTiposTextoUsuario) {
         this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
+    }
+    
+    public void atualizarStatusUsuario(int status) {
+        //Atualizar Status do Usuario
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "autenticarBean");
+        autenticarBean.atualizarStatusUsuario(status);
     }
 }

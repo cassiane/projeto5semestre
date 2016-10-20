@@ -110,6 +110,8 @@ public class LivroBean {
      * @return the livroSelecionado
      */
     public Livro getLivroSelecionado() {
+        // Status do usuario;
+        this.atualizarStatusUsuarioLivro(4);
         return livroSelecionado;
     }
 
@@ -200,6 +202,8 @@ public class LivroBean {
     }
     
     public String biblioteca(){
+        // Status do usuario
+        this.atualizarStatusUsuarioLivro(1);
         return "biblioteca";
     }  
     
@@ -208,6 +212,7 @@ public class LivroBean {
         this.textoLivro= "";
         this.tituloLivro = "";
         this.tipoTexto = new TipoTexto();
+        this.atualizarStatusUsuarioLivro(2);
         return "metadadosLivro";
     }
 
@@ -312,7 +317,7 @@ public class LivroBean {
         } catch (Exception ex) {
             enviarMensagem(FacesMessage.SEVERITY_ERROR, "Não foi possível salvar! Problemas ao carregar a capa.");
         }
-      
+        this.atualizarStatusUsuarioLivro(2);
         return "editarLivro"; 
     }
     
@@ -330,6 +335,8 @@ public class LivroBean {
                 this.livroFinalizado = false;
                 this.disponivelEdicaoAmigo = false;
                 atualizarListaLivrosPerfil();
+                // Status do usuario
+                this.atualizarStatusUsuarioLivro(1);
                 return "biblioteca.xhtml?faces-redirect=true";                
             }
         } catch (Exception ex) {
@@ -563,7 +570,9 @@ public class LivroBean {
             } else if (this.livroCarregado.getBookLock() != this.perfilUsuario.getId()) {
                 this.livroCarregado.setBookLock(this.perfilUsuario.getId());            
                 this.controlador.salvarLivro(livroCarregado, livroFinalizado, perfilUsuario);
-            }                                    
+            }
+            // Status usuario
+            this.atualizarStatusUsuarioLivro(2);
             return "editarLivro";
         } catch(LivroException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
@@ -729,6 +738,14 @@ public class LivroBean {
     
     private void atualizarListaLivrosPerfil() {
         this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);
+    }
+    
+    private void atualizarStatusUsuarioLivro(int status) {
+        //Atualizar Status do Usuario
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "autenticarBean");
+        autenticarBean.atualizarStatusUsuario(status);
     }
     
     /**

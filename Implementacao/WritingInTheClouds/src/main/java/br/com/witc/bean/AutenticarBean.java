@@ -76,6 +76,29 @@ public class AutenticarBean {
         return this.controlador.getNomeCompletoUsuario();
     }
     
+    /**
+     * @return O status do usuário logado no sistema
+     */
+    public String getStatusUsuario() {
+        return this.controlador.getStatusUsuario();
+    }
+    
+    public void setAmigoUsuario(int id) {
+        this.controlador.setAmigoUsuario(id);
+    }
+    
+    public void setAmigoUsuario() {
+        this.controlador.setAmigoUsuario();
+    }
+    
+    public boolean isAmigo() {
+        return this.controlador.getAmigoUsuario().getId() == 0;
+    }
+    
+    public void atualizarStatusUsuario(int status) {
+        this.controlador.atualizarStatusUsuario(status);
+    }
+    
     /**     
      * @return A quantidade de amigos do usuário logado no sistema
      */

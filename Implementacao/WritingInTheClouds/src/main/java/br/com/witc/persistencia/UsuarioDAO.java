@@ -281,4 +281,22 @@ public class UsuarioDAO {
             // usuario não recebeu nenhuma solicitação
         }
     }
+
+    public Usuario carregarAmigo(int id) {
+        return (Usuario) sessao.load(Usuario.class, id);
+    }
+    
+    public void atualizarStatus(int usuario, int status) {
+        sessao.createSQLQuery("UPDATE witc.Usuario SET status = :st WHERE id = :us")
+                .setInteger("st", status)
+                .setInteger("us", usuario)
+                .executeUpdate();
+        sessao.flush();
+    }
+    
+    public String carregarStatus(int usuario) {
+        return (String) sessao.createSQLQuery("SELECT status FROM witc.Usuario WHERE id = :us")
+                .setInteger("us", usuario)
+                .uniqueResult();
+    }
 }

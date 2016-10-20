@@ -17,9 +17,11 @@ import java.util.List;
 public class ControladorAutenticacao {
     private Usuario usuario;
     private Perfil perfil;
+    private Usuario amigoUsuario;
     
     public ControladorAutenticacao() {
         this.usuario = new Usuario();
+        this.amigoUsuario = new Usuario();
     }        
 
     /**
@@ -41,6 +43,9 @@ public class ControladorAutenticacao {
      * @return O nome do usuário logado no sistema
      */
     public String getNomeCompletoUsuario() {
+        if (this.amigoUsuario.getId() != 0) {
+            return this.amigoUsuario.getNome() + " " + this.amigoUsuario.getSobrenome();
+        }
         return this.usuario.getNome() + " " + this.usuario.getSobrenome();
     }
     
@@ -48,7 +53,12 @@ public class ControladorAutenticacao {
      * @return A quantidade de amigos do usuário logado no sistema
      */
     public int getNumeroAmigosUsuarioLogado() {
-        List<Usuario> lstAmigos = this.usuario.listarAmigos();
+        List<Usuario> lstAmigos;
+        if (this.amigoUsuario.getId() != 0) {
+            lstAmigos = this.amigoUsuario.listarAmigos();
+        } else {
+            lstAmigos = this.usuario.listarAmigos();
+        }
         if (lstAmigos != null) {
             return lstAmigos.size();
         }
@@ -83,5 +93,29 @@ public class ControladorAutenticacao {
     }
     public void retornarPerfilUsuarioLogado(){
        this.setPerfil(Perfil.retornarPerfilUsuarioLogado(this.getUsuario()));
+    }
+
+    public String getStatusUsuario() {
+        if (this.amigoUsuario.getId() != 0) {
+            return this.amigoUsuario.getStatus();
+        }
+        return this.usuario.getStatus();
+    }
+    
+    public void setAmigoUsuario(int id) {
+        Usuario carrega = new Usuario();
+        this.amigoUsuario = carrega.carregarAmigo(id);
+    }
+    
+    public void setAmigoUsuario() {
+        this.amigoUsuario = new Usuario();
+    }
+
+    public Usuario getAmigoUsuario() {
+        return amigoUsuario;
+    }
+    
+    public void atualizarStatusUsuario(int status) {
+        this.usuario.atualizarStatus(status);
     }
 }

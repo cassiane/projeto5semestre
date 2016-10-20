@@ -38,6 +38,7 @@ public class Usuario implements Serializable {
     private String genero;
     private byte[] foto;
     private String senha;
+    private String status;
     private boolean ativo; 
 
     /**
@@ -150,6 +151,14 @@ public class Usuario implements Serializable {
      */
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
     /**
@@ -437,6 +446,15 @@ public class Usuario implements Serializable {
         UsuarioDAO dao = new UsuarioDAO();
         dao.verificarConvite(email);
     }
+
+    public Usuario carregarAmigo(int id) {
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.carregarAmigo(id);
+    }
     
-    
+    public void atualizarStatus(int status) {
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.atualizarStatus(this.getId(), status);
+        this.setStatus(dao.carregarStatus(this.getId()));
+    }
 }
