@@ -282,10 +282,20 @@ public class UsuarioDAO {
         }
     }
 
+    /**
+     * Buscar o amigo passado por parametro
+     * @param id Codigo do amigo
+     * @return O amigo
+     */
     public Usuario carregarAmigo(int id) {
         return (Usuario) sessao.load(Usuario.class, id);
     }
-    
+
+    /**
+     * Persistir a atualização do status do usuario passado por parametro
+     * @param usuario Codigo do usuario
+     * @param status Codigo do status (Enum do banco)
+     */
     public void atualizarStatus(int usuario, int status) {
         sessao.createSQLQuery("UPDATE witc.Usuario SET status = :st WHERE id = :us")
                 .setInteger("st", status)
@@ -293,7 +303,12 @@ public class UsuarioDAO {
                 .executeUpdate();
         sessao.flush();
     }
-    
+
+    /**
+     * Busca o status do usuario passado por parametro
+     * @param usuario Codigo do usuario
+     * @return O status do usuario
+     */
     public String carregarStatus(int usuario) {
         return (String) sessao.createSQLQuery("SELECT status FROM witc.Usuario WHERE id = :us")
                 .setInteger("us", usuario)
