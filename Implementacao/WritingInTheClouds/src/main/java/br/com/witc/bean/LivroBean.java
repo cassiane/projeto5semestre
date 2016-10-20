@@ -714,7 +714,13 @@ public class LivroBean {
      * @return Uma lista de livros publicados pelo usuário
      */
     public List<Livro> listarLivrosPublicadosPerfil() {
-        return this.controlador.listarLivrosPublicadosPerfil(this.perfilUsuario.getId());
+        int id = this.verificarAmigo();
+        // Verifica se é para mostrar os livros do usuario ou do amigo
+        if (id == 0) {
+            return this.controlador.listarLivrosPublicadosPerfil(this.perfilUsuario.getId());
+        } else {
+            return this.controlador.listarLivrosPublicadosPerfil(id);
+        }
     }    
     
     public StreamedContent getCapaLivroConvertida() {                        
@@ -746,6 +752,14 @@ public class LivroBean {
         AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                 .getELResolver().getValue(elContext, null, "autenticarBean");
         autenticarBean.atualizarStatusUsuario(status);
+    }
+    
+    private int verificarAmigo() {
+        //Verificar se é amigo
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "autenticarBean");
+        return autenticarBean.getIdAmigoUsuario();
     }
     
     /**

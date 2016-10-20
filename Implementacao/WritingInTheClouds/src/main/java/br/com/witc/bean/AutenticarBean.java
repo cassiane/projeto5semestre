@@ -103,6 +103,18 @@ public class AutenticarBean {
     public boolean isAmigo() {
         return this.controlador.getAmigoUsuario().getId() == 0;
     }
+
+    /**
+     * Retornando o id do usuário amigo
+     * @return Codigo do amigo
+     */
+    public int getIdAmigoUsuario() {
+        if (this.isAmigo()) {
+            return 0;
+        } else {
+            return this.controlador.getAmigoUsuario().getId();
+        }
+    }
     
     /**
      * Acessa o controle para atualizar o status do usuario
