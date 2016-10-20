@@ -1082,4 +1082,9 @@ public class CadastrarBean {
                 .getELResolver().getValue(elContext, null, "autenticarBean");
         autenticarBean.atualizarStatusUsuario(status);
     }
+    
+    public String criarNovoPerfil(int idTipoPerfil) {
+        this.controlador.criarPerfilUsuario(idTipoPerfil, this.usuario);
+        return "timeline";
+    }
 }

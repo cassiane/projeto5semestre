@@ -27,7 +27,7 @@ public class PerfilDAO {
 
     public Perfil carregarPerfil(Usuario usuario) {
 
-        Perfil p = (Perfil) sessao.createQuery("FROM Perfil WHERE idUsuario=:idUsuario ").setInteger("idUsuario", usuario.getId())
+        Perfil p = (Perfil) sessao.createQuery("FROM Perfil WHERE idUsuario=:idUsuario AND perfilPadrao=true").setInteger("idUsuario", usuario.getId())
                 .uniqueResult();
 
         if (p == null) {
@@ -65,5 +65,9 @@ public class PerfilDAO {
 
     public Perfil carregaPerfilID(int id) {
         return (Perfil) sessao.createQuery("FROM Perfil WHERE id=:idp").setInteger("idp", id).uniqueResult();
+    }
+
+    public void desativarPerfil(Perfil perfil) {
+        sessao.saveOrUpdate(perfil);
     }
 }
