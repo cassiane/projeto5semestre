@@ -19,6 +19,7 @@
         <h:outputScript name="js/witc.js" />
     </h:head>
     <h:body>         
+        <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
         <div class="container">            
             <p:growl id="growl" severity="error" globalOnly="true" /> 
             <div class="clearfix" />
@@ -49,9 +50,10 @@
             <div class="row">
                 <div class="col-md-3">                     
                     <div class="box perfil-box">
-                        <div class="wallpapper-box">
-                            <h:graphicImage styleClass="img-wallpaper" value="resources/imagens/semWallpaper.png" />                        
-                            <h:graphicImage styleClass="img-thumbnail img-circle" value="resources/imagens/semFoto.png" />                            
+                        <div class="wallpapper-box">                            
+                            <p:graphicImage styleClass="img-wallpaper" value="resources/imagens/semWallpaper.png" cache="false" />
+                            <p:graphicImage styleClass="img-thumbnail img-circle" value="#{cadastrarBean.foto}" 
+                                            style="width: 120px; height: 120px;" cache="false" />
                         </div>                    
                         <div style="position: absolute; width: 100%; text-align: center; top: 65%;">
                             <div>
@@ -64,7 +66,7 @@
                                                    action="listarAmigos.xhtml" />
                                 </h:form>
                             </div>
-                        </div>
+                        </div>                        
                     </div>                  
                     <div class="box about-box">
                         <div style="padding-left: 10px;">

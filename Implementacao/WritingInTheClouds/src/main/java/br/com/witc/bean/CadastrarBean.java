@@ -38,6 +38,7 @@ import java.io.*;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -591,7 +592,7 @@ public class CadastrarBean {
                 this.usuario.setFoto(imgBytes);
             }                        
             setDataNascimento();
-            this.controlador.alterarUsuario(usuario);
+            this.controlador.alterarUsuario(this.usuario);
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
@@ -962,6 +963,9 @@ public class CadastrarBean {
         this.controlador.excluirTodosTipoTextoUsuario(idUsuario);        
     }
     
+    public void handleFileUpload(FileUploadEvent event) {
+                this.file=event.getFile();
+    }
     
     /**
      * Envia à viewer uma mensagem com o status da operação

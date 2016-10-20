@@ -263,7 +263,7 @@ public class Usuario implements Serializable {
      */
     public void alterarUsuario() throws DadosUsuarioInvalidoException, 
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
-       UsuarioDAO dao = new UsuarioDAO();      
+       UsuarioDAO dao = new UsuarioDAO();        
        dao.salvarUsuario(this);
     }
     /**
