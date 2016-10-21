@@ -12,15 +12,17 @@
             <f:event listener="#{cadastrarBean.retornarDataNasc()}" type="preRenderView"/>
             <h:form id="frmEditarUsuario" enctype="multipart/form-data">                
                 <div class="form-group">                                                           
-                    <div class="col-md-4">                                                                                                                       
+                    <div class="col-md-4">                                
                         <p:graphicImage id="foto" styleClass="img-thumbnail img-responsive" value="#{cadastrarBean.foto}" 
-                                        cache="false" />                        
+                                        cache="false" />                                                
                         <div style="text-align: center;">
                             <h:outputLabel for="file" value="Altere sua foto" styleClass="btn btn-info" style="margin-top: 10px;" />
-                            <p:fileUpload id="file" value="#{cadastrarBean.file}" style="display: none;" auto="true" 
-                                          fileUploadListener="#{cadastrarBean.handleFileUpload}"
-                                          update="foto" mode="simple"                                               
-                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            <p:fileUpload id="file" 
+                                          value="#{cadastrarBean.file}"                                          
+                                          style="display: none;"
+                                          update="foto" 
+                                          mode="simple"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />                            
                         </div>
                     </div>
                     <div class="col-md-8">

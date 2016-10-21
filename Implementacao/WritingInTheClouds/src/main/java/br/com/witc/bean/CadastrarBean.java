@@ -38,7 +38,6 @@ import java.io.*;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -73,7 +72,7 @@ public class CadastrarBean {
     private TipoPerfil tipoPerfil;
     private TipoPerfilDAO tipoPerfildao;
     public TipoTexto tipoTexto;
-    public TipoTextoDAO tipoTextoDAO;
+    public TipoTextoDAO tipoTextoDAO;    
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
@@ -961,10 +960,6 @@ public class CadastrarBean {
      */
     public void excluirTodosTipoTextoUsuario(int idUsuario){
         this.controlador.excluirTodosTipoTextoUsuario(idUsuario);        
-    }
-    
-    public void handleFileUpload(FileUploadEvent event) {
-                this.file=event.getFile();
     }
     
     /**
