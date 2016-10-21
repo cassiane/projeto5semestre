@@ -58,9 +58,13 @@
                         <h:outputText value="Lista de amigos"/>
                     </f:facet>
                     <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail" rendered="#{cadastrarBean.temAmigos}">
-                        <p:graphicImage height="75px" value="#{cadastrarBean.fotoAmigo}" cache="false">
-                            <f:param name="userfoto" value="#{amigo.id}" />
-                        </p:graphicImage>
+                        <h:commandLink value=""
+                                       actionListener="#{autenticarBean.setAmigoUsuario(amigo.id)}"
+                                       action="timeline.xhtml">
+                            <p:graphicImage height="75px" value="#{cadastrarBean.fotoAmigo}" cache="false">
+                                <f:param name="userfoto" value="#{amigo.id}" />
+                            </p:graphicImage>
+                        </h:commandLink>
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="5">
                                 <p:outputPanel>

@@ -17,9 +17,11 @@ import java.util.List;
 public class ControladorAutenticacao {
     private Usuario usuario;
     private Perfil perfil;
+    private Usuario amigoUsuario;
     
     public ControladorAutenticacao() {
         this.usuario = new Usuario();
+        this.amigoUsuario = new Usuario();
     }        
 
     /**
@@ -41,6 +43,10 @@ public class ControladorAutenticacao {
      * @return O nome do usuário logado no sistema
      */
     public String getNomeCompletoUsuario() {
+        // Verificar se é para retornar o nome do usuario ou do amigo carregado
+        if (this.amigoUsuario.getId() != 0) {
+            return this.amigoUsuario.getNome() + " " + this.amigoUsuario.getSobrenome();
+        }
         return this.usuario.getNome() + " " + this.usuario.getSobrenome();
     }
     
@@ -48,7 +54,13 @@ public class ControladorAutenticacao {
      * @return A quantidade de amigos do usuário logado no sistema
      */
     public int getNumeroAmigosUsuarioLogado() {
-        List<Usuario> lstAmigos = this.usuario.listarAmigos();
+        List<Usuario> lstAmigos;
+        // Verificar se é para contar os amigos do usuario ou do amigo carregado
+        if (this.amigoUsuario.getId() != 0) {
+            lstAmigos = this.amigoUsuario.listarAmigos();
+        } else {
+            lstAmigos = this.usuario.listarAmigos();
+        }
         if (lstAmigos != null) {
             return lstAmigos.size();
         }
@@ -83,5 +95,47 @@ public class ControladorAutenticacao {
     }
     public void retornarPerfilUsuarioLogado(){
        this.setPerfil(Perfil.retornarPerfilUsuarioLogado(this.getUsuario()));
+    }
+
+    /**
+     * Preenche o status do usuario verificando se é usuario ou amigo
+     * @return O status do usuario que tiver salvo no banco
+     */
+    public String getStatusUsuario() {
+        if (this.amigoUsuario.getId() != 0) {
+            return this.amigoUsuario.getStatus();
+        }
+        return this.usuario.getStatus();
+    }
+    
+    /**
+     * Carrega a variavel com o codigo do amigo passado
+     * @param id Codigo do amigo
+     */
+    public void setAmigoUsuario(int id) {
+        Usuario carrega = new Usuario();
+        this.amigoUsuario = carrega.carregarAmigo(id);
+    }
+    
+    /**
+     * Zera a variavel amigoUsuario
+     */
+    public void setAmigoUsuario() {
+        this.amigoUsuario = new Usuario();
+    }
+
+    /**
+     * @return O usuario amigo
+     */
+    public Usuario getAmigoUsuario() {
+        return amigoUsuario;
+    }
+    
+    /**
+     * Acessa o modelo para atualizar o status do usuario
+     * @param status Codigo do status (Enum do banco)
+     */
+    public void atualizarStatusUsuario(int status) {
+        this.usuario.atualizarStatus(status);
     }
 }
