@@ -366,6 +366,15 @@ public class Usuario implements Serializable {
     }
     
     /**
+     * Método para salvar os tipos de texto em que o usuário se identifica
+     * @param idUsuario 
+     */    
+    List <String> listarTipoTextoUsuario(int idUsuario){
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.listarTipoTextoUsuario(idUsuario);
+    }
+    
+    /**
      * Exclui um registro de um tipo de texto em que o usuario nao se identifica mais
      * @param idUsuario
      * @param idTipoTexto 

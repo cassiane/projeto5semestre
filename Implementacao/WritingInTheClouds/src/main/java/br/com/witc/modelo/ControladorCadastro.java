@@ -306,6 +306,16 @@ public class ControladorCadastro {
     }
     
     /**
+     * Método para retornar os tipos de textos do usuário
+     * para este se identificar com vários tipos de texto 
+     * @param idUsuario usuario 
+     * @return uma lista de nomes de tipos de textos
+     */
+    public List <String> listarTipoTextoUsuario(int idUsuario){
+        return this.usuario.listarTipoTextoUsuario(idUsuario);
+    }
+    
+    /**
      * Método que exclui um registro de um tipo de texto em que um usuario nao 
      * se identifica mais
      * @param idUsuario

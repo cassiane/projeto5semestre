@@ -218,6 +218,20 @@ public class UsuarioDAO {
     }
     
     /**
+     * Retorna vários registros na tabela de ligação entre usuário e tipo de texto
+     * para identificar os tipos de texto em que o usuário se identifica
+     * @param idUsuario 
+     * @return retorna uma lista de string de tipos de texto do usuario
+     */
+    public List<String> listarTipoTextoUsuario(int idUsuario){
+        return sessao.createSQLQuery("SELECT tipotexto FROM usuario_tem_tipotexto u " +
+        "inner join tipotexto tipo on u.idtipotexto = tipo.id " +
+        "where u.idusuario = :usuario")
+                .setParameter("usuario", idUsuario)
+                .list();        
+    }
+    
+    /**
      * Exclui um registro na tabela de ligação entre usuário e tipo de texto
      * para identificar os tipos de texto em que o usuário se identifica
      * @param idUsuario

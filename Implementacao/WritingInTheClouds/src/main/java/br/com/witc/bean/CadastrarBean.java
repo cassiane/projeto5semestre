@@ -502,6 +502,20 @@ public class CadastrarBean {
     }
 
     /**
+     * @return the selectedTiposTextoUsuario
+     */
+    public List<String> getSelectedTiposTextoUsuario() {
+        return selectedTiposTextoUsuario;
+    }
+
+    /**
+     * @param selectedTiposTextoUsuario the selectedTiposTextoUsuario to set
+     */
+    public void setSelectedTiposTextoUsuario(List<String> selectedTiposTextoUsuario) {
+        this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
+    }
+
+    /**
      * Seta o usuario deste bean com o usuario logado no sistema
      */
     public void setUsuarioLogado() {
@@ -609,6 +623,7 @@ public class CadastrarBean {
             }                        
             setDataNascimento();
             this.controlador.alterarUsuario(this.usuario);
+            this.controlador.excluirTodosTipoTextoUsuario(this.usuario.getId());
             this.controlador.salvarTipoTextoUsuario(selectedTiposTextoUsuario, this.usuario.getId());
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
@@ -969,6 +984,13 @@ public class CadastrarBean {
     }
     
     /**
+     * Adiciona ao array local os tipos de texto do usuario.
+     */
+    public void retornarTiposTextoUsuario(){
+        this.selectedTiposTextoUsuario = this.controlador.listarTipoTextoUsuario(usuario.getId());
+    }
+    
+    /**
      * Retorna a tela de edição do perfil selecionado na lista
      * @param id
      * @return 
@@ -976,26 +998,6 @@ public class CadastrarBean {
     public String editarTipoTexto(int id){ 
         tipoTexto = this.controlador.carregarTipoTexto(id);
         return "novoTipoTexto";
-    }
-    
-    /**
-     * Método para salvar o tipo de texto ao usuário para identificar com quais
-     * tipos de texto ele se identifica
-     * @param user usuario em que está pedindo para alterar
-     
-    public void salvarTipoTextoUsuario(Usuario user){
-        this.controlador.salvarTipoTextoUsuario(getSelectedTiposTextoUsuario(), user.getId());        
-    }*/
-    
-    /**
-     * Método para excluir um tipo de texto em que o usuário nao se 
-     * identifica mais
-     * @param idTipoTexto
-     * @return 
-     */
-    public String excluirTipoTextoUsuario(int idTipoTexto){
-        this.controlador.excluirTipoTextoUsuario(this.usuario.getId(), idTipoTexto);
-        return "index.xhtml?faces-redirect=true";
     }
     
     /**
@@ -1017,20 +1019,6 @@ public class CadastrarBean {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     } 
-
-    /**
-     * @return the selectedTiposTextoUsuario
-     */
-    public List<String> getSelectedTiposTextoUsuario() {
-        return selectedTiposTextoUsuario;
-    }
-
-    /**
-     * @param selectedTiposTextoUsuario the selectedTiposTextoUsuario to set
-     */
-    public void setSelectedTiposTextoUsuario(List<String> selectedTiposTextoUsuario) {
-        this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
-    }
     
     public void atualizarStatusUsuario(int status) {
         //Atualizar Status do Usuario
