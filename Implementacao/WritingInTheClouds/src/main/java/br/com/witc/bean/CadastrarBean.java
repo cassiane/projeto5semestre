@@ -39,6 +39,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.FileOutputStream;
 import java.io.*;
+import java.util.Date;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
@@ -66,8 +67,8 @@ public class CadastrarBean {
     private List<Usuario> sugestao;
     private List<Usuario> solicitacao;
     private List<Usuario> usuarios;
-    public List<TipoTexto> tiposTextoUsuario;
-    public List<TipoTexto> selectedTiposTextoUsuario;
+    private List<String> selectedTiposTextoUsuario;
+    private String tipotextoTag;
     private String convidarEmail;
     private StreamedContent imagemEnviada = new DefaultStreamedContent();
     private String imagemTemporaria;
@@ -78,6 +79,7 @@ public class CadastrarBean {
     private TipoPerfilDAO tipoPerfildao;
     public TipoTexto tipoTexto;
     public TipoTextoDAO tipoTextoDAO;
+    private Date dataNasc;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
@@ -88,6 +90,7 @@ public class CadastrarBean {
         this.tipoPerfildao = new TipoPerfilDAO();
         this.tipoTexto = new TipoTexto();
         this.tipoTextoDAO = new TipoTextoDAO();
+        this.selectedTiposTextoUsuario = new ArrayList<>();
     }
     
     /**
@@ -96,7 +99,7 @@ public class CadastrarBean {
     public Usuario getUsuario() {
         return usuario;
     }
-
+    
     /**
      * @param usuario the usuario to set
      */
@@ -138,7 +141,7 @@ public class CadastrarBean {
     public String getSenhaRedefinicao() {
         return senhaRedefinicao;
     }
-
+    
     /**
      * @param senhaRedefinicao the senhaRedefinicao to set
      */
@@ -553,12 +556,17 @@ public class CadastrarBean {
 
     public void setDataNascimento() throws ParseException {
         SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-        String data = getDiaNascimento() + "/" + getMesNascimento() + "/" + getAnoNascimento();
+        String data;
+        if(this.getDataNasc() != null){
+            data = getDataNasc().toString();
+        }else{
+            data = getDiaNascimento() + "/" + getMesNascimento() + "/" + getAnoNascimento();
+        }
+        setDataNasc(formatoData.parse(data));
         Calendar c = Calendar.getInstance();
         c.setTime(formatoData.parse(data));
-
         this.usuario.setDataAniversario(c);
-
+        
     }
 
     /**
@@ -646,6 +654,7 @@ public class CadastrarBean {
             }                        
             setDataNascimento();
             this.controlador.alterarUsuario(usuario);
+            this.controlador.salvarTipoTextoUsuario(this.selectedTiposTextoUsuario,usuario.getId());                    
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
@@ -953,7 +962,7 @@ public class CadastrarBean {
         return "novoTipoPerfil";
     }
     /**
-     * Cadastra um novo perfil
+     * Cadastra um novo tipo de texto
      * @return 
      */
     public String cadastrarTipoTexto(){   
@@ -967,7 +976,7 @@ public class CadastrarBean {
     }
     
     /**
-     * Chamada para a tela de criação de um novo perfil 
+     * Chamada para a tela de criação de um novo tipo de texto
      * @return 
      */
     public String novoTipoTexto(){
@@ -975,12 +984,30 @@ public class CadastrarBean {
         return "novoTipoTexto"; 
     }
     /**
-     * Retorna uma lista de perfis
+     * Retorna uma lista de tipos de texto
      * @return 
      * @throws br.com.witc.excessao.TipoTextoException 
      */
     public List<TipoTexto> listarTipoTexto() throws TipoTextoException{        
         return this.controlador.listarTipoTexto();
+    }
+    
+    /**
+     * Método para retornar uma lista filtrada para as tags de tipo de texto
+     * quando o usuário seleciona os tipos de texto que ele se identifica
+     * @param nomeTipoTexto
+     * @return retorna uma lista de tipos de texto que comecem com aquele parametro de letras
+     * @throws TipoTextoException 
+     */
+    public List<TipoTexto> listaTipoTextoFiltrada(String nomeTipoTexto) throws TipoTextoException {        
+        List<TipoTexto> filteredTiposTexto;
+        filteredTiposTexto = new ArrayList<TipoTexto>();
+        for (TipoTexto tipo : this.listarTipoTexto()) {
+            if(tipo.getTipoTexto().toLowerCase().startsWith(nomeTipoTexto.toLowerCase())){
+                filteredTiposTexto.add(tipo);
+            }
+        }         
+        return filteredTiposTexto;
     }
     
     /**
@@ -996,11 +1023,11 @@ public class CadastrarBean {
     /**
      * Método para salvar o tipo de texto ao usuário para identificar com quais
      * tipos de texto ele se identifica
-     */
-    public String salvarTipoTextoUsuario(){
-        this.controlador.salvarTipoTextoUsuario(this.selectedTiposTextoUsuario, this.usuario.getId());
-        return "timeline"; 
-    }
+     * @param user usuario em que está pedindo para alterar
+     
+    public void salvarTipoTextoUsuario(Usuario user){
+        this.controlador.salvarTipoTextoUsuario(getSelectedTiposTextoUsuario(), user.getId());        
+    }*/
     
     /**
      * Método para excluir um tipo de texto em que o usuário nao se 
@@ -1035,30 +1062,44 @@ public class CadastrarBean {
     } 
 
     /**
-     * @return the tiposTextoUsuario
-     */
-    public List<TipoTexto> getTiposTextoUsuario() {
-        return tiposTextoUsuario;
-    }
-
-    /**
-     * @param tiposTextoUsuario the tiposTextoUsuario to set
-     */
-    public void setTiposTextoUsuario(List<TipoTexto> tiposTextoUsuario) {
-        this.tiposTextoUsuario = tiposTextoUsuario;
-    }
-
-    /**
      * @return the selectedTiposTextoUsuario
      */
-    public List<TipoTexto> getSelectedTiposTextoUsuario() {
+    public List<String> getSelectedTiposTextoUsuario() {
         return selectedTiposTextoUsuario;
     }
 
     /**
      * @param selectedTiposTextoUsuario the selectedTiposTextoUsuario to set
      */
-    public void setSelectedTiposTextoUsuario(List<TipoTexto> selectedTiposTextoUsuario) {
+    public void setSelectedTiposTextoUsuario(List<String> selectedTiposTextoUsuario) {
         this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
+    }
+
+    /**
+     * @return the tipotextoTag
+     */
+    public String getTipotextoTag() {
+        return tipotextoTag;
+    }
+
+    /**
+     * @param tipotextoTag the tipotextoTag to set
+     */
+    public void setTipotextoTag(String tipotextoTag) {
+        this.tipotextoTag = tipotextoTag;
+    }
+
+    /**
+     * @return the dataNascimento
+     */
+    public Date getDataNasc() {
+        return dataNasc;
+    }
+
+    /**
+     * @param dataNascimento the dataNascimento to set
+     */
+    public void setDataNasc(Date dataNascimento) {
+        this.dataNasc = dataNascimento;
     }
 }

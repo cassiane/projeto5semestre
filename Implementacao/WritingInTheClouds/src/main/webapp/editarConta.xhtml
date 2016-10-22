@@ -48,7 +48,31 @@
                                 <f:selectItem itemLabel="Feminino" itemValue="F" />
                                 <f:selectItem itemLabel="Masculino" itemValue="M" />
                             </p:selectOneRadio>
-                            
+                        </h:panelGrid>
+                        <div class="row">
+                            <div class="col-lg-6"> 
+                                <div class="form-group">
+                                    <h:outputText value="Textos com que me identifico" style="font-size: 20px;"/>                                                             
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12"> 
+                                <div class="form-group">                                    
+                                    <!-- tags tipo de texto -->
+                                    <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.selectedTiposTextoUsuario}"
+                                        multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
+                                        var="tipotexto" itemLabel="#{tipotexto}"
+                                        itemValue="#{tipotexto}" converter="conversorTipoTextoTags"
+                                        maxResults="6" forceSelection="true">
+                                        <p:column>
+                                            <h:outputText value="#{tipotexto}" />                                           
+                                        </p:column>
+                                    </p:autoComplete>
+                                </div>
+                           </div>
+                        </div>
+                        <h:panelGrid columns="1">
                             <p:commandButton ajax="false" value="Salvar Configurações" style="width:200px; margin-left: 3px;"
                                              action="#{cadastrarBean.alterarUsuario()}" />
                             <h:form>                                

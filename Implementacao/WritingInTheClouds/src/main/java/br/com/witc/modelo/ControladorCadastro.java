@@ -299,8 +299,9 @@ public class ControladorCadastro {
      * Método para salvar os tipos de textos ao usuário
      * para este se identificar com vários tipos de texto
      * @param tiposTextoUsuario lista dos tipos de textos 
+     * @param idUsuario usuario 
      */
-    public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
+    public void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
         this.usuario.salvarTipoTextoUsuario(tiposTextoUsuario, idUsuario);
     }
     

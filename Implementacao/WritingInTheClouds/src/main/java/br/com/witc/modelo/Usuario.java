@@ -351,7 +351,7 @@ public class Usuario implements Serializable {
      * @param tiposTextoUsuario lista dos tipos de textos
      * @param idUsuario 
      */    
-    void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
+    void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
         UsuarioDAO dao = new UsuarioDAO();
         dao.salvarTipoTextoUsuario(tiposTextoUsuario,idUsuario);
     }
