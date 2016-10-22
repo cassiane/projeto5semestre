@@ -38,6 +38,7 @@ public class Usuario implements Serializable {
     private String genero;
     private byte[] foto;
     private String senha;
+    private String status;
     private boolean ativo; 
 
     /**
@@ -151,6 +152,14 @@ public class Usuario implements Serializable {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
     
     /**
      * @return 
@@ -263,7 +272,7 @@ public class Usuario implements Serializable {
      */
     public void alterarUsuario() throws DadosUsuarioInvalidoException, 
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException{
-       UsuarioDAO dao = new UsuarioDAO();      
+       UsuarioDAO dao = new UsuarioDAO();        
        dao.salvarUsuario(this);
     }
     /**
@@ -437,6 +446,24 @@ public class Usuario implements Serializable {
         UsuarioDAO dao = new UsuarioDAO();
         dao.verificarConvite(email);
     }
-    
-    
+
+    /**
+     * Acessa a persistencia para carregar o amigo passado no parametro
+     * @param id Codigo do amigo
+     * @return O amigo
+     */
+    public Usuario carregarAmigo(int id) {
+        UsuarioDAO dao = new UsuarioDAO();
+        return dao.carregarAmigo(id);
+    }
+
+    /**
+     * Acessa a persistencia para atualizar o status do usuario
+     * @param status Codigo do status (Enum do banco)
+     */
+    public void atualizarStatus(int status) {
+        UsuarioDAO dao = new UsuarioDAO();
+        dao.atualizarStatus(this.getId(), status);
+        this.setStatus(dao.carregarStatus(this.getId()));
+    }
 }

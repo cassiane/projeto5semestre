@@ -24,8 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.faces.bean.SessionScoped;
 import javax.servlet.http.HttpServletRequest;
@@ -34,15 +32,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import org.primefaces.model.CroppedImage;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
-import java.io.FileOutputStream;
 import java.io.*;
-import java.util.Date;
+import java.util.Base64;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.UploadedFile;
 
@@ -78,8 +73,7 @@ public class CadastrarBean {
     private TipoPerfil tipoPerfil;
     private TipoPerfilDAO tipoPerfildao;
     public TipoTexto tipoTexto;
-    public TipoTextoDAO tipoTextoDAO;
-    private Date dataNasc;
+    public TipoTextoDAO tipoTextoDAO;    
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
@@ -313,57 +307,21 @@ public class CadastrarBean {
      */
     public void setTipoTextoDAO(TipoTextoDAO tipoTextoDAO) {
         this.tipoTextoDAO = tipoTextoDAO;
-    }
-    
-    
+    }  
     
     /**
-     * Cria o arquivo temporário
-     * @param bytes
-     * @param arquivo 
+     * @return the tipotextoTag
      */
-    public void criaArquivo(byte[] bytes, String arquivo) {
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(arquivo);
-            fos.write(bytes);
-            fos.close();
-        } catch (FileNotFoundException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
-        } catch (IOException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
-        }
+    public String getTipotextoTag() {
+        return tipotextoTag;
     }
+
     /**
-     * Evento de enviar a imagem utilizado no primefaces
-     * O método enviarImagem(FileUploadEvent event) é utilizado no atributo 
-     * fileUploadListener para ser executado sempre que uma imagem estiver sendo 
-     * enviada. É neste método onde poderemos fazer conversões, criação de 
-     * arquivos, etc.
-     * @param event 
+     * @param tipotextoTag the tipotextoTag to set
      */
-    public void enviarImagem(FileUploadEvent event) {
-        byte[] img = event.getFile().getContents();
-        
-        imagemTemporaria = event.getFile().getFileName();
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ServletContext scontext;
-        scontext = (ServletContext) facesContext.getExternalContext().getContext();
-        String arquivo = scontext.getRealPath("/Upload/" + imagemTemporaria);
-        arquivo = "C:\\Temp\\"+imagemTemporaria;
-        criaArquivo(img, arquivo);
-        setExibeBotao(true);
+    public void setTipotextoTag(String tipotextoTag) {
+        this.tipotextoTag = tipotextoTag;
     }
-    /**
-    * método crop() para coletar a imagem recortada e jogar dentro da 
-    * imagemEnviada que é do tipo StreamedContent, que pode ser trabalhado 
-    * dinamicamente com o um p:graphicImage.
-    * Seta a imagem no ImaggeCropper
-    */
-    public void crop() {
-        setImagemEnviada(new DefaultStreamedContent(new ByteArrayInputStream(croppedImage.getBytes())));
-    }
-    
     /**
      * Busca e atualiza a lista de amigos
      *
@@ -444,7 +402,7 @@ public class CadastrarBean {
     public void setConvidarEmail(String convidarEmail) {
         this.convidarEmail = convidarEmail;
     }
-
+    
     public StreamedContent getFotos(Usuario user) {
         try {
             if (user.getFoto() == null) {
@@ -556,13 +514,7 @@ public class CadastrarBean {
 
     public void setDataNascimento() throws ParseException {
         SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-        String data;
-        if(this.getDataNasc() != null){
-            data = getDataNasc().toString();
-        }else{
-            data = getDiaNascimento() + "/" + getMesNascimento() + "/" + getAnoNascimento();
-        }
-        setDataNasc(formatoData.parse(data));
+        String data = getDiaNascimento() + "/" + getMesNascimento() + "/" + getAnoNascimento();        
         Calendar c = Calendar.getInstance();
         c.setTime(formatoData.parse(data));
         this.usuario.setDataAniversario(c);
@@ -591,6 +543,8 @@ public class CadastrarBean {
      * Retorna a data de nascimento
      */
     public void retornarDataNasc() {
+        // Passei aqui e quiz atualizar o status
+        this.atualizarStatusUsuario(1);
         this.preencherDataNasc();
     }
 
@@ -607,6 +561,7 @@ public class CadastrarBean {
             }
 
             setDataNascimento();
+            this.usuario.setStatus("Pensando");
             this.usuario.setAtivo(true);
             this.controlador.cadastrarUsuario(this.usuario);
             setDataNascimento();                  
@@ -653,8 +608,7 @@ public class CadastrarBean {
                 this.usuario.setFoto(imgBytes);
             }                        
             setDataNascimento();
-            this.controlador.alterarUsuario(usuario);
-            this.controlador.salvarTipoTextoUsuario(this.selectedTiposTextoUsuario,usuario.getId());                    
+            this.controlador.alterarUsuario(this.usuario);
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
@@ -681,20 +635,15 @@ public class CadastrarBean {
         }
         return null;
     }
-    public String excluirUsuario(){        
+    public String excluirUsuario(){                
         try {
+            this.usuario.setStatus("");
             this.usuario.setAtivo(false);
-            this.controlador.excluirUsuario(usuario); 
+            this.controlador.excluirUsuario(this.usuario); 
             removerTodasAmizades(this.usuario.getId());
             excluirTodosTipoTextoUsuario(this.usuario.getId());
-        } catch (DadosUsuarioInvalidoException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UsuarioInvalidoException ex) {
-            Logger.getLogger(CadastrarBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DadosUsuarioInvalidoException | NoSuchAlgorithmException | UnsupportedEncodingException | UsuarioInvalidoException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
         this.usuario = new Usuario();
         this.diaNascimento = null;
@@ -702,7 +651,7 @@ public class CadastrarBean {
         this.anoNascimento = null;
         this.emailVerificado = null;  
         getCurrentInstance().getExternalContext().invalidateSession();
-        return "index.xhtml?faces-redirect=true";        
+        return "index.xhtml?faces-redirect=true";   
     }
     /**
      * Envia o link de redefinição de senha para o usuário
@@ -811,6 +760,8 @@ public class CadastrarBean {
      * @param idSugestao Identificação do usuario que deseja-se tornar amigo
      */
     public void solicitarAmizade(int idSugestao) {
+        // Status do usuario
+        this.atualizarStatusUsuario(1);
         this.controlador.solicitarAmizade(idSugestao);
     }
 
@@ -820,6 +771,8 @@ public class CadastrarBean {
      * @param idAceitar Identificador do solicitante da amizade
      */
     public void aceitarAmizade(int idAceitar) {
+        // Status do usuario
+        this.atualizarStatusUsuario(1);
         this.controlador.aceitarAmizade(idAceitar);
     }
 
@@ -829,6 +782,8 @@ public class CadastrarBean {
      * @param idAmizade Identificador do solicitante da amizade
      */
     public void removerAmizade(int idAmizade) {
+        // Status do usuario
+        this.atualizarStatusUsuario(1);
         this.controlador.removerAmizade(idAmizade);
     }
     
@@ -845,6 +800,8 @@ public class CadastrarBean {
      * Metodo para capiturar o email e a url para enviar o convite
      */
     public void enviarConvite() {
+        // Status do usuario
+        this.atualizarStatusUsuario(1);
         try {
             // Capitura o email para convidar
             String email = this.getConvidarEmail();
@@ -1049,7 +1006,6 @@ public class CadastrarBean {
         this.controlador.excluirTodosTipoTextoUsuario(idUsuario);        
     }
     
-    
     /**
      * Envia à viewer uma mensagem com o status da operação
      *
@@ -1074,32 +1030,12 @@ public class CadastrarBean {
     public void setSelectedTiposTextoUsuario(List<String> selectedTiposTextoUsuario) {
         this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
     }
-
-    /**
-     * @return the tipotextoTag
-     */
-    public String getTipotextoTag() {
-        return tipotextoTag;
-    }
-
-    /**
-     * @param tipotextoTag the tipotextoTag to set
-     */
-    public void setTipotextoTag(String tipotextoTag) {
-        this.tipotextoTag = tipotextoTag;
-    }
-
-    /**
-     * @return the dataNascimento
-     */
-    public Date getDataNasc() {
-        return dataNasc;
-    }
-
-    /**
-     * @param dataNascimento the dataNascimento to set
-     */
-    public void setDataNasc(Date dataNascimento) {
-        this.dataNasc = dataNascimento;
+    
+    public void atualizarStatusUsuario(int status) {
+        //Atualizar Status do Usuario
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "autenticarBean");
+        autenticarBean.atualizarStatusUsuario(status);
     }
 }

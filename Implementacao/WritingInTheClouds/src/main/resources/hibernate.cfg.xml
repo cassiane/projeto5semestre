@@ -8,6 +8,8 @@
     <property name="hibernate.connection.username">USERWITCAPP</property>
     <property name="hibernate.current_session_context_class">managed</property>
     <property name="hibernate.connection.password">APPCTIWUSER</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
     <mapping class="br.com.witc.modelo.Usuario"/>
     <mapping class="br.com.witc.modelo.RecuperarConta"/>
     <mapping class="br.com.witc.modelo.Perfil"/>

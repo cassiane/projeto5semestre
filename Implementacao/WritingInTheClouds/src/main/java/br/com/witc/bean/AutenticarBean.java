@@ -11,11 +11,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import br.com.witc.modelo.ControladorAutenticacao;
-import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Usuario;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 
@@ -74,6 +72,56 @@ public class AutenticarBean {
      */
     public String getNomeCompletoUsuario() {
         return this.controlador.getNomeCompletoUsuario();
+    }
+    
+    /**
+     * @return O status do usuário logado no sistema
+     */
+    public String getStatusUsuario() {
+        return this.controlador.getStatusUsuario();
+    }
+    
+    /**
+     * Acessa o controle para setar o amigo
+     * @param id Codigo do amigo
+     */
+    public void setAmigoUsuario(int id) {
+        this.controlador.setAmigoUsuario(id);
+    }
+    
+    /**
+     * Acessa o controle para zerar o amigo
+     */
+    public void setAmigoUsuario() {
+        this.controlador.setAmigoUsuario();
+    }
+    
+    /**
+     * Acessa o controle para verificar se é para mostrar o usuario ou o amigo
+     * @return False se for amigo
+     */
+    public boolean isAmigo() {
+        return this.controlador.getAmigoUsuario().getId() == 0;
+    }
+
+    /**
+     * Retornando o id do usuário amigo
+     * @return Codigo do amigo
+     */
+    public int getIdAmigoUsuario() {
+        if (this.isAmigo()) {
+            return 0;
+        } else {
+            return this.controlador.getAmigoUsuario().getId();
+        }
+    }
+    
+    /**
+     * Acessa o controle para atualizar o status do usuario
+     * @param status Codigo do status (Enum do banco)
+     */
+    public void atualizarStatusUsuario(int status) {
+        this.controlador.atualizarStatusUsuario(status);
     }
     
     /**     

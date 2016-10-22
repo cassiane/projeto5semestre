@@ -14,43 +14,32 @@
         <h:outputStylesheet name="raterater/css/raterater.css" /> 
         <h:outputStylesheet name="fontawesome-4.6.3/css/font-awesome.min.css" />
         <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
-        <h:outputScript name="raterater/js/raterater.jquery.js" />
+        <h:outputScript name="raterater/js/raterater.jquery.js" />        
         <h:outputScript name="js/witc.js" />        
-        <style>
-            .img-circle {
-                position: absolute;
-                display: block;                
-                top: 50%;    
-                left: 0;
-                right: 0;
-                max-width: 100%;
-                max-height: 100%;
-                width: auto;     
-                height: auto;                
-                margin:auto;
-            }                                   
-        </style>
     </h:head>
     <h:body>         
+        <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
         <div class="container">            
             <p:growl id="growl" severity="error" globalOnly="true" /> 
             <div class="clearfix" />
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="timeline.xhtml">Writing in the Clouds</a>
+                        <h:form>
+                            <h:commandLink class="navbar-brand" actionListener="#{autenticarBean.setAmigoUsuario()}" value="Writing in the Clouds" action="timeline.xhtml" />
+                        </h:form>
                     </div>
                     <div class="collapse navbar-collapse">
                         <h:form>
                             <ul class="nav navbar-nav navbar-right">                               
-                                <li><h:link value="Minha Biblioteca" outcome="biblioteca.xhtml" /></li>
-                                <li><h:commandLink value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
+                                <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" /></li>
+                                <li><h:commandLink value="Biblioteca Virtual" actionListener="#{autenticarBean.setAmigoUsuario()}" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
                                 <li><h:link value="Perfis de Usuários" outcome="tiposPerfis.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
                                 <li><h:link value="Tipos de Texto" outcome="tiposTexto.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opções <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><h:link value="Editar minha conta" outcome="editarConta.xhtml" /></li>                                                                
+                                        <li><h:commandLink value="Editar minha conta" actionListener="#{autenticarBean.setAmigoUsuario()}" action="editarConta.xhtml" /></li>                                                                
                                         <li><h:commandLink value="Logoff" action="#{autenticarBean.efetuarLogoff()}" /></li>                                    
                                     </ul>
                                 </li>                            
@@ -62,9 +51,10 @@
             <div class="row">
                 <div class="col-md-3">                     
                     <div class="box perfil-box">
-                        <div class="wallpapper-box">
-                            <h:graphicImage styleClass="img-wallpaper" value="resources/imagens/semWallpaper.png" />                        
-                            <h:graphicImage styleClass="img-thumbnail img-circle" value="resources/imagens/semFoto.png" />                            
+                        <div class="wallpapper-box">                            
+                            <p:graphicImage styleClass="img-wallpaper" value="resources/imagens/semWallpaper.png" cache="false" />
+                            <p:graphicImage styleClass="img-thumbnail img-circle" value="#{cadastrarBean.foto}" 
+                                            style="width: 120px; height: 120px;" cache="false" />
                         </div>                    
                         <div style="position: absolute; width: 100%; text-align: center; top: 65%;">
                             <div>
@@ -77,19 +67,19 @@
                                                    action="listarAmigos.xhtml" />
                                 </h:form>
                             </div>
-                        </div>
+                        </div>                        
                     </div>                  
                     <div class="box about-box">
                         <div style="padding-left: 10px;">
                             <div style="padding-top: 10px;">
                                 <h:outputText style="font-weight: bold; font-size: 15px;" value="Sobre" />
                                 #{' '}
-                                <h:link style="font-weight: bold; font-size: 10px;" value="Edit" outcome="editarConta.xhtml" />
+                                <h:link style="font-weight: bold; font-size: 10px;" value="Edit" outcome="editarConta.xhtml" rendered="#{autenticarBean.amigo}" />
                             </div>                            
                             <div style="padding-top: 10px;">
                                 <span class="glyphicon glyphicon-pencil" />
                                 #{' '}
-                                <h:outputText value="Escrevendo livro" />                                
+                                <h:outputText value="#{autenticarBean.statusUsuario}" />                                
                             </div>
                             <div style="padding-top: 10px;">
                                 <span class="glyphicon glyphicon-home" />

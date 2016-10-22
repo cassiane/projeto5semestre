@@ -10,45 +10,48 @@
         <ui:define name="conteudo">                         
             <div class="form-group form-inline">                    
                 <h:outputText styleClass="text-info" value="Pesquisa" />            
-                <h:form id="frmPesquisa">                                                                                        
+                <h:form id="frmPesquisa" 
+                        onkeypress="if (event.keyCode == 13) { document.getElementById('frmPesquisa:searchSubmit').click(); return false; }">                                                                                        
                     <h:inputText styleClass="form-control" style="width: 93%;" value="#{livroBean.valorPesquisa}" />                    
-                    <h:commandLink styleClass="form-control" style="width: 7%;" action="#{livroBean.carregaBibliotecaVirtualPesquisa()}">               
+                    <h:commandLink id="searchSubmit" styleClass="form-control btn btn-default" style="width: 7%;" 
+                                   action="#{livroBean.carregaBibliotecaVirtualPesquisa()}">
                         <i class="glyphicon glyphicon-search"></i>
                     </h:commandLink>                
                 </h:form>
             </div>
-            
-            <div>
+            <div>            
                 <h:form id="frmBiblioteca">    
                     <c:forEach items="#{livroBean.bibliotecaVirtual.entrySet().toArray()}" var="entry">                    
                         <p:carousel styleClass="carousel" id="crsBiblioteca" value="#{entry.value}" headerText="#{entry.key}" var="livro" itemStyle="text-align:center" responsive="true">
-                            <h:panelGrid columns="1" style="width: 100%; height: auto;">
+                            <h:panelGrid columns="1" style="width: 100%; height: auto;">                                
                                 <h:panelGrid columns="1" style="width: 100%;">                                                                    
-                                    <f:facet name="header">
-                                        <p:graphicImage id="capa" style="height: 100px; width: 70px;" value="#{livroBean.capa}" cache="false">
+                                    <f:facet name="header">                                                                                
+                                        <p:graphicImage id="capa" value="#{livroBean.capa}" cache="false"
+                                                        style="display: block; margin-left: auto; margin-right: auto; height: 100px; width: 70px;">
                                             <f:param name="livroId" value="#{livro.id}" />
                                             <f:param name="key" value="#{entry.key}" />
-                                        </p:graphicImage>
+                                        </p:graphicImage>                                                                                
                                     </f:facet>                                                                
                                         
                                     <h:outputText styleClass="text-info" id="titulo" value="#{livro.titulo}" />                                                            
 
-                                    <p:commandButton value="Autores" id="autores" update=":autoresDialog" oncomplete="PF('w_autoresDialog').show()">
+                                    <p:commandLink value="Autores" styleClass="glyphicon glyphicon-user" id="autores" update=":autoresDialog" oncomplete="PF('w_autoresDialog').show()">
+                                        <i class="glyphicon glyphicon-user"></i>
                                         <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                                    </p:commandButton>       
+                                    </p:commandLink>       
                                 </h:panelGrid>
 
                                 <f:facet name="footer">                                
                                     <h:panelGrid columns="1" columnClasses="text-align:center" style="width: 100%;">
-                                        <p:commandButton ajax="false" action="lerLivro" value="Ler">                                        
+                                        <p:commandLink styleClass="glyphicon glyphicon-book" action="lerLivro" value="Ler">                                            
                                             <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                                        </p:commandButton>                                                                        
+                                        </p:commandLink>                                                                        
                                         <p:remoteCommand name="callBeanMethod" update=":frmBiblioteca" 
                                                          actionListener="#{livroBean.bookRating()}" oncomplete="initializeRatebox();" />
                                         <div class="ratebox" data-id="#{entry.key}-#{livro.id}" data-rating="#{livro.avaliacao}" 
                                               style="margin-left: auto; margin-right: auto;">                                        
                                         </div>                                        
-                                        <h:outputText id="qtdAvaliacoes" value="#{livro.qtdAvaliacoes} #{livro.qtdAvaliacoes eq 1 ? 'avalição' : 'avaliações'}" />                                                                        
+                                        <h:outputText id="qtdAvaliacoes" styleClass="text-info" value="#{livro.qtdAvaliacoes} #{livro.qtdAvaliacoes eq 1 ? 'avalição' : 'avaliações'}" />                                                                        
                                     </h:panelGrid>
                                 </f:facet>                            
                             </h:panelGrid>
