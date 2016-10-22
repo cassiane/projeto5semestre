@@ -609,6 +609,7 @@ public class CadastrarBean {
             }                        
             setDataNascimento();
             this.controlador.alterarUsuario(this.usuario);
+            this.controlador.salvarTipoTextoUsuario(selectedTiposTextoUsuario, this.usuario.getId());
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");

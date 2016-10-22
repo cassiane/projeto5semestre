@@ -55,6 +55,29 @@
                                 </c:forEach>
                             </h:selectOneMenu>
                         </div>
+                        <div class="row">
+                            <div class="col-lg-6"> 
+                                <div style="margin-top: 10px;">
+                                    <h:outputLabel styleClass="text-info" value="Textos que me identifico" style="font-size: 20px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12"> 
+                                <div class="form-group">                                    
+                                    <!-- tags tipo de texto -->
+                                    <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.selectedTiposTextoUsuario}"
+                                        multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
+                                        var="tipotexto" itemLabel="#{tipotexto.tipoTexto}"
+                                        itemValue="#{tipotexto}" converter="conversorTipoTextoTags"
+                                        maxResults="6" forceSelection="true">
+                                        <p:column>
+                                            <h:outputText value="#{tipotexto.tipoTexto}" />                                           
+                                        </p:column>
+                                    </p:autoComplete>
+                                </div>
+                           </div>
+                        </div>
                         <div style="margin-top: 10px;"> 
                             <h:selectOneRadio value="#{cadastrarBean.usuario.genero}"                                           
                                               required="true" 
@@ -63,29 +86,6 @@
                                 <f:selectItem class="radio-inline" itemLabel="Masculino" itemValue="M" />
                             </h:selectOneRadio>
                         </div>
-                    <div class="row">
-                        <div class="col-lg-6"> 
-                            <div class="form-group">
-                                <h:outputText value="Textos com que me identifico" style="font-size: 20px;"/>                                                             
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12"> 
-                            <div class="form-group">                                    
-                                <!-- tags tipo de texto -->
-                                <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.selectedTiposTextoUsuario}"
-                                    multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
-                                    var="tipotexto" itemLabel="#{tipotexto}"
-                                    itemValue="#{tipotexto}" converter="conversorTipoTextoTags"
-                                    maxResults="6" forceSelection="true">
-                                    <p:column>
-                                        <h:outputText value="#{tipotexto}" />                                           
-                                    </p:column>
-                                </p:autoComplete>
-                            </div>
-                       </div>
-                    </div>
                     
                     <div style="text-align: right; margin-top: 10px;"> 
                         <h:outputLabel for="file" value="Altere sua foto" styleClass="btn btn-info" />
