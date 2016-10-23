@@ -116,14 +116,32 @@ public class Perfil implements Serializable {
         return dao.carregarListaAmigoEditor(this.getUsuario().getId(), idLivro);
     }
 
+    /**
+     * Acessa a persistencia para desativar o perfil padrão
+     * @param perfil Perfil do usuario
+     */
     public void desativarPerfil(Perfil perfil) {
         PerfilDAO dao = new PerfilDAO();
         perfil.setPerfilPadrao(false);
-        dao.desativarPerfil(perfil);
+        dao.salvarPerfil(perfil);
     }
 
-    void criarPerfil(Perfil newPerfil) {
+    /**
+     * Acessa a persistencia para criar ou atualizar o perfil
+     * @param newPerfil Perfil do usuario
+     */
+    public void criarPerfil(Perfil newPerfil) {
         PerfilDAO dao = new PerfilDAO();
         dao.salvarPerfil(newPerfil);
+    }
+
+    /**
+     * Acessa a persistencia para buscar os perfis do usuario
+     * @param usuario Usuario logado
+     * @return Lista de perfis
+     */
+    public List<Perfil> listarPerfisUsuario(Usuario usuario) {
+        PerfilDAO dao = new PerfilDAO();
+        return dao.carregarListaPerfilUsuario(usuario);
     }
 }

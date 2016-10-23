@@ -38,7 +38,8 @@ public class PerfilDAO {
 
     public void salvarPerfil(Perfil perfil) {
         try {
-            sessao.save(perfil);
+            sessao.saveOrUpdate(perfil);
+            sessao.flush();
         } catch (ConstraintViolationException e) {
             sessao.clear();
         }
@@ -67,7 +68,14 @@ public class PerfilDAO {
         return (Perfil) sessao.createQuery("FROM Perfil WHERE id=:idp").setInteger("idp", id).uniqueResult();
     }
 
-    public void desativarPerfil(Perfil perfil) {
-        sessao.saveOrUpdate(perfil);
+    /**
+     * Acessa a tabela e buscar os perfis
+     * @param usuario Usuario logado
+     * @return Lista de perfis
+     */
+    public List<Perfil> carregarListaPerfilUsuario(Usuario usuario) {
+        return (List<Perfil>) sessao.createQuery("FROM Perfil WHERE idUsuario = :idusu")
+                .setInteger("idusu", usuario.getId())
+                .list();
     }
 }
