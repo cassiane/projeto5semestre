@@ -64,6 +64,11 @@ public class PerfilDAO {
         return tmpPerfil;
     }
 
+    /**
+     * Acessar a tabela e buscar o perfil por codigo
+     * @param id Codigo do perfil
+     * @return Perfil selecionado
+     */
     public Perfil carregaPerfilID(int id) {
         return (Perfil) sessao.createQuery("FROM Perfil WHERE id=:idp").setInteger("idp", id).uniqueResult();
     }
