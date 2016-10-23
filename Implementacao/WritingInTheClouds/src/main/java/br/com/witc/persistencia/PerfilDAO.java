@@ -27,7 +27,7 @@ public class PerfilDAO {
 
     public Perfil carregarPerfil(Usuario usuario) {
 
-        Perfil p = (Perfil) sessao.createQuery("FROM Perfil WHERE idUsuario=:idUsuario ").setInteger("idUsuario", usuario.getId())
+        Perfil p = (Perfil) sessao.createQuery("FROM Perfil WHERE idUsuario=:idUsuario AND perfilPadrao=true").setInteger("idUsuario", usuario.getId())
                 .uniqueResult();
 
         if (p == null) {
@@ -38,7 +38,8 @@ public class PerfilDAO {
 
     public void salvarPerfil(Perfil perfil) {
         try {
-            sessao.save(perfil);
+            sessao.saveOrUpdate(perfil);
+            sessao.flush();
         } catch (ConstraintViolationException e) {
             sessao.clear();
         }
@@ -65,5 +66,16 @@ public class PerfilDAO {
 
     public Perfil carregaPerfilID(int id) {
         return (Perfil) sessao.createQuery("FROM Perfil WHERE id=:idp").setInteger("idp", id).uniqueResult();
+    }
+
+    /**
+     * Acessa a tabela e buscar os perfis
+     * @param usuario Usuario logado
+     * @return Lista de perfis
+     */
+    public List<Perfil> carregarListaPerfilUsuario(Usuario usuario) {
+        return (List<Perfil>) sessao.createQuery("FROM Perfil WHERE idUsuario = :idusu")
+                .setInteger("idusu", usuario.getId())
+                .list();
     }
 }

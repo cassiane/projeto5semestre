@@ -31,8 +31,19 @@
                     </div>
                     <div class="collapse navbar-collapse">
                         <h:form>
-                            <ul class="nav navbar-nav navbar-right">                               
-                                <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" /></li>
+                            <ul class="nav navbar-nav navbar-right">
+                                <c:if test="${autenticarBean.perfis}">
+                                    <li class="dropdown-toggle">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perfil <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <ui:repeat value="#{autenticarBean.perfisUsuario}" var="psusu">
+                                                <li><h:commandLink value="#{psusu.tipoPerfil.tipoPerfil}" actionListener="#{autenticarBean.trocarPerfilUsuario(psusu)}" action="timeline.xhtml" rendered="#{!autenticarBean.perfilIgual(psusu)}" /></li>
+                                            </ui:repeat>
+                                        </ul>
+                                    </li>
+                                </c:if>
+                                <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilEditor}" /></li>
+                                <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilRevisor}" /></li>
                                 <li><h:commandLink value="Biblioteca Virtual" actionListener="#{autenticarBean.setAmigoUsuario()}" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
                                 <li><h:link value="Perfis de Usuários" outcome="tiposPerfis.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
                                 <li><h:link value="Tipos de Texto" outcome="tiposTexto.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
