@@ -67,7 +67,7 @@
                                 <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.selectedTiposTextoUsuario}"
                                     multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
                                     var="tipo" itemLabel="#{tipo.tipoTexto}"
-                                    itemValue="#{tipo}" converter="tipoTextoConverter"
+                                    itemValue="#{tipo}" converter="conversorTipoTexto"
                                     maxResults="6" forceSelection="true">                                    
                                 </p:autoComplete>
                             </div>

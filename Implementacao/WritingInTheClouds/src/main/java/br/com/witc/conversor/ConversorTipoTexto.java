@@ -15,7 +15,7 @@ import javax.faces.convert.FacesConverter;
  *
  * @author marcelo.lima
  */
-@FacesConverter(forClass = TipoTexto.class)
+@FacesConverter(value="conversorTipoTexto")
 public class ConversorTipoTexto implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
@@ -29,8 +29,10 @@ public class ConversorTipoTexto implements Converter {
     public String getAsString(FacesContext fc, UIComponent uic, Object o) {
         if (o instanceof TipoTexto) {
             TipoTexto tipoTexto = (TipoTexto) o;            
-            uic.getAttributes().put(String.valueOf(tipoTexto.getId()), tipoTexto);
-            return String.valueOf(tipoTexto.getId());            
+            if (tipoTexto.getTipoTexto() != null) {
+                uic.getAttributes().put(String.valueOf(tipoTexto.getTipoTexto()), tipoTexto);
+                return String.valueOf(tipoTexto.getTipoTexto());            
+            }
         }
         return "";
     }
