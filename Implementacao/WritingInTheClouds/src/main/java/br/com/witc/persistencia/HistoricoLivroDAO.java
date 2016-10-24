@@ -159,6 +159,7 @@ public class HistoricoLivroDAO {
                 .setString("idLivro", String.valueOf(idLivro))
                 .setString("idPerfil", String.valueOf(idPerfil))
                 .setInteger("idTipoStatus",1)
+<<<<<<< HEAD
 <<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
                 .uniqueResult();
         
@@ -179,6 +180,8 @@ public class HistoricoLivroDAO {
                 .setString("idStatus", String.valueOf(idStatus))
 =======
 >>>>>>> Rebase master 1
+=======
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
                 .uniqueResult();
         
         sessao.refresh(historico);

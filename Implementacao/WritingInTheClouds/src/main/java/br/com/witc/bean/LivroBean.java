@@ -856,15 +856,21 @@ public class LivroBean {
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
     private boolean disponivelEdicaoAmigo;
+<<<<<<< HEAD
 <<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
     private boolean livroFinalizado;
     private boolean disponivelRevisao;
 =======
+=======
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
 
     private boolean livroFinalizado;
     private boolean disponivelRevisao;
 
+<<<<<<< HEAD
 >>>>>>> Rebase master 1
+=======
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
     
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -881,6 +887,7 @@ public class LivroBean {
         
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
+<<<<<<< HEAD
 <<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
         this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);  
         this.disponivelRevisao=false;
@@ -892,6 +899,12 @@ public class LivroBean {
     }
 
 >>>>>>> Rebase master 1
+=======
+        this.livros=this.controlador.listarLivrosPerfil(this.perfilUsuario);  
+        this.disponivelRevisao=false;
+    }
+
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
     
     public Livro getLivro() {
         return livro;
@@ -1099,10 +1112,14 @@ public class LivroBean {
             this.historico.setLivro(this.livro);
             this.historico.setStatus(st);
             this.historico.setDataInicio(this.getPegaDataAtual());
+<<<<<<< HEAD
 <<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
 =======
 
 >>>>>>> Rebase master 1
+=======
+
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
             this.controlador.salvarHistorico(this.historico);
             this.tituloLivro="";
             if(this.disponivelRevisao){
@@ -1116,10 +1133,14 @@ public class LivroBean {
             }
             if (this.disponivelEdicaoAmigo) {
               
+<<<<<<< HEAD
 <<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
 =======
 
 >>>>>>> Rebase master 1
+=======
+
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
                 return "biblioteca.xhtml?faces-redirect=true";                
             }
         } catch (LivroException ex) {

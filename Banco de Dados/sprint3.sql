@@ -21,13 +21,12 @@ ALTER TABLE `witc`.`Perfil`
 ADD COLUMN `perfilPadrao` TINYINT(1) NOT NULL
 DEFAULT 1;
 
-<<<<<<< 1091c878b9f31bb48b5e7b268e2728157f036fae
-=======
+
 ALTER TABLE `witc`.`Livro`
 ADD COLUMN `dispRevisao` TINYINT(1) NOT NULL
 DEFAULT 0;
 
->>>>>>>  implmentacao logica revisao
+
 INSERT INTO `witc`.`TipoPerfil`
 (`tipoPerfil`)
 VALUES

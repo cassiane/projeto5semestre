@@ -10,6 +10,7 @@
             <f:view>
                 <center>
                     <h:form>                  
+<<<<<<< HEAD
 <<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
 <<<<<<< c1231be511e5e0446af66423df1e4cf2313970f5
                         <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> 
@@ -19,11 +20,15 @@
 =======
                         <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> 
 >>>>>>> Rebase master 1
+=======
+                        <p:panel id="basic" header="Revisao"  style="margin-bottom:20px"> 
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
                             <p:dataTable   value="#{livroBean.listarLivrosRevisao()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
                                 <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
                                     #{lis.titulo}
                                 </p:column>                                
                                 <p:column width="90">
+<<<<<<< HEAD
 <<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
 <<<<<<< c1231be511e5e0446af66423df1e4cf2313970f5
                                     <p:commandButton title="Revisar" 
@@ -39,12 +44,17 @@
                                                      disabled="#{!livroBean.estaDisponivelRevisaoUsuario(lis.id)}" /> <!desabilita para quem não é o revisor>
 >>>>>>> Implmentacao tela revisao livro
 =======
+=======
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
                                     <p:commandButton title="Revisar" 
                                                      ajax="false"                                         
                                                      icon="ui-icon-pencil" 
                                                      action="#{livroBean.atualizarLockLivro(lis.id)}"                                                     
                                                      disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" /> 
+<<<<<<< HEAD
 >>>>>>> Rebase master 1
+=======
+>>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
                                     <p:commandButton ajax="false" 
                                                      title="Ler" 
                                                      icon="ui-icon-document" 
