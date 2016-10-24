@@ -279,7 +279,7 @@ public class LivroBean {
         try {            
             this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);                         
             TipoStatus st = this.controlador.carregarTipoStatus(1);
-          this.livroCarregado = new Livro();
+            this.livroCarregado = new Livro();
             
             this.livro.setCapa(getImgBytes());
             this.livro.setTipoTexto(tipoTexto);
@@ -327,7 +327,10 @@ public class LivroBean {
                 this.livroCarregado.setBookLock(0);                
             }
             
-            this.livroCarregado.setCapa(getImgBytes());
+            // So atualiza a capa se foi feito upload de algum arquivo
+            if ((this.file != null) && (!this.file.getFileName().isEmpty())) {
+                this.livroCarregado.setCapa(getImgBytes());
+            }
             //this.livroCarregado.setTipoTexto(tipoTexto);            
             this.controlador.salvarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);                        
             
