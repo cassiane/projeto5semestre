@@ -25,6 +25,7 @@
                                          style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}">
                             <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
                                            itemValue="#{tipoTexto}"/>
+                            <f:converter converterId="conversorTipoTexto" />
                         </h:selectOneMenu>                          
                     </div>
                     <div style="margin-top: 15px; text-align: right;">                        
