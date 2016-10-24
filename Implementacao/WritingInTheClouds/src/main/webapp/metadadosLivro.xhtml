@@ -20,6 +20,7 @@
                             <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" style="width: 150px">
                                 <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
                                                itemValue="#{tipoTexto}"/>
+                                <f:converter converterId="tipoTextoConverter" />
                             </p:selectOneMenu>  
                         </h:panelGrid>
                         <h:panelGrid columns="2">
