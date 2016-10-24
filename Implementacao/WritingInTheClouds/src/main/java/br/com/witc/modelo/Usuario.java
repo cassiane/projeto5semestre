@@ -360,7 +360,7 @@ public class Usuario implements Serializable {
      * @param tiposTextoUsuario lista dos tipos de textos
      * @param idUsuario 
      */    
-    void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
+    void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
         UsuarioDAO dao = new UsuarioDAO();
         dao.salvarTipoTextoUsuario(tiposTextoUsuario,idUsuario);
     }
@@ -369,9 +369,10 @@ public class Usuario implements Serializable {
      * Método para salvar os tipos de texto em que o usuário se identifica
      * @param idUsuario 
      */    
-    List <String> listarTipoTextoUsuario(int idUsuario){
+    List <TipoTexto> listarTipoTextoUsuario(int idUsuario){
         UsuarioDAO dao = new UsuarioDAO();
-        return dao.listarTipoTextoUsuario(idUsuario);
+        List <TipoTexto> s = dao.listarTipoTextoUsuario(idUsuario);
+        return s;
     }
     
     /**

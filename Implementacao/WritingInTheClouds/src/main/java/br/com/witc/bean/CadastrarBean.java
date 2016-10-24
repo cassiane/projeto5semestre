@@ -62,7 +62,7 @@ public class CadastrarBean {
     private List<Usuario> sugestao;
     private List<Usuario> solicitacao;
     private List<Usuario> usuarios;
-    private List<String> selectedTiposTextoUsuario;
+    private List<TipoTexto> selectedTiposTextoUsuario;
     private String tipotextoTag;
     private String convidarEmail;
     private StreamedContent imagemEnviada = new DefaultStreamedContent();
@@ -504,14 +504,14 @@ public class CadastrarBean {
     /**
      * @return the selectedTiposTextoUsuario
      */
-    public List<String> getSelectedTiposTextoUsuario() {
+    public List<TipoTexto> getSelectedTiposTextoUsuario() {
         return selectedTiposTextoUsuario;
     }
 
     /**
      * @param selectedTiposTextoUsuario the selectedTiposTextoUsuario to set
      */
-    public void setSelectedTiposTextoUsuario(List<String> selectedTiposTextoUsuario) {
+    public void setSelectedTiposTextoUsuario(List<TipoTexto> selectedTiposTextoUsuario) {
         this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
     }
 

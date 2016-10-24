@@ -60,7 +60,7 @@ public class FiltroTransacoesHibernate implements Filter {
         if(transacaoCorrente != null) {
             transacaoCorrente.finalizarRequisicao();
         }                      
-    }
+        }
 
     @Override
     public void destroy() {

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.witc.conversor;
+package br.com.witc.bean;
 
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.modelo.TipoTexto;
@@ -23,35 +23,22 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter("conversorTipoTextoTags")
 public class ConversorTipoTextoTags  implements Converter  {
     
-    /**
-     *
-     * @param fc
-     * @param uic
-     * @param value
-     * @return
-     */
     @Override
-    public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
-        if(value != null && value.trim().length() > 0) {
-            try {
-                return value;                
-            } catch(NumberFormatException e) {
-                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Not a valid theme."));
-            }
+    public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
+        if ((string != null) && (!string.isEmpty())) {
+            return (TipoTexto) uic.getAttributes().get(string);
         }
-        else {
-            return null;
-        }
+        return null;
     }
- 
-    @Override
-    public String getAsString(FacesContext fc, UIComponent uic, Object object) {
-        if(object != null) {
-            return String.valueOf(((TipoTexto) object).getId());
-        }
-        else {
-            return null;
-        }
-    }   
-}     
 
+    @Override
+    public String getAsString(FacesContext fc, UIComponent uic, Object o) {
+        if (o instanceof TipoTexto) {
+            TipoTexto tipoTexto = (TipoTexto) o;            
+            uic.getAttributes().put(tipoTexto.getTipoTexto(), tipoTexto);
+            return tipoTexto.getTipoTexto();            
+        }
+        return "";
+    }
+}
+    

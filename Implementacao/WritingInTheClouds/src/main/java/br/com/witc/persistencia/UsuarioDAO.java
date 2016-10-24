@@ -12,6 +12,7 @@ import br.com.witc.modelo.ConvidadoUsuario;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -206,9 +207,9 @@ public class UsuarioDAO {
      * @param tiposTextoUsuario lista de tipos de texto que foram selecionados
      * @param idUsuario 
      */
-    public void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
+    public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
         for(int i=0;i<tiposTextoUsuario.size();i++){
-            int tip = Integer.parseInt(tiposTextoUsuario.get(i));
+            int tip = tiposTextoUsuario.get(i).getId();
             sessao.createSQLQuery("INSERT INTO usuario_tem_tipotexto(idUsuario,idTipoTexto) "
                 + "VALUES(:usuario,:tipoTexto);")
                 .setInteger("usuario", idUsuario)
@@ -223,12 +224,17 @@ public class UsuarioDAO {
      * @param idUsuario 
      * @return retorna uma lista de string de tipos de texto do usuario
      */
-    public List<String> listarTipoTextoUsuario(int idUsuario){
-        return sessao.createSQLQuery("SELECT tipotexto FROM usuario_tem_tipotexto u " +
+    public List<TipoTexto> listarTipoTextoUsuario(int idUsuario){
+        List resultado = sessao.createSQLQuery("SELECT tipo.id,tipo.tipotexto FROM usuario_tem_tipotexto u " +
         "inner join tipotexto tipo on u.idtipotexto = tipo.id " +
         "where u.idusuario = :usuario")
                 .setParameter("usuario", idUsuario)
-                .list();        
+                .list();
+        if (resultado.isEmpty()) {
+            return null;
+        }
+        List<TipoTexto> tmpTipos = (List<TipoTexto>)resultado;
+        return tmpTipos;        
     }
     
     /**

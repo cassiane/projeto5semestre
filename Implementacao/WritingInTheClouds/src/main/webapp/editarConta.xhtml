@@ -66,11 +66,11 @@
                                 <!-- tags tipo de texto -->
                                 <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.selectedTiposTextoUsuario}"
                                     multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
-                                    var="tipotexto" itemLabel="#{tipotexto}"
-                                    itemValue="#{tipotexto}" converter="conversorTipoTextoTags"
+                                    var="tipo" itemLabel="#{tipo}"
+                                    itemValue="#{tipo}" converter="conversorTipoTextoTags"
                                     maxResults="6" forceSelection="true">
                                     <p:column>
-                                        <h:outputText value="#{tipotexto}" />                                           
+                                        <h:outputText value="#{tipo}" />                                           
                                     </p:column>
                                 </p:autoComplete>
                             </div>

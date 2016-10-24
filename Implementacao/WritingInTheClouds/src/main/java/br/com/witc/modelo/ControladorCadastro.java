@@ -301,7 +301,7 @@ public class ControladorCadastro {
      * @param tiposTextoUsuario lista dos tipos de textos 
      * @param idUsuario usuario 
      */
-    public void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
+    public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
         this.usuario.salvarTipoTextoUsuario(tiposTextoUsuario, idUsuario);
     }
     
@@ -311,7 +311,7 @@ public class ControladorCadastro {
      * @param idUsuario usuario 
      * @return uma lista de nomes de tipos de textos
      */
-    public List <String> listarTipoTextoUsuario(int idUsuario){
+    public List <TipoTexto> listarTipoTextoUsuario(int idUsuario){
         return this.usuario.listarTipoTextoUsuario(idUsuario);
     }
     
