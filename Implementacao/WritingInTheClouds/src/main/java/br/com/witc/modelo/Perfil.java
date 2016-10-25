@@ -20,18 +20,19 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Perfil implements Serializable {
+
     @Id
     @GeneratedValue
     private int id;
     private Integer qualificacao;
     private String pseudonimo;
     @ManyToOne
-    @JoinColumn(name="idUsuario")
+    @JoinColumn(name = "idUsuario")
     private Usuario usuario;
     @ManyToOne
-    @JoinColumn(name="idTipoPerfil")
+    @JoinColumn(name = "idTipoPerfil")
     private TipoPerfil tipoPerfil;
-    
+    private boolean perfilPadrao;
 
     public int getId() {
         return id;
@@ -63,7 +64,7 @@ public class Perfil implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }   
+    }
 
     public TipoPerfil getTipoPerfil() {
         return tipoPerfil;
@@ -72,36 +73,75 @@ public class Perfil implements Serializable {
     public void setTipoPerfil(TipoPerfil tipoPerfil) {
         this.tipoPerfil = tipoPerfil;
     }
-    
+
+    public boolean isPerfilPadrao() {
+        return perfilPadrao;
+    }
+
+    public void setPerfilPadrao(boolean perfilPadrao) {
+        this.perfilPadrao = perfilPadrao;
+    }
+
     /**
      * Método que retorna o perfil do usuario logado
+     *
      * @param usuario
-     * @return 
+     * @return
      */
     public static Perfil retornarPerfilUsuarioLogado(Usuario usuario) {
         PerfilDAO dao = new PerfilDAO();
-        return dao.carregarPerfil(usuario); 
+        return dao.carregarPerfil(usuario);
     }
-    
-    /**     
+
+    /**
      * @return O nome do usuario em formato ABNT
      */
     public String getNomeUsuarioABNT() {
         return this.usuario.getNomeABNT();
     }
-    
-    public Perfil carregarPerfil (Usuario usuario){
+
+    public Perfil carregarPerfil(Usuario usuario) {
         PerfilDAO perfilDAO = new PerfilDAO();
         return perfilDAO.carregarPerfil(usuario);
     }
-    
+
     /**
      * Persistir a busca de amigos editores
+     *
      * @param idLivro
      * @return lista de amigos editores
      */
     public List<Perfil> carregarListaAmigoEditor(int idLivro) {
         PerfilDAO dao = new PerfilDAO();
         return dao.carregarListaAmigoEditor(this.getUsuario().getId(), idLivro);
+    }
+
+    /**
+     * Acessa a persistencia para desativar o perfil padrão
+     * @param perfil Perfil do usuario
+     */
+    public void desativarPerfil(Perfil perfil) {
+        PerfilDAO dao = new PerfilDAO();
+        perfil.setPerfilPadrao(false);
+        dao.salvarPerfil(perfil);
+    }
+
+    /**
+     * Acessa a persistencia para criar ou atualizar o perfil
+     * @param newPerfil Perfil do usuario
+     */
+    public void criarPerfil(Perfil newPerfil) {
+        PerfilDAO dao = new PerfilDAO();
+        dao.salvarPerfil(newPerfil);
+    }
+
+    /**
+     * Acessa a persistencia para buscar os perfis do usuario
+     * @param usuario Usuario logado
+     * @return Lista de perfis
+     */
+    public List<Perfil> listarPerfisUsuario(Usuario usuario) {
+        PerfilDAO dao = new PerfilDAO();
+        return dao.carregarListaPerfilUsuario(usuario);
     }
 }

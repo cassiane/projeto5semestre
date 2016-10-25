@@ -93,6 +93,10 @@ public class ControladorAutenticacao {
             throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException {                
         this.setUsuario(Usuario.efetuarLogin(email, senha));
     }
+
+    /**
+     * Carregar o perfil do usuario logado
+     */
     public void retornarPerfilUsuarioLogado(){
        this.setPerfil(Perfil.retornarPerfilUsuarioLogado(this.getUsuario()));
     }
@@ -137,5 +141,34 @@ public class ControladorAutenticacao {
      */
     public void atualizarStatusUsuario(int status) {
         this.usuario.atualizarStatus(status);
+    }
+
+    /**
+     * Acessa o modelo para desativar o perfil logado e ativar o perfil selecionado
+     * @param auxPerfil Perfil selecionado do usuario
+     */
+    public void trocarPerfilUsuario(Perfil auxPerfil) {
+        if (!this.perfilIgual(auxPerfil)) {
+            this.perfil.desativarPerfil(this.perfil);
+            auxPerfil.setPerfilPadrao(true);
+            auxPerfil.criarPerfil(auxPerfil);
+        }
+    }
+
+    /**
+     * Acessar o modedo para buscar os perfis
+     * @return Lista de perfis do usuario
+     */
+    public List<Perfil> listarPerfis() {
+        return this.perfil.listarPerfisUsuario(this.usuario);
+    }
+
+    /**
+     * Verifica se o perfil passado é igual ao perfil logado
+     * @param perfil Verificar
+     * @return Verdadeiro se igual
+     */
+    public boolean perfilIgual(Perfil perfil) {
+        return this.perfil.equals(perfil);
     }
 }

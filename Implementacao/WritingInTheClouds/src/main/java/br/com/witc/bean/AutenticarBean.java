@@ -11,9 +11,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import br.com.witc.modelo.ControladorAutenticacao;
+import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.Usuario;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 
@@ -27,6 +29,7 @@ public class AutenticarBean {
     private final ControladorAutenticacao controlador;
     private String email;
     private String senha;
+    private List<Perfil> perfisUsuario;
 
     public AutenticarBean() {
         this.controlador = new ControladorAutenticacao();              
@@ -58,7 +61,33 @@ public class AutenticarBean {
      */
     public void setSenha(String senha) {
         this.senha = senha;
-    }               
+    }
+
+    /**
+     * @return perfisUsuario
+     */
+    public List<Perfil> getPerfisUsuario() {
+        return perfisUsuario;
+    }
+
+    /**
+     * @param perfisUsuario the perfisUsuario to set
+     */
+    public void setPerfisUsuario(List<Perfil> perfisUsuario) {
+        this.perfisUsuario = perfisUsuario;
+    }
+
+    /**
+     * Verifica se o usuario possui mais de um perfil
+     * @return Verdadeiro se tiver mais de um perfil
+     */
+    public boolean isPerfis() {
+        this.perfisUsuario = this.controlador.listarPerfis();
+        if (this.perfisUsuario.size() > 1) {
+            return true;
+        }
+        return false;
+    }
     
     /**     
      * @param usuario the usuario to set
@@ -124,6 +153,58 @@ public class AutenticarBean {
         this.controlador.atualizarStatusUsuario(status);
     }
     
+    /**
+     * Acessa o controle para realizar a troca de perfil
+     */
+    public void trocarPerfilUsuario(Perfil auxPerfil) {
+        if (auxPerfil != null) {
+            this.controlador.trocarPerfilUsuario(auxPerfil);
+            // Recarregar o perfil logado
+            this.controlador.retornarPerfilUsuarioLogado();
+        }
+    }
+
+    /**
+     * Verificar se o perfil passado eh nulo ou igual ao logado
+     * @param perfil a ser verificado
+     * @return verdadeiro se for o mesmo perfil
+     */
+    public boolean perfilIgual(Perfil perfil) {
+        if (perfil != null) {
+            return this.controlador.perfilIgual(perfil);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Verifica se o perfil logado é editor
+     * @return Verdadeiro se Editor
+     */
+    public boolean isPerfilEditor() {
+        Perfil editor = new Perfil();
+        editor = editor.carregarPerfil(this.usuarioLogado());
+        if (editor.getTipoPerfil().getId() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Verifica se o perfil logado é revisor
+     * @return Verdadeiro se Editor
+     */
+    public boolean isPerfilRevisor() {
+        Perfil revisor = new Perfil();
+        revisor = revisor.carregarPerfil(this.usuarioLogado());
+        if (revisor.getTipoPerfil().getId() == 2) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     /**     
      * @return A quantidade de amigos do usuário logado no sistema
      */
@@ -150,7 +231,7 @@ public class AutenticarBean {
     public String efetuarLogin() {        
         try {
             this.controlador.efetuarLogin(this.email, this.senha);
-            this.controlador.retornarPerfilUsuarioLogado();          
+            this.controlador.retornarPerfilUsuarioLogado();
             return "timeline";
         } catch(LoginInvalidoException e) {
             enviarMensagem(SEVERITY_ERROR, e.getMessage());            

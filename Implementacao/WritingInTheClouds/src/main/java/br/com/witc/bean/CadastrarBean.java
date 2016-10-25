@@ -307,21 +307,8 @@ public class CadastrarBean {
      */
     public void setTipoTextoDAO(TipoTextoDAO tipoTextoDAO) {
         this.tipoTextoDAO = tipoTextoDAO;
-    }  
-    
-    /**
-     * @return the tipotextoTag
-     */
-    public String getTipotextoTag() {
-        return tipotextoTag;
     }
-
-    /**
-     * @param tipotextoTag the tipotextoTag to set
-     */
-    public void setTipotextoTag(String tipotextoTag) {
-        this.tipotextoTag = tipotextoTag;
-    }
+           
     /**
      * Busca e atualiza a lista de amigos
      *
@@ -1037,5 +1024,10 @@ public class CadastrarBean {
         AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                 .getELResolver().getValue(elContext, null, "autenticarBean");
         autenticarBean.atualizarStatusUsuario(status);
+    }
+    
+    public String criarNovoPerfil(int idTipoPerfil) {
+        this.controlador.criarPerfilUsuario(idTipoPerfil, this.usuario);
+        return "timeline";
     }
 }

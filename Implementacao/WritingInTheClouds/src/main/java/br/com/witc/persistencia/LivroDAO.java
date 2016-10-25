@@ -157,7 +157,8 @@ public class LivroDAO {
         List<Object[]> lstObjetos = sessao.createQuery("FROM Livro AS l "
                 + "INNER JOIN l.historicoLivros AS hl "                
                 + "INNER JOIN hl.perfil AS p "
-                + "WHERE p.id=:idPerfil AND l.disponivelBiblioteca = true")                 
+                + "WHERE p.id=:idPerfil AND l.disponivelBiblioteca = true "
+                + "ORDER BY dataConclusao ASC")                 
                 .setString("idPerfil", String.valueOf(idPerfil))
                 .list();
         
