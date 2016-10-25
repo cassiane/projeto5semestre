@@ -279,7 +279,7 @@ public class LivroBean {
         try {            
             this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);                         
             TipoStatus st = this.controlador.carregarTipoStatus(1);
-          this.livroCarregado = new Livro();
+            this.livroCarregado = new Livro();
             
             this.livro.setCapa(getImgBytes());
             this.livro.setTipoTexto(tipoTexto);
@@ -327,7 +327,10 @@ public class LivroBean {
                 this.livroCarregado.setBookLock(0);                
             }
             
-            this.livroCarregado.setCapa(getImgBytes());
+            // So atualiza a capa se foi feito upload de algum arquivo
+            if ((this.file != null) && (!this.file.getFileName().isEmpty())) {
+                this.livroCarregado.setCapa(getImgBytes());
+            }
             //this.livroCarregado.setTipoTexto(tipoTexto);            
             this.controlador.salvarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);                        
             
@@ -714,6 +717,7 @@ public class LivroBean {
      * @return Uma lista de livros publicados pelo usuário
      */
     public List<Livro> listarLivrosPublicadosPerfil() {
+        this.inicializarVariaveis();
         int id = this.verificarAmigo();
         // Verifica se é para mostrar os livros do usuario ou do amigo
         if (id == 0) {
@@ -770,5 +774,19 @@ public class LivroBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }                 
+    }
+    
+    /**
+     * Criado para setar as variaveis importante do bean
+     */
+    private void inicializarVariaveis() {
+        //usuario logado
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "autenticarBean");
+        
+        this.usuario = autenticarBean.usuarioLogado();                                        
+        this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
+        atualizarListaLivrosPerfil();
+    }
 }

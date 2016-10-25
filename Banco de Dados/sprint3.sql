@@ -17,6 +17,15 @@ ALTER TABLE `witc`.`Usuario`
 ADD COLUMN `status` ENUM('Pensando', 'Editando', 'Revisando', 'Lendo') NOT NULL 
 DEFAULT 'Pensando' AFTER `senha`;
 
+ALTER TABLE `witc`.`Perfil`
+ADD COLUMN `perfilPadrao` TINYINT(1) NOT NULL
+DEFAULT 1;
+
+INSERT INTO `witc`.`TipoPerfil`
+(`tipoPerfil`)
+VALUES
+("REVISOR");
+
 USE `witc` ;
 
 CREATE TABLE `usuario_tem_tipotexto` (

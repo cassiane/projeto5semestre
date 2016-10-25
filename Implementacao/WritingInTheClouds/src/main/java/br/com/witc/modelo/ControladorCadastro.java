@@ -257,6 +257,8 @@ public class ControladorCadastro {
         this.perfil.setUsuario(usuario);
         this.perfil.setPseudonimo(usuario.getNome());
         this.perfil.setTipoPerfil(this.tipoPerfil);
+        //SB24 Setar perfil padrão
+        this.perfil.setPerfilPadrao(true);
         perfilDAO.salvarPerfil(this.perfil);
     }
 
@@ -313,4 +315,21 @@ public class ControladorCadastro {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     } 
+
+    public void criarPerfilUsuario(int idTipo, Usuario usuario) {
+        Perfil newPerfil = new Perfil();
+        for (TipoPerfil tipo : this.listarTipoPerfil()) {
+            if (idTipo == tipo.getId()) {
+                newPerfil.setTipoPerfil(tipo);
+                break;
+            }
+        }
+        newPerfil.setPerfilPadrao(true);
+        newPerfil.setPseudonimo(usuario.getNome());
+        newPerfil.setQualificacao(0);
+        newPerfil.setUsuario(usuario);
+        Perfil oldPerfil = this.perfil.carregarPerfil(usuario);
+        this.perfil.desativarPerfil(oldPerfil);
+        this.perfil.criarPerfil(newPerfil);
+    }
 }
