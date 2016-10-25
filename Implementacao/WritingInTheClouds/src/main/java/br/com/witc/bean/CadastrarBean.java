@@ -992,4 +992,12 @@ public class CadastrarBean {
                 .getELResolver().getValue(elContext, null, "autenticarBean");
         autenticarBean.atualizarStatusUsuario(status);
     }
+    
+    public void atualizarStatusUsuario(int status) {
+        //Atualizar Status do Usuario
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "autenticarBean");
+        autenticarBean.atualizarStatusUsuario(status);
+    }
 }
