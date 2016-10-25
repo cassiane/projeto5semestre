@@ -10,7 +10,6 @@
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">                           
             <f:event listener="#{cadastrarBean.retornarDataNasc()}" type="preRenderView"/>
-            <f:event listener="#{cadastrarBean.retornarTiposTextoUsuario()}" type="preRenderView"/>
             <h:form id="frmEditarUsuario" enctype="multipart/form-data">                
                 <div class="form-group">
                     <div>
@@ -63,8 +62,8 @@
                     <div class="row">
                         <div class="col-lg-12"> 
                             <div class="form-group">                                    
-                                <!-- tags tipo de texto -->
-                                <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.selectedTiposTextoUsuario}"
+                                <!-- tags tipo de texto-->
+                                <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.usuario.tipostextos}"
                                     multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
                                     var="tipo" itemLabel="#{tipo.tipoTexto}"
                                     itemValue="#{tipo}" converter="conversorTipoTexto"

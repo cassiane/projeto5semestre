@@ -206,7 +206,7 @@ public class UsuarioDAO {
      * para identificar os tipos de texto em que o usuário se identifica
      * @param tiposTextoUsuario lista de tipos de texto que foram selecionados
      * @param idUsuario 
-     */
+     
     public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
         for(int i=0;i<tiposTextoUsuario.size();i++){
             int tip = tiposTextoUsuario.get(i).getId();
@@ -223,7 +223,7 @@ public class UsuarioDAO {
      * para identificar os tipos de texto em que o usuário se identifica
      * @param idUsuario 
      * @return retorna uma lista de string de tipos de texto do usuario
-     */
+     
     public List<TipoTexto> listarTipoTextoUsuario(int idUsuario){
         List resultado = sessao.createSQLQuery("SELECT tipo.id,tipo.tipotexto FROM usuario_tem_tipotexto u " +
         "inner join tipotexto tipo on u.idtipotexto = tipo.id " +
@@ -242,7 +242,7 @@ public class UsuarioDAO {
      * para identificar os tipos de texto em que o usuário se identifica
      * @param idUsuario
      * @param idTipoTexto 
-     */
+
     public void excluirTipoTextoUsuario(int idUsuario, int idTipoTexto){
         sessao.createSQLQuery("DELETE FROM usuario_tem_tipotexto"
                 + "WHERE idUsuario = :usuario and idTipoTexto = :tipoTexto;")
@@ -255,14 +255,14 @@ public class UsuarioDAO {
      * Exclui todos os registros do tipo de texto com que o usuario se identifica
      * quando ele exclui sua conta 
      * @param idUsuario 
-     */
+
     public void excluirTodosTipoTextoUsuario(int idUsuario){
         sessao.createSQLQuery("DELETE FROM usuario_tem_tipotexto"
-            + "WHERE idUsuario = :usuario;")
-            .setParameter("usuario", idUsuario)        
+            + "WHERE idUsuario = :usuario")
+            .setInteger("usuario", idUsuario)        
             .executeUpdate();
     }
-    
+    **/
     /**
      * Realiza a consulta na tabela usuario
      * @return Lista de usuarios do sistema

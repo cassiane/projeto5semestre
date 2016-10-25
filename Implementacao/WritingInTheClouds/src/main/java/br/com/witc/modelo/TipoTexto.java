@@ -9,9 +9,7 @@ import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.persistencia.TipoTextoDAO;
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  *
@@ -23,8 +21,14 @@ public class TipoTexto implements Serializable {
     @GeneratedValue
     private int id;
     private String tipoTexto;
+    @ManyToOne(cascade=CascadeType.ALL)
+           @JoinTable(name="usuario_tem_tipotexto",
+                     joinColumns={@JoinColumn(name="idUsuario",  
+                      referencedColumnName="id")},  
+                     inverseJoinColumns={@JoinColumn(name="idTipoTexto",   
+                      referencedColumnName="id")})  
+    private Usuario usuario;
     
-
     public int getId() {
         return id;
     }

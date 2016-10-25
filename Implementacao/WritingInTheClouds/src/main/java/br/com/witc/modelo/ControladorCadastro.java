@@ -12,7 +12,6 @@ import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoPerfilDAO;
-import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -293,45 +292,6 @@ public class ControladorCadastro {
      */
     public TipoTexto carregarTipoTexto(int id) {
         return this.tipoTexto.carregarTipoTexto(id);
-    }
-    
-    /**
-     * Método para salvar os tipos de textos ao usuário
-     * para este se identificar com vários tipos de texto
-     * @param tiposTextoUsuario lista dos tipos de textos 
-     * @param idUsuario usuario 
-     */
-    public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
-        this.usuario.salvarTipoTextoUsuario(tiposTextoUsuario, idUsuario);
-    }
-    
-    /**
-     * Método para retornar os tipos de textos do usuário
-     * para este se identificar com vários tipos de texto 
-     * @param idUsuario usuario 
-     * @return uma lista de nomes de tipos de textos
-     */
-    public List <TipoTexto> listarTipoTextoUsuario(int idUsuario){
-        return this.usuario.listarTipoTextoUsuario(idUsuario);
-    }
-    
-    /**
-     * Método que exclui um registro de um tipo de texto em que um usuario nao 
-     * se identifica mais
-     * @param idUsuario
-     * @param idTipoTexto  
-     */
-    public void excluirTipoTextoUsuario(int idUsuario, int idTipoTexto){
-        this.usuario.excluirTipoTextoUsuario(idUsuario, idTipoTexto);        
-    }
-    
-    /**
-     * Método para excluir todos os tipos de texto da ligação com usuario quando 
-     * este excluir sua conta
-     * @param idUsuario 
-     */
-    public void excluirTodosTipoTextoUsuario(int idUsuario){
-        this.usuario.excluirTodosTipoTextoUsuario(idUsuario);
     }
     
     /**

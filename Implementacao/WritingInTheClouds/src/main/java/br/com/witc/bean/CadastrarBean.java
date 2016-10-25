@@ -62,7 +62,6 @@ public class CadastrarBean {
     private List<Usuario> sugestao;
     private List<Usuario> solicitacao;
     private List<Usuario> usuarios;
-    private List<TipoTexto> selectedTiposTextoUsuario;
     private String tipotextoTag;
     private String convidarEmail;
     private StreamedContent imagemEnviada = new DefaultStreamedContent();
@@ -84,7 +83,6 @@ public class CadastrarBean {
         this.tipoPerfildao = new TipoPerfilDAO();
         this.tipoTexto = new TipoTexto();
         this.tipoTextoDAO = new TipoTextoDAO();
-        this.selectedTiposTextoUsuario = new ArrayList<>();
     }
     
     /**
@@ -502,20 +500,6 @@ public class CadastrarBean {
     }
 
     /**
-     * @return the selectedTiposTextoUsuario
-     */
-    public List<TipoTexto> getSelectedTiposTextoUsuario() {
-        return selectedTiposTextoUsuario;
-    }
-
-    /**
-     * @param selectedTiposTextoUsuario the selectedTiposTextoUsuario to set
-     */
-    public void setSelectedTiposTextoUsuario(List<TipoTexto> selectedTiposTextoUsuario) {
-        this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
-    }
-
-    /**
      * Seta o usuario deste bean com o usuario logado no sistema
      */
     public void setUsuarioLogado() {
@@ -622,9 +606,7 @@ public class CadastrarBean {
                 this.usuario.setFoto(imgBytes);
             }                        
             setDataNascimento();
-            this.controlador.alterarUsuario(this.usuario);
-            this.controlador.excluirTodosTipoTextoUsuario(this.usuario.getId());
-            this.controlador.salvarTipoTextoUsuario(selectedTiposTextoUsuario, this.usuario.getId());
+            this.controlador.alterarUsuario(this.usuario);            
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
@@ -657,7 +639,6 @@ public class CadastrarBean {
             this.usuario.setAtivo(false);
             this.controlador.excluirUsuario(this.usuario); 
             removerTodasAmizades(this.usuario.getId());
-            excluirTodosTipoTextoUsuario(this.usuario.getId());
         } catch (DadosUsuarioInvalidoException | NoSuchAlgorithmException | UnsupportedEncodingException | UsuarioInvalidoException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
@@ -984,13 +965,6 @@ public class CadastrarBean {
     }
     
     /**
-     * Adiciona ao array local os tipos de texto do usuario.
-     */
-    public void retornarTiposTextoUsuario(){
-        this.selectedTiposTextoUsuario = this.controlador.listarTipoTextoUsuario(usuario.getId());
-    }
-    
-    /**
      * Retorna a tela de edição do perfil selecionado na lista
      * @param id
      * @return 
@@ -998,15 +972,6 @@ public class CadastrarBean {
     public String editarTipoTexto(int id){ 
         tipoTexto = this.controlador.carregarTipoTexto(id);
         return "novoTipoTexto";
-    }
-    
-    /**
-     * Método para excluir todos os tipo de texto com ligação ao usuário que está 
-     * apagando a conta 
-     * @param idUsuario
-     */
-    public void excluirTodosTipoTextoUsuario(int idUsuario){
-        this.controlador.excluirTodosTipoTextoUsuario(idUsuario);        
     }
     
     /**

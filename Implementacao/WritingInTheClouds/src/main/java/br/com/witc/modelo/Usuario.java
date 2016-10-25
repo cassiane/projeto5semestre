@@ -5,20 +5,13 @@
  */
 package br.com.witc.modelo;
 
-import br.com.witc.excessao.DadosUsuarioInvalidoException;
-import br.com.witc.excessao.LoginInvalidoException;
-import br.com.witc.excessao.UsuarioInvalidoException;
-import java.io.Serializable;
-import java.util.Calendar;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
+import br.com.witc.excessao.*;
+import java.io.*;
+import java.util.*;
+import javax.persistence.*;
 import br.com.witc.persistencia.UsuarioDAO;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import org.apache.commons.mail.EmailException;
 
 /**
@@ -40,9 +33,17 @@ public class Usuario implements Serializable {
     private String senha;
     private String status;
     private boolean ativo; 
-
+    
+    @OneToMany(cascade=CascadeType.ALL)
+           @JoinTable(name="usuario_tem_tipotexto",
+                     joinColumns={@JoinColumn(name="idUsuario",  
+                      referencedColumnName="id")},  
+                     inverseJoinColumns={@JoinColumn(name="idTipoTexto",   
+                      referencedColumnName="id")})  
+    private List<TipoTexto> tipostextos;
+    
     /**
-     * @return the id
+     * @return 
      */
     public int getId() {
         return id;
@@ -174,6 +175,22 @@ public class Usuario implements Serializable {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }    
+    
+    
+
+    /**
+     * @return the tipostextos
+     */
+    public List<TipoTexto> getTipostextos() {
+        return tipostextos;
+    }
+
+    /**
+     * @param tipostextos the tipostextos to set
+     */
+    public void setTipostextos(List<TipoTexto> tipostextos) {
+        this.tipostextos = tipostextos;
+    }
     
     /**     
      * @return O nome do autor em formato ABNT
@@ -355,46 +372,7 @@ public class Usuario implements Serializable {
         dao.removerTodasAmizades(idUsuario);
     }
     
-    /**
-     * Método para salvar os tipos de texto em que o usuário se identifica
-     * @param tiposTextoUsuario lista dos tipos de textos
-     * @param idUsuario 
-     */    
-    void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
-        UsuarioDAO dao = new UsuarioDAO();
-        dao.salvarTipoTextoUsuario(tiposTextoUsuario,idUsuario);
-    }
     
-    /**
-     * Método para salvar os tipos de texto em que o usuário se identifica
-     * @param idUsuario 
-     */    
-    List <TipoTexto> listarTipoTextoUsuario(int idUsuario){
-        UsuarioDAO dao = new UsuarioDAO();
-        List <TipoTexto> s = dao.listarTipoTextoUsuario(idUsuario);
-        return s;
-    }
-    
-    /**
-     * Exclui um registro de um tipo de texto em que o usuario nao se identifica mais
-     * @param idUsuario
-     * @param idTipoTexto 
-     */
-    void excluirTipoTextoUsuario(int idUsuario, int idTipoTexto){
-        UsuarioDAO dao = new UsuarioDAO();
-        dao.excluirTipoTextoUsuario(idUsuario, idTipoTexto);
-    }
-    
-    /**
-     * Exclui todos os registros de tipo de texto em que o usuario se identifica 
-     * quando este apaga sua conta 
-     * @param idUsuario 
-     */
-    void excluirTodosTipoTextoUsuario(int idUsuario){
-        UsuarioDAO dao = new UsuarioDAO();
-        dao.excluirTodosTipoTextoUsuario(idUsuario);
-    }
-
     @Override
     public String toString() {
         return this.email;
