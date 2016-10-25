@@ -280,6 +280,15 @@ public class ControladorCadastro {
     }
     
     /**
+     * Retorna a lista de tipo de perfil em que o usuário não possui
+     * @param idUsuario
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfilPossiveis(int idUsuario) {
+        return this.tipoPerfil.listarTipoPerfilPossiveis(idUsuario);
+    }
+    
+    /**
      * Cadastra um tipo de texto
      * @param tipoTexto
      * @throws TipoTextoException 

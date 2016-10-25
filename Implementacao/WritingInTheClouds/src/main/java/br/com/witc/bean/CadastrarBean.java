@@ -74,6 +74,7 @@ public class CadastrarBean {
     private TipoPerfilDAO tipoPerfildao;
     public TipoTexto tipoTexto;
     public TipoTextoDAO tipoTextoDAO;    
+    List<TipoTexto> tiposTexto = new ArrayList<>();
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
@@ -627,8 +628,7 @@ public class CadastrarBean {
             this.usuario.setStatus("");
             this.usuario.setAtivo(false);
             this.controlador.excluirUsuario(this.usuario); 
-            removerTodasAmizades(this.usuario.getId());
-            excluirTodosTipoTextoUsuario(this.usuario.getId());
+            removerTodasAmizades(this.usuario.getId());            
         } catch (DadosUsuarioInvalidoException | NoSuchAlgorithmException | UnsupportedEncodingException | UsuarioInvalidoException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
@@ -897,6 +897,14 @@ public class CadastrarBean {
     }
     
     /**
+     * Retorna uma lista de perfis que o usuário não tem
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfilPossiveis(){   
+        return this.controlador.listarTipoPerfilPossiveis(this.usuario.getId());
+    }
+    
+    /**
      * Retorna a tela de edição do perfil selecionado na lista
      * @param id
      * @return 
@@ -962,35 +970,6 @@ public class CadastrarBean {
     public String editarTipoTexto(int id){ 
         tipoTexto = this.controlador.carregarTipoTexto(id);
         return "novoTipoTexto";
-    }
-    
-    /**
-     * Método para salvar o tipo de texto ao usuário para identificar com quais
-     * tipos de texto ele se identifica
-     * @param user usuario em que está pedindo para alterar
-     
-    public void salvarTipoTextoUsuario(Usuario user){
-        this.controlador.salvarTipoTextoUsuario(getSelectedTiposTextoUsuario(), user.getId());        
-    }*/
-    
-    /**
-     * Método para excluir um tipo de texto em que o usuário nao se 
-     * identifica mais
-     * @param idTipoTexto
-     * @return 
-     */
-    public String excluirTipoTextoUsuario(int idTipoTexto){
-        this.controlador.excluirTipoTextoUsuario(this.usuario.getId(), idTipoTexto);
-        return "index.xhtml?faces-redirect=true";
-    }
-    
-    /**
-     * Método para excluir todos os tipo de texto com ligação ao usuário que está 
-     * apagando a conta 
-     * @param idUsuario
-     */
-    public void excluirTodosTipoTextoUsuario(int idUsuario){
-        this.controlador.excluirTodosTipoTextoUsuario(idUsuario);        
     }
     
     /**

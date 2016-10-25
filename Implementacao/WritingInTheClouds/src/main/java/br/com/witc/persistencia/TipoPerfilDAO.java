@@ -74,4 +74,20 @@ public class TipoPerfilDAO {
         return lista;
     }
     
+    /**
+     * Retorna uma lista de todos os campos da tabela tipo perfil que o usuário
+     * pode se cadastrar
+     * @param idUsuario
+     * @return 
+     */
+    public List<TipoPerfil> listarTiposPerfilPossiveis(int idUsuario) {  
+        List<TipoPerfil> lista;
+        lista = (List<TipoPerfil>) sessao.createQuery("FROM TipoPerfil t1 " +
+                    "LEFT JOIN perfil t2 ON t1.id = t2.idTipoPerfil " +
+                    "where t2.idUsuario <> :idUsuario")
+                .setInteger("idUsuario", idUsuario)
+                .list();        
+        return lista;
+    }
+    
 }
