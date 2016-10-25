@@ -70,7 +70,14 @@
                         <div style="position: absolute; width: 100%; text-align: center; top: 65%;">
                             <div>
                                 <h:outputText style="font-weight: bold;" value="#{autenticarBean.nomeCompletoUsuario}" />
-                            </div>                            
+                            </div>  
+                            <h:form id="frmRating">
+                                <p:remoteCommand name="callBeanMethod" update=":frmRating" 
+                                                 actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRatebox();" />
+                                <div class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
+                                      style="margin-top: 10px; margin-left: auto; margin-right: auto;">                                        
+                                </div>
+                            </h:form>
                             <div style="margin-top: 10px;">
                                 <h:form>
                                     <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}" 

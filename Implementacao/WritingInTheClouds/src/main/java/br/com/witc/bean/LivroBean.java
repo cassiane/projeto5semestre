@@ -584,13 +584,13 @@ public class LivroBean {
     }
     
     /**
-     * Recebe o id e a nota dada pelo usuário ao livro. Esse método é chamado em witc.js     
+     * Recebe o id e a nota dada pelo usuário ao livro.   
      */
     public void bookRating() {        
         try {
             String[] avaliacao = FacesContext.getCurrentInstance()
                 .getExternalContext().getRequestParameterMap()
-                .get("bookRating").split("-");
+                .get("rating").split("-");
             String key = avaliacao[0];
             int idLivro = Integer.parseInt(avaliacao[1]);
             float rating = Float.parseFloat(avaliacao[2]);

@@ -16,6 +16,7 @@ import br.com.witc.modelo.Usuario;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.regex.PatternSyntaxException;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 
@@ -145,6 +146,30 @@ public class AutenticarBean {
         }
     }
     
+    /**     
+     * @return O id do perfil
+     */
+    public int getIdPerfil() {
+        /*
+        Aqui devemos fazer o tratamento para verificar qual pagina estamos visitando.
+        Poderia, por exemplo, ser a pagina de um amigo, ou a propria pagina do usuario.        
+        */
+        this.perfisUsuario = this.controlador.listarPerfis();
+        return this.perfisUsuario.get(0).getId();
+    }
+    
+    /**     
+     * @return A avaliacao do perfil
+     */
+    public float getAvaliacaoPerfil() {
+        /*
+        Aqui devemos fazer o tratamento para verificar qual pagina estamos visitando.
+        Poderia, por exemplo, ser a pagina de um amigo, ou a propria pagina do usuario.        
+        */
+        this.perfisUsuario = this.controlador.listarPerfis();
+        return this.perfisUsuario.get(0).getAvaliacao();
+    }
+    
     /**
      * Acessa o controle para atualizar o status do usuario
      * @param status Codigo do status (Enum do banco)
@@ -262,6 +287,34 @@ public class AutenticarBean {
         getCurrentInstance().getExternalContext().invalidateSession();
         return "index.xhtml?faces-redirect=true";        
     }    
+    
+    /**
+     * Recebe o id e a nota dada pelo usuário ao livro.  
+     */
+    public void userRating() {        
+        try {
+            String[] avaliacao = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap()
+                .get("rating").split("-");            
+            int idPerfil = Integer.parseInt(avaliacao[0]);
+            float rating = Float.parseFloat(avaliacao[1]);
+                    
+            Perfil tmpPerfil = this.controlador.carregarPerfilPorId(idPerfil);
+            
+            int qtdAvaliacoes = tmpPerfil.getQtdAvaliacoes() + 1;
+            float somaAvaliacoes = tmpPerfil.getSomaAvaliacoes() + rating;
+            float novaAvaliacao = somaAvaliacoes / qtdAvaliacoes;
+            
+            tmpPerfil.setAvaliacao(novaAvaliacao);
+            tmpPerfil.setQtdAvaliacoes(qtdAvaliacoes);
+            tmpPerfil.setSomaAvaliacoes(somaAvaliacoes);
+            
+            this.controlador.salvarPerfil(tmpPerfil);
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException | 
+                NullPointerException | PatternSyntaxException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Erro ao qualificar o usuário. Seu voto não foi computado!");
+        }        
+    }
     
     /**
      * Envia à viewer uma mensagem com o status da operação

@@ -171,4 +171,20 @@ public class ControladorAutenticacao {
     public boolean perfilIgual(Perfil perfil) {
         return this.perfil.equals(perfil);
     }
+    
+    /**     
+     * @param idPerfil O id do perfil a ser carregado
+     * @return Um objeto Perfil, com o perfil carregado
+     */
+    public Perfil carregarPerfilPorId(int idPerfil) {
+        return this.perfil.carregarPerfilPorId(idPerfil);
+    }
+    
+    /**
+     * Persiste um objeto Perfil no BD
+     * @param perfil O objeto a ser persistido
+     */
+    public void salvarPerfil(Perfil perfil) {
+        this.perfil.criarPerfil(perfil);
+    }
 }
