@@ -46,7 +46,8 @@ public class Livro implements Serializable {
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
     private int bookLock; 
-    private int revisao; 
+    private int revisao;
+    private boolean disponivelrevisao;
 
     public int getId() {
         return id;
@@ -328,4 +329,12 @@ public class Livro implements Serializable {
         final Livro other = (Livro) obj;
         return this.id == other.id;
     }                 
+
+    public boolean isDisponivelrevisao() {
+        return disponivelrevisao;
+    }
+
+    public void setDisponivelrevisao(boolean disponivelrevisao) {
+        this.disponivelrevisao = disponivelrevisao;
+    }
 }

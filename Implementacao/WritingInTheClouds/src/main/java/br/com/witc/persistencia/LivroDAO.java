@@ -182,7 +182,7 @@ public class LivroDAO {
     
      public List<Livro> listarLivrosRevisao() {
         List<Livro> tmpLstLivros = sessao.createCriteria(Livro.class)
-                .add(Restrictions.ne("revisao", 0))
+                .add(Restrictions.eq("disponivelrevisao", true))
                 .list();          
         return tmpLstLivros;
     }

@@ -15,9 +15,8 @@
                     <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
                     <h:panelGrid columns="2" style="margin-top: 10px">                        
                         <h:outputText value="Finalizar Revisão: " />
-                            <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizadoRevisao}">
-                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
-                        </p:selectBooleanCheckbox>
+                        <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizadoRevisao}"/>
+                     
                     </h:panelGrid> 
                     <h:panelGrid columns="4" style="margin-top: 10px">
                        

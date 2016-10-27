@@ -336,6 +336,9 @@ public class LivroBean {
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
                 this.livroCarregado.setBookLock(0);                
             }
+            if(this.livroFinalizadoRevisao){
+                this.livroCarregado.setDisponivelrevisao(false);
+            }
             
             // So atualiza a capa se foi feito upload de algum arquivo
             if ((this.file != null) && (!this.file.getFileName().isEmpty())) {
