@@ -70,6 +70,8 @@ public class LivroBean {
     private boolean disponivelEdicaoAmigo;
     private boolean livroFinalizado; 
     private boolean disponivelRevisao;
+    private boolean livroFinalizadoRevisao;
+    
     
     
     // Itens de pesquisa
@@ -809,4 +811,12 @@ public class LivroBean {
     public List<Livro> listarLivrosRevisao() {
        return  this.controlador.listarLivrosRevisao();
     } 
+
+    public boolean isLivroFinalizadoRevisao() {
+        return livroFinalizadoRevisao;
+    }
+
+    public void setLivroFinalizadoRevisao(boolean livroFinalizadoRevisao) {
+        this.livroFinalizadoRevisao = livroFinalizadoRevisao;
+    }
 }
