@@ -53,13 +53,25 @@
                         </h:selectOneMenu>
                     </div>
                     <div style="margin-top: 10px;">
-                        <h:outputLabel styleClass="text-info" value="Textos que me identifico" style="font-size: 20px;"/>
+                        <h:outputLabel styleClass="text-info" value="Textos que me identifico" rendered="#{autenticarBean.perfilEditor}" style="font-size: 20px;"/>
                     </div>
                     <div>
-                        <!-- tags tipo de texto-->
-                        <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.usuario.tipostextos}"
+                        <!-- tags tipo de texto para usuario editor-->
+                        <p:autoComplete id="autoTipoTextoTagsEditor" minQueryLength="1" value="#{cadastrarBean.usuario.tipostextos}"
                             multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
-                            var="tipo" itemLabel="#{tipo.tipoTexto}"
+                            var="tipo" itemLabel="#{tipo.tipoTexto}" rendered="#{autenticarBean.perfilEditor}"
+                            itemValue="#{tipo}" converter="conversorTipoTexto"
+                            maxResults="6" forceSelection="true">                                    
+                        </p:autoComplete>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <h:outputLabel styleClass="text-info" value="Textos que gostaria de revisar"  rendered="#{autenticarBean.perfilRevisor}" style="font-size: 20px;"/>
+                    </div>
+                    <div>
+                        <!-- tags tipo de texto para usuario revisor-->
+                        <p:autoComplete id="autoTipoTextoTagsRevisor" minQueryLength="1" value="#{cadastrarBean.usuario.tipostextosRevisor}"
+                            multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
+                            var="tipo" itemLabel="#{tipo.tipoTexto}" rendered="#{autenticarBean.perfilRevisor}"
                             itemValue="#{tipo}" converter="conversorTipoTexto"
                             maxResults="6" forceSelection="true">                                    
                         </p:autoComplete>

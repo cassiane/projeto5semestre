@@ -209,11 +209,7 @@ public class AutenticarBean {
     public boolean isPerfilEditor() {
         Perfil editor = new Perfil();
         editor = editor.carregarPerfil(this.usuarioLogado());
-        if (editor.getTipoPerfil().getId() == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return editor.getTipoPerfil().getId() == 1;
     }
 
     /**
@@ -223,11 +219,7 @@ public class AutenticarBean {
     public boolean isPerfilRevisor() {
         Perfil revisor = new Perfil();
         revisor = revisor.carregarPerfil(this.usuarioLogado());
-        if (revisor.getTipoPerfil().getId() == 2) {
-            return true;
-        } else {
-            return false;
-        }
+        return revisor.getTipoPerfil().getId() == 2;
     }
     
     /**     
