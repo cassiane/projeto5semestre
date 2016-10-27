@@ -1,4 +1,3 @@
-<<<<<<< a9e242ce710a625cb1f3a84919d1c8dac9f1b608
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -66,62 +65,3 @@
         </ui:define>
     </ui:composition>
 </html>
-=======
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition template="padraoInterno.xhtml">        
-        <ui:define name="conteudo">     
-            <div align="center"> 
-                <h1>Editor de texto</h1>
-                <h:form enctype="multipart/form-data">
-                    <h:panelGrid columns="2">
-                        <h:panelGrid columns="2">
-                             <h:outputText  value="Título: "/>
-                            <h:outputText value="#{livroBean.livroCarregado.titulo}"/>                                                
-                        </h:panelGrid>
-                        <h:panelGrid columns="2">
-                             <h:outputText  value="Tipo Texto: "/>
-                            <h:outputText  value="#{livroBean.livroCarregado.tipoTexto.tipoTexto}"/>
-                         </h:panelGrid>
-                    </h:panelGrid>
-                    <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
-                    <h:panelGrid columns="2" style="margin-top: 10px">                        
-                        <h:outputText value="Disponível para Edição: " />
-                        <p:selectBooleanCheckbox id="editavelAmigo" value="#{livroBean.disponivelEdicaoAmigo}" />                        
-                        <h:outputText value="Finalizado: " />
-                        <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizado}">
-                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
-                        </p:selectBooleanCheckbox>
-<<<<<<< HEAD
-<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
-<<<<<<< c1231be511e5e0446af66423df1e4cf2313970f5
-                        <h:outputText value="Finalizado Revisao: " />
-=======
->>>>>>> Implmentacao tela revisao livro
-=======
-                        <h:outputText value="Finalizado Revisao: " />
->>>>>>> Rebase master 1
-=======
-                        <h:outputText value="Finalizado Revisao: " />
->>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
-                        <p:selectBooleanCheckbox id="livroFinalizadoEdicao" value="#{livroBean.livroFinalizado}">
-                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
-                        </p:selectBooleanCheckbox>
-                    </h:panelGrid> 
-                    <h:panelGrid columns="3" style="margin-top: 10px">
-                        <p:commandButton value="Salvar"  action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
-                        <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
-                        <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
-                    </h:panelGrid>                     
-                    <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
-                </h:form>
-            </div>
-        </ui:define>
-    </ui:composition>
-</html>
->>>>>>> Implmentacao tela revisao livro

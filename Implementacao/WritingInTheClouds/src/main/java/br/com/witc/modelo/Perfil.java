@@ -24,7 +24,9 @@ public class Perfil implements Serializable {
     @Id
     @GeneratedValue
     private int id;
-    private Integer qualificacao;
+    private float avaliacao;
+    private int qtdAvaliacoes;
+    private float somaAvaliacoes;
     private String pseudonimo;
     @ManyToOne
     @JoinColumn(name = "idUsuario")
@@ -42,13 +44,41 @@ public class Perfil implements Serializable {
         this.id = id;
     }
 
-    public Integer getQualificacao() {
-        return qualificacao;
+    public float getAvaliacao() {
+        return avaliacao;
     }
 
-    public void setQualificacao(Integer qualificacao) {
-        this.qualificacao = qualificacao;
+    public void setAvaliacao(float avaliacao) {
+        this.avaliacao = avaliacao;
     }
+    
+    /**
+     * @return the qtdAvaliacoes
+     */
+    public int getQtdAvaliacoes() {
+        return qtdAvaliacoes;
+    }
+
+    /**
+     * @param qtdAvaliacoes the qtdAvaliacoes to set
+     */
+    public void setQtdAvaliacoes(int qtdAvaliacoes) {
+        this.qtdAvaliacoes = qtdAvaliacoes;
+    }
+
+    /**
+     * @return the somaAvaliacoes
+     */
+    public float getSomaAvaliacoes() {
+        return somaAvaliacoes;
+    }
+
+    /**
+     * @param somaAvaliacoes the somaAvaliacoes to set
+     */
+    public void setSomaAvaliacoes(float somaAvaliacoes) {
+        this.somaAvaliacoes = somaAvaliacoes;
+    }    
 
     public String getPseudonimo() {
         return pseudonimo;
@@ -143,5 +173,14 @@ public class Perfil implements Serializable {
     public List<Perfil> listarPerfisUsuario(Usuario usuario) {
         PerfilDAO dao = new PerfilDAO();
         return dao.carregarListaPerfilUsuario(usuario);
+    }   
+    
+    /**     
+     * @param idPerfil O id do perfil a ser carregado
+     * @return Um objeto Perfil, com o perfil carregado
+     */
+    public Perfil carregarPerfilPorId(int idPerfil) {
+        PerfilDAO dao = new PerfilDAO();
+        return dao.carregaPerfilID(idPerfil);
     }
 }

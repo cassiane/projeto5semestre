@@ -104,9 +104,7 @@ public class ControladorLivro {
         return this.livro.listarLivrosPerfil(perfil);
     }
     
-     public List<Livro> listarLivrosStatus(TipoStatus status){
-        return this.livro.listarLivrosStatus(status);
-    }
+    
     
     
     public Perfil carregarPerfil (Usuario usuario){
@@ -230,4 +228,8 @@ public class ControladorLivro {
     public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
         return this.livro.listarLivrosPublicadosPerfil(idPerfil);
     }    
+
+     public List<Livro> listarLivrosRevisao() {
+       return this.livro.listarLivrosRevisao();
+    }
 }

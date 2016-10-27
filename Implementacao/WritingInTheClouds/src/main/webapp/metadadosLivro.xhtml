@@ -5,41 +5,13 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition template="padraoInterno.xhtml">        
+     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">     
             <div align="center"> 
-<<<<<<< HEAD
-<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
-<<<<<<< 4573ab5577dd6f4b12dd821409a0ff4bbe4a1303
-<<<<<<< 485cffe3b3e7e9c42067d6e8c865ed794939e534
-<<<<<<< 4c92b75dff30a6f67df4cf615203f437683d9199
-=======
->>>>>>> Implementacao SB12 - lista revisao
-=======
->>>>>>> Rebase master 1
-=======
->>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
                 <h1>Metadados do Livro</h1>
                 <h:form id= "formMetadados" enctype="multipart/form-data">
                     <h:panelGrid columns="1">
                         <h:panelGrid columns="2">
-<<<<<<< HEAD
-<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
-<<<<<<< 485cffe3b3e7e9c42067d6e8c865ed794939e534
-=======
-=======
->>>>>>> Metadados livro
-               <h1>Metadados do Livro</h1>
-               <h:form enctype="multipart/form-data">  
-                   <h:panelGrid columns="2">
-                       <h:panelGrid columns="2">
->>>>>>> Metadados livro
-=======
->>>>>>> Implementacao SB12 - lista revisao
-=======
->>>>>>> Rebase master 1
-=======
->>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
                             <p:outputLabel for="titulo" value="Título"/>
                             <p:inputText id="titulo" label="titulo" maxlength="45" value="#{livroBean.tituloLivro}"/>                                            
                         </h:panelGrid>
@@ -48,59 +20,20 @@
                             <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" style="width: 150px">
                                 <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
                                                itemValue="#{tipoTexto}"/>
-<<<<<<< HEAD
-<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
-<<<<<<< 485cffe3b3e7e9c42067d6e8c865ed794939e534
-<<<<<<< 3b6c68662c1dfa329b2b22e648acbd335b7e6fc6
                             </p:selectOneMenu>  
                         </h:panelGrid>
                         <h:panelGrid columns="2">
                             <p:outputLabel for="capa" value="Capa "/>
                             <p:fileUpload id="capa" value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
                         </h:panelGrid> 
-                    </h:panelGrid>              
-                    <h:panelGrid columns="3" style="margin-top: 10px">
-=======
-                            </p:selectOneMenu>
-                       </h:panelGrid>
-                   </h:panelGrid>
-                   <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.textoLivro}" width="600" />
-                   <h:panelGrid columns="2" style="margin-top: 10px">                        
-                        <h:outputText value="Disponível para Edição: " />
-                        <p:selectBooleanCheckbox value="#{livroBean.disponivelEdicaoAmigo}" />  
-                        
-                    </h:panelGrid> 
-                   <h:panelGrid columns="2" style="margin-top: 10px">                        
-                        <h:outputText value="Disponível para Revisao: " />
-                        <p:selectBooleanCheckbox value="" />                        
-                    </h:panelGrid> 
-                     <h:panelGrid columns="3" style="margin-top: 10px">
->>>>>>> Implementação controle de revisao de texto SB12
-=======
-=======
->>>>>>> Rebase master 1
-=======
->>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
-                            </p:selectOneMenu>  
-                        </h:panelGrid>
+
                         <h:panelGrid columns="2">
-                            <p:outputLabel for="capa" value="Capa "/>
-                            <p:fileUpload id="capa" value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
-                        </h:panelGrid> 
-                        <h:panelGrid columns="2">
-                        <h:outputText value="Disponivel para Revisao: " />
+                        <h:outputText value="Revisao: " />
                         <p:selectBooleanCheckbox value="#{livroBean.disponivelRevisao}" />
                         </h:panelGrid>
-                    </h:panelGrid>
-                  
+                    </h:panelGrid>          
+
                     <h:panelGrid columns="3" style="margin-top: 10px">
-<<<<<<< HEAD
-<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
->>>>>>> Implementacao SB12 - lista revisao
-=======
->>>>>>> Rebase master 1
-=======
->>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
                         <p:commandButton value="Salvar"  action="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
                     </h:panelGrid>                     

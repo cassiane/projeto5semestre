@@ -1,4 +1,3 @@
-<<<<<<< 485cffe3b3e7e9c42067d6e8c865ed794939e534
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"      
@@ -44,7 +43,7 @@
                                     </li>
                                 </c:if>
                                 <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilEditor}" /></li>
-                                <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilRevisor}" /></li>
+                                <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="revisao.xhtml" /></li>
                                 <li><h:commandLink value="Biblioteca Virtual" actionListener="#{autenticarBean.setAmigoUsuario()}" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
                                 <li><h:link value="Perfis de Usuários" outcome="tiposPerfis.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
                                 <li><h:link value="Tipos de Texto" outcome="tiposTexto.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
@@ -129,7 +128,7 @@
                 <div class="col-md-6">                                                           
                     <ui:insert name="conteudo" />                                    
                 </div>
-                <div class="col-md-3">
+               <div class="col-md-3">
                     <h:form id="frmChat">
                         <p:stack icon="/resources/imagens/chat.png" expanded="true">
                             <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
@@ -142,88 +141,3 @@
         <ui:insert name="dialogos"/>                    
     </h:body>    
 </html>
-=======
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"      
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>        
-        <ui:insert name="css" />
-    </h:head>
-    <h:body>              
-        <p:layout fullPage="true">
-            <p:layoutUnit position="north" size="144">
-                <p:growl id="growl" severity="info, warn, error" globalOnly="true" />                    
-                <f:facet name="header">                                        
-                    <div id="top" style="height: 70px;text-align: center;line-height: 70px;font-size: 40px">
-                        <h:outputText value="WITC"/>
-                    </div>                                
-                    <div id="middle" style="height: 25px;text-align: center;">
-                        <h:outputText value="Olá, #{autenticarBean.nomeUsuario}"/>
-                    </div>                                
-
-                    <div id="botton" style="height: 20px;text-align: right; padding-bottom: 5px;">
-                        <h:form>                            
-                            <p:commandButton id="dynaButton" type="button" icon="ui-icon-gear" style="font-size:15px"/>
-                            <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
-                                <p:menuitem value="Editar minha conta" outcome="editarConta"/>
-                                <p:menuitem value="Logoff" action="#{autenticarBean.efetuarLogoff()}" update="messages" ajax="false" />
-                            </p:tieredMenu>
-                        </h:form>                        
-                    </div>                    
-                </f:facet>                
-            </p:layoutUnit>
-            <p:layoutUnit position="east" resizable="true" size="300">
-                <h:form>
-                    <p:stack icon="/resources/imagens/chat.png" expanded="true">
-                        <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
-                        <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
-                    </p:stack>
-                </h:form>
-            </p:layoutUnit>            
-            <p:layoutUnit position="west" resizable="true" size="250">
-                <h:panelGrid columns="1">                    
-                    <h:form>
-                        <p:menu>
-                            <p:menuitem value="Amigos" action="#{cadastrarBean.listarAmigos()}" ajax="false" />
-<<<<<<< HEAD
-<<<<<<< b67f502b862c95ed4e73853f8389312513787f9d
-<<<<<<< 472c391a2aaf044fa6b5004bc7c59f96165f2846
-                            <p:menuitem value="Minha Biblioteca" action="biblioteca.xhtml" ajax="false" />
-                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />  
-                            <p:menuitem value= "Revisao" action="revisao.xhtml" ajax="false"/>    
-                                            
-=======
-
-                            <p:menuitem value="Minha Biblioteca" action="biblioteca.xhtml" ajax="false" />
-                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />  
-                            <p:menuitem value= "Revisao" action="revisao.xhtml" ajax="false"/>                                      
->>>>>>> Rebase master 1
-=======
-                            <p:menuitem value="Minha Biblioteca" action="biblioteca.xhtml" ajax="false" />
-                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />  
-                            <p:menuitem value= "Revisão" action="revisao.xhtml" ajax="false"/>         
->>>>>>> Tela revisao SB12
-=======
-                            <p:menuitem value="Minha Biblioteca" action="biblioteca.xhtml" ajax="false" />
-                            <p:menuitem value="Biblioteca Virtual" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" ajax="false" />  
-                            <p:menuitem value= "Revisão" action="revisao.xhtml" ajax="false"/>         
->>>>>>> 124322732df8f9c5331e8babb68b936f59d6c0c3
-                            <p:menuitem value="Perfis de Usuários" outcome="tiposPerfis"  rendered="#{autenticarBean.verificarAdministrador()}"/>
-                            <p:menuitem value="Tipos de Texto" outcome="tiposTexto"  rendered="#{autenticarBean.verificarAdministrador()}"/>
-                        </p:menu>
-                    </h:form>
-                </h:panelGrid>
-            </p:layoutUnit>    
-            <p:layoutUnit position="center">
-                <ui:insert name="conteudo"/>                
-            </p:layoutUnit>
-        </p:layout>
-        <ui:insert name="dialogos"/>
-    </h:body>    
-</html>
->>>>>>> Implementacao SB12 - lista revisao
