@@ -20,7 +20,8 @@
         <h:outputScript name="js/testechatjs.js" />        
     </h:head>
     <h:body>         
-        <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
+        <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>
+        <!--<f:event listener="#{cadastrarBean.listarAmigos()}" type="preRenderView" />-->        
         <div class="container">            
             <p:growl id="growl" severity="error" globalOnly="true" /> 
             <div class="clearfix" />
@@ -131,247 +132,112 @@
                     <ui:insert name="conteudo" />                                    
                 </div>
                 <div class="col-md-3">
-<!--
-                    <aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar popup-box-on">
-
-                        <div class="container">
-                            <div class="row chat-window col-xs-5 col-md-3" id="chat_window_1" style="margin-left:10px;">
-                                <div class="col-xs-12 col-md-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading top-bar">
-                                            <div class="col-md-8 col-xs-8">
-                                                <h3 class="panel-title"><span class="glyphicon glyphicon-comment"></span> Chat - {Nome Amigo}</h3>
+                    <div class="box amigo_online">
+                        <div style="padding-left: 10px;">
+                            <div style="padding-top: 10px;">
+                                <h:outputText style="font-weight: bold; font-size: 15px;" value="Bate-papo" />
+                            </div>
+                        </div>
+                        <ul style="padding-top: 10px;">
+                            <ui:repeat value="#{cadastrarBean.amigos}" var="amigo">
+                                <a href="#" id="chaton" onclick="chat_on(#{amigo.id})">
+                                    <li>
+                                        <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.fotoAmigo}" cache="false">
+                                            <f:param name="userfoto" value="#{amigo.id}" />
+                                        </p:graphicImage>#{amigo.nome}
+                                    </li>
+                                </a>
+                                <chat-aside id="sidebar_secondary_chat#{amigo.id}" class="tabbed_sidebar ng-scope chat_sidebar" style="margin-left:10px;">
+                                    <div class="popup-head">
+                                        <div class="popup-head-left pull-left">
+                                            <h3><span class="glyphicon glyphicon-comment"></span>#{amigo.nomeABNT}</h3>
+                                        </div>
+                                        <div class="popup-head-right pull-right">
+                                            <button class="chat-header-button" type="button"><i class="glyphicon glyphicon-facetime-video"></i></button>
+                                            <button class="chat-header-button" type="button"><i class="glyphicon glyphicon-earphone"></i></button>
+                                            <div class="btn-group gurdeepoushan">
+                                                <button class="chat-header-button" data-toggle="dropdown" type="button" aria-expanded="false">
+                                                    <i class="glyphicon glyphicon-paperclip"></i>
+                                                </button>
+                                                <ul role="menu" class="dropdown-menu pull-right">
+                                                    <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
+                                                    <li><a href="#"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Photo</a></li>
+                                                    <li><a href="#"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location</a></li>
+                                                    <li><a href="#"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Video</a></li>
+                                                    <li><a href="#"><span class="glyphicon glyphicon-headphones" aria-hidden="true"></span> Audio</a></li>
+                                                    <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact</a></li>
+                                                </ul>
                                             </div>
-                                            <div class="col-md-4 col-xs-4" style="text-align: right;">
-                                                <a href="#"><span id="minim_chat_window" class="glyphicon glyphicon-minus icon_minim"></span></a>
-                                                <a href="#"><span class="glyphicon glyphicon-remove icon_close" data-id="chat_window_1"></span></a>
+                                            <button data-widget="remove" id="removeClass" onclick="chat_off(#{amigo.id})" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-remove"></i></button>
+                                        </div>
+                                    </div>
+                                    <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
+                                        <div class="chat_box touchscroll chat_box_colors_a">
+                                            <!--repit, ciar variavel int=0, setar com id-->
+                                            <div class="chat_message_wrapper">
+                                                <div class="chat_user_avatar">
+                                                    <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.fotoAmigo}" cache="false">
+                                                        <f:param name="userfoto" value="#{amigo.id}" />
+                                                    </p:graphicImage>
+                                                </div>
+                                                <ul class="chat_message">
+                                                    <li>
+                                                        <p>
+                                                            Testo que o usuario escreve.
+                                                            <span class="chat_message_time">13:38</span>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p>
+                                                            Testo que o usuario escreve.
+                                                            <span class="chat_message_time">13:38</span>
+                                                        </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="chat_message_wrapper chat_message_right">
+                                                <div class="chat_user_avatar">
+                                                    <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.foto}" cache="false" />
+                                                </div>
+                                                <ul class="chat_message">
+                                                    <li>
+                                                        <p>
+                                                            Testo que o amigo escreve.
+                                                            <span class="chat_message_time">13:34</span>
+                                                        </p>
+                                                    </li>
+                                                    <li>
+                                                        <p>
+                                                            Testo que o amigo escreve.
+                                                            <span class="chat_message_time">13:34</span>
+                                                        </p>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <div class="panel-body msg_container_base">
-                                            <div class="row msg_container base_sent">
-                                                <div class="col-md-10 col-xs-10">
-                                                    <div class="messages msg_sent">
-                                                        <p>that mongodb thing looks good, huh?
-                                                            tiny master db, and huge document store</p>
-                                                        <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 col-xs-2 avatar">
-                                                    <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.foto}" cache="false" />
-                                                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive " />
-                                                </div>
-                                            </div>
-                                            <div class="row msg_container base_receive">
-                                                <div class="col-md-2 col-xs-2 avatar">
-                                                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive " />
-                                                </div>
-                                                <div class="col-md-10 col-xs-10">
-                                                    <div class="messages msg_receive">
-                                                        <p>that mongodb thing looks good, huh?
-                                                            tiny master db, and huge document store</p>
-                                                        <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row msg_container base_receive">
-                                                <div class="col-md-2 col-xs-2 avatar">
-                                                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive " />
-                                                </div>
-                                                <div class="col-xs-10 col-md-10">
-                                                    <div class="messages msg_receive">
-                                                        <p>that mongodb thing looks good, huh?
-                                                            tiny master db, and huge document store</p>
-                                                        <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row msg_container base_sent">
-                                                <div class="col-xs-10 col-md-10">
-                                                    <div class="messages msg_sent">
-                                                        <p>that mongodb thing looks good, huh?
-                                                            tiny master db, and huge document store</p>
-                                                        <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 col-xs-2 avatar">
-                                                    <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.foto}" cache="false" />
-                                                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive " >
-                                                </div>
-                                            </div>
-                                            <div class="row msg_container base_receive">
-                                                <div class="col-md-2 col-xs-2 avatar">
-                                                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive " />
-                                                </div>
-                                                <div class="col-xs-10 col-md-10">
-                                                    <div class="messages msg_receive">
-                                                        <p>that mongodb thing looks good, huh?
-                                                            tiny master db, and huge document store</p>
-                                                        <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row msg_container base_sent">
-                                                <div class="col-md-10 col-xs-10 ">
-                                                    <div class="messages msg_sent">
-                                                        <p>that mongodb thing looks good, huh?
-                                                            tiny master db, and huge document store</p>
-                                                        <time datetime="2009-11-13T20:00">Timothy • 51 min</time>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 col-xs-2 avatar">
-                                                    <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.foto}" cache="false" />
-                                                    <img src="http://www.bitrebels.com/wp-content/uploads/2011/02/Original-Facebook-Geek-Profile-Avatar-1.jpg" class=" img-responsive ">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            <div class="input-group">
-                                                <input id="btn-input" type="text" class="form-control input-sm chat_input" placeholder="Write your message here..." />
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-primary btn-sm" id="btn-chat">Send</button>
+                                    </div>
+                                    <div class="chat_submit_box">
+                                        <div class="uk-input-group">
+                                            <div class="gurdeep-chat-box">
+                                                <span style="vertical-align: sub;" class="uk-input-group-addon">
+                                                    <a href="#"><i class="fa fa-smile-o"></i></a>
+                                                </span>
+                                                <input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input" />
+                                                <span style="vertical-align: sub;" class="uk-input-group-addon">
+                                                    <a href="#"><i class="fa fa-camera"></i></a>
                                                 </span>
                                             </div>
+
+                                            <span class="uk-input-group-addon">
+                                                <a href="#"><i class="glyphicon glyphicon-send"></i></a>
+                                            </span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </chat-aside>
+                            </ui:repeat>
+                        </ul>
+                    </div>
 
-                            <div class="btn-group dropup">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    <span class="glyphicon glyphicon-cog"></span>
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#" id="new_chat"><span class="glyphicon glyphicon-plus"></span> Novo</a></li>
-                                    <li><a href="#"><span class="glyphicon glyphicon-list"></span> Ver outras</a></li>
-                                    <li><a href="#"><span class="glyphicon glyphicon-remove"></span> Fechar Tudo</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#"><span class="glyphicon glyphicon-eye-close"></span> Invisivel</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-
-                        <div class="popup-head">
-                            <div class="popup-head-left pull-left"><a design="" and="" developmenta="" title="Gurdeep Osahan (Web Designer)" target="_blank" href="https://web.facebook.com/iamgurdeeposahan">
-                                    <img class="md-user-image" alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="http://bootsnipp.com/img/avatars/bcf1c0d13e5500875fdd5a7e8ad9752ee16e7462.jpg" />
-                                    <h1>Gurdeep Osahan</h1><small><br /> <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Web Designer</small></a></div>
-                            <div class="popup-head-right pull-right">
-                                <button class="chat-header-button" type="button"><i class="glyphicon glyphicon-facetime-video"></i></button>
-                                <button class="chat-header-button" type="button"><i class="glyphicon glyphicon-earphone"></i></button>
-                                <div class="btn-group gurdeepoushan">
-                                    <button class="chat-header-button" data-toggle="dropdown" type="button" aria-expanded="false">
-                                        <i class="glyphicon glyphicon-paperclip"></i> </button>
-                                    <ul role="menu" class="dropdown-menu pull-right">
-                                        <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                                        <li><a href="#"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Photo</a></li>
-                                        <li><a href="#"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Video</a></li>
-                                        <li><a href="#"><span class="glyphicon glyphicon-headphones" aria-hidden="true"></span> Audio</a></li>
-                                        <li><a href="#"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location</a></li>
-                                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact</a></li>
-                                    </ul>
-                                </div>
-
-                                <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-remove"></i></button>
-                            </div>
-                        </div>
-
-                        <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
-                            <div class="chat_box touchscroll chat_box_colors_a">
-                                <div class="chat_message_wrapper">
-                                    <div class="chat_user_avatar">
-                                        <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                            <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="http://www.webncc.in/images/gurdeeposahan.jpg" class="md-user-image" />
-                                        </a>
-                                    </div>
-                                    <ul class="chat_message">
-                                        <li>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, eum? </p>
-                                        </li>
-                                        <li>
-                                            <p> Lorem ipsum dolor sit amet.<span class="chat_message_time">13:38</span> </p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="chat_message_wrapper chat_message_right">
-                                    <div class="chat_user_avatar">
-                                        <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                            <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.foto}" cache="false" />
-                                        </a>
-                                    </div>
-                                    <ul class="chat_message">
-                                        <li>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem delectus distinctio dolor earum est hic id impedit ipsum minima mollitia natus nulla perspiciatis quae quasi, quis recusandae, saepe, sunt totam.
-                                                <span class="chat_message_time">13:34</span>
-                                            </p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="chat_message_wrapper">
-                                    <div class="chat_user_avatar">
-                                        <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                            <img alt="Gurdeep Osahan (Web Designer)" title="Gurdeep Osahan (Web Designer)" src="http://www.webncc.in/images/gurdeeposahan.jpg" class="md-user-image" />
-                                        </a>
-                                    </div>
-                                    <ul class="chat_message">
-                                        <li>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque ea mollitia pariatur porro quae sed sequi sint tenetur ut veritatis.https://www.facebook.com/iamgurdeeposahan
-                                                <span class="chat_message_time">23 Jun 1:10am</span>
-                                            </p>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="chat_message_wrapper chat_message_right">
-                                    <div class="chat_user_avatar">
-                                        <a href="https://web.facebook.com/iamgurdeeposahan" target="_blank">
-                                            <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.foto}" cache="false" />
-                                        </a>
-                                    </div>
-                                    <ul class="chat_message">
-                                        <li>
-                                            <p> Lorem ipsum dolor sit amet, consectetur. </p>
-                                        </li>
-                                        <li>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                <span class="chat_message_time">Friday 13:34</span>
-                                            </p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat_submit_box">
-                            <div class="uk-input-group">
-                                <div class="gurdeep-chat-box">
-                                    <span style="vertical-align: sub;" class="uk-input-group-addon">
-                                        <a href="#"><i class="fa fa-smile-o"></i></a>
-                                    </span>
-                                    <input placeholder="Type a message" id="submit_message" name="submit_message" class="md-input" type="text">
-                                        <span style="vertical-align: sub;" class="uk-input-group-addon">
-                                            <a href="#"><i class="fa fa-camera"></i></a>
-                                        </span>
-                                    </input>
-                                </div>
-
-                                <span class="uk-input-group-addon">
-                                    <a href="#"><i class="glyphicon glyphicon-send"></i></a>
-                                </span>
-                            </div>
-                        </div>
-
-
-
-                    </aside>-->
-
-                    <!-- <h:form id="frmChat">
-                                            <p:stack icon="/resources/imagens/chat.png" expanded="true">
-                                                <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
-                                                <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
-                                            </p:stack>
-                                        </h:form>-->
                 </div>                    
             </div>            
         </div>    
