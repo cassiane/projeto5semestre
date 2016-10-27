@@ -68,7 +68,8 @@ public class LivroBean {
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
     private boolean disponivelEdicaoAmigo;
-    private boolean livroFinalizado;    
+    private boolean livroFinalizado;  
+    private boolean permitirRevisao;
     
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -297,7 +298,7 @@ public class LivroBean {
             } else {
                 this.livro.setBookLock(this.perfilUsuario.getId());
             }
-            this.controlador.salvarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);            
+            this.controlador.salvarLivro(this.livro,this.livroFinalizado,this.permitirRevisao,this.perfilUsuario);            
             this.historico=new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
             this.historico.setLivro(this.livro);
@@ -323,7 +324,7 @@ public class LivroBean {
     
     public String salvarLivro(){
         try {                     
-            if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
+            if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo) || (this.permitirRevisao)) {
                 this.livroCarregado.setBookLock(0);                
             }
             
@@ -332,7 +333,7 @@ public class LivroBean {
                 this.livroCarregado.setCapa(getImgBytes());
             }
             //this.livroCarregado.setTipoTexto(tipoTexto);            
-            this.controlador.salvarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);                        
+            this.controlador.salvarLivro(livroCarregado, this.livroFinalizado,this.permitirRevisao, this.perfilUsuario);                        
             
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
                 this.livroFinalizado = false;
@@ -549,7 +550,8 @@ public class LivroBean {
      */
     public void onLivroFinalizadoStatusChange() {
         if (this.livroFinalizado) {
-            this.disponivelEdicaoAmigo = true;        
+            this.disponivelEdicaoAmigo = true; 
+            this.permitirRevisao = true;
         }
     }
     
@@ -563,6 +565,7 @@ public class LivroBean {
         try {
             this.disponivelEdicaoAmigo = false;
             this.livroFinalizado = false;
+            this.permitirRevisao = false;
             this.livroCarregado = this.controlador.carregarLivro(idLivro);
             if ((this.livroCarregado.getBookLock() != 0) && 
                 (this.livroCarregado.getBookLock() != this.perfilUsuario.getId())){
@@ -572,7 +575,7 @@ public class LivroBean {
             
             } else if (this.livroCarregado.getBookLock() != this.perfilUsuario.getId()) {
                 this.livroCarregado.setBookLock(this.perfilUsuario.getId());            
-                this.controlador.salvarLivro(livroCarregado, livroFinalizado, perfilUsuario);
+                this.controlador.salvarLivro(livroCarregado, livroFinalizado, permitirRevisao, perfilUsuario);
             }
             // Status usuario
             this.atualizarStatusUsuarioLivro(2);
@@ -788,5 +791,19 @@ public class LivroBean {
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
         atualizarListaLivrosPerfil();
+    }
+
+    /**
+     * @return the permitirRevisao
+     */
+    public boolean isPermitirRevisao() {
+        return permitirRevisao;
+    }
+
+    /**
+     * @param permitirRevisao the permitirRevisao to set
+     */
+    public void setPermitirRevisao(boolean permitirRevisao) {
+        this.permitirRevisao = permitirRevisao;
     }
 }

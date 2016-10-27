@@ -20,11 +20,16 @@
                         <div>
                             <h:outputLabel styleClass="text-info" for="editavelAmigo" value="Disponível para Edição: " />
                             <p:selectBooleanCheckbox id="editavelAmigo" value="#{livroBean.disponivelEdicaoAmigo}" />                                                    
-                        </div>                            
+                        </div>  
+                        <div>
+                            <h:outputLabel styleClass="text-info" for="permitirRevisao" value="Permitir revisão: " />
+                            <p:selectBooleanCheckbox id="permitirRevisao" value="#{livroBean.permitirRevisao}" />                                                    
+                        </div>
                         <div>
                             <h:outputLabel styleClass="text-info" for="livroFinalizado" value="Finalizado: " />
                             <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizado}">
                                 <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
+                                <p:ajax update="permitirRevisao" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
                             </p:selectBooleanCheckbox>
                         </div>
                     </div>

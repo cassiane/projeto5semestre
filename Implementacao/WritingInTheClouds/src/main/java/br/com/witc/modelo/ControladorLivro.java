@@ -68,10 +68,15 @@ public class ControladorLivro {
      * Persiste um novo livro na BD
      * @param livro O livro a ser persistido
      * @param finalizado True, se o livro já foi finalizado pelo usuário ou false, caso contrário
+     * @param permitirRevisao True, se o usuário deseja que o livro seja revisado antes de estar
+     * disponpivel na biblioteca.
      * @param perfil O perfil do usuário criador do livro
      */
-    public void salvarLivro(Livro livro, boolean finalizado, Perfil perfil){    
+    public void salvarLivro(Livro livro, boolean finalizado,boolean permitirRevisao, Perfil perfil){    
         if (finalizado) {
+            if(permitirRevisao){
+                livro.setPermitirRevisao(permitirRevisao);
+            }
             HistoricoLivro historicoLivro = new HistoricoLivro();
             historicoLivro.finalizarLivroUsuario(livro, perfil);
             
@@ -84,7 +89,11 @@ public class ControladorLivro {
             }
             
             if (terminado) {
-                livro.setDisponivelBiblioteca(true);
+                if(permitirRevisao){
+                    
+                }else{
+                    livro.setDisponivelBiblioteca(true);
+                }
             }
         }
         this.livro.salvarLivro(livro);

@@ -33,6 +33,7 @@ public class Livro implements Serializable {
     private String classificacao;
     private boolean disponivelBiblioteca;
     private boolean reportadoConteudoImproprio;
+    private boolean permitirRevisao;
     private float avaliacao;
     private int qtdAvaliacoes;
     private float somaAvaliacoes;
@@ -314,4 +315,18 @@ public class Livro implements Serializable {
         final Livro other = (Livro) obj;
         return this.id == other.id;
     }               
+
+    /**
+     * @return the permitirRevisao
+     */
+    public boolean isPermitirRevisao() {
+        return permitirRevisao;
+    }
+
+    /**
+     * @param permitirRevisao the permitirRevisao to set
+     */
+    public void setPermitirRevisao(boolean permitirRevisao) {
+        this.permitirRevisao = permitirRevisao;
+    }
 }
