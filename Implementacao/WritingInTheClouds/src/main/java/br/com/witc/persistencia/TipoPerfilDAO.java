@@ -81,12 +81,14 @@ public class TipoPerfilDAO {
      * @return 
      */
     public List<TipoPerfil> listarTiposPerfilPossiveis(int idUsuario) {  
-        List<TipoPerfil> lista;
-        lista = (List<TipoPerfil>) sessao.createQuery("FROM TipoPerfil t1 " +
-                    "LEFT JOIN perfil t2 ON t1.id = t2.idTipoPerfil " +
-                    "where t2.idUsuario <> :idUsuario")
+        List<TipoPerfil> lista;        
+        String consulta = "Select t1.* from TipoPerfil t1 " +
+            "where t1.id not in (select t1.id from TipoPerfil t1 " +
+            "left join Perfil t2 on t1.id = t2.idTipoPerfil " +
+            "where t2.idUsuario = :idUsuario)";
+        lista = (List<TipoPerfil>) sessao.createSQLQuery(consulta).addEntity("TipoPerfil",TipoPerfil.class)
                 .setInteger("idUsuario", idUsuario)
-                .list();        
+                .list();          
         return lista;
     }
     

@@ -35,7 +35,6 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.*;
-import java.util.Base64;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
@@ -75,6 +74,7 @@ public class CadastrarBean {
     public TipoTexto tipoTexto;
     public TipoTextoDAO tipoTextoDAO;    
     List<TipoTexto> tiposTexto = new ArrayList<>();
+    private int tipoPerfilNovo;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
@@ -389,6 +389,22 @@ public class CadastrarBean {
      */
     public void setConvidarEmail(String convidarEmail) {
         this.convidarEmail = convidarEmail;
+    }
+    
+    
+
+    /**
+     * @return the tipoPerfilNovo
+     */
+    public int getTipoPerfilNovo() {
+        return tipoPerfilNovo;
+    }
+
+    /**
+     * @param tipoPerfilNovo the tipoPerfilNovo to set
+     */
+    public void setTipoPerfilNovo(int tipoPerfilNovo) {
+        this.tipoPerfilNovo = tipoPerfilNovo;
     }
     
     public StreamedContent getFotos(Usuario user) {
@@ -1005,8 +1021,12 @@ public class CadastrarBean {
         autenticarBean.atualizarStatusUsuario(status);
     }
     
-    public String criarNovoPerfil(int idTipoPerfil) {
-        this.controlador.criarPerfilUsuario(idTipoPerfil, this.usuario);
-        return "timeline";
+    /**
+     * Cria um novo perfil para o usuário
+     * @return 
+     */
+    public String criarNovoPerfil() {
+        this.controlador.criarPerfilUsuario(getTipoPerfilNovo(), this.usuario);
+        return "editarConta";
     }
 }

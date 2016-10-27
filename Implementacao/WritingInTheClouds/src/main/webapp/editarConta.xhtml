@@ -126,16 +126,16 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                 <label>Perfil</label>
-                                <select class="form-control">
-                                    <c:forEach var="tiposperfil" step="1" varStatus="row" items="#{cadastrarBean.listarTipoPerfilPossiveis()}">
-                                        <option> #{cadastrarBean.listarTipoPerfilPossiveis().get(row.index).tipoPerfil} </option>                                        
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            </div>
+                                <h:selectOneMenu id="tipoPerfil" styleClass="form-control" value="#{cadastrarBean.tipoPerfilNovo}"
+                                    style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" >                                    
+                                    <f:selectItems value="#{cadastrarBean.listarTipoPerfilPossiveis()}" var="tipoPerfil" itemLabel="#{tipoPerfil.tipoPerfil}" 
+                                                   itemValue="#{tipoPerfil.id}"/>
+                                </h:selectOneMenu>   
+                                </div>
+                            </div>                           
                             <div class="modal-footer">
                                 <h:commandButton styleClass="btn btn-primary" value="Criar novo"
-                                                 action="#{cadastrarBean.criarNovoPerfil(2)}" />  
+                                                 action="#{cadastrarBean.criarNovoPerfil()}" />
                                 <button type="button" class="btn btn-success" data-dismiss="modal">Cancelar</button>
                             </div>
                         </div>

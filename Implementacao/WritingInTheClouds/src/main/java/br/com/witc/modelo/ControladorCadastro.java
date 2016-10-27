@@ -354,7 +354,12 @@ public class ControladorCadastro {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     } 
-
+    
+    /**
+     * Cria um novo perfil para o usuário
+     * @param idTipo id Perfil escolhido pelo usuário
+     * @param usuario id usuário logado
+     */
     public void criarPerfilUsuario(int idTipo, Usuario usuario) {
         Perfil newPerfil = new Perfil();
         for (TipoPerfil tipo : this.listarTipoPerfil()) {
