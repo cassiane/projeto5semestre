@@ -160,7 +160,7 @@ public class ControladorAutenticacao {
      * @return Lista de perfis do usuario
      */
     public List<Perfil> listarPerfis() {
-        return this.perfil.listarPerfisUsuario(usuario);
+        return this.perfil.listarPerfisUsuario(this.usuario);
     }
 
     /**
