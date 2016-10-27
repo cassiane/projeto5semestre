@@ -94,6 +94,14 @@ public class HistoricoLivro implements Serializable {
         return this.perfil.getNomeUsuarioABNT();
     }
     
+    public String getNomeUsuario() {
+        return this.perfil.getNomeUsuario();
+    }
+    
+    public String getSobrenomeUsuario() {
+        return this.perfil.getSobrenomeUsuario();
+    }
+    
     public void salvarHistorico(HistoricoLivro hist){
         HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
         historicoLivroDAO.salvarHistorico(hist);

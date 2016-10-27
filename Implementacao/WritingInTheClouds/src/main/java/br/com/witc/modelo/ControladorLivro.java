@@ -8,6 +8,7 @@ package br.com.witc.modelo;
 import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoTextoException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -225,4 +226,11 @@ public class ControladorLivro {
     public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
         return this.livro.listarLivrosPublicadosPerfil(idPerfil);
     }    
+    
+    public void downloadEpub(Livro livro, String pathEbub) {
+        EPub epub = new EPub();
+        epub.setPathEpub(pathEbub);
+        epub.setLivro(livro);
+        epub.downloadEPub();
+    }
 }

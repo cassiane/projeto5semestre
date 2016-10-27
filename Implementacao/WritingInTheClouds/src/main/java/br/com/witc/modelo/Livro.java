@@ -9,6 +9,7 @@ import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.LivroException;
 import br.com.witc.persistencia.LivroDAO;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Entity;
@@ -208,7 +209,7 @@ public class Livro implements Serializable {
      * @param idLivro O id do livro
      * @return O(s) nome(s) do(s) autor(es) em formato ABNT
      */
-    public String getAutores(int idLivro) {        
+    public String getNomeAutoresABNT(int idLivro) {        
         String autores = "";
         
         HistoricoLivro historicoLivro = new HistoricoLivro();
@@ -223,6 +224,22 @@ public class Livro implements Serializable {
         }
         return null;
         
+    }
+    
+    /**     
+     * @return Uma matriz com os nome e sobrenome do(s) autor(es)
+     */
+    public String[][] getLstNomesCompletosAutores() {        
+        HistoricoLivro historicoLivro = new HistoricoLivro();
+        List<HistoricoLivro> lstHistorico = historicoLivro.listarHistoricoLivro(this.id);
+        String[][] arrNomes = new String[lstHistorico.size()][2];
+        int index = 0;
+        for (HistoricoLivro historico : lstHistorico) {
+            arrNomes[index][0] = historico.getNomeUsuario();
+            arrNomes[index][1] = historico.getSobrenomeUsuario();
+            index++;
+        }
+        return arrNomes;
     }
     
     /**
