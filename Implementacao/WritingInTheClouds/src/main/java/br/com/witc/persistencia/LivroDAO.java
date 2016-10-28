@@ -148,6 +148,14 @@ public class LivroDAO {
         sessao.refresh(livro);
         return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
     }
+    public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {
+        Livro livro = (Livro) sessao.createQuery("FROM Livro WHERE id=:idLivro")
+                .setString("idLivro", String.valueOf(idLivro))                
+                .uniqueResult();
+        
+        sessao.refresh(livro);
+        return ((livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0)) && livro.isDisponivelRevisao();
+    }
     
     /**     
      * @param idPerfil O id do perfil do usuário
@@ -182,7 +190,7 @@ public class LivroDAO {
     
      public List<Livro> listarLivrosRevisao() {
         List<Livro> tmpLstLivros = sessao.createCriteria(Livro.class)
-                .add(Restrictions.eq("disponivelrevisao", true))
+                .add(Restrictions.eq("disponivelRevisao", true))
                 .list();          
         return tmpLstLivros;
     }

@@ -294,6 +294,10 @@ public class Livro implements Serializable {
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
     }
+     public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
+    }
     
     /**     
      * @param idPerfil O id do perfil do usuário

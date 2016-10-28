@@ -15,14 +15,18 @@
                     <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
                     <h:panelGrid columns="2" style="margin-top: 10px">                        
                         <h:outputText value="Disponível para Edição: " />
-                        <p:selectBooleanCheckbox id="editavelAmigo" value="#{livroBean.disponivelEdicaoAmigo}" />                        
+                        <p:selectBooleanCheckbox id="editavelAmigo" value="#{livroBean.disponivelEdicaoAmigo}" />
+                        <h:outputText value="Disponivel para Revisão: " />
+                        <p:selectBooleanCheckbox id="livroFinalizadoEdicao" value="#{livroBean.disponivelRevisao}">
+                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
+                        </p:selectBooleanCheckbox>
                         <h:outputText value="Finalizado: " />
                         <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizado}">
                             <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
                         </p:selectBooleanCheckbox>
                     </h:panelGrid> 
                     <h:panelGrid columns="1" style="margin-top: 10px">                                         
-                        <p:commandButton value="Finalizar" onclick="PF('dlg0').show();" type="button" /> 
+                        <p:commandButton value="Enviar Para Revisão" onclick="PF('dlg0').show();" type="button" /> 
                     </h:panelGrid> 
                     <h:panelGrid columns="4" style="margin-top: 10px">
                         <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
@@ -31,9 +35,9 @@
                         <p:commandButton value="Voltar" onclick="PF('dlg1').show();" type="button" /> 
                     </h:panelGrid>                     
                     <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
-                    <p:dialog header="Finalizar edição" widgetVar="dlg0" showEffect="pop">
+                    <p:dialog header="Enviar Para Revisão" widgetVar="dlg0" showEffect="pop">
                         <h:panelGrid columns="2" style="margin-top: 10px">                        
-                        <h:outputText value="Disponível para Edição: " />
+                        <h:outputText value="Disponível para Revisão: " />
                         <p:selectBooleanCheckbox id="editavel" value="#{livroBean.disponivelEdicaoAmigo}" />                        
                         <h:outputText value="Finalizado: " />
                         <p:selectBooleanCheckbox id="Finalizado" value="#{livroBean.livroFinalizado}">

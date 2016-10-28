@@ -158,6 +158,12 @@ public class ControladorLivro {
                 !historicoLivro.estaFinalizadoUsuario(idLivro, idPerfil);
     }    
     
+    public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {        
+        HistoricoLivro historicoLivro = new HistoricoLivro();
+        return this.livro.estaDisponivelRevisaoUsuario(idLivro, idPerfil) &&
+                !historicoLivro.estaFinalizadoUsuario(idLivro, idPerfil);
+    }  
+    
     public void salvarHistorico(HistoricoLivro hist){
         HistoricoLivro historicoLivro = new HistoricoLivro();
         historicoLivro.salvarHistorico(hist);
