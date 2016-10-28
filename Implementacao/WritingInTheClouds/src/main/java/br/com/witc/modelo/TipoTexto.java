@@ -26,7 +26,7 @@ public class TipoTexto implements Serializable {
     private String tipoTexto;
     
     @ManyToOne(cascade=CascadeType.ALL)
-           @JoinTable(name="usuario_tem_tipotexto",
+           @JoinTable(name="Usuario_tem_TipoTexto",
                      joinColumns={@JoinColumn(name="idUsuario",  
                       referencedColumnName="id")},  
                      inverseJoinColumns={@JoinColumn(name="idTipoTexto",   

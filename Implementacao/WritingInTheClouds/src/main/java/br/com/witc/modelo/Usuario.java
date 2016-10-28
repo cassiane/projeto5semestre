@@ -42,7 +42,7 @@ public class Usuario implements Serializable {
     private String status;
     private boolean ativo; 
     @OneToMany(cascade=CascadeType.ALL)
-           @JoinTable(name="usuario_tem_tipotexto",
+           @JoinTable(name="Usuario_tem_TipoTexto",
                      joinColumns={@JoinColumn(name="idUsuario",  
                       referencedColumnName="id")},  
                      inverseJoinColumns={@JoinColumn(name="idTipoTexto",   
