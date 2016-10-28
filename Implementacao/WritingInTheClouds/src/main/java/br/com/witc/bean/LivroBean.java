@@ -279,7 +279,7 @@ public class LivroBean {
         try {            
             this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);                         
             TipoStatus st = this.controlador.carregarTipoStatus(1);
-          this.livroCarregado = new Livro();
+            this.livroCarregado = new Livro();
             
             this.livro.setCapa(getImgBytes());
             this.livro.setTipoTexto(tipoTexto);
@@ -327,7 +327,10 @@ public class LivroBean {
                 this.livroCarregado.setBookLock(0);                
             }
             
-            this.livroCarregado.setCapa(getImgBytes());
+            // So atualiza a capa se foi feito upload de algum arquivo
+            if ((this.file != null) && (!this.file.getFileName().isEmpty())) {
+                this.livroCarregado.setCapa(getImgBytes());
+            }
             //this.livroCarregado.setTipoTexto(tipoTexto);            
             this.controlador.salvarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);                        
             
@@ -581,13 +584,13 @@ public class LivroBean {
     }
     
     /**
-     * Recebe o id e a nota dada pelo usuário ao livro. Esse método é chamado em witc.js     
+     * Recebe o id e a nota dada pelo usuário ao livro.   
      */
     public void bookRating() {        
         try {
             String[] avaliacao = FacesContext.getCurrentInstance()
                 .getExternalContext().getRequestParameterMap()
-                .get("bookRating").split("-");
+                .get("rating").split("-");
             String key = avaliacao[0];
             int idLivro = Integer.parseInt(avaliacao[1]);
             float rating = Float.parseFloat(avaliacao[2]);

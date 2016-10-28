@@ -65,4 +65,14 @@ public class TipoPerfil implements Serializable {
        TipoPerfilDAO dao = new TipoPerfilDAO();
        return dao.listarTiposPerfil();        
     }
+    
+    /**
+     * Listar tipos de perfis em que o usuario pode se cadastrar
+     * @param idUsuario
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfilPossiveis(int idUsuario) {
+       TipoPerfilDAO dao = new TipoPerfilDAO();
+       return dao.listarTiposPerfilPossiveis(idUsuario);        
+    }
 }

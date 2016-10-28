@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import javax.persistence.*;
 import org.apache.commons.mail.EmailException;
 
 /**
@@ -40,7 +41,21 @@ public class Usuario implements Serializable {
     private String senha;
     private String status;
     private boolean ativo; 
-
+    @OneToMany(cascade=CascadeType.ALL)
+           @JoinTable(name="usuario_tem_tipotexto",
+                     joinColumns={@JoinColumn(name="idUsuario",  
+                      referencedColumnName="id")},  
+                     inverseJoinColumns={@JoinColumn(name="idTipoTexto",   
+                      referencedColumnName="id")})  
+    private List<TipoTexto> tipostextos;
+    @OneToMany(cascade=CascadeType.ALL)
+           @JoinTable(name="revisor_tem_tipotexto",
+                     joinColumns={@JoinColumn(name="idUsuario",  
+                      referencedColumnName="id")},  
+                     inverseJoinColumns={@JoinColumn(name="idTipoTexto",   
+                      referencedColumnName="id")})  
+    private List<TipoTexto> tipostextosRevisor;
+    
     /**
      * @return the id
      */
@@ -54,7 +69,7 @@ public class Usuario implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-
+    
     /**
      * @return the nome
      */
@@ -360,7 +375,7 @@ public class Usuario implements Serializable {
      * @param tiposTextoUsuario lista dos tipos de textos
      * @param idUsuario 
      */    
-    void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
+    void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
         UsuarioDAO dao = new UsuarioDAO();
         dao.salvarTipoTextoUsuario(tiposTextoUsuario,idUsuario);
     }
@@ -465,5 +480,33 @@ public class Usuario implements Serializable {
         UsuarioDAO dao = new UsuarioDAO();
         dao.atualizarStatus(this.getId(), status);
         this.setStatus(dao.carregarStatus(this.getId()));
+    }
+
+    /**
+     * @return the tipostextos
+     */
+    public List<TipoTexto> getTipostextos() {
+        return tipostextos;
+    }
+
+    /**
+     * @param tipostextos the tipostextos to set
+     */
+    public void setTipostextos(List<TipoTexto> tipostextos) {
+        this.tipostextos = tipostextos;
+    }
+
+    /**
+     * @return the tipostextosRevisor
+     */
+    public List<TipoTexto> getTipostextosRevisor() {
+        return tipostextosRevisor;
+    }
+
+    /**
+     * @param tipostextosRevisor the tipostextosRevisor to set
+     */
+    public void setTipostextosRevisor(List<TipoTexto> tipostextosRevisor) {
+        this.tipostextosRevisor = tipostextosRevisor;
     }
 }

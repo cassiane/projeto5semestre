@@ -206,12 +206,13 @@ public class UsuarioDAO {
      * @param tiposTextoUsuario lista de tipos de texto que foram selecionados
      * @param idUsuario 
      */
-    public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
-        for(TipoTexto tipo : tiposTextoUsuario){
+    public void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
+        for(int i=0;i<tiposTextoUsuario.size();i++){
+            int tip = Integer.parseInt(tiposTextoUsuario.get(i));
             sessao.createSQLQuery("INSERT INTO usuario_tem_tipotexto(idUsuario,idTipoTexto) "
                 + "VALUES(:usuario,:tipoTexto);")
                 .setInteger("usuario", idUsuario)
-                .setInteger("tipoTexto", tipo.getId())
+                .setInteger("tipoTexto", tip)
                 .executeUpdate();
         }              
     }
