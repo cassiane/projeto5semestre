@@ -65,7 +65,11 @@
                         <div class="wallpapper-box">                            
                             <p:graphicImage styleClass="img-wallpaper" value="resources/imagens/semWallpaper.png" cache="false" />
                             <p:graphicImage styleClass="img-thumbnail img-circle" value="#{cadastrarBean.foto}" 
-                                            style="width: 120px; height: 120px;" cache="false" />
+                                            style="width: 120px; height: 120px;" cache="false" rendered="#{autenticarBean.amigo}" />
+                            <p:graphicImage styleClass="img-thumbnail img-circle" value="#{cadastrarBean.fotoAmigo}" 
+                                            style="width: 120px; height: 120px;" cache="false" rendered="#{!autenticarBean.amigo}">
+                                <f:param name="userfoto" value="#{autenticarBean.idAmigoUsuario}" />
+                            </p:graphicImage>
                         </div>                    
                         <div style="position: absolute; width: 100%; text-align: center; top: 65%;">
                             <div>

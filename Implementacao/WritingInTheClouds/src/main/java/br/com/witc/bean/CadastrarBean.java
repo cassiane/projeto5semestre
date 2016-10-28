@@ -261,7 +261,7 @@ public class CadastrarBean {
         if (this.usuario.getFoto() == null) {
             return carregarFotoDefault();
         }        
-        InputStream is = new ByteArrayInputStream(this.usuario.getFoto());               
+        InputStream is = new ByteArrayInputStream(this.usuario.getFoto());
         StreamedContent image = new DefaultStreamedContent(is);        
         return image;
     }
