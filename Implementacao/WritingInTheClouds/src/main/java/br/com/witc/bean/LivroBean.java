@@ -99,6 +99,7 @@ public class LivroBean {
         
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
+       
         atualizarListaLivrosPerfil();
     }    
     
@@ -337,7 +338,7 @@ public class LivroBean {
                 this.livroCarregado.setBookLock(0);                
             }
             if(this.livroFinalizadoRevisao){
-                this.livroCarregado.setDisponivelrevisao(false);
+                this.livroCarregado.setDisponivelRevisao(true);
             }
             
             // So atualiza a capa se foi feito upload de algum arquivo

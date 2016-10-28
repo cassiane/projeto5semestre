@@ -21,13 +21,26 @@ ALTER TABLE `witc`.`Perfil`
 ADD COLUMN `perfilPadrao` TINYINT(1) NOT NULL
 DEFAULT 1;
 
+CREATE TABLE `usuario_tem_tipotexto` (
+  `idUsuario` int(11) NOT NULL,
+  `idTipoTexto` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE `witc`.`Livro`
-ADD COLUMN `dispRevisao` TINYINT(1) NOT NULL
-DEFAULT 0;
-
+ALTER TABLE `witc`.`perfil` 
+CHANGE COLUMN `qualificacao` `avaliacao` INT(10) UNSIGNED NULL DEFAULT 0 ,
+ADD COLUMN `qtdAvaliacoes` INT(10) UNSIGNED NULL DEFAULT 0 AFTER `avaliacao`,
+ADD COLUMN `somaAvaliacoes` FLOAT UNSIGNED NULL DEFAULT 0 AFTER `qtdAvaliacoes`;
 
 INSERT INTO `witc`.`TipoPerfil`
 (`tipoPerfil`)
 VALUES
 ("REVISOR");
+
+
+ALTER TABLE `witc`.`Livro`
+ADD COLUMN `revisao` TINYINT(1) NOT NULL
+DEFAULT 0,
+ADD COLUMN `disponivelRevisao` TINYINT(1) NOT NULL
+DEFAULT 0;
+
+

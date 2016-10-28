@@ -47,7 +47,7 @@ public class Livro implements Serializable {
     private List<HistoricoLivro> historicoLivros;
     private int bookLock; 
     private int revisao;
-    private boolean disponivelrevisao;
+    private boolean disponivelRevisao;
 
     public int getId() {
         return id;
@@ -330,11 +330,13 @@ public class Livro implements Serializable {
         return this.id == other.id;
     }                 
 
-    public boolean isDisponivelrevisao() {
-        return disponivelrevisao;
+    public boolean isDisponivelRevisao() {
+        return disponivelRevisao;
     }
 
-    public void setDisponivelrevisao(boolean disponivelrevisao) {
-        this.disponivelrevisao = disponivelrevisao;
+    public void setDisponivelRevisao(boolean disponivelRevisao) {
+        this.disponivelRevisao = disponivelRevisao;
     }
+
+    
 }
