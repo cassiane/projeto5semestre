@@ -17,24 +17,17 @@ import br.com.witc.modelo.TipoStatus;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
@@ -786,37 +779,9 @@ public class LivroBean {
         return autenticarBean.getIdAmigoUsuario();
     }
 
-    public void downloadEpub() {
-        /*
-        String dirEpub = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp");
-        // cria o arquivo html para o EPub
-        BufferedWriter output = null;         
-        File tmpFile = new File(dirEpub + "/epub.html");
-        
-        Path pathDir = Paths.get(dirEpub);
-        if (!Files.exists(pathDir)) {
-            new File(dirEpub).mkdir();
-        }
-        
-        try {
-            output = new BufferedWriter(new FileWriter(tmpFile));
-            output.write("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"></head><body>");
-            output.write(this.livroSelecionado.getTexto());
-            output.write("</body></html>");
-        } catch (IOException ex) {
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException ex) {
-                }
-            }
-        }                
-        InputStream is = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(dirEpub + "/epub.html");
-        */
-        
-        
-        String pathEpub = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp/" + this.livroSelecionado.getId());
+    public void downloadEpub() {        
+        String pathEpub = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp/livro_" 
+                + this.livroSelecionado.getId());
         this.controlador.downloadEpub(this.livroSelecionado, pathEpub);
     }
 

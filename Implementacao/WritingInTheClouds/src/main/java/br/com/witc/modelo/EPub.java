@@ -60,7 +60,7 @@ public class EPub {
     private void gerarEpub() throws FileNotFoundException, IOException  {
         Path pathDir = Paths.get(this.pathEpub);
         if (!Files.exists(pathDir)) {
-            new File(this.pathEpub).mkdir();
+            new File(this.pathEpub).mkdirs();
         } else {
             // estrutura epub jah criada
             return;
@@ -73,8 +73,8 @@ public class EPub {
         Files.write(file, lines, Charset.forName("UTF-8"));
         
         //META_INF
-        String metaPath = this.pathEpub + "/META-INF";
-        new File(metaPath).mkdir();
+        String meta = this.pathEpub + "/META-INF";
+        new File(meta).mkdir();
         
         // Container.xml
         lines = new ArrayList();
@@ -85,7 +85,7 @@ public class EPub {
         lines.add("<rootfile full-path=\"OEBPS/content.opf\" media-type=\"application/oebps-package+xml\"/>");
         lines.add("</rootfiles></container>");
         lines.add("[/cc]");
-        file = Paths.get(metaPath + "/container.xml");
+        file = Paths.get(meta + "/container.xml");
         Files.write(file, lines, Charset.forName("UTF-8"));
         
         //OEBPS
@@ -98,17 +98,88 @@ public class EPub {
         lines.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         lines.add("package xmlns=\"http://www.idpf.org/2007/opf\" unique-identifier=\"EPB-UUID\" version=\"2.0\"");
         
-        // metadata
+        // metadata        
         lines.add("<metadata xmlns:opf=\"http://www.idpf.org/2007/opf\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">");
-        lines.add("<dc:title>" + this.livro.getTitulo() + "</dc:title>");
-        
+        lines.add("<dc:title>" + this.livro.getTitulo() + "</dc:title>");        
         for (String[] autor : this.livro.getLstNomesCompletosAutores()) {
-            lines.add("<dc:creator opf:role=\"aut\" opf:file-as=\"" + autor[1].toUpperCase() + ", " + autor[0] + "\">" + autor[0] + " " + autor[1] + "</dc:creator>");
+            lines.add("<dc:creator opf:role=\"aut\" opf:file-as=\"" + autor[1].toUpperCase() 
+                    + ", " + autor[0] + "\">" + autor[0].substring(0,1).toUpperCase() 
+                    + autor[0].substring(1).toLowerCase() + " " + autor[1] + "</dc:creator>");
         }
+        lines.add("<dc:identifier id=\"EPB-UUID\">" + livro.getId() + "</dc:identifier>");
+        lines.add("<dc:language>pt-br</dc:language>");
+        
+        // manifest
+        lines.add("<manifest>");
+        // for each capitulo ...
+        lines.add("<item id=\"conteudo\" href=\"epub.html\" media-type=\"application/xhtml+xml\" />");
+        // <!– CSS Style Sheets –>
+        // <item id=”main-css” href=”style.css” media-type=”text/css”/>
+        lines.add("<item id=\"ncx\" href=\"toc.ncx\" media-type=\"application/x-dtbncx+xml\"/>");
+        
+        // spine
+        lines.add("<spine toc=\"ncx\">");
+        // em idref usar o id do manifesto
+        lines.add("<itemref idref=\"conteudo\" linear=\"yes\"/>");
+        lines.add("</spine>");
         
         lines.add("</package>");
         lines.add("[/cc]");
         file = Paths.get(oebpsPath + "/content.opf");
+        Files.write(file, lines, Charset.forName("UTF-8"));
+        
+        // toc.ncx
+        lines = new ArrayList();
+        
+        lines.add("[cc escaped=\"true\"  lang=\"xml\"]");
+        lines.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+        lines.add("<!DOCTYPE ncx\n PUBLIC \"-//NISO//DTD ncx 2005-1//EN\" \"http://www.daisy.org/z3986/2005/ncx-2005-1.dtd\">");
+        lines.add("<ncx xmlns=\"http://www.daisy.org/z3986/2005/ncx/\" version=\"2005-1\">");
+        lines.add("<head>");
+        lines.add("<meta name=\"dtb:uid\" content=\"" + livro.getId() + "\"/>");
+        // niveis de sumario
+        lines.add("<meta name=\"dtb:depth\" content=\"2\"/>");
+        lines.add("<meta name=\"dtb:totalPageCount\" content=\"0\"/>");
+        lines.add("<meta name=\"dtb:totalPageCount\" content=\"0\"/>");
+        lines.add("<meta name=\"dtb:maxPageNumber\" content=\"0\"/>");
+        lines.add("</head>");
+        lines.add("<docTitle>");
+        lines.add("<text>" + livro.getTitulo() + "</text>");
+        lines.add("</docTitle>");
+        for (String[] autor : this.livro.getLstNomesCompletosAutores()) {
+            lines.add("<docAuthor>");
+            lines.add("<text>" + autor[0] + " " + autor[1] + "</text>");
+            lines.add("</docAuthor>");
+        }
+        lines.add("<navMap>");
+        // criar para cada capitulo
+        lines.add("<navPoint id=\"conteudo\" playOrder=\"1\">");
+        lines.add("<navLabel>");
+        lines.add("<text>Conteúdo</text>");
+        lines.add("</navLabel>");
+        lines.add("<content src=\"epub.html\"/>");
+        lines.add("</navPoint>");
+        
+        lines.add("</navMap>");
+        lines.add("</ncx>");
+        lines.add("[/cc]");        
+        
+        file = Paths.get(oebpsPath + "/toc.ncx");
+        Files.write(file, lines, Charset.forName("UTF-8"));
+        
+        // capitulos - deve-se criar um arquivo para cada capitulo
+        lines = new ArrayList();
+        lines.add("[cc escaped=\"true\"  lang=\"xml\"]");
+        lines.add("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"pt\">");
+        lines.add("<head>");
+        lines.add("<meta http-equiv=\"Content-Type\" content=\"application/xhtml+xml; charset=utf-8\" />");
+        lines.add("<title>Conteúdo</title>");
+        //lines.add("<link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />");
+        lines.add("</head><body><div><h3>" + livro.getTitulo() + "</h3>");        
+        lines.add(livro.getTexto());
+        lines.add("</div></body></html>[/cc]");
+        
+        file = Paths.get(oebpsPath + "/epub.html");
         Files.write(file, lines, Charset.forName("UTF-8"));
         
         
