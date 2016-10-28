@@ -26,8 +26,8 @@
                                                  ajax="false"                                         
                                                  icon="ui-icon-pencil" 
                                                  action="#{livroBean.atualizarLockLivro(lis.id)}"                                                      
-                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
-                                #{' '}
+                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)} " />
+                              
                                 <p:commandButton ajax="false" 
                                                  title="Ler" 
                                                  icon="ui-icon-document" 

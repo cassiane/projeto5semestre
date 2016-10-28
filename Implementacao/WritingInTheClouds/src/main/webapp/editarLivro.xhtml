@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -78,3 +79,85 @@
         </ui:define>
     </ui:composition>
 </html>
+=======
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="padraoInterno.xhtml">        
+        <ui:define name="conteudo">     
+            <f:event listener="#{livroBean.carregarListaAmigoEditor()}" type="preRenderView" />
+            <div align="center"> 
+                <h1>Editor de texto</h1>
+                <h:form enctype="multipart/form-data">
+                    <p:growl id="message" showDetail="true" />
+                    <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
+                    <h:panelGrid columns="2" style="margin-top: 10px">                        
+                        <h:outputText value="Disponível para Edição: " />
+                        <p:selectBooleanCheckbox id="editavelAmigo" value="#{livroBean.disponivelEdicaoAmigo}" />
+                        <h:outputText value="Enviar para Revisao: " />
+                        <p:selectBooleanCheckbox id="livroRevisar" value="#{livroBean.disponivelRevisao}"/>
+                        <h:outputText value="Finalizado Biblioteca Virtual: " />
+                        <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizado}">
+                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
+                        </p:selectBooleanCheckbox>
+                    </h:panelGrid> 
+                    
+                    <h:panelGrid columns="4" style="margin-top: 10px">
+                        <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Salvar"  action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />                        
+                        <p:commandButton value="Voltar" onclick="PF('dlg1').show();" type="button" /> 
+                    </h:panelGrid>                     
+                    <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
+                    <p:dialog header="Enviar Para Revisão" widgetVar="dlg0" showEffect="pop">
+                        <h:panelGrid columns="2" style="margin-top: 10px">                        
+                        <h:outputText value="Disponível para Revisão: " />
+                        <p:selectBooleanCheckbox id="editavel" value="#{livroBean.disponivelEdicaoAmigo}" />                        
+                        <h:outputText value="Finalizado: " />
+                        <p:selectBooleanCheckbox id="Finalizado" value="#{livroBean.livroFinalizado}">
+                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
+                        </p:selectBooleanCheckbox>
+                    </h:panelGrid> 
+                     </p:dialog>
+                     <p:dialog header="Atenção" widgetVar="dlg1" showEffect="pop">
+                        <h:outputText value="Deseja salvar antes de voltar ?" />
+                        <p:commandButton value="SIM" action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="NÃO"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" /> 
+                     </p:dialog>
+                </h:form>
+               
+            </div>
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog header="Convidar amigos para edição" id="diaConAmiEdi" widgetVar="ConAmiEdi" modal="true">
+                <h:form>
+                    <h:panelGrid columns="2">
+                        <p:outputPanel>
+                            <p:selectManyMenu id="advanced" value="#{livroBean.amigoEditor}" converter="perfilConverter"
+                                              var="Editores" filter="true" filterMatchMode="startsWith" showCheckbox="true" scrollHeight="200">
+                                <f:selectItems value="#{livroBean.listaAmigoEditor}" var="selEditores" itemLabel="#{selEditores.pseudonimo}" itemValue="#{selEditores}" />
+                                <p:column>
+                                    <p:graphicImage style="border-style: solid" id="img" width="30" height="30" value="#{livroBean.fotoEditores}" cache="false">
+                                        <f:param name="userfoto" value="#{Editores.usuario.id}" />
+                                    </p:graphicImage>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{Editores.pseudonimo}" />
+                                </p:column>
+                            </p:selectManyMenu>
+                        </p:outputPanel>
+                        <p:outputPanel>
+                            <p:commandButton value="Convidar" actionListener="#{livroBean.convidarAmigoEditor()}" icon="ui-icon.disk" ajax="false" />
+                            <p:commandButton value="Voltar" type="button" onclick="PF('ConAmiEdi').hide();" icon="ui-icon-disk" ajax="false" />
+                        </p:outputPanel>
+                    </h:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+>>>>>>> SB12

@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -68,7 +69,11 @@ public class LivroBean {
     private String valorPesquisa;
     private Map<String,List<Livro>> bibliotecaVirtual;
     private boolean disponivelEdicaoAmigo;
-    private boolean livroFinalizado;    
+    private boolean livroFinalizado; 
+    private boolean disponivelRevisao;
+    private boolean livroFinalizadoRevisao;
+    
+    
     
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -95,6 +100,7 @@ public class LivroBean {
         
         this.usuario = autenticarBean.usuarioLogado();                                        
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
+       
         atualizarListaLivrosPerfil();
     }    
     
@@ -175,6 +181,7 @@ public class LivroBean {
     public void setTipoTexto(TipoTexto tipoTexto) {
         this.tipoTexto = tipoTexto;
     }
+    
     
     /**     
      * @return Uma lista contendo os tipos de textos cadastrados no sistema
@@ -297,6 +304,11 @@ public class LivroBean {
             } else {
                 this.livro.setBookLock(this.perfilUsuario.getId());
             }
+            if (this.disponivelRevisao){
+                this.livro.setRevisao(1);
+            }else{
+                this.livro.setRevisao(0);
+            }
             this.controlador.salvarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);            
             this.historico=new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
@@ -325,6 +337,24 @@ public class LivroBean {
         try {                     
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
                 this.livroCarregado.setBookLock(0);                
+            }
+           
+            if(this.disponivelRevisao){
+                this.livroCarregado.setRevisao(1);
+                 this.livroCarregado.setBookLock(0);
+                 this.livroCarregado.setDisponivelRevisao(disponivelRevisao);
+                 
+            }
+            if(this.livroFinalizadoRevisao){
+                 this.livroCarregado.setDisponivelRevisao(false);
+                 this.livroCarregado.setBookLock(0); 
+                 TipoStatus st = this.controlador.carregarTipoStatus(2);
+                 this.historico=new HistoricoLivro();
+            this.historico.setPerfil(this.perfilUsuario);
+            this.historico.setLivro(this.livro);
+            this.historico.setStatus(st);
+            this.historico.setDataInicio(this.getPegaDataAtual());
+            this.controlador.salvarHistorico(this.historico);   
             }
             
             // So atualiza a capa se foi feito upload de algum arquivo
@@ -536,6 +566,10 @@ public class LivroBean {
         return this.controlador.estaDisponivelEdicaoUsuario(idLivro, this.perfilUsuario.getId());
     }    
     
+     public boolean estaDisponivelRevisaoUsuario(int idLivro) {
+        return this.controlador.estaDisponivelRevisaoUsuario(idLivro, this.perfilUsuario.getId());
+    }   
+    
     /**
      * Verifica se o livro está disponível para edição do usuário logado     
      * @return True, caso o livro esteja disponível para edição e false, caso contrário
@@ -577,6 +611,31 @@ public class LivroBean {
             // Status usuario
             this.atualizarStatusUsuarioLivro(2);
             return "editarLivro";
+        } catch(LivroException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+        return null;
+    }
+    
+    
+     public String atualizarLockRevisaoLivro(int idLivro) {
+        try {
+            this.disponivelEdicaoAmigo = false;
+            this.livroFinalizado = false;
+            this.livroCarregado = this.controlador.carregarLivro(idLivro);
+            if ((this.livroCarregado.getBookLock() != 0) && 
+                (this.livroCarregado.getBookLock() != this.perfilUsuario.getId())){
+                enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, 
+                        "O livro já está sendo Revisado por outro usuário!");
+                return null;
+            
+            } else if (this.livroCarregado.getBookLock() != this.perfilUsuario.getId()) {
+                this.livroCarregado.setBookLock(this.perfilUsuario.getId());            
+                this.controlador.salvarLivro(livroCarregado, livroFinalizado, perfilUsuario);
+            }
+            // Status usuario
+            this.atualizarStatusUsuarioLivro(2);
+            return "revisarLivro";
         } catch(LivroException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
@@ -789,4 +848,32 @@ public class LivroBean {
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
         atualizarListaLivrosPerfil();
     }
+
+    public boolean isDisponivelRevisao() {
+        return disponivelRevisao;
+    }
+
+    public void setDisponivelRevisao(boolean disponivelRevisao) {
+        this.disponivelRevisao = disponivelRevisao;
+    }
+    
+    public List<Livro> listarLivrosRevisao() {
+       return  this.controlador.listarLivrosRevisao();
+    } 
+
+    public boolean isLivroFinalizadoRevisao() {
+        return livroFinalizadoRevisao;
+    }
+
+    public void setLivroFinalizadoRevisao(boolean livroFinalizadoRevisao) {
+        this.livroFinalizadoRevisao = livroFinalizadoRevisao;
+    }
+    
+    public String disponivelRevisaoBiblioteca(){
+        this.livroCarregado.setDisponivelRevisao(true);
+        this.livroCarregado.setBookLock(0);
+        this.controlador.salvarLivro(livroCarregado);
+        return "biblioteca";
+    }
 }
+

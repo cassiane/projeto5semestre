@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -146,7 +147,16 @@ public class LivroDAO {
                 .uniqueResult();
         
         sessao.refresh(livro);
+
         return (livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0);
+    }
+    public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {
+       
+          Livro livro = (Livro) sessao.createQuery("FROM Livro WHERE id=:idLivro")
+                .setString("idLivro", String.valueOf(idLivro))                
+                .uniqueResult();
+        sessao.refresh(livro);
+        return ((livro.getBookLock() == idPerfil) || (livro.getBookLock() == 0)) && livro.isDisponivelRevisao();
     }
     
     /**     
@@ -178,5 +188,13 @@ public class LivroDAO {
         return (Livro) sessao.createQuery("FROM Livro WHERE id=:liv")
                 .setParameter("liv", livro)
                 .uniqueResult();
-    }    
+    } 
+    
+     public List<Livro> listarLivrosRevisao() {
+        List<Livro> tmpLstLivros = sessao.createCriteria(Livro.class)
+                .add(Restrictions.ne("revisao", 0))
+                .list();          
+        return tmpLstLivros;
+    }
 }
+
