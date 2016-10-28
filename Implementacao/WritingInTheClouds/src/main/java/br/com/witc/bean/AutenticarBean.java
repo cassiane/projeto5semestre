@@ -316,5 +316,8 @@ public class AutenticarBean {
     private void enviarMensagem(FacesMessage.Severity sev, String msg) {
         FacesContext context = getCurrentInstance();        
         context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }            
+    }    
+    public void setarPerfilUsuario(){
+        this.controlador.retornarPerfilUsuarioLogado();
+   }
 }

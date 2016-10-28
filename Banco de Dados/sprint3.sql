@@ -34,4 +34,8 @@ ADD COLUMN `somaAvaliacoes` FLOAT UNSIGNED NULL DEFAULT 0 AFTER `qtdAvaliacoes`;
 INSERT INTO `witc`.`TipoPerfil`
 (`tipoPerfil`)
 VALUES
-("REVISOR")
+("REVISOR");
+
+ALTER TABLE `witc`.`Livro`
+ADD COLUMN `permitirRevisao` TINYINT(1) NOT NULL
+DEFAULT 0;
