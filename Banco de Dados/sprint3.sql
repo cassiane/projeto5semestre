@@ -43,4 +43,9 @@ DEFAULT 0,
 ADD COLUMN `disponivelRevisao` TINYINT(1) NOT NULL
 DEFAULT 0;
 
+INSERT INTO `witc`.`TipoStatus`
+(`tipoStatus`)
+VALUES
+("REVISAO");
+
 

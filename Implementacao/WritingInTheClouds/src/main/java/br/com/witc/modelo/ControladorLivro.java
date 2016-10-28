@@ -87,6 +87,11 @@ public class ControladorLivro {
                 livro.setDisponivelBiblioteca(true);
             }
         }
+        if(livro.isDisponivelRevisao()){
+            HistoricoLivro historicoLivro = new HistoricoLivro();
+            historicoLivro.setLivro(livro);
+            historicoLivro.setPerfil(perfil);
+        }
         this.livro.salvarLivro(livro);
     }    
     
@@ -159,9 +164,8 @@ public class ControladorLivro {
     }    
     
     public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {        
-        HistoricoLivro historicoLivro = new HistoricoLivro();
-        return this.livro.estaDisponivelRevisaoUsuario(idLivro, idPerfil) &&
-                !historicoLivro.estaFinalizadoUsuario(idLivro, idPerfil);
+     
+        return this.livro.estaDisponivelRevisaoUsuario(idLivro, idPerfil) ;
     }  
     
     public void salvarHistorico(HistoricoLivro hist){

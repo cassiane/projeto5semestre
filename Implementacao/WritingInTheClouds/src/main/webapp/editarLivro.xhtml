@@ -16,18 +16,14 @@
                     <h:panelGrid columns="2" style="margin-top: 10px">                        
                         <h:outputText value="Disponível para Edição: " />
                         <p:selectBooleanCheckbox id="editavelAmigo" value="#{livroBean.disponivelEdicaoAmigo}" />
-                        <h:outputText value="Disponivel para Revisão: " />
-                        <p:selectBooleanCheckbox id="livroFinalizadoEdicao" value="#{livroBean.disponivelRevisao}">
-                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
-                        </p:selectBooleanCheckbox>
-                        <h:outputText value="Finalizado: " />
+                        <h:outputText value="Enviar para Revisao: " />
+                        <p:selectBooleanCheckbox id="livroRevisar" value="#{livroBean.disponivelRevisao}"/>
+                        <h:outputText value="Finalizado Biblioteca Virtual: " />
                         <p:selectBooleanCheckbox id="livroFinalizado" value="#{livroBean.livroFinalizado}">
                             <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
                         </p:selectBooleanCheckbox>
                     </h:panelGrid> 
-                    <h:panelGrid columns="1" style="margin-top: 10px">                                         
-                        <p:commandButton value="Enviar Para Revisão" onclick="PF('dlg0').show();" type="button" /> 
-                    </h:panelGrid> 
+                    
                     <h:panelGrid columns="4" style="margin-top: 10px">
                         <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="Salvar"  action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
