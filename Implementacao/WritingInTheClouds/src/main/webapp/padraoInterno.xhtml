@@ -43,7 +43,7 @@
                                     </li>
                                 </c:if>
                                 <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilEditor}" /></li>
-                                <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="revisao.xhtml" /></li>
+                                <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="revisao.xhtml" rendered="#{autenticarBean.perfilRevisor}" /></li>
                                 <li><h:commandLink value="Biblioteca Virtual" actionListener="#{autenticarBean.setAmigoUsuario()}" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
                                 <li><h:link value="Perfis de Usuários" outcome="tiposPerfis.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
                                 <li><h:link value="Tipos de Texto" outcome="tiposTexto.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
