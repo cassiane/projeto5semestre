@@ -26,7 +26,6 @@ CREATE TABLE `Usuario_tem_TipoTexto` (
   `idTipoTexto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 ALTER TABLE `witc`.`Perfil` 
 CHANGE COLUMN `qualificacao` `avaliacao` INT(10) UNSIGNED NULL DEFAULT 0 ,
 ADD COLUMN `qtdAvaliacoes` INT(10) UNSIGNED NULL DEFAULT 0 AFTER `avaliacao`,
@@ -49,4 +48,10 @@ INSERT INTO `witc`.`TipoStatus`
 VALUES
 ("REVISAO");
 
+ALTER TABLE `witc`.`Livro` 
+CHANGE COLUMN `capa` `capa` LONGBLOB NULL DEFAULT NULL;
 
+CREATE TABLE `Revisor_tem_TipoTexto` (
+  `idUsuario` int(11) NOT NULL,
+  `idTipoTexto` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
