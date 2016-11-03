@@ -62,3 +62,9 @@ CREATE TABLE `Desafios` (
   `descricao` VARCHAR(1000) NOT NULL,
    primary key (`id`)
 );
+
+INSERT INTO `witc`.`desafios` (`id`, `titulo`, `descricao`) 
+VALUES ('1', 'Limite de palavras', 
+'O desafiante irá desafiar seu amigo a escrever um texto 
+com palavras que ele escolher e o texto deve ser revisado 
+pelo desafiante para ver se o desafio foi cumprido');
