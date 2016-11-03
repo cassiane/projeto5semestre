@@ -60,4 +60,5 @@ CREATE TABLE `Desafios` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(100) NOT NULL,
   `descricao` VARCHAR(1000) NOT NULL,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+   primary key (`id`)
+);
