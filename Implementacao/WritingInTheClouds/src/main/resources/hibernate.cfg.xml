@@ -8,8 +8,8 @@
     <property name="hibernate.connection.username">USERWITCAPP</property>
     <property name="hibernate.current_session_context_class">managed</property>
     <property name="hibernate.connection.password">APPCTIWUSER</property>
-    <property name="hibernate.show_sql">true</property>
-    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.show_sql">false</property>
+    <property name="hibernate.format_sql">false</property>
     <mapping class="br.com.witc.modelo.Usuario"/>
     <mapping class="br.com.witc.modelo.RecuperarConta"/>
     <mapping class="br.com.witc.modelo.Perfil"/>
@@ -21,5 +21,6 @@
     <mapping class="br.com.witc.modelo.ConvidadoUsuario"/>
     <mapping class="br.com.witc.modelo.TipoPerfil"/>
     <mapping class="br.com.witc.modelo.ConvidadoPerfil"/>
+    <mapping class="br.com.witc.modelo.Desafios"/>
   </session-factory>
 </hibernate-configuration>
