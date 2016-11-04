@@ -9,95 +9,68 @@
     <ui:composition template="padraoInterno.xhtml">
         <ui:define name="conteudo">
             <script type="text/javascript">
-            function exibe(id) {
+            var algumaberto = false;
+            function exibe(id) {                
                     if(document.getElementById(id).style.display=="none") {
-                            document.getElementById(id).style.display = "inline";                            
+                            document.getElementById(id).style.display = "inline";
+                            algumaberto = true;
                     }
                     else {
                             document.getElementById(id).style.display = "none";
                     }
             }
             </script>
-            <div align="center" style="padding-top: 50px; padding-left: 30%;">                
+            <div align="center" style="padding-top: 50px;">                
                 <div class="col-lg-4">
-                    <img onclick="javascript: exibe('conteudo1');" src="resources/imagens/chat-green.png" />                     
+                    <img id="img1" onclick="javascript: exibe('conteudo1');" src="resources/imagens/IconeDesafioPalavras.png" />    
+                    <h:outputLabel styleClass="text-info" value="Desafio com palavras" style="font-size: 20px;"/>
                 </div>
                 <div class="col-lg-4">
-                    <img onclick="javascript: exibe('conteudo2');" src="resources/imagens/chat-green.png" /> 
+                    <img id="img2" onclick="javascript: exibe('conteudo2');" src="resources/imagens/IconeSemIconeDesafio.png" /> 
+                    <h:outputLabel styleClass="text-info" value="Desafio com palavras e limite" style="font-size: 20px;"/>
                 </div>
-                <div class="col-lg-4">
-                    <img onclick="javascript: exibe('conteudo3');" src="resources/imagens/chat-green.png" /> 
-                </div>
+                <!--<div class="col-lg-4">
+                    <img id="img3" onclick="javascript: exibe('conteudo3');" src="resources/imagens/IconeSemIconeDesafio.png" /> 
+                </div>-->
             </div>
             <br />
-            <div align="center" style="padding-top: 100px; padding-left:30%;" >
+            <div style="padding-top: 100px;" >
                 <div id="conteudo1" style="display: none;">
-                    
-                        <div class="form-group" align="center">
-                                <h:inputText styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'} width: 49.5%;"
-                                             maxlength="50"  required="true" value="#{cadastrarBean.usuario.nome}"/>                        
-                                #{' '}
-                                <h:inputText styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'} width: 49.5%;" 
-                                             maxlength="50" required="true" value="#{cadastrarBean.usuario.sobrenome}"/>
-                        </div>
-                    
-                    <div align="center" class="form-group">
-                            <h:inputText styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
-                                         maxlength="150"  required="true" value="#{cadastrarBean.usuario.email}"/>
-                        </div>
-                        <div class="form-group">
-                            <h:inputText styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
-                                         maxlength="150"  autocomplete="false" 
-                                         required="true" value="#{cadastrarBean.emailVerificado}"/>
-                        </div>
-                        <div class="form-group">
-                            <h:inputSecret styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
-                                           maxlength="120"  required="true" value="#{cadastrarBean.usuario.senha}"/>
-                        </div>
-                        <div class="form-group">
-                            <h:outputText styleClass="text-primary" value="Aniversário" style="font-size: 15px;" />
-                        </div>
-                        <div class="form-inline">
-                            <h:selectOneMenu value="#{cadastrarBean.diaNascimento}" styleClass="form-control" 
-                                             style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" required="true">
-                                <f:selectItem itemLabel="Dia" itemValue="" />
-                                <c:forEach var="dia" begin="1" end="31">
-                                    <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" />
-                                </c:forEach>
-                            </h:selectOneMenu>                                                
-                            <h:selectOneMenu value="#{cadastrarBean.mesNascimento}" styleClass="form-control" 
-                                             style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'} margin-left: 10px;" 
-                                             required="true">
-                                <f:selectItem itemLabel="Mês" itemValue="" />
-                                <c:forEach var="mes" begin="1" end="12">
-                                    <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
-                                </c:forEach>
-                            </h:selectOneMenu>
-                            <h:selectOneMenu value="#{cadastrarBean.anoNascimento}" styleClass="form-control" 
-                                             style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'} margin-left: 10px;" 
-                                             required="true">
-                                <f:selectItem itemLabel="Ano" itemValue="" />
-                                <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
-                                    <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
-                                </c:forEach>
-                            </h:selectOneMenu>
-                        </div>
-                        <br />
-                        <div class="form-group">
-                            <h:selectOneRadio value="#{cadastrarBean.usuario.genero}" required="true" 
-                                              style="#{ component.valid ? 'color:black;' : 'color:red;'} font-size: 20px;">
-                                <f:selectItem itemLabel="Feminino" itemValue="F" class="form-control" />
-                                <f:selectItem itemLabel="Masculino" itemValue="M" class="form-control" />
-                            </h:selectOneRadio>
-                        </div>
+                    <div style="margin-top: 30px;">                     
+                        <h:outputLabel styleClass="text-info" value="Palavras do desafio" style="font-size: 20px;"/>
+                   
+                        <p:autoComplete id="autoDesafiosPalavras" minQueryLength="1" value="#{cadastrarBean.listaPalavras}"
+                                        multiple="true" completeMethod="#{cadastrarBean.listaPalavrasDesafios}" effect="fade"
+                                        var="des" itemLabel="#{des.toString}"
+                                        itemValue="#{des.toString}"
+                                        maxResults="6">                                    
+                        </p:autoComplete>
+                    </div>
                 </div>
+                
                 <div id="conteudo2" class="bottom" style="display: none; padding-top: 100px;">
-                    Seu conteúdo aqui 2...
+                    <div style="margin-top: 30px;">                     
+                        <h:outputLabel styleClass="text-info" value="Palavras do desafio" style="font-size: 20px;"/>
+                   
+                        <p:autoComplete id="autoDesafiosPalavrasLimite" minQueryLength="1" value="#{cadastrarBean.listaPalavras}"
+                                        multiple="true" completeMethod="#{cadastrarBean.listaPalavrasDesafios}" effect="fade"
+                                        var="des" itemLabel="#{des.toString}"
+                                        itemValue="#{des.toString}"
+                                        maxResults="6">                                    
+                        </p:autoComplete>
+                    </div>
                 </div>
+                <!--
                 <div id="conteudo3" class="bottom" style="display: none; padding-top: 100px;">
                     Seu conteúdo aqui 3...
+                </div>-->
+            </div>   
+            <div class="row">
+                <div class="col-lg-4">
+                    <h:commandButton style="width: 160px" styleClass="btn btn-success" value="Desafiar !"
+                                 action="#{cadastrarBean.salvarDesafio()}" />
                 </div>
-            </div>            
+            </div>
         </ui:define>
     </ui:composition>
 </html>

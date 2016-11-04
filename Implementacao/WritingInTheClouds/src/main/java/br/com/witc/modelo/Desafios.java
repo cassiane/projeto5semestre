@@ -18,8 +18,8 @@ public class Desafios implements Serializable {
     @GeneratedValue
     private int id;
     private String titulo; 
-    private String descricao;
-
+    private String descricao;    
+    
     /**
      * @return the id
      */
@@ -60,5 +60,5 @@ public class Desafios implements Serializable {
      */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
+    }  
 }
