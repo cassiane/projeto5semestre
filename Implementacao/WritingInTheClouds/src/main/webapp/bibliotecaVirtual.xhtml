@@ -40,10 +40,9 @@
                                         <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
                                     </p:commandLink>  
                                     
-                                    <p:commandLink value="EPub" styleClass="glyphicon glyphicon-download" action="#{livroBean.downloadEpub()}">
-                                        <i class="glyphicon-download"></i>
+                                    <h:commandLink value="EPub" styleClass="glyphicon glyphicon-download" action="#{livroBean.downloadEpub()}">                                    
                                         <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                                    </p:commandLink>
+                                    </h:commandLink>
                                     
                                 </h:panelGrid>
 

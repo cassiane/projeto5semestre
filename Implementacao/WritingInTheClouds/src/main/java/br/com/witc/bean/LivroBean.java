@@ -37,6 +37,7 @@ import javax.faces.context.FacesContext;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.faces.event.PhaseId;
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -779,10 +780,39 @@ public class LivroBean {
         return autenticarBean.getIdAmigoUsuario();
     }
 
-    public void downloadEpub() {        
-        String pathEpub = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp/livro_" 
-                + this.livroSelecionado.getId());
-        this.controlador.downloadEpub(this.livroSelecionado, pathEpub);
+    public void downloadEpub() {
+        try {
+            String pathEpub = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp/");
+            byte[] arquivo = this.controlador.downloadEpub(this.livroSelecionado, pathEpub);
+
+            /*
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            
+            // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
+            ec.responseReset();
+            // Check http://www.iana.org/assignments/media-types for all types. Use if necessary ExternalContext#getMimeType() for auto-detection based on filename.
+            ec.setResponseContentType("application/epub+zip");            
+            // Set it with the file size. This header is optional. It will work if it's omitted, but the download progress will be unknown.
+            //ec.setResponseContentLength(contentLength);
+            // The Save As popup magic is done here. You can give it any file name you want, this only won't work in MSIE, it will use current request URL as file name instead.
+            ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            
+            OutputStream output = ec.getResponseOutputStream();
+            
+            // Important! Otherwise JSF will attempt to render the response which obviously will fail since it's already written with a file and closed.
+            fc.responseComplete(); 
+             */
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-Disposition", "attachment; filename=livro_" + this.livroSelecionado.getId() + ".epub");
+            response.setContentLength(arquivo.length);
+            response.setContentType("application/epub+zip");
+            response.getOutputStream().write(arquivo);
+            response.getOutputStream().flush();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (IOException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas ao gerar o arquivo epub para download!");
+        }
     }
 
     /**
