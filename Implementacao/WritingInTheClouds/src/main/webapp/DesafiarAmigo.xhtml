@@ -22,11 +22,10 @@
             </script>
             <div align="center" style="padding-top: 50px;">                
                 <div class="col-lg-4">
-                    <img id="img1" onclick="javascript: exibe('conteudo1');" src="resources/imagens/IconeDesafioPalavras.png" />    
-                    <h:outputLabel styleClass="text-info" value="Desafio com palavras" style="font-size: 20px;"/>
+                    <img id="img1" onclick="javascript: exibe('conteudo1'); #{cadastrarBean.setDesafioPalavras(true)}" src="resources/imagens/IconeDesafioPalavras.png" />                        
                 </div>
                 <div class="col-lg-4">
-                    <img id="img2" onclick="javascript: exibe('conteudo2');" src="resources/imagens/IconeSemIconeDesafio.png" /> 
+                    <img id="img2" onclick="javascript: exibe('conteudo2'); #{cadastrarBean.setDesafioPalavrasLimite(true)}" src="resources/imagens/IconeSemIconeDesafio.png" />                    
                     <h:outputLabel styleClass="text-info" value="Desafio com palavras e limite" style="font-size: 20px;"/>
                 </div>
                 <!--<div class="col-lg-4">
@@ -68,7 +67,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <h:commandButton style="width: 160px" styleClass="btn btn-success" value="Desafiar !"
-                                 action="#{cadastrarBean.salvarDesafio()}" />
+                                     action="#{cadastrarBean.salvarDesafio()}"/>
                 </div>
             </div>
         </ui:define>

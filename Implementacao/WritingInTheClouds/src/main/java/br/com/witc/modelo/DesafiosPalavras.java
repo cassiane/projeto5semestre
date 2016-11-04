@@ -70,4 +70,17 @@ public class DesafiosPalavras implements Serializable {
     public void setDesafio(Desafios desafio) {
         this.desafio = desafio;
     }
+    
+    /**
+     * Salvar o desafio 
+     * @param listaPalavras lista das palavras que o desafiado deverá utilizar
+     * @param idDesafio id do desafio (1-desafio com palavras, 2 - Desafio com palavras e limite)
+     * @param numeroPalavras numero de palavras que o usuário pode escrever no desafio 2
+     * @param idUsuario
+     * @param idDesafiante
+     */
+    public void salvarDesafio(List<String> listaPalavras, int idDesafio, int numeroPalavras, int idUsuario, int idDesafiante) {
+        DesafiosPalavrasDAO dao = new DesafiosPalavrasDAO();
+        dao.salvarDesafiosPalavras(listaPalavras,idDesafio,numeroPalavras,idUsuario,idDesafiante);
+    }
 }

@@ -34,4 +34,40 @@ public class DesafiosPalavrasDAO {
         }
         return lstPalavras;
     }
+    
+    /**
+     * 
+     * @param listaPalavras
+     * @param idDesafio
+     * @param numeroPalavras 
+     * @param idUsuario 
+     * @param idDesafiante 
+     */
+    public void salvarDesafiosPalavras(List<String> listaPalavras, int idDesafio, int numeroPalavras, int idUsuario, int idDesafiante) {
+        for(int i=0;i<listaPalavras.size();i++){
+            String palavra = listaPalavras.get(i);
+            sessao.createSQLQuery("INSERT INTO DesafiosPalavras(palavra,idDesafio) "
+                + "VALUES(:palavra,:idDesafio);")
+                .setString("palavra", palavra)
+                .setInteger("idDesafio", idDesafio)
+                .executeUpdate();
+        }
+        if(numeroPalavras > 0){
+            sessao.createSQLQuery("INSERT INTO DesafiosUsuarios(idUsuario,idUsuarioDesafiante,idDesafio,numeroPalavras) "
+                + "VALUES(:idUsuario,:idDesafiante,:idDesafio,:numeroPalavras);")
+                .setInteger("idUsuario", idUsuario)
+                .setInteger("idDesafiante", idDesafiante)
+                .setInteger("idDesafio", idDesafio)
+                .setInteger("numeroPalavras",numeroPalavras)
+                .executeUpdate();
+        }else{
+            sessao.createSQLQuery("INSERT INTO DesafiosUsuarios(idUsuario,idUsuarioDesafiante,idDesafio,numeroPalavras) "
+                + "VALUES(:idUsuario,:idDesafiante,:idDesafio);")
+                .setInteger("idUsuario", idUsuario)
+                .setInteger("idDesafiante", idDesafiante)
+                .setInteger("idDesafio", idDesafio)
+                .executeUpdate();
+        }
+        
+    }
 }

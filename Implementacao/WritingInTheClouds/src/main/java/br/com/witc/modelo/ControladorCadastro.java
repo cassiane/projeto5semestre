@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.bean.AutenticarBean;
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
 import br.com.witc.excessao.TipoPerfilException;
@@ -355,6 +356,18 @@ public class ControladorCadastro {
      */
     public List<String> listarDesafiosPalavras() throws Exception{
         return this.desafiosPalavras.listarDesafiosPalavras();
+    }
+    
+    /**
+     * Salvar o desafio 
+     * @param listaPalavras lista das palavras que o desafiado deverá utilizar
+     * @param idDesafio id do desafio (1-desafio com palavras, 2 - Desafio com palavras e limite)
+     * @param numeroPalavras numero de palavras que o usuário pode escrever no desafio 2
+     * @param idUsuario
+     * @param idDesafiante
+     */
+    public void SalvarDesafioPalavras(List<String> listaPalavras,int idDesafio, int numeroPalavras, int idUsuario, int idDesafiante){
+        this.desafiosPalavras.salvarDesafio(listaPalavras,idDesafio,numeroPalavras,idUsuario,idDesafiante);
     }
     
     /**
