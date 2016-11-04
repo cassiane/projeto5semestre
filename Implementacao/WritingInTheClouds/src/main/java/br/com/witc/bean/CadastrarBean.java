@@ -11,6 +11,8 @@ import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
+import br.com.witc.modelo.Desafios;
+import br.com.witc.modelo.DesafiosPalavras;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
@@ -75,6 +77,9 @@ public class CadastrarBean {
     public TipoTextoDAO tipoTextoDAO;    
     List<TipoTexto> tiposTexto = new ArrayList<>();
     private int tipoPerfilNovo;
+   private final Desafios desafio;
+   private DesafiosPalavras desafioPalavras;
+   private List<String> listaPalavras;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
@@ -86,6 +91,9 @@ public class CadastrarBean {
         this.tipoTexto = new TipoTexto();
         this.tipoTextoDAO = new TipoTextoDAO();
         this.selectedTiposTextoUsuario = new ArrayList<>();
+        this.desafioPalavras = new DesafiosPalavras();
+        this.desafio = new Desafios();
+        this.listaPalavras = new ArrayList<>();
     }
     
     /**
@@ -405,6 +413,13 @@ public class CadastrarBean {
      */
     public void setTipoPerfilNovo(int tipoPerfilNovo) {
         this.tipoPerfilNovo = tipoPerfilNovo;
+    }
+    
+    /**
+     * @return the desafio
+     */
+    public Desafios getDesafio() {
+        return desafio;
     }
     
     public StreamedContent getFotos(Usuario user) {
@@ -970,13 +985,31 @@ public class CadastrarBean {
      */
     public List<TipoTexto> listaTipoTextoFiltrada(String nomeTipoTexto) throws TipoTextoException {        
         List<TipoTexto> filteredTiposTexto;
-        filteredTiposTexto = new ArrayList<TipoTexto>();
+        filteredTiposTexto = new ArrayList<>();
         for (TipoTexto tipo : this.listarTipoTexto()) {
             if(tipo.getTipoTexto().toLowerCase().startsWith(nomeTipoTexto.toLowerCase())){
                 filteredTiposTexto.add(tipo);
             }
         }         
         return filteredTiposTexto;
+    }
+    
+    /**
+     * Método para retornar uma lista filtrada para as tags de tipo de texto
+     * quando o usuário seleciona os tipos de texto que ele se identifica
+     * @param palavra
+     * @return retorna uma lista de tipos de texto que comecem com aquele parametro de letras 
+     * @throws java.lang.Exception 
+     */
+    public List<String> listaPalavrasDesafios(String palavra) throws Exception {        
+        List<String> filteredDesafiosPalavras;
+        filteredDesafiosPalavras = new ArrayList<>();
+        for(int i=0;i<=this.listarDesafiosPalavras().size();i++){
+            if(this.listarDesafiosPalavras().get(i).toLowerCase().startsWith(palavra.toLowerCase())){
+                filteredDesafiosPalavras.add(this.listarDesafiosPalavras().get(i));
+            }
+        }         
+        return filteredDesafiosPalavras;
     }
     
     /**
@@ -1029,5 +1062,46 @@ public class CadastrarBean {
     public String criarNovoPerfil() {
         this.controlador.criarPerfilUsuario(getTipoPerfilNovo(), this.usuario);
         return "editarConta";
+    }
+    
+    /**
+     * Método para retornar a lista de todas as palavras cadastradas no sistema
+     * @return List de string
+     * @throws Exception 
+     */
+    private List<String> listarDesafiosPalavras() throws Exception {
+        return this.controlador.listarDesafiosPalavras();
+    }
+    
+    public void salvarDesafio(){
+        
+    }
+
+    /**
+     * @return the desafioPalavras
+     */
+    public DesafiosPalavras getDesafioPalavras() {
+        return desafioPalavras;
+    }
+
+    /**
+     * @param desafioPalavras the desafioPalavras to set
+     */
+    public void setDesafioPalavras(DesafiosPalavras desafioPalavras) {
+        this.desafioPalavras = desafioPalavras;
+    }
+
+    /**
+     * @return the listaPalavras
+     */
+    public List<String> getListaPalavras() {
+        return listaPalavras;
+    }
+
+    /**
+     * @param listaPalavras the listaPalavras to set
+     */
+    public void setListaPalavras(List<String> listaPalavras) {
+        this.listaPalavras = listaPalavras;
     }
 }

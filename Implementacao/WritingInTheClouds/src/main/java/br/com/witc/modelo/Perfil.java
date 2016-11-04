@@ -129,6 +129,20 @@ public class Perfil implements Serializable {
     public String getNomeUsuarioABNT() {
         return this.usuario.getNomeABNT();
     }
+    
+    /**     
+     * @return O nome do usuário
+     */
+    public String getNomeUsuario() {        
+        return this.usuario.getNome().split(" ")[0];
+    }
+    
+    /**     
+     * @return O sobrenome do usuário
+     */
+    public String getSobrenomeUsuario() {        
+        return this.usuario.getSobrenome().split(" ")[this.usuario.getSobrenome().split(" ").length - 1];
+    }
 
     public Perfil carregarPerfil(Usuario usuario) {
         PerfilDAO perfilDAO = new PerfilDAO();
