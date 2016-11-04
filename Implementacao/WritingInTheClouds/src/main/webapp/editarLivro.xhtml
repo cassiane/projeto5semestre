@@ -31,7 +31,7 @@
                         <p:commandButton value="Voltar" onclick="PF('dlg1').show();" type="button" /> 
                     </h:panelGrid>                     
                     <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
-                    <p:dialog header="Enviar Para Revisão" widgetVar="dlg0" showEffect="pop">
+<!--                    <p:dialog header="Enviar Para Revisão" widgetVar="dlg0" showEffect="pop">
                         <h:panelGrid columns="2" style="margin-top: 10px">                        
                         <h:outputText value="Disponível para Revisão: " />
                         <p:selectBooleanCheckbox id="editavel" value="#{livroBean.disponivelEdicaoAmigo}" />                        
@@ -40,7 +40,7 @@
                             <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
                         </p:selectBooleanCheckbox>
                     </h:panelGrid> 
-                     </p:dialog>
+                     </p:dialog>-->
                      <p:dialog header="Atenção" widgetVar="dlg1" showEffect="pop">
                         <h:outputText value="Deseja salvar antes de voltar ?" />
                         <p:commandButton value="SIM" action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />

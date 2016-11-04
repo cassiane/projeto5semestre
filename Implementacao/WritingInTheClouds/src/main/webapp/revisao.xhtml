@@ -15,6 +15,9 @@
                                 <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center">
                                     #{lis.titulo}
                                 </p:column>                                
+                                <p:column headerText="Tipo de Texto" sortBy="#{lis.tipoTexto.tipoTexto}" style="text-align: center" width="150">
+                                    #{lis.tipoTexto.toString()}
+                                </p:column>                                
                                 <p:column width="90">
 
                                     <p:commandButton title="Revisar" 

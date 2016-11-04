@@ -299,17 +299,18 @@ public class LivroBean {
             this.livro.setDisponivelBiblioteca(false);
             this.livro.setReportadoConteudoImproprio(false);
             this.livro.setAvaliacao(0f);
-            if (this.disponivelEdicaoAmigo) {
-                this.livro.setBookLock(0);
-            } else {
+//            if (this.disponivelEdicaoAmigo) {
+//                this.livro.setBookLock(0);
+//            } else {
                 this.livro.setBookLock(this.perfilUsuario.getId());
-            }
-            if (this.disponivelRevisao){
-                this.livro.setRevisao(1);
-            }else{
+//            }
+//            if (this.disponivelRevisao){
+//                this.livro.setRevisao(1);
+//            }else{
                 this.livro.setRevisao(0);
-            }
-            this.controlador.salvarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);            
+//            }
+//            this.controlador.salvarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);            
+            this.controlador.salvarLivro(livro);
             this.historico=new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
             this.historico.setLivro(this.livro);
@@ -341,20 +342,21 @@ public class LivroBean {
            
             if(this.disponivelRevisao){
                 this.livroCarregado.setRevisao(1);
-                 this.livroCarregado.setBookLock(0);
-                 this.livroCarregado.setDisponivelRevisao(disponivelRevisao);
+                this.livroCarregado.setBookLock(0);
+                this.livroCarregado.setDisponivelRevisao(disponivelRevisao);
                  
             }
             if(this.livroFinalizadoRevisao){
                  this.livroCarregado.setDisponivelRevisao(false);
-                 this.livroCarregado.setBookLock(0); 
-                 TipoStatus st = this.controlador.carregarTipoStatus(2);
-                 this.historico=new HistoricoLivro();
-            this.historico.setPerfil(this.perfilUsuario);
-            this.historico.setLivro(this.livro);
-            this.historico.setStatus(st);
-            this.historico.setDataInicio(this.getPegaDataAtual());
-            this.controlador.salvarHistorico(this.historico);   
+                 this.livroCarregado.setBookLock(0);
+                 this.livroFinalizado = true;
+//                 TipoStatus st = this.controlador.carregarTipoStatus(1);
+//                 this.historico= new HistoricoLivro();
+//            this.historico.setPerfil(this.perfilUsuario);
+//            this.historico.setLivro(this.livro);
+//            this.historico.setStatus(st);
+//            this.historico.setDataInicio(this.getPegaDataAtual());
+//            this.controlador.salvarHistorico(this.historico);   
             }
             
             // So atualiza a capa se foi feito upload de algum arquivo
@@ -634,7 +636,14 @@ public class LivroBean {
                 this.controlador.salvarLivro(livroCarregado, livroFinalizado, perfilUsuario);
             }
             // Status usuario
-            this.atualizarStatusUsuarioLivro(2);
+            this.atualizarStatusUsuarioLivro(3);
+            TipoStatus st = this.controlador.carregarTipoStatus(2);
+            this.historico=new HistoricoLivro();
+            this.historico.setPerfil(this.perfilUsuario);
+            this.historico.setLivro(this.livroCarregado);
+            this.historico.setStatus(st);
+            this.historico.setDataInicio(this.getPegaDataAtual());
+            this.controlador.salvarHistorico(this.historico);
             return "revisarLivro";
         } catch(LivroException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());

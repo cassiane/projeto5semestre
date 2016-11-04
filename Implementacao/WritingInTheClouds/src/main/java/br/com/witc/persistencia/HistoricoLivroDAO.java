@@ -67,10 +67,10 @@ public class HistoricoLivroDAO {
      * @return Um objeto HistoricoLivro
      */
     public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) {
-        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil AND idTipoStatus=:idStatus")
+        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil")
                 .setString("idLivro", String.valueOf(idLivro))
                 .setString("idPerfil", String.valueOf(idPerfil))
-                .setInteger("idStatus", 1)
+//                .setInteger("idStatus", 1)
                 .uniqueResult();
         
        sessao.refresh(historico);

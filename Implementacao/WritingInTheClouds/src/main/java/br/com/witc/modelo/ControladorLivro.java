@@ -87,11 +87,11 @@ public class ControladorLivro {
                 livro.setDisponivelBiblioteca(true);
             }
         }
-        if(livro.isDisponivelRevisao()){
-            HistoricoLivro historicoLivro = new HistoricoLivro();
-            historicoLivro.setLivro(livro);
-            historicoLivro.setPerfil(perfil);
-        }
+//        if(livro.isDisponivelRevisao()){
+//            HistoricoLivro historicoLivro = new HistoricoLivro();
+//            historicoLivro.setLivro(livro);
+//            historicoLivro.setPerfil(perfil);
+//        }
         this.livro.salvarLivro(livro);
     }    
     

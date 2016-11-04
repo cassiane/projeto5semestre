@@ -141,8 +141,9 @@ public class HistoricoLivro implements Serializable {
     public void finalizarLivroUsuario(Livro livro, Perfil perfil) {
         HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
         HistoricoLivro historico = historicoLivroDAO.carregarHistoricoLivroUsuario(livro, perfil);
-
+        TipoStatus st = new TipoStatus().carregarTipoStatus(1);
         historico.setDataConclusao(Calendar.getInstance());
+        historico.setStatus(st);
         historicoLivroDAO.salvarHistorico(historico);
     }
     

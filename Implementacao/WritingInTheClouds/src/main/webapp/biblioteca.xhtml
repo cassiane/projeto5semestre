@@ -18,6 +18,13 @@
                     </div>       
                     <div style="margin-top: 5px;">
                         <p:dataTable value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
+                            <p:column headerText="Capa" style="text-align: center; width: 75px;">
+                                <p:graphicImage style="width: 55px; height: 78px; padding: 5px;"                                                         
+                                                value="#{livroBean.capaLivroConvertida}" title="#{lis.titulo}"
+                                                cache="false">
+                                    <f:param name="idLivro" value="#{lis.id}" />
+                                </p:graphicImage>
+                            </p:column>
                             <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center; width: 80%;">
                                 #{lis.titulo}
                             </p:column>                                
@@ -27,7 +34,6 @@
                                                  icon="ui-icon-pencil" 
                                                  action="#{livroBean.atualizarLockLivro(lis.id)}"                                                      
                                                  disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)} " />
-                              
                                 <p:commandButton ajax="false" 
                                                  title="Ler" 
                                                  icon="ui-icon-document" 
@@ -37,7 +43,6 @@
                             </p:column>
                         </p:dataTable>
                     </div>
-                    <p:graphicImage value="#{livroBean.capa}" style="display: none;" cache="false" />
                 </h:form>   
             </div>
             <div style="width: 100%;">
@@ -49,7 +54,7 @@
                         <h:outputText styleClass="text-primary" value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
                         <br />                                                                                                
                         <h:commandButton id="btnAceEdicao" styleClass="btn btn-success" value="Aceitar" actionListener="#{livroBean.aceitarEdicao(ediLivro.idLivro)}" />
-                   
+
                         <h:commandButton id="btnNegEdicao" styleClass="btn btn-danger" value="Negar" actionListener="#{livroBean.negarEdicao(ediLivro)}" />
                     </p:dataScroller>                    
                 </h:form>              

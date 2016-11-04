@@ -49,7 +49,7 @@ public class Usuario implements Serializable {
                       referencedColumnName="id")})  
     private List<TipoTexto> tipostextos;
     @OneToMany(cascade=CascadeType.ALL)
-           @JoinTable(name="revisor_tem_tipotexto",
+           @JoinTable(name="Revisor_tem_TipoTexto",
                      joinColumns={@JoinColumn(name="idUsuario",  
                       referencedColumnName="id")},  
                      inverseJoinColumns={@JoinColumn(name="idTipoTexto",   

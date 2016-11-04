@@ -249,6 +249,7 @@ public class AutenticarBean {
         try {
             this.controlador.efetuarLogin(this.email, this.senha);
             this.controlador.retornarPerfilUsuarioLogado();
+            this.atualizarStatusUsuario(1);
             return "timeline";
         } catch(LoginInvalidoException e) {
             enviarMensagem(SEVERITY_ERROR, e.getMessage());            
