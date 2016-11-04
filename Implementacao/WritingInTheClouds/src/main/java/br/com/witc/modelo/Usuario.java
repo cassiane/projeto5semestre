@@ -203,8 +203,8 @@ public class Usuario implements Serializable {
         }
         return this.getSobrenome().split(" ")[this.getSobrenome().split(" ").length - 1].toUpperCase() + ", "  +
                 nomeABNT;
-    }
-
+    }    
+    
     /**
      * Autentica um usuário no sistema
      *
