@@ -609,7 +609,7 @@ public class LivroBean {
                 this.controlador.salvarLivro(livroCarregado, livroFinalizado, perfilUsuario);
             }
             // Status usuario
-            this.atualizarStatusUsuarioLivro(2);
+            this.atualizarStatusUsuarioLivro(1);
             return "editarLivro";
         } catch(LivroException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
@@ -634,7 +634,7 @@ public class LivroBean {
                 this.controlador.salvarLivro(livroCarregado, livroFinalizado, perfilUsuario);
             }
             // Status usuario
-            this.atualizarStatusUsuarioLivro(2);
+            this.atualizarStatusUsuarioLivro(3);
             return "revisarLivro";
         } catch(LivroException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
