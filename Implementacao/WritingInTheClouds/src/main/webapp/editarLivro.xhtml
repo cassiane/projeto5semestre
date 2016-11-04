@@ -43,7 +43,7 @@
                      </p:dialog>-->
                      <p:dialog header="Atenção" widgetVar="dlg1" showEffect="pop">
                         <h:outputText value="Deseja salvar antes de voltar ?" />
-                        <p:commandButton value="SIM" action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="SIM" action="#{livroBean.salvarLivroVoltar()}" icon="ui-icon-disk" ajax="false" />
                         <p:commandButton value="NÃO"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" /> 
                      </p:dialog>
                 </h:form>
