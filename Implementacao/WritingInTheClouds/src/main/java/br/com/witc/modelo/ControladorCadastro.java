@@ -34,6 +34,8 @@ public class ControladorCadastro {
     private final Perfil perfil;  
     private final PerfilDAO perfilDAO; 
     private final TipoTexto tipoTexto;
+    private final DesafiosPalavras desafiosPalavras;
+    private final Desafios desafio;
 
     public ControladorCadastro() {
         this.usuario = new Usuario();
@@ -47,6 +49,8 @@ public class ControladorCadastro {
         this.perfil    = new Perfil();
         this.perfilDAO = new PerfilDAO();
         this.tipoTexto = new TipoTexto();
+        this.desafiosPalavras = new DesafiosPalavras();
+        this.desafio = new Desafios();
     }
 
     /**
@@ -342,6 +346,15 @@ public class ControladorCadastro {
      */
     public List<TipoTexto> listarTipoTexto() throws TipoTextoException {
         return this.tipoTexto.getLstTipoTexto();
+    }
+    
+    /**
+     * Método para retornar todas as palavras já cadastradas nos desafios
+     * @return 
+     * @throws java.lang.Exception 
+     */
+    public List<String> listarDesafiosPalavras() throws Exception{
+        return this.desafiosPalavras.listarDesafiosPalavras();
     }
     
     /**
