@@ -80,8 +80,6 @@ public class CadastrarBean {
    private final Desafios desafio;
    private DesafiosPalavras desafioPalavras;
    private List<String> listaPalavras;
-   private boolean DesafioPalavras = false; 
-   private boolean DesafioPalavrasLimite = false;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
@@ -1075,16 +1073,7 @@ public class CadastrarBean {
         return this.controlador.listarDesafiosPalavras();
     }
     
-    /**
-     * Salva as palavras para aquele desafio
-     * e após notifica o usuário
-     */
     public void salvarDesafio(){
-        if(this.isDesafioPalavras()){
-            this.controlador.SalvarDesafioPalavras(this.listaPalavras,1,0,this.usuario.getId(),2);        
-        }else{
-            this.controlador.SalvarDesafioPalavras(this.listaPalavras,2,0,this.usuario.getId(),2);        
-        }
         
     }
 
@@ -1114,33 +1103,5 @@ public class CadastrarBean {
      */
     public void setListaPalavras(List<String> listaPalavras) {
         this.listaPalavras = listaPalavras;
-    }
-
-    /**
-     * @return the DesafioPalavras
-     */
-    public boolean isDesafioPalavras() {
-        return DesafioPalavras;
-    }
-
-    /**
-     * @param DesafioPalavras the DesafioPalavras to set
-     */
-    public void setDesafioPalavras(boolean DesafioPalavras) {
-        this.DesafioPalavras = DesafioPalavras;
-    }
-
-    /**
-     * @return the DesafioPalavrasLimite
-     */
-    public boolean isDesafioPalavrasLimite() {
-        return DesafioPalavrasLimite;
-    }
-
-    /**
-     * @param DesafioPalavrasLimite the DesafioPalavrasLimite to set
-     */
-    public void setDesafioPalavrasLimite(boolean DesafioPalavrasLimite) {
-        this.DesafioPalavrasLimite = DesafioPalavrasLimite;
     }
 }
