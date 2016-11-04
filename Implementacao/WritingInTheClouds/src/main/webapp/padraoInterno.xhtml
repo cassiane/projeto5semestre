@@ -43,7 +43,7 @@
                                     </li>
                                 </c:if>
                                 <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilEditor}" /></li>
-                                <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilRevisor}" /></li>
+                                <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="revisao.xhtml" rendered="#{autenticarBean.perfilRevisor}" /></li>
                                 <li><h:commandLink value="Biblioteca Virtual" actionListener="#{autenticarBean.setAmigoUsuario()}" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
                                 <li><h:link value="Perfis de Usuários" outcome="tiposPerfis.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
                                 <li><h:link value="Tipos de Texto" outcome="tiposTexto.xhtml" rendered="#{autenticarBean.verificarAdministrador()}" /></li>
@@ -70,14 +70,7 @@
                         <div style="position: absolute; width: 100%; text-align: center; top: 65%;">
                             <div>
                                 <h:outputText style="font-weight: bold;" value="#{autenticarBean.nomeCompletoUsuario}" />
-                            </div>  
-                            <h:form id="frmRating">
-                                <p:remoteCommand name="callBeanMethod" update=":frmRating" 
-                                                 actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRatebox();" />
-                                <div class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
-                                      style="margin-top: 10px; margin-left: auto; margin-right: auto;">                                        
-                                </div>
-                            </h:form>
+                            </div>                            
                             <div style="margin-top: 10px;">
                                 <h:form>
                                     <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}" 
@@ -114,21 +107,20 @@
                     <div class="box book-box">
                         <div style="padding-left: 10px;">
                             <div style="padding-top: 10px;">
-                                <h:outputText style="font-weight: bold; font-size: 15px;" value="Últimos Livros Publicados" />
+                                <h:outputText style="font-weight: bold; font-size: 15px;" value="Livros Publicados" />
                             </div>
                         </div>
-                        <div style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">                                
-                            <h:form>                                
-                                <c:forEach begin="0" end="11" items="#{livroBean.listarLivrosPublicadosPerfil()}" var="livro">                                                                        
+                        <div style="padding-top: 10px; padding-bottom: 10px;">                                
+                            <h:form>
+                                <c:forEach var="livro" items="#{livroBean.listarLivrosPublicadosPerfil()}">
                                     <h:commandLink action="lerLivro">
-                                        <p:graphicImage style="width: 55px; height: 78px; padding: 5px;"                                                         
-                                                        value="#{livroBean.capaLivroConvertida}" title="#{livro.titulo}"
-                                                        cache="false">
+                                        <p:graphicImage style="width: 25%; height: 20%; padding: 5px;" 
+                                                        value="#{livroBean.capaLivroConvertida}" title="#{livro.titulo}">
                                             <f:param name="idLivro" value="#{livro.id}" />
                                         </p:graphicImage>
                                         <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                                    </h:commandLink>                                                                                                        
-                                </c:forEach>
+                                    </h:commandLink>
+                                </c:forEach>                                
                             </h:form>
                         </div>                        
                     </div>
@@ -136,7 +128,7 @@
                 <div class="col-md-6">                                                           
                     <ui:insert name="conteudo" />                                    
                 </div>
-                <div class="col-md-3">
+               <div class="col-md-3">
                     <h:form id="frmChat">
                         <p:stack icon="/resources/imagens/chat.png" expanded="true">
                             <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
@@ -149,3 +141,4 @@
         <ui:insert name="dialogos"/>                    
     </h:body>    
 </html>
+

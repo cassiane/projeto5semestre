@@ -137,6 +137,10 @@ public class HistoricoLivro implements Serializable {
         HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
         return historicoLivroDAO.estaFinalizadoUsuario(idLivro, idPerfil);
     }
+     public boolean estaFinalizadoRevisaoUsuario(int idLivro, int idPerfil) {
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        return historicoLivroDAO.estaFinalizadoRevisaoUsuario(idLivro, idPerfil);
+    }
     
     /**
      * 

@@ -29,6 +29,9 @@
                         </h:selectOneMenu>                          
                     </div>
                     <div style="margin-top: 15px; text-align: right;">                        
+                        <h:outputLabel for="revisao" value="Revisão: " />
+                        <h:selectBooleanCheckbox id="revisao" value="#{livroBean.disponivelRevisao}" />
+                        #{' '}
                         <h:outputLabel styleClass="btn btn-info" style="width: 150px;" for="capa" value="Capa "/>
                         <p:fileUpload id="capa" style="display: none;" value="#{livroBean.file}" 
                                       mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>                        

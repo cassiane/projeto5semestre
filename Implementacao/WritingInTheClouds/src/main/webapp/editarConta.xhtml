@@ -53,13 +53,25 @@
                         </h:selectOneMenu>
                     </div>
                     <div style="margin-top: 10px;">
-                        <h:outputLabel styleClass="text-info" value="Textos que me identifico" style="font-size: 20px;"/>
+                        <h:outputLabel styleClass="text-info" value="Textos que me identifico" rendered="#{autenticarBean.perfilEditor}" style="font-size: 20px;"/>
                     </div>
                     <div>
-                        <!-- tags tipo de texto-->
-                        <p:autoComplete id="autoTipoTextoTags" minQueryLength="1" value="#{cadastrarBean.usuario.tipostextos}"
+                        <!-- tags tipo de texto para usuario editor-->
+                        <p:autoComplete id="autoTipoTextoTagsEditor" minQueryLength="1" value="#{cadastrarBean.usuario.tipostextos}"
                             multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
-                            var="tipo" itemLabel="#{tipo.tipoTexto}"
+                            var="tipo" itemLabel="#{tipo.tipoTexto}" rendered="#{autenticarBean.perfilEditor}"
+                            itemValue="#{tipo}" converter="conversorTipoTexto"
+                            maxResults="6" forceSelection="true">                                    
+                        </p:autoComplete>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <h:outputLabel styleClass="text-info" value="Textos que gostaria de revisar"  rendered="#{autenticarBean.perfilRevisor}" style="font-size: 20px;"/>
+                    </div>
+                    <div>
+                        <!-- tags tipo de texto para usuario revisor-->
+                        <p:autoComplete id="autoTipoTextoTagsRevisor" minQueryLength="1" value="#{cadastrarBean.usuario.tipostextosRevisor}"
+                            multiple="true" completeMethod="#{cadastrarBean.listaTipoTextoFiltrada}" effect="fade"
+                            var="tipo" itemLabel="#{tipo.tipoTexto}" rendered="#{autenticarBean.perfilRevisor}"
                             itemValue="#{tipo}" converter="conversorTipoTexto"
                             maxResults="6" forceSelection="true">                                    
                         </p:autoComplete>
@@ -74,7 +86,7 @@
                     </div>                                        
 
                     <div style="text-align: right; margin-top: 10px;"> 
-                        <h:outputLabel for="file" value="Altere sua foto" styleClass="btn btn-info" />
+                        <h:outputLabel style="width: 160px" for="file" value="Altere sua foto" styleClass="btn btn-info" />
                         <p:fileUpload id="file" 
                                       value="#{cadastrarBean.file}"                                          
                                       style="display: none;"
@@ -82,10 +94,14 @@
                                       mode="simple"
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />                                                    
                         #{' '}
-                        <h:commandButton styleClass="btn btn-success" value="Salvar Configurações"
-                                         action="#{cadastrarBean.alterarUsuario()}" />                        
+                        <button style="width: 160px" type="button" class="btn btn-primary" data-toggle="modal" 
+                                data-target="#criarNovoPerfil">Criar novo perfil</button>                                            
+                    </div>
+                    <div style="text-align: right; margin-top: 10px;"> 
+                        <h:commandButton style="width: 160px" styleClass="btn btn-success" value="Salvar Configurações"
+                                         action="#{cadastrarBean.alterarUsuario()}" />
                         #{' '}
-                        <button type="button" class="btn btn-danger" data-toggle="modal" 
+                        <button style="width: 160px" type="button" class="btn btn-danger" data-toggle="modal" 
                                 data-target="#confirmarExclusao">Excluir minha conta</button>                    
                     </div>
                 </div>                
@@ -109,10 +125,34 @@
                             </div>
                         </div>
                     </div>
-                </div>                
-            </h:form>
-            <h:form>
-                <h:commandButton styleClass="btn btn-success" value="Criar Perfil Revisor" onclick="" action="#{cadastrarBean.criarNovoPerfil(2)}" />
+                </div>
+                <!-- Modal -->
+                <div id="criarNovoPerfil" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Criar perfil</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                <label>Perfil</label>
+                                <h:selectOneMenu id="tipoPerfil" styleClass="form-control" value="#{cadastrarBean.tipoPerfilNovo}"
+                                    style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" >                                    
+                                    <f:selectItems value="#{cadastrarBean.listarTipoPerfilPossiveis()}" var="tipoPerfil" itemLabel="#{tipoPerfil.tipoPerfil}" 
+                                                   itemValue="#{tipoPerfil.id}"/>
+                                </h:selectOneMenu>   
+                                </div>
+                            </div>                           
+                            <div class="modal-footer">
+                                <h:commandButton styleClass="btn btn-primary" value="Criar novo"
+                                                 action="#{cadastrarBean.criarNovoPerfil()}" />
+                                <button type="button" class="btn btn-success" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>       
             </h:form>
         </ui:define>
     </ui:composition>

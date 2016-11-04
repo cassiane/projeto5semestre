@@ -26,8 +26,8 @@
                                                  ajax="false"                                         
                                                  icon="ui-icon-pencil" 
                                                  action="#{livroBean.atualizarLockLivro(lis.id)}"                                                      
-                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
-                                #{' '}
+                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)} " />
+                              
                                 <p:commandButton ajax="false" 
                                                  title="Ler" 
                                                  icon="ui-icon-document" 
@@ -49,7 +49,7 @@
                         <h:outputText styleClass="text-primary" value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
                         <br />                                                                                                
                         <h:commandButton id="btnAceEdicao" styleClass="btn btn-success" value="Aceitar" actionListener="#{livroBean.aceitarEdicao(ediLivro.idLivro)}" />
-                        #{' '}
+                   
                         <h:commandButton id="btnNegEdicao" styleClass="btn btn-danger" value="Negar" actionListener="#{livroBean.negarEdicao(ediLivro)}" />
                     </p:dataScroller>                    
                 </h:form>              

@@ -9,7 +9,6 @@ import br.com.witc.excessao.BibliotecaVirtualVaziaException;
 import br.com.witc.excessao.LivroException;
 import br.com.witc.persistencia.LivroDAO;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Entity;
@@ -46,7 +45,9 @@ public class Livro implements Serializable {
     private TipoGenero tipoGenero;
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
-    private int bookLock;        
+    private int bookLock; 
+    private int revisao;
+    private boolean disponivelRevisao;
 
     public int getId() {
         return id;
@@ -193,7 +194,15 @@ public class Livro implements Serializable {
      */
     public void setBookLock(int bookLock) {
         this.bookLock = bookLock;
-    }            
+    }    
+    
+    public int getRevisao() {
+        return revisao;
+    }
+
+    public void setRevisao(int revisao) {
+        this.revisao = revisao;
+    }
     
     /**     
      * @param idLivro O id do livro
@@ -299,7 +308,11 @@ public class Livro implements Serializable {
      */
     public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
         LivroDAO livroDAO = new LivroDAO();
-        return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
+        return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil) ;
+    }
+     public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.estaDisponivelRevisaoUsuario(idLivro, idPerfil);
     }
     
     /**     
@@ -309,6 +322,11 @@ public class Livro implements Serializable {
     public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.listarLivrosPublicadosPerfil(idPerfil);
+    }
+    
+     public  List<Livro> listarLivrosRevisao() {
+         LivroDAO livroDAO = new LivroDAO();
+        return  livroDAO.listarLivrosRevisao();
     }
     
     @Override
@@ -330,5 +348,15 @@ public class Livro implements Serializable {
         }
         final Livro other = (Livro) obj;
         return this.id == other.id;
-    }               
+    }                 
+
+    public boolean isDisponivelRevisao() {
+        return disponivelRevisao;
+    }
+
+    public void setDisponivelRevisao(boolean disponivelRevisao) {
+        this.disponivelRevisao = disponivelRevisao;
+    }
+
+    
 }

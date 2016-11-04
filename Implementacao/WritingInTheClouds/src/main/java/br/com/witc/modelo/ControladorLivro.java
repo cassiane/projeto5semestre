@@ -89,6 +89,11 @@ public class ControladorLivro {
                 livro.setDisponivelBiblioteca(true);
             }
         }
+        if(livro.isDisponivelRevisao()){
+            HistoricoLivro historicoLivro = new HistoricoLivro();
+            historicoLivro.setLivro(livro);
+            historicoLivro.setPerfil(perfil);
+        }
         this.livro.salvarLivro(livro);
     }    
     
@@ -105,6 +110,9 @@ public class ControladorLivro {
     public List<Livro> listarLivrosPerfil(Perfil perfil){
         return this.livro.listarLivrosPerfil(perfil);
     }
+    
+    
+    
     
     public Perfil carregarPerfil (Usuario usuario){
         Perfil perfil = new Perfil();
@@ -156,6 +164,11 @@ public class ControladorLivro {
         return this.livro.estaDisponivelEdicaoUsuario(idLivro, idPerfil) &&
                 !historicoLivro.estaFinalizadoUsuario(idLivro, idPerfil);
     }    
+    
+    public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {        
+     
+        return this.livro.estaDisponivelRevisaoUsuario(idLivro, idPerfil) ;
+    }  
     
     public void salvarHistorico(HistoricoLivro hist){
         HistoricoLivro historicoLivro = new HistoricoLivro();
@@ -227,6 +240,10 @@ public class ControladorLivro {
     public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
         return this.livro.listarLivrosPublicadosPerfil(idPerfil);
     }    
+
+     public List<Livro> listarLivrosRevisao() {
+       return this.livro.listarLivrosRevisao();
+     }
     
     public byte[] downloadEpub(Livro livro, String pathEbub) throws IOException {
         EPub epub = new EPub();

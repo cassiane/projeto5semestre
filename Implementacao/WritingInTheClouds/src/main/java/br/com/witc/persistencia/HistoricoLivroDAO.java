@@ -67,12 +67,23 @@ public class HistoricoLivroDAO {
      * @return Um objeto HistoricoLivro
      */
     public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) {
-        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil")
+        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil AND idTipoStatus=:idStatus")
                 .setString("idLivro", String.valueOf(idLivro))
                 .setString("idPerfil", String.valueOf(idPerfil))
+                .setInteger("idStatus", 1)
                 .uniqueResult();
         
-        sessao.refresh(historico);
+       sessao.refresh(historico);
+        return historico.getDataConclusao() != null;
+    }
+    public boolean estaFinalizadoRevisaoUsuario(int idLivro, int idPerfil) {
+        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil AND idTipoStatus=:idStatus")
+                .setString("idLivro", String.valueOf(idLivro))
+                .setString("idPerfil", String.valueOf(idPerfil))
+                .setInteger("idStatus", 2)
+                .uniqueResult();
+        
+       sessao.refresh(historico);
         return historico.getDataConclusao() != null;
     }
 

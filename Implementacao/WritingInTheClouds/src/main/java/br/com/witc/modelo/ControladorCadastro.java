@@ -280,6 +280,15 @@ public class ControladorCadastro {
     }
     
     /**
+     * Retorna a lista de tipo de perfil em que o usuário não possui
+     * @param idUsuario
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfilPossiveis(int idUsuario) {
+        return this.tipoPerfil.listarTipoPerfilPossiveis(idUsuario);
+    }
+    
+    /**
      * Cadastra um tipo de texto
      * @param tipoTexto
      * @throws TipoTextoException 
@@ -345,7 +354,12 @@ public class ControladorCadastro {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     } 
-
+    
+    /**
+     * Cria um novo perfil para o usuário
+     * @param idTipo id Perfil escolhido pelo usuário
+     * @param usuario id usuário logado
+     */
     public void criarPerfilUsuario(int idTipo, Usuario usuario) {
         Perfil newPerfil = new Perfil();
         for (TipoPerfil tipo : this.listarTipoPerfil()) {
@@ -356,7 +370,9 @@ public class ControladorCadastro {
         }
         newPerfil.setPerfilPadrao(true);
         newPerfil.setPseudonimo(usuario.getNome());
+
         newPerfil.setAvaliacao(0f);
+
         newPerfil.setUsuario(usuario);
         Perfil oldPerfil = this.perfil.carregarPerfil(usuario);
         this.perfil.desativarPerfil(oldPerfil);
