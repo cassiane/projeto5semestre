@@ -70,6 +70,8 @@ public class LivroBean {
     private Map<String, List<Livro>> bibliotecaVirtual;
     private boolean disponivelEdicaoAmigo;
     private boolean livroFinalizado;
+    private boolean disponivelRevisao;
+    private boolean livroFinalizadoRevisao;
 
     // Itens de pesquisa
     public static final String ITEM_PESQUISA_AUTOR = "autor";
@@ -298,6 +300,11 @@ public class LivroBean {
             } else {
                 this.livro.setBookLock(this.perfilUsuario.getId());
             }
+            if (this.disponivelRevisao) {
+                this.livro.setRevisao(1);
+            } else {
+                this.livro.setRevisao(0);
+            }
             this.controlador.salvarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);
             this.historico = new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
@@ -326,6 +333,24 @@ public class LivroBean {
         try {
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
                 this.livroCarregado.setBookLock(0);
+            }
+
+            if (this.disponivelRevisao) {
+                this.livroCarregado.setRevisao(1);
+                this.livroCarregado.setBookLock(0);
+                this.livroCarregado.setDisponivelRevisao(disponivelRevisao);
+
+            }
+            if (this.livroFinalizadoRevisao) {
+                this.livroCarregado.setDisponivelRevisao(false);
+                this.livroCarregado.setBookLock(0);
+                TipoStatus st = this.controlador.carregarTipoStatus(2);
+                this.historico = new HistoricoLivro();
+                this.historico.setPerfil(this.perfilUsuario);
+                this.historico.setLivro(this.livro);
+                this.historico.setStatus(st);
+                this.historico.setDataInicio(this.getPegaDataAtual());
+                this.controlador.salvarHistorico(this.historico);
             }
 
             // So atualiza a capa se foi feito upload de algum arquivo
@@ -543,6 +568,10 @@ public class LivroBean {
         return this.controlador.estaDisponivelEdicaoUsuario(idLivro, this.perfilUsuario.getId());
     }
 
+    public boolean estaDisponivelRevisaoUsuario(int idLivro) {
+        return this.controlador.estaDisponivelRevisaoUsuario(idLivro, this.perfilUsuario.getId());
+    }
+
     /**
      * Verifica se o livro está disponível para edição do usuário logado
      *
@@ -588,6 +617,30 @@ public class LivroBean {
             // Status usuario
             this.atualizarStatusUsuarioLivro(2);
             return "editarLivro";
+        } catch (LivroException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
+        }
+        return null;
+    }
+
+    public String atualizarLockRevisaoLivro(int idLivro) {
+        try {
+            this.disponivelEdicaoAmigo = false;
+            this.livroFinalizado = false;
+            this.livroCarregado = this.controlador.carregarLivro(idLivro);
+            if ((this.livroCarregado.getBookLock() != 0)
+                    && (this.livroCarregado.getBookLock() != this.perfilUsuario.getId())) {
+                enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR,
+                        "O livro já está sendo Revisado por outro usuário!");
+                return null;
+
+            } else if (this.livroCarregado.getBookLock() != this.perfilUsuario.getId()) {
+                this.livroCarregado.setBookLock(this.perfilUsuario.getId());
+                this.controlador.salvarLivro(livroCarregado, livroFinalizado, perfilUsuario);
+            }
+            // Status usuario
+            this.atualizarStatusUsuarioLivro(3);
+            return "revisarLivro";
         } catch (LivroException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
@@ -785,24 +838,6 @@ public class LivroBean {
             String pathEpub = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/tmp/");
             byte[] arquivo = this.controlador.downloadEpub(this.livroSelecionado, pathEpub);
 
-            /*
-            FacesContext fc = FacesContext.getCurrentInstance();
-            ExternalContext ec = fc.getExternalContext();
-            
-            // Some JSF component library or some Filter might have set some headers in the buffer beforehand. We want to get rid of them, else it may collide.
-            ec.responseReset();
-            // Check http://www.iana.org/assignments/media-types for all types. Use if necessary ExternalContext#getMimeType() for auto-detection based on filename.
-            ec.setResponseContentType("application/epub+zip");            
-            // Set it with the file size. This header is optional. It will work if it's omitted, but the download progress will be unknown.
-            //ec.setResponseContentLength(contentLength);
-            // The Save As popup magic is done here. You can give it any file name you want, this only won't work in MSIE, it will use current request URL as file name instead.
-            ec.setResponseHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-            
-            OutputStream output = ec.getResponseOutputStream();
-            
-            // Important! Otherwise JSF will attempt to render the response which obviously will fail since it's already written with a file and closed.
-            fc.responseComplete(); 
-             */
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.addHeader("Content-Disposition", "attachment; filename=livro_" + this.livroSelecionado.getId() + ".epub");
             response.setContentLength(arquivo.length);
@@ -838,5 +873,32 @@ public class LivroBean {
         this.usuario = autenticarBean.usuarioLogado();
         this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
         atualizarListaLivrosPerfil();
+    }
+
+    public boolean isDisponivelRevisao() {
+        return disponivelRevisao;
+    }
+
+    public void setDisponivelRevisao(boolean disponivelRevisao) {
+        this.disponivelRevisao = disponivelRevisao;
+    }
+
+    public List<Livro> listarLivrosRevisao() {
+        return this.controlador.listarLivrosRevisao();
+    }
+
+    public boolean isLivroFinalizadoRevisao() {
+        return livroFinalizadoRevisao;
+    }
+
+    public void setLivroFinalizadoRevisao(boolean livroFinalizadoRevisao) {
+        this.livroFinalizadoRevisao = livroFinalizadoRevisao;
+    }
+
+    public String disponivelRevisaoBiblioteca() {
+        this.livroCarregado.setDisponivelRevisao(true);
+        this.livroCarregado.setBookLock(0);
+        this.controlador.salvarLivro(livroCarregado);
+        return "biblioteca";
     }
 }
