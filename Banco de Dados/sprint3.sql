@@ -55,3 +55,16 @@ CREATE TABLE `Revisor_tem_TipoTexto` (
   `idUsuario` int(11) NOT NULL,
   `idTipoTexto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Desafios` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `titulo` VARCHAR(100) NOT NULL,
+  `descricao` VARCHAR(1000) NOT NULL,
+   primary key (`id`)
+);
+
+INSERT INTO `witc`.`desafios` (`id`, `titulo`, `descricao`) 
+VALUES ('1', 'Limite de palavras', 
+'O desafiante irá desafiar seu amigo a escrever um texto 
+com palavras que ele escolher e o texto deve ser revisado 
+pelo desafiante para ver se o desafio foi cumprido');

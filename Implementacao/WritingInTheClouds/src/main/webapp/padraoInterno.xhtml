@@ -68,14 +68,16 @@
                                             style="width: 120px; height: 120px;" cache="false" />
                         </div>                    
                         <div style="position: absolute; width: 100%; text-align: center; top: 65%;">
-                            <div>
-                                <h:outputText style="font-weight: bold;" value="#{autenticarBean.nomeCompletoUsuario}" />
-                            </div>                            
                             <div style="margin-top: 10px;">
-                                <h:form>
+                                <h:form>                                    
                                     <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}" 
                                                    actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" 
-                                                   action="listarAmigos.xhtml" />
+                                                   action="listarAmigos.xhtml" />                                    
+                                    <div>
+                                        <span class="glyphicon glyphicon-playing-dices" />
+                                        #{' '}
+                                        <h:commandLink style="font-weight: bold;" value="Desafiar" action="DesafiarAmigo.xhtml"  rendered="#{not autenticarBean.amigo}" />
+                                    </div>
                                 </h:form>
                             </div>
                         </div>                        
