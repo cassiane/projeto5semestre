@@ -207,7 +207,11 @@ public class LivroBean {
     public String biblioteca() {
         // Status do usuario
         this.atualizarStatusUsuarioLivro(1);
-        return "biblioteca";
+        if(this.livroCarregado.isDisponivelRevisao()){
+            return "revisao.xhtml?faces-redirect=true";
+        }
+        return "biblioteca.xhtml?faces-redirect=true";
+       
     }
 
     public String editorNovoLivro() {
@@ -328,7 +332,15 @@ public class LivroBean {
         this.atualizarStatusUsuarioLivro(2);
         return "editarLivro";
     }
-
+    
+    public String salvarLivroVoltar(){
+        salvarLivro();
+        if(this.livroCarregado.isDisponivelRevisao()){
+            return "revisao.xhtml?faces-redirect=true";
+        }
+        return "biblioteca.xhtml?faces-redirect=true";
+    }
+   
     public String salvarLivro() {
         try {
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
