@@ -45,6 +45,10 @@
                                         itemValue="#{des.toString}"
                                         maxResults="6">                                    
                         </p:autoComplete>
+                        <div>
+                            <h:commandButton style="width: 160px" styleClass="btn btn-success" value="Desafiar !"
+                                 action="#{cadastrarBean.salvarDesafio()}" />
+                        </div>
                     </div>
                 </div>
                 
@@ -58,19 +62,17 @@
                                         itemValue="#{des.toString}"
                                         maxResults="6">                                    
                         </p:autoComplete>
+                        <div>
+                            <h:commandButton style="width: 160px" styleClass="btn btn-success" value="Desafiar !"
+                                 action="#{cadastrarBean.salvarDesafio()}" />
+                        </div>
                     </div>
                 </div>
                 <!--
                 <div id="conteudo3" class="bottom" style="display: none; padding-top: 100px;">
                     Seu conteúdo aqui 3...
                 </div>-->
-            </div>   
-            <div class="row">
-                <div class="col-lg-4">
-                    <h:commandButton style="width: 160px" styleClass="btn btn-success" value="Desafiar !"
-                                 action="#{cadastrarBean.salvarDesafio()}" />
-                </div>
-            </div>
+            </div>                                           
         </ui:define>
     </ui:composition>
 </html>
