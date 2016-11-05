@@ -38,7 +38,12 @@
                                     <p:commandLink value="Autores" styleClass="glyphicon glyphicon-user" id="autores" update=":autoresDialog" oncomplete="PF('w_autoresDialog').show()">
                                         <i class="glyphicon glyphicon-user"></i>
                                         <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
-                                    </p:commandLink>       
+                                    </p:commandLink>  
+                                    
+                                    <h:commandLink value="EPub" styleClass="glyphicon glyphicon-download" action="#{livroBean.downloadEpub()}">                                    
+                                        <f:setPropertyActionListener value="#{livro}" target="#{livroBean.livroSelecionado}" />
+                                    </h:commandLink>
+                                    
                                 </h:panelGrid>
 
                                 <f:facet name="footer">                                

@@ -45,7 +45,9 @@ public class Livro implements Serializable {
     private TipoGenero tipoGenero;
     @OneToMany(mappedBy = "livro")
     private List<HistoricoLivro> historicoLivros;
-    private int bookLock;        
+    private int bookLock; 
+    private int revisao;
+    private boolean disponivelRevisao;
 
     public int getId() {
         return id;
@@ -192,7 +194,15 @@ public class Livro implements Serializable {
      */
     public void setBookLock(int bookLock) {
         this.bookLock = bookLock;
-    }            
+    }    
+    
+    public int getRevisao() {
+        return revisao;
+    }
+
+    public void setRevisao(int revisao) {
+        this.revisao = revisao;
+    }
     
     /**     
      * @param idLivro O id do livro
@@ -208,7 +218,7 @@ public class Livro implements Serializable {
      * @param idLivro O id do livro
      * @return O(s) nome(s) do(s) autor(es) em formato ABNT
      */
-    public String getAutores(int idLivro) {        
+    public String getNomeAutoresABNT(int idLivro) {        
         String autores = "";
         
         HistoricoLivro historicoLivro = new HistoricoLivro();
@@ -223,6 +233,22 @@ public class Livro implements Serializable {
         }
         return null;
         
+    }
+    
+    /**     
+     * @return Uma matriz com os nome e sobrenome do(s) autor(es)
+     */
+    public String[][] getLstNomesCompletosAutores() {        
+        HistoricoLivro historicoLivro = new HistoricoLivro();
+        List<HistoricoLivro> lstHistorico = historicoLivro.listarHistoricoLivro(this.id);
+        String[][] arrNomes = new String[lstHistorico.size()][2];
+        int index = 0;
+        for (HistoricoLivro historico : lstHistorico) {
+            arrNomes[index][0] = historico.getNomeUsuario();
+            arrNomes[index][1] = historico.getSobrenomeUsuario();
+            index++;
+        }
+        return arrNomes;
     }
     
     /**
@@ -282,7 +308,11 @@ public class Livro implements Serializable {
      */
     public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
         LivroDAO livroDAO = new LivroDAO();
-        return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil);
+        return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil) ;
+    }
+     public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.estaDisponivelRevisaoUsuario(idLivro, idPerfil);
     }
     
     /**     
@@ -292,6 +322,11 @@ public class Livro implements Serializable {
     public List<Livro> listarLivrosPublicadosPerfil(int idPerfil) {        
         LivroDAO livroDAO = new LivroDAO();
         return livroDAO.listarLivrosPublicadosPerfil(idPerfil);
+    }
+    
+     public  List<Livro> listarLivrosRevisao() {
+         LivroDAO livroDAO = new LivroDAO();
+        return  livroDAO.listarLivrosRevisao();
     }
     
     @Override
@@ -313,5 +348,15 @@ public class Livro implements Serializable {
         }
         final Livro other = (Livro) obj;
         return this.id == other.id;
-    }               
+    }                 
+
+    public boolean isDisponivelRevisao() {
+        return disponivelRevisao;
+    }
+
+    public void setDisponivelRevisao(boolean disponivelRevisao) {
+        this.disponivelRevisao = disponivelRevisao;
+    }
+
+    
 }

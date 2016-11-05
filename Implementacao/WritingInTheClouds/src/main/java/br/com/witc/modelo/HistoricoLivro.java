@@ -94,6 +94,14 @@ public class HistoricoLivro implements Serializable {
         return this.perfil.getNomeUsuarioABNT();
     }
     
+    public String getNomeUsuario() {
+        return this.perfil.getNomeUsuario();
+    }
+    
+    public String getSobrenomeUsuario() {
+        return this.perfil.getSobrenomeUsuario();
+    }
+    
     public void salvarHistorico(HistoricoLivro hist){
         HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
         historicoLivroDAO.salvarHistorico(hist);
@@ -129,6 +137,10 @@ public class HistoricoLivro implements Serializable {
         HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
         return historicoLivroDAO.estaFinalizadoUsuario(idLivro, idPerfil);
     }
+     public boolean estaFinalizadoRevisaoUsuario(int idLivro, int idPerfil) {
+        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+        return historicoLivroDAO.estaFinalizadoRevisaoUsuario(idLivro, idPerfil);
+    }
     
     /**
      * 
@@ -137,8 +149,9 @@ public class HistoricoLivro implements Serializable {
     public void finalizarLivroUsuario(Livro livro, Perfil perfil) {
         HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
         HistoricoLivro historico = historicoLivroDAO.carregarHistoricoLivroUsuario(livro, perfil);
-
+        TipoStatus st = new TipoStatus().carregarTipoStatus(1);
         historico.setDataConclusao(Calendar.getInstance());
+        historico.setStatus(st);
         historicoLivroDAO.salvarHistorico(historico);
     }
     

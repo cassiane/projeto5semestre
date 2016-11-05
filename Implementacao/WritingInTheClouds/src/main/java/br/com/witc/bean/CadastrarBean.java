@@ -11,6 +11,8 @@ import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
+import br.com.witc.modelo.Desafios;
+import br.com.witc.modelo.DesafiosPalavras;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
@@ -35,7 +37,6 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.*;
-import java.util.Base64;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
@@ -62,8 +63,8 @@ public class CadastrarBean {
     private List<Usuario> sugestao;
     private List<Usuario> solicitacao;
     private List<Usuario> usuarios;
-    public List<TipoTexto> tiposTextoUsuario;
-    public List<TipoTexto> selectedTiposTextoUsuario;
+    private List<String> selectedTiposTextoUsuario;
+    private String tipotextoTag;
     private String convidarEmail;
     private StreamedContent imagemEnviada = new DefaultStreamedContent();
     private String imagemTemporaria;
@@ -74,6 +75,11 @@ public class CadastrarBean {
     private TipoPerfilDAO tipoPerfildao;
     public TipoTexto tipoTexto;
     public TipoTextoDAO tipoTextoDAO;    
+    List<TipoTexto> tiposTexto = new ArrayList<>();
+    private int tipoPerfilNovo;
+   private final Desafios desafio;
+   private DesafiosPalavras desafioPalavras;
+   private List<String> listaPalavras;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
@@ -84,6 +90,10 @@ public class CadastrarBean {
         this.tipoPerfildao = new TipoPerfilDAO();
         this.tipoTexto = new TipoTexto();
         this.tipoTextoDAO = new TipoTextoDAO();
+        this.selectedTiposTextoUsuario = new ArrayList<>();
+        this.desafioPalavras = new DesafiosPalavras();
+        this.desafio = new Desafios();
+        this.listaPalavras = new ArrayList<>();
     }
     
     /**
@@ -92,7 +102,7 @@ public class CadastrarBean {
     public Usuario getUsuario() {
         return usuario;
     }
-
+    
     /**
      * @param usuario the usuario to set
      */
@@ -134,7 +144,7 @@ public class CadastrarBean {
     public String getSenhaRedefinicao() {
         return senhaRedefinicao;
     }
-
+    
     /**
      * @param senhaRedefinicao the senhaRedefinicao to set
      */
@@ -259,7 +269,7 @@ public class CadastrarBean {
         if (this.usuario.getFoto() == null) {
             return carregarFotoDefault();
         }        
-        InputStream is = new ByteArrayInputStream(this.usuario.getFoto());               
+        InputStream is = new ByteArrayInputStream(this.usuario.getFoto());
         StreamedContent image = new DefaultStreamedContent(is);        
         return image;
     }
@@ -389,6 +399,29 @@ public class CadastrarBean {
         this.convidarEmail = convidarEmail;
     }
     
+    
+
+    /**
+     * @return the tipoPerfilNovo
+     */
+    public int getTipoPerfilNovo() {
+        return tipoPerfilNovo;
+    }
+
+    /**
+     * @param tipoPerfilNovo the tipoPerfilNovo to set
+     */
+    public void setTipoPerfilNovo(int tipoPerfilNovo) {
+        this.tipoPerfilNovo = tipoPerfilNovo;
+    }
+    
+    /**
+     * @return the desafio
+     */
+    public Desafios getDesafio() {
+        return desafio;
+    }
+    
     public StreamedContent getFotos(Usuario user) {
         try {
             if (user.getFoto() == null) {
@@ -500,12 +533,11 @@ public class CadastrarBean {
 
     public void setDataNascimento() throws ParseException {
         SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-        String data = getDiaNascimento() + "/" + getMesNascimento() + "/" + getAnoNascimento();
+        String data = getDiaNascimento() + "/" + getMesNascimento() + "/" + getAnoNascimento();        
         Calendar c = Calendar.getInstance();
         c.setTime(formatoData.parse(data));
-
         this.usuario.setDataAniversario(c);
-
+        
     }
 
     /**
@@ -558,6 +590,7 @@ public class CadastrarBean {
             AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "autenticarBean");
             autenticarBean.setUsuario(this.usuario);
+            autenticarBean.setarPerfilUsuario();
             // Verifica se o novo usuario ja recebeu alguma solicitação de amizade
             this.controlador.verificarConvite(this.usuario.getEmail());
             return "timeline";
@@ -627,8 +660,7 @@ public class CadastrarBean {
             this.usuario.setStatus("");
             this.usuario.setAtivo(false);
             this.controlador.excluirUsuario(this.usuario); 
-            removerTodasAmizades(this.usuario.getId());
-            excluirTodosTipoTextoUsuario(this.usuario.getId());
+            removerTodasAmizades(this.usuario.getId());            
         } catch (DadosUsuarioInvalidoException | NoSuchAlgorithmException | UnsupportedEncodingException | UsuarioInvalidoException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
@@ -897,6 +929,14 @@ public class CadastrarBean {
     }
     
     /**
+     * Retorna uma lista de perfis que o usuário não tem
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfilPossiveis(){   
+        return this.controlador.listarTipoPerfilPossiveis(this.usuario.getId());
+    }
+    
+    /**
      * Retorna a tela de edição do perfil selecionado na lista
      * @param id
      * @return 
@@ -906,7 +946,7 @@ public class CadastrarBean {
         return "novoTipoPerfil";
     }
     /**
-     * Cadastra um novo perfil
+     * Cadastra um novo tipo de texto
      * @return 
      */
     public String cadastrarTipoTexto(){   
@@ -920,7 +960,7 @@ public class CadastrarBean {
     }
     
     /**
-     * Chamada para a tela de criação de um novo perfil 
+     * Chamada para a tela de criação de um novo tipo de texto
      * @return 
      */
     public String novoTipoTexto(){
@@ -928,12 +968,48 @@ public class CadastrarBean {
         return "novoTipoTexto"; 
     }
     /**
-     * Retorna uma lista de perfis
+     * Retorna uma lista de tipos de texto
      * @return 
      * @throws br.com.witc.excessao.TipoTextoException 
      */
     public List<TipoTexto> listarTipoTexto() throws TipoTextoException{        
         return this.controlador.listarTipoTexto();
+    }
+    
+    /**
+     * Método para retornar uma lista filtrada para as tags de tipo de texto
+     * quando o usuário seleciona os tipos de texto que ele se identifica
+     * @param nomeTipoTexto
+     * @return retorna uma lista de tipos de texto que comecem com aquele parametro de letras
+     * @throws TipoTextoException 
+     */
+    public List<TipoTexto> listaTipoTextoFiltrada(String nomeTipoTexto) throws TipoTextoException {        
+        List<TipoTexto> filteredTiposTexto;
+        filteredTiposTexto = new ArrayList<>();
+        for (TipoTexto tipo : this.listarTipoTexto()) {
+            if(tipo.getTipoTexto().toLowerCase().startsWith(nomeTipoTexto.toLowerCase())){
+                filteredTiposTexto.add(tipo);
+            }
+        }         
+        return filteredTiposTexto;
+    }
+    
+    /**
+     * Método para retornar uma lista filtrada para as tags de tipo de texto
+     * quando o usuário seleciona os tipos de texto que ele se identifica
+     * @param palavra
+     * @return retorna uma lista de tipos de texto que comecem com aquele parametro de letras 
+     * @throws java.lang.Exception 
+     */
+    public List<String> listaPalavrasDesafios(String palavra) throws Exception {        
+        List<String> filteredDesafiosPalavras;
+        filteredDesafiosPalavras = new ArrayList<>();
+        for(int i=0;i<=this.listarDesafiosPalavras().size();i++){
+            if(this.listarDesafiosPalavras().get(i).toLowerCase().startsWith(palavra.toLowerCase())){
+                filteredDesafiosPalavras.add(this.listarDesafiosPalavras().get(i));
+            }
+        }         
+        return filteredDesafiosPalavras;
     }
     
     /**
@@ -944,35 +1020,6 @@ public class CadastrarBean {
     public String editarTipoTexto(int id){ 
         tipoTexto = this.controlador.carregarTipoTexto(id);
         return "novoTipoTexto";
-    }
-    
-    /**
-     * Método para salvar o tipo de texto ao usuário para identificar com quais
-     * tipos de texto ele se identifica
-     */
-    public String salvarTipoTextoUsuario(){
-        this.controlador.salvarTipoTextoUsuario(this.selectedTiposTextoUsuario, this.usuario.getId());
-        return "timeline"; 
-    }
-    
-    /**
-     * Método para excluir um tipo de texto em que o usuário nao se 
-     * identifica mais
-     * @param idTipoTexto
-     * @return 
-     */
-    public String excluirTipoTextoUsuario(int idTipoTexto){
-        this.controlador.excluirTipoTextoUsuario(this.usuario.getId(), idTipoTexto);
-        return "index.xhtml?faces-redirect=true";
-    }
-    
-    /**
-     * Método para excluir todos os tipo de texto com ligação ao usuário que está 
-     * apagando a conta 
-     * @param idUsuario
-     */
-    public void excluirTodosTipoTextoUsuario(int idUsuario){
-        this.controlador.excluirTodosTipoTextoUsuario(idUsuario);        
     }
     
     /**
@@ -987,30 +1034,16 @@ public class CadastrarBean {
     } 
 
     /**
-     * @return the tiposTextoUsuario
-     */
-    public List<TipoTexto> getTiposTextoUsuario() {
-        return tiposTextoUsuario;
-    }
-
-    /**
-     * @param tiposTextoUsuario the tiposTextoUsuario to set
-     */
-    public void setTiposTextoUsuario(List<TipoTexto> tiposTextoUsuario) {
-        this.tiposTextoUsuario = tiposTextoUsuario;
-    }
-
-    /**
      * @return the selectedTiposTextoUsuario
      */
-    public List<TipoTexto> getSelectedTiposTextoUsuario() {
+    public List<String> getSelectedTiposTextoUsuario() {
         return selectedTiposTextoUsuario;
     }
 
     /**
      * @param selectedTiposTextoUsuario the selectedTiposTextoUsuario to set
      */
-    public void setSelectedTiposTextoUsuario(List<TipoTexto> selectedTiposTextoUsuario) {
+    public void setSelectedTiposTextoUsuario(List<String> selectedTiposTextoUsuario) {
         this.selectedTiposTextoUsuario = selectedTiposTextoUsuario;
     }
     
@@ -1022,8 +1055,53 @@ public class CadastrarBean {
         autenticarBean.atualizarStatusUsuario(status);
     }
     
-    public String criarNovoPerfil(int idTipoPerfil) {
-        this.controlador.criarPerfilUsuario(idTipoPerfil, this.usuario);
-        return "timeline";
+    /**
+     * Cria um novo perfil para o usuário
+     * @return 
+     */
+    public String criarNovoPerfil() {
+        this.controlador.criarPerfilUsuario(getTipoPerfilNovo(), this.usuario);
+        return "editarConta";
+    }
+    
+    /**
+     * Método para retornar a lista de todas as palavras cadastradas no sistema
+     * @return List de string
+     * @throws Exception 
+     */
+    private List<String> listarDesafiosPalavras() throws Exception {
+        return this.controlador.listarDesafiosPalavras();
+    }
+    
+    public void salvarDesafio(){
+        
+    }
+
+    /**
+     * @return the desafioPalavras
+     */
+    public DesafiosPalavras getDesafioPalavras() {
+        return desafioPalavras;
+    }
+
+    /**
+     * @param desafioPalavras the desafioPalavras to set
+     */
+    public void setDesafioPalavras(DesafiosPalavras desafioPalavras) {
+        this.desafioPalavras = desafioPalavras;
+    }
+
+    /**
+     * @return the listaPalavras
+     */
+    public List<String> getListaPalavras() {
+        return listaPalavras;
+    }
+
+    /**
+     * @param listaPalavras the listaPalavras to set
+     */
+    public void setListaPalavras(List<String> listaPalavras) {
+        this.listaPalavras = listaPalavras;
     }
 }

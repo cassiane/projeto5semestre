@@ -206,12 +206,13 @@ public class UsuarioDAO {
      * @param tiposTextoUsuario lista de tipos de texto que foram selecionados
      * @param idUsuario 
      */
-    public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
-        for(TipoTexto tipo : tiposTextoUsuario){
-            sessao.createSQLQuery("INSERT INTO usuario_tem_tipotexto(idUsuario,idTipoTexto) "
+    public void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
+        for(int i=0;i<tiposTextoUsuario.size();i++){
+            int tip = Integer.parseInt(tiposTextoUsuario.get(i));
+            sessao.createSQLQuery("INSERT INTO Usuario_tem_TipoTexto(idUsuario,idTipoTexto) "
                 + "VALUES(:usuario,:tipoTexto);")
                 .setInteger("usuario", idUsuario)
-                .setInteger("tipoTexto", tipo.getId())
+                .setInteger("tipoTexto", tip)
                 .executeUpdate();
         }              
     }
@@ -223,7 +224,7 @@ public class UsuarioDAO {
      * @param idTipoTexto 
      */
     public void excluirTipoTextoUsuario(int idUsuario, int idTipoTexto){
-        sessao.createSQLQuery("DELETE FROM usuario_tem_tipotexto"
+        sessao.createSQLQuery("DELETE FROM Usuario_tem_TipoTexto"
                 + "WHERE idUsuario = :usuario and idTipoTexto = :tipoTexto;")
                 .setParameter("usuario", idUsuario)
                 .setParameter("tipoTexto", idTipoTexto)
@@ -236,7 +237,7 @@ public class UsuarioDAO {
      * @param idUsuario 
      */
     public void excluirTodosTipoTextoUsuario(int idUsuario){
-        sessao.createSQLQuery("DELETE FROM usuario_tem_tipotexto"
+        sessao.createSQLQuery("DELETE FROM Usuario_tem_TipoTexto"
             + "WHERE idUsuario = :usuario;")
             .setParameter("usuario", idUsuario)        
             .executeUpdate();

@@ -6,32 +6,40 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
-        <ui:define name="conteudo">     
-            <div align="center"> 
-                <h1>Metadados do Livro</h1>
-                <h:form id= "formMetadados" enctype="multipart/form-data">
-                    <h:panelGrid columns="1">
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="titulo" value="Título"/>
-                            <p:inputText id="titulo" label="titulo" maxlength="45" value="#{livroBean.tituloLivro}"/>                                            
-                        </h:panelGrid>
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="tipoTexto" value="Tipo de texto"/>
-                            <p:selectOneMenu id="tipoTexto" value="#{livroBean.tipoTexto}" style="width: 150px">
-                                <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
-                                               itemValue="#{tipoTexto}"/>
-                            </p:selectOneMenu>  
-                        </h:panelGrid>
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="capa" value="Capa "/>
-                            <p:fileUpload id="capa" value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
-                        </h:panelGrid> 
-                    </h:panelGrid>              
-                    <h:panelGrid columns="3" style="margin-top: 10px">
-                        <p:commandButton value="Salvar"  action="#{livroBean.salvarNovoLivro()}" icon="ui-icon-disk" ajax="false" />
-                        <p:commandButton value="Voltar"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" />                        
-                    </h:panelGrid>                     
-                 </h:form>
+        <ui:define name="conteudo">             
+            <div style="text-align: center;">
+                <h:outputText styleClass="text-info" style="font-size: 25px;" value="Metadados do Livro" />
+            </div>            
+            <div class="form-group">
+                <h:form id= "formMetadados" enctype="multipart/form-data">                    
+                    <div>
+                        <h:outputLabel styleClass="text-primary" for="titulo" value="Título:"/>
+                        <h:inputText id="titulo" styleClass="form-control" label="Título" maxlength="45"
+                                     required="true"
+                                     style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}"
+                                     value="#{livroBean.tituloLivro}"/>
+                    </div>
+                    <div>                    
+                        <h:outputLabel styleClass="text-primary" for="tipoTexto" value="Tipo de texto:"/>
+                        <h:selectOneMenu id="tipoTexto" styleClass="form-control" value="#{livroBean.tipoTexto}"
+                                         style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}">
+                            <f:selectItems value="#{livroBean.lstTipoTexto}" var="tipoTexto" itemLabel="#{tipoTexto.tipoTexto}" 
+                                           itemValue="#{tipoTexto}"/>
+                            <f:converter converterId="conversorTipoTexto" />
+                        </h:selectOneMenu>                          
+                    </div>
+                    <div>
+                        <h:outputLabel for="revisao" value="Revisão: " />
+                        <h:selectBooleanCheckbox id="revisao" value="#{livroBean.disponivelRevisao}" />
+                    </div>
+                    <div style="margin-top: 15px; text-align: right;">                        
+                        <h:outputLabel styleClass="btn btn-info" style="width: 150px;" for="capa" value="Capa "/>
+                        <p:fileUpload id="capa" style="display: none;" value="#{livroBean.file}" 
+                                      mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>                        
+                        #{' '}
+                        <h:commandButton styleClass="btn btn-success" style="width: 150px;" value="Salvar"  action="#{livroBean.salvarNovoLivro()}" />                        
+                    </div>
+                </h:form>
             </div>
         </ui:define>
     </ui:composition>

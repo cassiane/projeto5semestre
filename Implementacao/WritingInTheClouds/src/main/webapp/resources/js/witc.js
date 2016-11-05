@@ -4,17 +4,18 @@
  * and open the template in the editor.
  */
 
-/* This is out callback function for when a rating is submitted
+/* 
+ * This is out callback function for when a rating is submitted
  */
-function setBookRatingByUser(id, rating)
-{            
-    callBeanMethod([{name:'bookRating',value:id + "-" + rating}]);    
+function setRating(id, rating)
+{                
+    callBeanMethod([{name:'rating',value:id + "-" + rating}]);    
 }
 
 function initializeRatebox() {
     $(function() {    
         $( '.ratebox' ).raterater( { 
-            submitFunction: 'setBookRatingByUser', 
+            submitFunction: 'setRating', 
             allowChange: true,
             starWidth: 20,
             spaceWidth: 5,
@@ -26,7 +27,7 @@ function initializeRatebox() {
 /* Here we initialize raterater on our rating boxes */
 $(function() {    
     $( '.ratebox' ).raterater( { 
-        submitFunction: 'setBookRatingByUser', 
+        submitFunction: 'setRating', 
         allowChange: true,
         starWidth: 20,
         spaceWidth: 5,

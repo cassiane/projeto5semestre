@@ -35,6 +35,16 @@ public class PerfilDAO {
         }
         return p;
     }
+    
+    /**     
+     * @param idPerfil O id do perfil a ser carregado
+     * @return Um objeto Perfil, com o perfil carregado
+     */
+    public Perfil carregarPerfilPorId(int idPerfil) {
+        return (Perfil) sessao.createQuery("FROM Perfil WHERE id=:idPerfil")
+                .setInteger("idPerfil", idPerfil)
+                .uniqueResult();
+    }
 
     public void salvarPerfil(Perfil perfil) {
         try {

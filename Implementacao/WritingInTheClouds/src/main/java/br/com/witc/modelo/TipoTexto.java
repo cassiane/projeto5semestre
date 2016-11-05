@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  *
@@ -24,7 +25,14 @@ public class TipoTexto implements Serializable {
     private int id;
     private String tipoTexto;
     
-
+    @ManyToOne(cascade=CascadeType.ALL)
+           @JoinTable(name="Usuario_tem_TipoTexto",
+                     joinColumns={@JoinColumn(name="idUsuario",  
+                      referencedColumnName="id")},  
+                     inverseJoinColumns={@JoinColumn(name="idTipoTexto",   
+                      referencedColumnName="id")})  
+    private Usuario usuario;
+    
     public int getId() {
         return id;
     }
@@ -102,4 +110,18 @@ public class TipoTexto implements Serializable {
         TipoTexto tipoTexto = (TipoTexto) obj;
         return this.getId() == tipoTexto.getId();
     }      
+
+    /**
+     * @return the usuario
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    /**
+     * @param usuario the usuario to set
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

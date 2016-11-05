@@ -34,6 +34,8 @@ public class ControladorCadastro {
     private final Perfil perfil;  
     private final PerfilDAO perfilDAO; 
     private final TipoTexto tipoTexto;
+    private final DesafiosPalavras desafiosPalavras;
+    private final Desafios desafio;
 
     public ControladorCadastro() {
         this.usuario = new Usuario();
@@ -47,6 +49,8 @@ public class ControladorCadastro {
         this.perfil    = new Perfil();
         this.perfilDAO = new PerfilDAO();
         this.tipoTexto = new TipoTexto();
+        this.desafiosPalavras = new DesafiosPalavras();
+        this.desafio = new Desafios();
     }
 
     /**
@@ -280,6 +284,15 @@ public class ControladorCadastro {
     }
     
     /**
+     * Retorna a lista de tipo de perfil em que o usuário não possui
+     * @param idUsuario
+     * @return 
+     */
+    public List<TipoPerfil> listarTipoPerfilPossiveis(int idUsuario) {
+        return this.tipoPerfil.listarTipoPerfilPossiveis(idUsuario);
+    }
+    
+    /**
      * Cadastra um tipo de texto
      * @param tipoTexto
      * @throws TipoTextoException 
@@ -301,8 +314,9 @@ public class ControladorCadastro {
      * Método para salvar os tipos de textos ao usuário
      * para este se identificar com vários tipos de texto
      * @param tiposTextoUsuario lista dos tipos de textos 
+     * @param idUsuario usuario 
      */
-    public void salvarTipoTextoUsuario(List <TipoTexto> tiposTextoUsuario, int idUsuario){
+    public void salvarTipoTextoUsuario(List <String> tiposTextoUsuario, int idUsuario){
         this.usuario.salvarTipoTextoUsuario(tiposTextoUsuario, idUsuario);
     }
     
@@ -335,6 +349,15 @@ public class ControladorCadastro {
     }
     
     /**
+     * Método para retornar todas as palavras já cadastradas nos desafios
+     * @return 
+     * @throws java.lang.Exception 
+     */
+    public List<String> listarDesafiosPalavras() throws Exception{
+        return this.desafiosPalavras.listarDesafiosPalavras();
+    }
+    
+    /**
      * Envia à viewer uma mensagem com o status da operação
      *
      * @param sev A severidade da mensagem
@@ -344,7 +367,12 @@ public class ControladorCadastro {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(sev, msg, ""));
     } 
-
+    
+    /**
+     * Cria um novo perfil para o usuário
+     * @param idTipo id Perfil escolhido pelo usuário
+     * @param usuario id usuário logado
+     */
     public void criarPerfilUsuario(int idTipo, Usuario usuario) {
         Perfil newPerfil = new Perfil();
         for (TipoPerfil tipo : this.listarTipoPerfil()) {
@@ -355,7 +383,9 @@ public class ControladorCadastro {
         }
         newPerfil.setPerfilPadrao(true);
         newPerfil.setPseudonimo(usuario.getNome());
-        newPerfil.setQualificacao(0);
+
+        newPerfil.setAvaliacao(0f);
+
         newPerfil.setUsuario(usuario);
         Perfil oldPerfil = this.perfil.carregarPerfil(usuario);
         this.perfil.desativarPerfil(oldPerfil);
