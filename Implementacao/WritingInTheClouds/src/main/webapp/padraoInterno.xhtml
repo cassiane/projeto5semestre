@@ -75,11 +75,11 @@
                             <div>
                                 <h:outputText style="font-weight: bold;" value="#{autenticarBean.nomeCompletoUsuario}" />
                             </div>  
-                            <h:form id="frmRating">
+                            <h:form id="frmRating"> 
                                 <p:remoteCommand name="callBeanMethod" update=":frmRating" 
                                                  actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRatebox();" />
                                 <div class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
-                                      style="margin-top: 10px; margin-left: auto; margin-right: auto;">                                        
+                                     style="margin-top: 10px; margin-left: auto; margin-right: auto; #{autenticarBean.amigo?'pointer-events:none;':''}">                                        
                                 </div>
                             </h:form>
                             <div style="margin-top: 10px;">
