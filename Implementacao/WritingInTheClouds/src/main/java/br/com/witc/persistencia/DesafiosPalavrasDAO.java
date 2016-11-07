@@ -5,6 +5,7 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.modelo.DesafiosPalavras;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -33,5 +34,29 @@ public class DesafiosPalavrasDAO {
             throw new Exception("Nenhuma palavra foi cadastrada no sistema");
         }
         return lstPalavras;
+    }
+    
+    /**
+     * Salvar o desafio e a lista de palavras
+     * @param listaPalavras
+     * @param idDesafiante
+     * @param idDesafio
+     * @param idAmigo 
+     */
+    public void salvarDesafio(List<String> listaPalavras, int idDesafiante, int idDesafio, int idAmigo) {
+        int id = sessao.createSQLQuery("insert into desafiosusuarios(idUsuario,idUsuarioDesafiante,idDesafio) "
+                + "values (:idAmigo,:idUsuario,:idDesafio)")
+                .setInteger("idAmigo", idAmigo)
+                .setInteger("idUsuario", idDesafiante)
+                .setInteger("idDesafio", idDesafio)                
+                .executeUpdate();        
+        listaPalavras.forEach((palavra) -> {            
+            sessao.createSQLQuery("insert into desafiospalavras(palavra, idDesafio) values (:palavra,:idDesafio);")
+                    .setString("palavra", palavra)
+                    .setInteger("idDesafio",id)
+                    .executeUpdate();
+        });
+        
+        
     }
 }

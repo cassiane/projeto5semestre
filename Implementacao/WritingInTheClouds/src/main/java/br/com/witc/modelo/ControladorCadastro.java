@@ -12,7 +12,6 @@ import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoPerfilDAO;
-import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -390,5 +389,17 @@ public class ControladorCadastro {
         Perfil oldPerfil = this.perfil.carregarPerfil(usuario);
         this.perfil.desativarPerfil(oldPerfil);
         this.perfil.criarPerfil(newPerfil);
+    }
+    
+    /**
+     * Cadastra a lista de palavras escolhidas pelo usuario
+     * e cadastro o desafio para o usuario 
+     * @param listaPalavras
+     * @param idDesafiante
+     * @param idDesafio
+     * @param idAmigo
+     */
+    public void salvarDesafio(List<String> listaPalavras, int idDesafiante, int idDesafio, int idAmigo){
+        this.desafiosPalavras.salvarDesafio(listaPalavras,idDesafiante,idDesafio,idAmigo);
     }
 }

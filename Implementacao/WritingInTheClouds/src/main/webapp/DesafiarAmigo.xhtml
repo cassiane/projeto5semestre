@@ -20,6 +20,12 @@
                     }
             }
             </script>-->
+            <script type="text/javascript">
+                function limpaCampo(){
+                    document.getElementById("palavra").value = '';
+                }
+            </script>
+               
             <div align="center" style="padding-top: 50px;">                
                 <div class="col-lg-4">
                     <!-- onclick="javascript: exibe('conteudo1');"-->
@@ -43,11 +49,11 @@
                     <div style="margin-top: 100px;">                                             
                         <h:outputLabel styleClass="text-info" value="Palavras do desafio" style="font-size: 20px;"/>
                         <div>
-                            <h:inputText class="inputtext" value="#{cadastrarBean.palavra}" style="width: 300px;"/>            
+                            <h:inputText id="palavra" class="inputtext" value="#{cadastrarBean.palavra}" style="width: 300px;"/>            
                             #{''}
                             <p:commandButton styleClass="btn btn-success"
                                              action="#{cadastrarBean.salvarPalavra()}" 
-                                             update="autoDesafiosPalavras" icon="ui-icon-plus"/>
+                                             update="autoDesafiosPalavras" icon="ui-icon-plus" onclick="javascript: limpaCampo();"/>
                         </div>
                         #{''}
                         <p:autoComplete id="autoDesafiosPalavras" minQueryLength="1" value="#{cadastrarBean.listaPalavras}"
@@ -59,7 +65,7 @@
                         #{''}
                         <div style="margin-top: 30px;">                                                        
                             <h:commandButton style="width: 160px;" styleClass="btn btn-success" value="Desafiar !"
-                            action="#{cadastrarBean.salvarDesafio()}"/>
+                                             action="#{cadastrarBean.salvarDesafio(autenticarBean.idAmigoUsuario)}"/>
                         </div>
                     </div>
                 </div>

@@ -1130,9 +1130,10 @@ public class CadastrarBean {
      * Salva as palavras do desafio na tabela de palavras 
      * envia notificacao para o usuario que existe um desafio
      * salva na tabela de desafios do usuario um novo registro
+     * @param idAmigo
      */
-    public void salvarDesafio(){
-        
+    public void salvarDesafio(int idAmigo){        
+        this.controlador.salvarDesafio(listaPalavras,this.usuario.getId(),1,idAmigo);
     }
         
 }
