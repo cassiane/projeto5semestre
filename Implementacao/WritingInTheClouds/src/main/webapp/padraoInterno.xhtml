@@ -55,12 +55,14 @@
                                     </ul>
                                 </li>        
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-bell"/> <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <p:dataList value="#{cadastrarBean.listaDesafios}" var="desafio" type="ordered">                                           
-                                            #{desafio}                                            
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                                    <ul class="dropdown-menu alert-dropdown">
+                                        <p:dataList value="#{cadastrarBean.listaDesafios}" var="desafio" rows="5" type="definition">                                           
+                                            <li>
+                                                <a href="#">#{desafio.usuarioDesafiante.nome} desafiou você !</a>
+                                            </li>
                                         </p:dataList>
-                                    </ul>
+                                    </ul>                                
                                 </li>
                             </ul>        
                         </h:form>
