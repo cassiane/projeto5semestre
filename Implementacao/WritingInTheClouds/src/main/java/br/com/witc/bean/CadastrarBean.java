@@ -77,13 +77,25 @@ public class CadastrarBean {
     public TipoTextoDAO tipoTextoDAO;    
     List<TipoTexto> tiposTexto = new ArrayList<>();
     private int tipoPerfilNovo;
-   private final Desafios desafio;
-   private DesafiosPalavras desafioPalavras;
-   private List<String> listaPalavras;
+    private final Desafios desafio;
+    private DesafiosPalavras desafioPalavras;
+    private List<String> listaPalavras;
+    String palavra;
+
+    public String getPalavra() {
+        return palavra;
+    }
+
+    public void setPalavra(String palavra) {
+        this.palavra = palavra;
+    }
+    
+    
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
     public CadastrarBean() {
+        this.listaPalavras = new ArrayList<>();
         this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
         this.tipoPerfil = new TipoPerfil();
@@ -93,8 +105,10 @@ public class CadastrarBean {
         this.selectedTiposTextoUsuario = new ArrayList<>();
         this.desafioPalavras = new DesafiosPalavras();
         this.desafio = new Desafios();
-        this.listaPalavras = new ArrayList<>();
+        
     }
+    
+    
     
     /**
      * @return the usuario
@@ -420,6 +434,34 @@ public class CadastrarBean {
      */
     public Desafios getDesafio() {
         return desafio;
+    }
+    
+    /**
+     * @return the desafioPalavras
+     */
+    public DesafiosPalavras getDesafioPalavras() {
+        return desafioPalavras;
+    }
+
+    /**
+     * @param desafioPalavras the desafioPalavras to set
+     */
+    public void setDesafioPalavras(DesafiosPalavras desafioPalavras) {
+        this.desafioPalavras = desafioPalavras;
+    }
+
+    /**
+     * @return the listaPalavras
+     */
+    public List<String> getListaPalavras() {
+        return listaPalavras;
+    }
+
+    /**
+     * @param listaPalavras the listaPalavras to set
+     */
+    public void setListaPalavras(List<String> listaPalavras) {
+        this.listaPalavras = listaPalavras;
     }
     
     public StreamedContent getFotos(Usuario user) {
@@ -1073,35 +1115,24 @@ public class CadastrarBean {
         return this.controlador.listarDesafiosPalavras();
     }
     
+    /**
+     * Salva a palavra digitada na lista de palavras do desafio
+     */
+    public void salvarPalavra(){
+        if(getListaPalavras() == null){
+            listaPalavras = new ArrayList<>();
+        }
+        getListaPalavras().add(palavra);        
+    }
+    
+    /**
+     * Salva o desafio na tabela de desafios
+     * Salva as palavras do desafio na tabela de palavras 
+     * envia notificacao para o usuario que existe um desafio
+     * salva na tabela de desafios do usuario um novo registro
+     */
     public void salvarDesafio(){
         
     }
-
-    /**
-     * @return the desafioPalavras
-     */
-    public DesafiosPalavras getDesafioPalavras() {
-        return desafioPalavras;
-    }
-
-    /**
-     * @param desafioPalavras the desafioPalavras to set
-     */
-    public void setDesafioPalavras(DesafiosPalavras desafioPalavras) {
-        this.desafioPalavras = desafioPalavras;
-    }
-
-    /**
-     * @return the listaPalavras
-     */
-    public List<String> getListaPalavras() {
-        return listaPalavras;
-    }
-
-    /**
-     * @param listaPalavras the listaPalavras to set
-     */
-    public void setListaPalavras(List<String> listaPalavras) {
-        this.listaPalavras = listaPalavras;
-    }
+        
 }
