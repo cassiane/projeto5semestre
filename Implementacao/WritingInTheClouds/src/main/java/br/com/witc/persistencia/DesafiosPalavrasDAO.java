@@ -5,7 +5,6 @@
  */
 package br.com.witc.persistencia;
 
-import br.com.witc.modelo.DesafiosPalavras;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -43,20 +42,12 @@ public class DesafiosPalavrasDAO {
      * @param idDesafio
      * @param idAmigo 
      */
-    public void salvarDesafio(List<String> listaPalavras, int idDesafiante, int idDesafio, int idAmigo) {
-        int id = sessao.createSQLQuery("insert into desafiosusuarios(idUsuario,idUsuarioDesafiante,idDesafio) "
-                + "values (:idAmigo,:idUsuario,:idDesafio)")
-                .setInteger("idAmigo", idAmigo)
-                .setInteger("idUsuario", idDesafiante)
-                .setInteger("idDesafio", idDesafio)                
-                .executeUpdate();        
+    public void salvarDesafio(List<String> listaPalavras, int idDesafio) {
         listaPalavras.forEach((palavra) -> {            
-            sessao.createSQLQuery("insert into desafiospalavras(palavra, idDesafio) values (:palavra,:idDesafio);")
+            sessao.createSQLQuery("insert into desafiospalavras(palavra, idDesafio) values (:palavra,:idDesafio)")
                     .setString("palavra", palavra)
-                    .setInteger("idDesafio",id)
+                    .setInteger("idDesafio",idDesafio)
                     .executeUpdate();
         });
-        
-        
     }
 }

@@ -13,6 +13,7 @@ import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Desafios;
 import br.com.witc.modelo.DesafiosPalavras;
+import br.com.witc.modelo.DesafiosUsuarios;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
@@ -81,6 +82,7 @@ public class CadastrarBean {
     private DesafiosPalavras desafioPalavras;
     private List<String> listaPalavras;
     String palavra;
+    private List<DesafiosUsuarios> listaDesafios;
 
     public String getPalavra() {
         return palavra;
@@ -108,7 +110,14 @@ public class CadastrarBean {
         
     }
     
-    
+    /**
+     * @return the listaDesafios
+     */
+    public List<DesafiosUsuarios> getListaDesafios() {
+        this.listaDesafios = this.controlador.listarDesafiosUsuarios(this.usuario.getId());
+        return listaDesafios;
+    }
+
     
     /**
      * @return the usuario
@@ -1131,9 +1140,24 @@ public class CadastrarBean {
      * envia notificacao para o usuario que existe um desafio
      * salva na tabela de desafios do usuario um novo registro
      * @param idAmigo
+     * @return 
      */
-    public void salvarDesafio(int idAmigo){        
-        this.controlador.salvarDesafio(listaPalavras,this.usuario.getId(),1,idAmigo);
+    public String salvarDesafio(int idAmigo){  
+        DesafiosUsuarios desUsuario = new DesafiosUsuarios();
+        desafio.setId(1);
+        desUsuario.setDesafio(desafio);
+        desUsuario.setUsuario(usuario);        
+        desUsuario.setUsuarioDesafiante(this.getUsuario().carregarAmigo(idAmigo));
+        int idDesafio = this.controlador.salvarDesafiosUsuarios(desUsuario);
+        this.controlador.salvarDesafio(listaPalavras, idDesafio);
+        return "timeline.xhtml?faces-redirect=true";   
     }
-        
+    
+    /**
+     * Lista os desafios em que o usuário foi selecionado para fazer 
+     */
+    public void listarDesafiosUsuario(){
+        this.controlador.listarDesafiosUsuarios(this.usuario.getId());
+    }
+    
 }

@@ -78,8 +78,8 @@ public class DesafiosPalavras implements Serializable {
      * @param idDesafio
      * @param idAmigo 
      */
-    public void salvarDesafio(List<String> listaPalavras, int idDesafiante, int idDesafio, int idAmigo) {
+    public void salvarDesafio(List<String> listaPalavras, int idDesafio) {
         DesafiosPalavrasDAO dao = new DesafiosPalavrasDAO();
-        dao.salvarDesafio(listaPalavras, idDesafiante, idDesafio, idAmigo);
+        dao.salvarDesafio(listaPalavras, idDesafio);
     }
 }

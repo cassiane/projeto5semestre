@@ -35,7 +35,8 @@ public class ControladorCadastro {
     private final TipoTexto tipoTexto;
     private final DesafiosPalavras desafiosPalavras;
     private final Desafios desafio;
-
+    private final DesafiosUsuarios desUsuario;
+    
     public ControladorCadastro() {
         this.usuario = new Usuario();
         this.tipoPerfil = new TipoPerfil();
@@ -50,6 +51,7 @@ public class ControladorCadastro {
         this.tipoTexto = new TipoTexto();
         this.desafiosPalavras = new DesafiosPalavras();
         this.desafio = new Desafios();
+        this.desUsuario = new DesafiosUsuarios();
     }
 
     /**
@@ -399,7 +401,15 @@ public class ControladorCadastro {
      * @param idDesafio
      * @param idAmigo
      */
-    public void salvarDesafio(List<String> listaPalavras, int idDesafiante, int idDesafio, int idAmigo){
-        this.desafiosPalavras.salvarDesafio(listaPalavras,idDesafiante,idDesafio,idAmigo);
+    public void salvarDesafio(List<String> listaPalavras, int idDesafio){
+        this.desafiosPalavras.salvarDesafio(listaPalavras,idDesafio);
+    }
+    
+    public int salvarDesafiosUsuarios(DesafiosUsuarios des){
+        return this.desUsuario.salvarDesafiosUsuarios(des);
+    }
+
+    public List<DesafiosUsuarios> listarDesafiosUsuarios(int idUsuario) {
+        return this.desUsuario.listarDesafiosUsuarios(idUsuario);
     }
 }

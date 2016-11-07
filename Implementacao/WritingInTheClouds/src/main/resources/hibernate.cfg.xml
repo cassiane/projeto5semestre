@@ -23,5 +23,6 @@
     <mapping class="br.com.witc.modelo.ConvidadoPerfil"/>
     <mapping class="br.com.witc.modelo.Desafios"/>
     <mapping class="br.com.witc.modelo.DesafiosPalavras"/>
+    <mapping class="br.com.witc.modelo.DesafiosUsuarios"/>
   </session-factory>
 </hibernate-configuration>
