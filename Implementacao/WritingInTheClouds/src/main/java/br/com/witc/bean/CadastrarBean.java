@@ -85,6 +85,7 @@ public class CadastrarBean {
     String palavra;
     private List<DesafiosUsuarios> listaDesafios;
     private HistoriasDesafios historiasDesafios;
+    private List<String> palavrasDoDesafio;
 
     public String getPalavra() {
         return palavra;
@@ -475,6 +476,21 @@ public class CadastrarBean {
         this.listaPalavras = listaPalavras;
     }
     
+    /**
+     * @return the palavrasDoDesafio
+     * @throws java.lang.Exception
+     */
+    public List<String> getPalavrasDoDesafio() throws Exception {
+        return listarPalavrasDoDesafio();
+    }
+
+    /**
+     * @param palavrasDoDesafio the palavrasDoDesafio to set
+     */
+    public void setPalavrasDoDesafio(List<String> palavrasDoDesafio) {
+        this.palavrasDoDesafio = palavrasDoDesafio;
+    }
+    
     public StreamedContent getFotos(Usuario user) {
         try {
             if (user.getFoto() == null) {
@@ -770,12 +786,10 @@ public class CadastrarBean {
             this.controlador.redefinirSenha(this.emailRecuperacaoSenha, this.hashRedefinicao, this.senhaRedefinicao);
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso");
             return "index.xhtml";
-        } catch (DadosUsuarioInvalidoException ex) {
+        } catch (DadosUsuarioInvalidoException | LinkRecuperacaoInvalidoException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash para redefinição de senha!");
-        } catch (LinkRecuperacaoInvalidoException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
 
         return null;
@@ -899,6 +913,7 @@ public class CadastrarBean {
     
     /**
      * Converte uma imagem para apresentar em um componente p:graphicImage     
+     * @param pathFile O caminho do arquivo
      * @return Um objeto StreamedContent
      */
     public StreamedContent converterFoto(String pathFile) {        
@@ -1185,4 +1200,12 @@ public class CadastrarBean {
         return "timeline";
     }
     
+    /**
+     * Listar as palavras do desafio em que o usuário está escrevendo
+     * @return 
+     * @throws java.lang.Exception 
+     */
+    public List<String> listarPalavrasDoDesafio() throws Exception{
+        return this.controlador.listarPalavrasDoDesafio(this.historiasDesafios.getDesafiosUsuarios().getId());
+    }
 }

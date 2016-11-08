@@ -7,6 +7,7 @@ package br.com.witc.persistencia;
 
 import br.com.witc.modelo.DesafiosPalavras;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 
@@ -33,6 +34,20 @@ public class DesafiosPalavrasDAO {
         if (lstPalavras.isEmpty()) {
             throw new Exception("Nenhuma palavra foi cadastrada no sistema");
         }
+        return lstPalavras;
+    }
+    /**
+     * Método para retornar a lista das palavras do desafio em que o usuário
+     * está escrevendo
+     * @param idDesafio id do desafio do usuário
+     * @return retornar lista de palavras
+     * @throws Exception 
+     */
+    public List<String> listarPalavrasDoDesafio(int idDesafio) throws Exception {
+        List<String> lstPalavras = new ArrayList<>();
+        lstPalavras = sessao.createSQLQuery("select palavra from DesafiosPalavras where idDesafio = :idDesafio")
+                .setInteger("idDesafio",idDesafio)
+                .list();
         return lstPalavras;
     }
     

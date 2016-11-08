@@ -8,9 +8,17 @@
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">                 
             <div align="center"> 
-                <h1>Editor de texto</h1>
+                <h1>Desafio de palavras</h1>
+                <h3>Você deve escrever o texto com as palavras abaixo</h3>
                 <h:form enctype="multipart/form-data">
                     <p:growl id="message" showDetail="true" />
+                    <p:autoComplete id="autoDesafiosPalavras" minQueryLength="1" value="#{cadastrarBean.palavrasDoDesafio}"
+                        multiple="true" completeMethod="#{cadastrarBean.listaPalavrasDesafios}" effect="fade"
+                        var="des" itemLabel="#{des}"
+                        itemValue="#{des}"
+                        maxResults="6" style="margin-top: 10px; width:300px;" disabled="true" >                                    
+                    </p:autoComplete>
+                    
                     <p:editor id="editor" widgetVar="editorWidget" value="#{cadastrarBean.historiasDesafios.texto}" width="600" />
                     <h:panelGrid columns="4" style="margin-top: 10px">
                         <p:commandButton value="Salvar"  action="#{cadastrarBean.salvarHistoriaDesafio()}" icon="ui-icon-disk" ajax="false" />

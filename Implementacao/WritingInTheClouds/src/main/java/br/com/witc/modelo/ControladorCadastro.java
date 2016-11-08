@@ -359,6 +359,16 @@ public class ControladorCadastro {
     }
     
     /**
+     * Método para retornar as palavras do desafio em que o usuário está fazendo
+     * @param idDesafio id do desafio
+     * @return lista de strings
+     * @throws java.lang.Exception 
+     */
+    public List<String> listarPalavrasDoDesafio(int idDesafio) throws Exception{
+        return this.desafiosPalavras.listarPalavrasDoDesafio(idDesafio);
+    }
+    
+    /**
      * Envia à viewer uma mensagem com o status da operação
      *
      * @param sev A severidade da mensagem
@@ -403,13 +413,24 @@ public class ControladorCadastro {
         this.desafiosPalavras.salvarDesafio(listaPalavras,idDesafio);
     }
     
+    /**
+     * Cadastra um novo desafio para o amigo desafiado
+     * @param des Objeto desafiosUsuarios
+     * @return retorna o id do desafio recém cadastrado
+     */
     public int salvarDesafiosUsuarios(DesafiosUsuarios des){
         return this.desUsuario.salvarDesafiosUsuarios(des);
     }
-
+    
+    /**
+     * Retorna a lista de todos os desafios do usuário
+     * @param idUsuario id do usuário logado
+     * @return retorna uma lista de objetos desafiosUsuarios
+     */
     public List<DesafiosUsuarios> listarDesafiosUsuarios(int idUsuario) {
         return this.desUsuario.listarDesafiosUsuarios(idUsuario);
     }
+    
     /**
      * Salva a historia do desafio
      * @param historiasDesafios 
