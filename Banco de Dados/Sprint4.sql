@@ -1,0 +1,20 @@
+CREATE TABLE `HistoriasDesafios` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idTipoTexto` int(10) unsigned NOT NULL,
+  `idDesafiosPalavras` int(10) unsigned NOT NULL,
+  `idDesafiosUsuarios` int(10) unsigned NOT NULL,
+  `classificacao` varchar(45) NOT NULL,
+  `disponivelBiblioteca` tinyint(1) NOT NULL,
+  `reportadoConteudoImproprio` tinyint(1) NOT NULL,
+  `avaliacao` float unsigned DEFAULT '0',
+  `qtdAvaliacoes` int(10) unsigned DEFAULT '0',
+  `somaAvaliacoes` float unsigned DEFAULT '0',
+  `texto` longtext NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_HistoriaDesafio_TipoTextoDesafios_idx` (`idTipoTexto`),
+  KEY `fk_HistoriaDesafio_DesafiosPalavras_idx` (`idDesafiosPalavras`),
+  KEY `fk_HistoriaDesafio_DesafiosUsuarios_idx` (`idDesafiosUsuarios`),
+  CONSTRAINT `fk_HistoriaDesafio_TipoTextoDesafios` FOREIGN KEY (`idTipoTexto`) REFERENCES `tipotexto` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_HistoriaDesafio_DesafiosPalavras` FOREIGN KEY (`idDesafiosPalavras`) REFERENCES `desafiospalavras` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_HistoriaDesafio_DesafiosUsuarios` FOREIGN KEY (`idDesafiosPalavras`) REFERENCES `desafiosusuarios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
