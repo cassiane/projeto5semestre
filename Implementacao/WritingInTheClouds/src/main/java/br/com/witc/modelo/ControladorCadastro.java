@@ -397,9 +397,7 @@ public class ControladorCadastro {
      * Cadastra a lista de palavras escolhidas pelo usuario
      * e cadastro o desafio para o usuario 
      * @param listaPalavras
-     * @param idDesafiante
      * @param idDesafio
-     * @param idAmigo
      */
     public void salvarDesafio(List<String> listaPalavras, int idDesafio){
         this.desafiosPalavras.salvarDesafio(listaPalavras,idDesafio);
@@ -411,5 +409,20 @@ public class ControladorCadastro {
 
     public List<DesafiosUsuarios> listarDesafiosUsuarios(int idUsuario) {
         return this.desUsuario.listarDesafiosUsuarios(idUsuario);
+    }
+    /**
+     * Salva a historia do desafio
+     * @param historiasDesafios 
+     */
+    public void salvarHistoriaDesafio(HistoriasDesafios historiasDesafios) {
+        TipoTexto tipo = new TipoTexto();        
+        tipo = tipo.carregarTipoTexto(1);
+        int id = tipo.getId();
+        historiasDesafios.setTipoTexto(carregarTipoTexto(1));
+        historiasDesafios.setDisponivelBiblioteca(false);
+        historiasDesafios.setReportadoConteudoImproprio(false);
+        historiasDesafios.setClassificacao("LIVRE");
+        historiasDesafios.setAvaliacao(0f);
+        historiasDesafios.salvarHistoriaDesafio(historiasDesafios);
     }
 }

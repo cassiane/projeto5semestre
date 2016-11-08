@@ -14,6 +14,7 @@ import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Desafios;
 import br.com.witc.modelo.DesafiosPalavras;
 import br.com.witc.modelo.DesafiosUsuarios;
+import br.com.witc.modelo.HistoriasDesafios;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
@@ -83,6 +84,7 @@ public class CadastrarBean {
     private List<String> listaPalavras;
     String palavra;
     private List<DesafiosUsuarios> listaDesafios;
+    private HistoriasDesafios historiasDesafios;
 
     public String getPalavra() {
         return palavra;
@@ -107,7 +109,7 @@ public class CadastrarBean {
         this.selectedTiposTextoUsuario = new ArrayList<>();
         this.desafioPalavras = new DesafiosPalavras();
         this.desafio = new Desafios();
-        
+        this.historiasDesafios = new HistoriasDesafios();
     }
     
     /**
@@ -1146,8 +1148,8 @@ public class CadastrarBean {
         DesafiosUsuarios desUsuario = new DesafiosUsuarios();
         desafio.setId(1);
         desUsuario.setDesafio(desafio);
-        desUsuario.setUsuario(usuario);        
-        desUsuario.setUsuarioDesafiante(this.getUsuario().carregarAmigo(idAmigo));
+        desUsuario.setUsuario(this.getUsuario().carregarAmigo(idAmigo));        
+        desUsuario.setUsuarioDesafiante(usuario);
         int idDesafio = this.controlador.salvarDesafiosUsuarios(desUsuario);
         this.controlador.salvarDesafio(listaPalavras, idDesafio);
         return "timeline.xhtml?faces-redirect=true";   
@@ -1158,6 +1160,29 @@ public class CadastrarBean {
      */
     public void listarDesafiosUsuario(){
         this.controlador.listarDesafiosUsuarios(this.usuario.getId());
+    }
+
+    /**
+     * @return the historiasDesafios
+     */
+    public HistoriasDesafios getHistoriasDesafios() {
+        return historiasDesafios;
+    }
+
+    /**
+     * @param historiasDesafios the historiasDesafios to set
+     */
+    public void setHistoriasDesafios(HistoriasDesafios historiasDesafios) {
+        this.historiasDesafios = historiasDesafios;
+    }
+    
+    /**
+     * Salva a história do desafio
+     * @return retorna a pagina timeline
+     */
+    public String salvarHistoriaDesafio(){
+        this.controlador.salvarHistoriaDesafio(this.historiasDesafios);
+        return "timeline";
     }
     
 }

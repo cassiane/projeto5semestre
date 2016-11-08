@@ -5,6 +5,7 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.modelo.DesafiosPalavras;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -38,9 +39,7 @@ public class DesafiosPalavrasDAO {
     /**
      * Salvar o desafio e a lista de palavras
      * @param listaPalavras
-     * @param idDesafiante
-     * @param idDesafio
-     * @param idAmigo 
+     * @param idDesafio 
      */
     public void salvarDesafio(List<String> listaPalavras, int idDesafio) {
         listaPalavras.forEach((palavra) -> {            

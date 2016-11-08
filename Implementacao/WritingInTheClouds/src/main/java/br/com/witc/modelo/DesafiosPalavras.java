@@ -74,9 +74,7 @@ public class DesafiosPalavras implements Serializable {
     /**
      * Salvar a lista de palavras do desafio e salva o desafio do usuário
      * @param listaPalavras
-     * @param idDesafiante
-     * @param idDesafio
-     * @param idAmigo 
+     * @param idDesafio 
      */
     public void salvarDesafio(List<String> listaPalavras, int idDesafio) {
         DesafiosPalavrasDAO dao = new DesafiosPalavrasDAO();

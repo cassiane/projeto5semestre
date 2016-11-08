@@ -57,11 +57,19 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
                                     <ul class="dropdown-menu alert-dropdown">
-                                        <p:dataList value="#{cadastrarBean.listaDesafios}" var="desafio" rows="5" type="definition">                                           
-                                            <li>
-                                                <a href="#">#{desafio.usuarioDesafiante.nome} desafiou você !</a>
-                                            </li>
-                                        </p:dataList>
+                                        <h:dataTable rows="5" var="desafio"  value="#{cadastrarBean.listaDesafios}">
+                                            <h:column>
+                                                <h:commandLink value="#{desafio.usuarioDesafiante.nome} desafiou você 
+                                                    a escrever com as palavras que ele escolheu!" 
+                                                    actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(desafio.id)}" 
+                                                    action="editarDesafio.xhtml" />
+                                                <!--
+                                                <a style="padding-left: 5px;" href="editarDesafio">
+                                                    #desafio.usuarioDesafiante.nome} desafiou você 
+                                                    a escrever com as palavras que ele escolheu!
+                                                </a>-->
+                                            </h:column>                                            
+                                        </h:dataTable>                                        
                                     </ul>                                
                                 </li>
                             </ul>        

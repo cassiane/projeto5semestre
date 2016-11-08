@@ -44,7 +44,9 @@ public class TipoTextoDAO {
      * @return 
      */
     public TipoTexto carregarTipoTexto(int id){
-       return  (TipoTexto) sessao.load(TipoTexto.class,id);
+       return (TipoTexto)  sessao.createQuery("from TipoTexto where id = :id")
+               .setInteger("id", id)
+               .uniqueResult();
     }
     
     /**
