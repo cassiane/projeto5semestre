@@ -835,7 +835,14 @@ public class LivroBean {
     }
 
     private void atualizarListaLivrosPerfil() {
-        this.livros = this.controlador.listarLivrosPerfil(this.perfilUsuario);
+        int id = this.verificarAmigo();
+        if (id == 0) {
+            this.livros = this.controlador.listarLivrosPerfil(this.perfilUsuario);
+        } else {
+            Perfil perfil = new Perfil();
+            perfil.setId(id);
+            this.livros = this.controlador.listarLivrosPerfil(perfil);
+        }
     }
 
     private void atualizarStatusUsuarioLivro(int status) {
@@ -851,7 +858,7 @@ public class LivroBean {
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                 .getELResolver().getValue(elContext, null, "autenticarBean");
-        if (autenticarBean.getPerfilSelecionadoAmigo() != null) {
+        if ((autenticarBean.getPerfilSelecionadoAmigo() != null) && (!autenticarBean.isAmigo())) {
             return autenticarBean.getPerfilSelecionadoAmigo().getId();
         }        
         return 0;        

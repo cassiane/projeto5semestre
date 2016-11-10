@@ -94,7 +94,7 @@
                             <div style="margin-top: 10px;">
                                 <h:form>                                    
                                     <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}" 
-                                                   actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" 
+                                                   actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioVisualizado())}" 
                                                    action="listarAmigos.xhtml" />                                    
                                     <div>
                                         <span class="glyphicon glyphicon-playing-dices" />
@@ -124,7 +124,7 @@
                                         <f:selectItems value="#{autenticarBean.perfisAmigo}" var="perfilAmigo" 
                                                        itemLabel="#{perfilAmigo.tipoPerfil.tipoPerfil}" 
                                                        itemValue="#{perfilAmigo}" />
-                                        <f:ajax event="change" onevent="updateStars()" render="divLivros" />                                        
+                                        <f:ajax event="change" onevent="updateStars()" render=":frmLivros" />                                        
                                     </h:selectOneMenu>                                    
                                 </h:form>
                             </div>
@@ -145,14 +145,14 @@
                             </div>
                         </div>                        
                     </div>
-                    <div id="divLivros" class="box book-box">
+                    <div class="box book-box">
                         <div style="padding-left: 10px;">
                             <div style="padding-top: 10px;">
                                 <h:outputText style="font-weight: bold; font-size: 15px;" value="Últimos Livros Publicados" />
                             </div>
                         </div>
                         <div style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">                                
-                            <h:form>                                
+                            <h:form id="frmLivros">                                
                                 <c:forEach begin="0" end="11" items="#{livroBean.listarLivrosPublicadosPerfil()}" var="livro">                                                                        
                                     <h:commandLink action="lerLivro">
                                         <p:graphicImage style="width: 55px; height: 78px; padding: 5px;"                                                         

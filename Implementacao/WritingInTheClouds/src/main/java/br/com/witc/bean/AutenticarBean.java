@@ -342,6 +342,13 @@ public class AutenticarBean {
     public Usuario usuarioLogado() {
         return this.controlador.getUsuario();
     }
+    
+    public Usuario usuarioVisualizado() {
+        if (isAmigo()) {
+            return this.controlador.getUsuario();
+        }
+        return this.controlador.getAmigoUsuario();
+    }
 
     /**
      * Autentica um usuário no sistema
