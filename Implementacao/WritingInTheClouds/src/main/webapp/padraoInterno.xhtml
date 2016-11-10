@@ -19,6 +19,7 @@
     </h:head>
     <h:body>         
         <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
+        <f:event listener="#{autenticarBean.listarPerfisAmigos()}" type="preRenderView"/>        
         <div class="container">            
             <p:growl id="growl" severity="error" globalOnly="true" /> 
             <div class="clearfix" />
@@ -76,12 +77,12 @@
                                 <h:outputText style="font-weight: bold;" value="#{autenticarBean.nomeCompletoUsuario}" />
                             </div>  
                             <h:form id="frmRating"> 
-                                <p:remoteCommand name="callBeanMethod" update=":frmRating" 
+                                <p:remoteCommand id="callBeanMethod" name="callBeanMethod" update=":frmRating" 
                                                  actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRatebox();" />
-                                <div class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
+                                <div id="rate" class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
                                      style="margin-top: 10px; margin-left: auto; margin-right: auto; #{autenticarBean.amigo?'pointer-events:none;':''}">                                        
-                                </div>
-                            </h:form>
+                                </div>                                     
+                            </h:form>                            
                             <div style="margin-top: 10px;">
                                 <h:form>                                    
                                     <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}" 
@@ -96,13 +97,26 @@
                             </div>
                         </div>                        
                     </div>                  
-                    <div class="box about-box">
+                    <div class="box #{!autenticarBean.amigo?'about-box-friend':'about-box'}">
                         <div style="padding-left: 10px;">
                             <div style="padding-top: 10px;">
                                 <h:outputText style="font-weight: bold; font-size: 15px;" value="Sobre" />
                                 #{' '}
-                                <h:link style="font-weight: bold; font-size: 10px;" value="Edit" outcome="editarConta.xhtml" rendered="#{autenticarBean.amigo}" />
-                            </div>                            
+                                <h:link style="font-weight: bold; font-size: 10px;" 
+                                        value="Edit" outcome="editarConta.xhtml" 
+                                        rendered="#{autenticarBean.amigo}" />
+                            </div>       
+                            <div style="padding-top: 10px; #{autenticarBean.amigo?'display: none;':''}" class="form-inline">
+                                <h:outputText styleClass="text-success" value="Perfil" />
+                                #{' '}
+                                <h:selectOneMenu styleClass="form-control" style="width: 80%;" converter="conversorPerfil" 
+                                                 value="#{autenticarBean.perfilSelecionadoAmigo}">
+                                    <f:selectItems value="#{autenticarBean.perfisAmigo}" var="perfilAmigo" 
+                                                   itemLabel="#{perfilAmigo.tipoPerfil.tipoPerfil}" 
+                                                   itemValue="#{perfilAmigo}" />                                    
+                                    <f:ajax event="change" render=":frmRating" />
+                                </h:selectOneMenu>
+                            </div>
                             <div style="padding-top: 10px;">
                                 <span class="glyphicon glyphicon-pencil" />
                                 #{' '}

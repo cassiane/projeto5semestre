@@ -187,4 +187,13 @@ public class ControladorAutenticacao {
     public void salvarPerfil(Perfil perfil) {
         this.perfil.criarPerfil(perfil);
     }
+    
+    /**
+     * Acessa a persistencia para buscar os perfis do usuario     
+     * @return Lista de perfis
+     */
+    public List<Perfil> listarPerfisUsuario() {
+        return this.perfil.listarPerfisUsuario(this.amigoUsuario);
+    }
+        
 }

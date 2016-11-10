@@ -12,7 +12,7 @@ function setRating(id, rating)
     callBeanMethod([{name:'rating',value:id + "-" + rating}]);    
 }
 
-function initializeRatebox() {
+function initializeRatebox() {    
     $(function() {    
         $( '.ratebox' ).raterater( { 
             submitFunction: 'setRating', 

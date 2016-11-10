@@ -143,7 +143,7 @@ public class Perfil implements Serializable {
     public String getSobrenomeUsuario() {        
         return this.usuario.getSobrenome().split(" ")[this.usuario.getSobrenome().split(" ").length - 1];
     }
-
+    
     public Perfil carregarPerfil(Usuario usuario) {
         PerfilDAO perfilDAO = new PerfilDAO();
         return perfilDAO.carregarPerfil(usuario);

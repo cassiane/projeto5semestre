@@ -84,7 +84,12 @@ and open the template in the editor.
 
 .about-box { 
     margin-top: 40px;
-    height: 150px;     
+    height: 130px;     
+}
+
+.about-box-friend { 
+    margin-top: 40px;
+    height: 170px;     
 }
 
 .book-box { 

@@ -89,8 +89,8 @@ public class PerfilDAO {
      * @return Lista de perfis
      */
     public List<Perfil> carregarListaPerfilUsuario(Usuario usuario) {
-        return (List<Perfil>) sessao.createQuery("FROM Perfil WHERE idUsuario = :idusu")
+        return (List<Perfil>) sessao.createQuery("FROM Perfil WHERE idUsuario = :idusu ORDER BY tipoPerfil")
                 .setInteger("idusu", usuario.getId())
                 .list();
-    }
+    }    
 }
