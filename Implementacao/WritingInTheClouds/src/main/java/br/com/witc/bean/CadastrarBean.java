@@ -1208,4 +1208,12 @@ public class CadastrarBean {
     public List<String> listarPalavrasDoDesafio() throws Exception{
         return this.controlador.listarPalavrasDoDesafio(this.historiasDesafios.getDesafiosUsuarios().getId());
     }
+    
+    /**
+     * Mostrar linha vazia nas notificações caso a lista de desafios esteja vazia
+     * @return retorna true se a lista estiver vazia
+     */
+    public boolean mostrarLinhaSemDesafios(){
+        return listaDesafios.size() == 0;
+    }
 }

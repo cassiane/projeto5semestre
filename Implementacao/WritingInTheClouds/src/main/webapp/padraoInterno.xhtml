@@ -57,17 +57,22 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
                                     <ul class="dropdown-menu alert-dropdown">
-                                        <h:dataTable rows="5" var="desafio"  value="#{cadastrarBean.listaDesafios}">
+                                        <h:dataTable styleClass="order-table" 
+                                                     bodyrows="1" 
+                                                     rows="5" var="desafio" rowClasses="order-table-even-row order-table-odd-row"
+                                                     value="#{cadastrarBean.listaDesafios}" >                                            
+                                            
+                                            <h:column rendered="#{cadastrarBean.mostrarLinhaSemDesafios()}">
+                                                <f:facet id="cabecalho" class="coluna" name="header">
+                                                    <h:outputText value="No records found." />
+                                                </f:facet>
+                                            </h:column>
+                                            
                                             <h:column>
-                                                <h:commandLink value="#{desafio.usuarioDesafiante.nome} desafiou você 
+                                                <h:commandLink class="coluna" value="#{desafio.usuarioDesafiante.nome} desafiou você 
                                                     a escrever com as palavras que ele escolheu!" 
                                                     actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(desafio.id)}" 
-                                                    action="editarDesafio.xhtml" />
-                                                <!--
-                                                <a style="padding-left: 5px;" href="editarDesafio">
-                                                    #desafio.usuarioDesafiante.nome} desafiou você 
-                                                    a escrever com as palavras que ele escolheu!
-                                                </a>-->
+                                                    action="editarDesafio.xhtml" />                                                
                                             </h:column>                                            
                                         </h:dataTable>                                        
                                     </ul>                                
