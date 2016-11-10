@@ -36,6 +36,7 @@ public class ControladorCadastro {
     private final DesafiosPalavras desafiosPalavras;
     private final Desafios desafio;
     private final DesafiosUsuarios desUsuario;
+    private final Notificacoes notificacoes;
     
     public ControladorCadastro() {
         this.usuario = new Usuario();
@@ -52,6 +53,7 @@ public class ControladorCadastro {
         this.desafiosPalavras = new DesafiosPalavras();
         this.desafio = new Desafios();
         this.desUsuario = new DesafiosUsuarios();
+        this.notificacoes = new Notificacoes();
     }
 
     /**
@@ -445,5 +447,31 @@ public class ControladorCadastro {
         historiasDesafios.setClassificacao("LIVRE");
         historiasDesafios.setAvaliacao(0f);
         historiasDesafios.salvarHistoriaDesafio(historiasDesafios);
+    }
+    
+    /**
+     * Salva a notificação para o usuário 
+     * @param usuario
+     * @param amigo
+     * @param idDesafio
+     * @param texto 
+     */
+    public void salvarNotificacao(Usuario usuario, Usuario amigo, int idDesafio, String texto) {
+        this.notificacoes.setAmigo(amigo);
+        this.notificacoes.setUsuario(usuario);
+        this.notificacoes.setTexto(texto);
+        DesafiosUsuarios desafioNotificacao = new DesafiosUsuarios();
+        desafioNotificacao.setId(idDesafio);
+        this.notificacoes.setDesafio(desafioNotificacao);
+        this.notificacoes.salvarNotificacao(notificacoes);
+    }
+    
+    /**
+     * retorna a lista de notificacoes para a tela padrao interno
+     * @param idUsuario
+     * @return 
+     */
+    public List<Notificacoes> listarNotificacoes() {
+        return this.notificacoes.listarNotificacoes((usuario.getId()));
     }
 }

@@ -15,6 +15,7 @@ import br.com.witc.modelo.Desafios;
 import br.com.witc.modelo.DesafiosPalavras;
 import br.com.witc.modelo.DesafiosUsuarios;
 import br.com.witc.modelo.HistoriasDesafios;
+import br.com.witc.modelo.Notificacoes;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
@@ -83,9 +84,9 @@ public class CadastrarBean {
     private DesafiosPalavras desafioPalavras;
     private List<String> listaPalavras;
     String palavra;
-    private List<DesafiosUsuarios> listaDesafios;
     private HistoriasDesafios historiasDesafios;
     private List<String> palavrasDoDesafio;
+    private List<Notificacoes> listaNotificacoes;
 
     public String getPalavra() {
         return palavra;
@@ -111,16 +112,8 @@ public class CadastrarBean {
         this.desafioPalavras = new DesafiosPalavras();
         this.desafio = new Desafios();
         this.historiasDesafios = new HistoriasDesafios();
+        this.listaNotificacoes = new ArrayList<Notificacoes>();
     }
-    
-    /**
-     * @return the listaDesafios
-     */
-    public List<DesafiosUsuarios> getListaDesafios() {
-        this.listaDesafios = this.controlador.listarDesafiosUsuarios(this.usuario.getId());
-        return listaDesafios;
-    }
-
     
     /**
      * @return the usuario
@@ -1167,6 +1160,8 @@ public class CadastrarBean {
         desUsuario.setUsuarioDesafiante(usuario);
         int idDesafio = this.controlador.salvarDesafiosUsuarios(desUsuario);
         this.controlador.salvarDesafio(listaPalavras, idDesafio);
+        this.controlador.salvarNotificacao(usuario,this.getUsuario().carregarAmigo(idAmigo),
+                idDesafio,"Desafiou você a escrever com as palavras que ele escolheu!");
         return "timeline.xhtml?faces-redirect=true";   
     }
     
@@ -1197,6 +1192,11 @@ public class CadastrarBean {
      */
     public String salvarHistoriaDesafio(){
         this.controlador.salvarHistoriaDesafio(this.historiasDesafios);
+        this.controlador.salvarNotificacao(
+                this.historiasDesafios.getDesafiosUsuarios().getUsuario(), 
+                this.historiasDesafios.getDesafiosUsuarios().getUsuarioDesafiante(),
+                this.historiasDesafios.getDesafiosUsuarios().getId(),
+                "concluiu seu desafio !");
         return "timeline";
     }
     
@@ -1210,10 +1210,32 @@ public class CadastrarBean {
     }
     
     /**
-     * Mostrar linha vazia nas notificações caso a lista de desafios esteja vazia
-     * @return retorna true se a lista estiver vazia
+     * Retorna as notificacoes do usuario
+     * @return 
      */
-    public boolean mostrarLinhaSemDesafios(){
-        return listaDesafios.size() == 0;
+    public List<Notificacoes> listarNotificacoes(){
+        return this.controlador.listarNotificacoes();
+    }
+    
+    /**
+     * Método que retorna true se o usuário não tiver nenhuma notificacao
+     * @return 
+     */
+    public boolean mostraLinhaSemRegistros(){
+        return this.controlador.listarNotificacoes().size() == 0;
+    }
+
+    /**
+     * @return the listaNotificacoes
+     */
+    public List<Notificacoes> getListaNotificacoes() {
+        return listaNotificacoes = this.listarNotificacoes();
+    }
+
+    /**
+     * @param listaNotificacoes the listaNotificacoes to set
+     */
+    public void setListaNotificacoes(List<Notificacoes> listaNotificacoes) {
+        this.listaNotificacoes = listaNotificacoes;
     }
 }

@@ -5,7 +5,7 @@
  */
 package br.com.witc.persistencia;
 
-import br.com.witc.modelo.DesafiosUsuarios;
+import br.com.witc.modelo.Notificacoes;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
@@ -14,26 +14,29 @@ import org.hibernate.Session;
  *
  * @author cassiane.santos
  */
-public class DesafiosUsuariosDAO {
+public class NotificacoesDAO {
     Session sessao;
     
-    public DesafiosUsuariosDAO() {
+    public NotificacoesDAO() {
         this.sessao=getSessionFactory().getCurrentSession();
     }
     
     /**
-     * Lista de desafios do usuário
+     * Lista de notificacoes do usuário
      * @param idUsuario id do usuário 
-     * @return retorna a lista de objetos desafiosUsuarios
+     * @return retorna a lista de objetos Notificacoes
      */
-    public List<DesafiosUsuarios> listarDesafiosUsuarios(int idUsuario) {          
-        return sessao.createQuery("from DesafiosUsuarios where idUsuario = :idUsuario")                
+    public List<Notificacoes> listarNotificacoesUsuarios(int idUsuario) {          
+        return sessao.createQuery("from Notificacoes where idUsuarioDestinatario = :idUsuario")                
                 .setInteger("idUsuario", idUsuario)
                 .list();
     }
     
-    public int salvarDesafioUsuario(DesafiosUsuarios desafio){
-        sessao.saveOrUpdate(desafio);
-        return (int) sessao.getIdentifier(desafio);
+    /**
+     * Salva as notificacoes quando o usuário desafia ou termina o desafio
+     * @param notificacao  
+     */
+    public void salvarNotificacaoUsuario(Notificacoes notificacao){
+        sessao.saveOrUpdate(notificacao);
     }
 }

@@ -16,7 +16,7 @@
                         multiple="true" completeMethod="#{cadastrarBean.listaPalavrasDesafios}" effect="fade"
                         var="des" itemLabel="#{des}"
                         itemValue="#{des}"
-                        maxResults="6" style="margin-top: 10px; width:300px;" disabled="true" active="false" >                                    
+                        maxResults="6" class="disable_autocomplete_multiple autocomplete_multiple" disabled="true" active="false" >                                    
                     </p:autoComplete>
                     
                     <p:editor id="editor" widgetVar="editorWidget" value="#{cadastrarBean.historiasDesafios.texto}" width="600" />

@@ -25,5 +25,6 @@
     <mapping class="br.com.witc.modelo.DesafiosPalavras"/>
     <mapping class="br.com.witc.modelo.DesafiosUsuarios"/>
     <mapping class="br.com.witc.modelo.HistoriasDesafios"/>
+    <mapping class="br.com.witc.modelo.Notificacoes"/>
   </session-factory>
 </hibernate-configuration>
