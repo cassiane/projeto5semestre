@@ -97,8 +97,8 @@ public class ControladorAutenticacao {
     /**
      * Carregar o perfil do usuario logado
      */
-    public void retornarPerfilUsuarioLogado(){
-       this.setPerfil(Perfil.retornarPerfilUsuarioLogado(this.getUsuario()));
+    public void retornarPerfilPadraoUsuarioLogado(){
+       this.setPerfil(Perfil.retornarPerfilPadraoUsuarioLogado(this.getUsuario()));
     }
 
     /**

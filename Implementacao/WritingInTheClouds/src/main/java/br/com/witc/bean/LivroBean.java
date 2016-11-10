@@ -851,7 +851,10 @@ public class LivroBean {
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                 .getELResolver().getValue(elContext, null, "autenticarBean");
-        return autenticarBean.getIdAmigoUsuario();
+        if (autenticarBean.getPerfilSelecionadoAmigo() != null) {
+            return autenticarBean.getPerfilSelecionadoAmigo().getId();
+        }        
+        return 0;        
     }
 
     public void downloadEpub() {

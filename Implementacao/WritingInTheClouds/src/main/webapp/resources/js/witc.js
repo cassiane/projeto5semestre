@@ -13,7 +13,7 @@ function setRating(id, rating)
 }
 
 function initializeRatebox() {    
-    $(function() {    
+    $(function() {            
         $( '.ratebox' ).raterater( { 
             submitFunction: 'setRating', 
             allowChange: true,

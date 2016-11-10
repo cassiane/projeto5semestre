@@ -20,6 +20,7 @@
     <h:body>         
         <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
         <f:event listener="#{autenticarBean.listarPerfisAmigos()}" type="preRenderView"/>        
+        <f:event listener="#{autenticarBean.listarPerfisUsuarioLogado()}" type="preRenderView"/>        
         <div class="container">            
             <p:growl id="growl" severity="error" globalOnly="true" /> 
             <div class="clearfix" />
@@ -38,7 +39,14 @@
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perfil <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             <ui:repeat value="#{autenticarBean.perfisUsuario}" var="psusu">
-                                                <li><h:commandLink value="#{psusu.tipoPerfil.tipoPerfil}" actionListener="#{autenticarBean.trocarPerfilUsuario(psusu)}" action="timeline.xhtml" rendered="#{!autenticarBean.perfilIgual(psusu)}" /></li>
+                                                <li>
+                                                    <h:commandLink value="#{psusu.tipoPerfil.tipoPerfil}"                                                                    
+                                                                   actionListener="#{autenticarBean.trocarPerfilUsuario(psusu)}" 
+                                                                   action="timeline.xhtml" 
+                                                                   rendered="#{!autenticarBean.perfilIgual(psusu)}">
+                                                        <f:setPropertyActionListener value="#{psusu}" target="#{autenticarBean.perfilSelecionadoUsuario}" />
+                                                    </h:commandLink>
+                                                </li>
                                             </ui:repeat>
                                         </ul>
                                     </li>
@@ -77,7 +85,7 @@
                                 <h:outputText style="font-weight: bold;" value="#{autenticarBean.nomeCompletoUsuario}" />
                             </div>  
                             <h:form id="frmRating"> 
-                                <p:remoteCommand id="callBeanMethod" name="callBeanMethod" update=":frmRating" 
+                                <p:remoteCommand name="callBeanMethod" update=":frmRating" 
                                                  actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRatebox();" />
                                 <div id="rate" class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
                                      style="margin-top: 10px; margin-left: auto; margin-right: auto; #{autenticarBean.amigo?'pointer-events:none;':''}">                                        
@@ -106,16 +114,19 @@
                                         value="Edit" outcome="editarConta.xhtml" 
                                         rendered="#{autenticarBean.amigo}" />
                             </div>       
-                            <div style="padding-top: 10px; #{autenticarBean.amigo?'display: none;':''}" class="form-inline">
-                                <h:outputText styleClass="text-success" value="Perfil" />
-                                #{' '}
-                                <h:selectOneMenu styleClass="form-control" style="width: 80%;" converter="conversorPerfil" 
-                                                 value="#{autenticarBean.perfilSelecionadoAmigo}">
-                                    <f:selectItems value="#{autenticarBean.perfisAmigo}" var="perfilAmigo" 
-                                                   itemLabel="#{perfilAmigo.tipoPerfil.tipoPerfil}" 
-                                                   itemValue="#{perfilAmigo}" />                                    
-                                    <f:ajax event="change" render=":frmRating" />
-                                </h:selectOneMenu>
+                            <div style="padding-top: 10px; #{autenticarBean.amigo?'display: none;':''}" class="form-inline">                                                                
+                                <h:form class="form-inline">                                                                        
+                                    <p:remoteCommand name="updateStars" update=":frmRating" oncomplete="initializeRatebox();" />
+                                    <h:outputText styleClass="text-success" value="Perfil" />
+                                    #{' '}
+                                    <h:selectOneMenu id="somPerfil" styleClass="form-control" style="width: 80%;" converter="conversorPerfil"
+                                                     value="#{autenticarBean.perfilSelecionadoAmigo}">
+                                        <f:selectItems value="#{autenticarBean.perfisAmigo}" var="perfilAmigo" 
+                                                       itemLabel="#{perfilAmigo.tipoPerfil.tipoPerfil}" 
+                                                       itemValue="#{perfilAmigo}" />
+                                        <f:ajax event="change" onevent="updateStars()" render="divLivros" />                                        
+                                    </h:selectOneMenu>                                    
+                                </h:form>
                             </div>
                             <div style="padding-top: 10px;">
                                 <span class="glyphicon glyphicon-pencil" />
@@ -134,7 +145,7 @@
                             </div>
                         </div>                        
                     </div>
-                    <div class="box book-box">
+                    <div id="divLivros" class="box book-box">
                         <div style="padding-left: 10px;">
                             <div style="padding-top: 10px;">
                                 <h:outputText style="font-weight: bold; font-size: 15px;" value="Últimos Livros Publicados" />
@@ -160,12 +171,14 @@
                     <ui:insert name="conteudo" />                                    
                 </div>
                 <div class="col-md-3">
+                    <!--
                     <h:form id="frmChat">
                         <p:stack icon="/resources/imagens/chat.png" expanded="true">
                             <p:menuitem value="Barbie" icon="/resources/imagens/chat-green.png" url="#"/>
                             <p:menuitem value="Ken" icon="/resources/imagens/chat-green.png" url="#"/>
                         </p:stack>
                     </h:form>
+                    -->
                 </div>                    
             </div>            
         </div>    

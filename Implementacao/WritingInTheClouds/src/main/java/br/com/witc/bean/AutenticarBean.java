@@ -32,6 +32,7 @@ public class AutenticarBean {
     private String email;
     private String senha;
     private List<Perfil> perfisUsuario;
+    private Perfil perfilSelecionadoUsuario;
     private List<Perfil> perfisAmigo;
     private Perfil perfilSelecionadoAmigo;
 
@@ -80,7 +81,21 @@ public class AutenticarBean {
     public void setPerfisUsuario(List<Perfil> perfisUsuario) {
         this.perfisUsuario = perfisUsuario;
     }
-    
+
+    /**
+     * @return the perfilSelecionadoUsuario
+     */
+    public Perfil getPerfilSelecionadoUsuario() {
+        return perfilSelecionadoUsuario;
+    }
+
+    /**
+     * @param perfilSelecionadoUsuario the perfilSelecionadoUsuario to set
+     */
+    public void setPerfilSelecionadoUsuario(Perfil perfilSelecionadoUsuario) {
+        this.perfilSelecionadoUsuario = perfilSelecionadoUsuario;
+    }
+
     /**
      * @return the perfisAmigo
      */
@@ -136,6 +151,9 @@ public class AutenticarBean {
      */
     public void setAmigoUsuario(int id) {
         this.controlador.setAmigoUsuario(id);
+        
+        // Carrega perfil padrao do amigo
+        this.listarPerfisAmigos();
     }
 
     /**
@@ -172,10 +190,25 @@ public class AutenticarBean {
      */
     public int getIdPerfil() {
         if (!this.isAmigo()) {
-            return this.controlador.getAmigoUsuario().getId();
+            if (this.perfilSelecionadoAmigo == null) {
+                // perfil padrao
+                for (Perfil perfil : this.perfisAmigo) {
+                    if (perfil.isPerfilPadrao()) {
+                        return perfil.getId();
+                    }
+                }
+            }
+            return this.perfilSelecionadoAmigo.getId();
         } else {
-            this.perfisUsuario = this.controlador.listarPerfis();
-            return this.perfisUsuario.get(0).getId();
+            if (this.perfilSelecionadoUsuario == null) {
+                // perfil padrao
+                for (Perfil perfil : this.perfisUsuario) {
+                    if (perfil.isPerfilPadrao()) {
+                        return perfil.getId();
+                    }
+                }
+            }
+            return this.perfilSelecionadoUsuario.getId();
         }
     }
 
@@ -183,13 +216,19 @@ public class AutenticarBean {
      * @return A avaliacao do perfil
      */
     public float getAvaliacaoPerfil() {
-        if (!this.isAmigo()) {                        
-            return this.perfilSelecionadoAmigo.getAvaliacao();            
+        if (!this.isAmigo()) {
+            return this.perfilSelecionadoAmigo.getAvaliacao();
         }
-        this.perfisUsuario = this.controlador.listarPerfis();
-        return this.perfisUsuario.get(0).getAvaliacao();        
+        if (this.perfilSelecionadoUsuario == null) {
+            for (Perfil perfil : this.perfisUsuario) {
+                if (perfil.isPerfilPadrao()) {
+                    return this.perfisUsuario.get(0).getAvaliacao();
+                }
+            }
+        }
+        return this.perfilSelecionadoUsuario.getAvaliacao();
     }
-    
+
     /**
      * @return the perfilSelecionadoAmigo
      */
@@ -200,15 +239,32 @@ public class AutenticarBean {
     /**
      * @param perfilSelecionadoAmigo the perfilSelecionadoAmigo to set
      */
-    public void setPerfilSelecionadoAmigo(Perfil perfilSelecionadoAmigo) {
-        this.perfilSelecionadoAmigo = perfilSelecionadoAmigo;
+    public void setPerfilSelecionadoAmigo(Perfil perfilSelecionadoAmigo) {        
+        this.perfilSelecionadoAmigo = perfilSelecionadoAmigo;        
     }
-    
+
     public void listarPerfisAmigos() {
-        this.perfisAmigo = this.controlador.listarPerfisUsuario();        
-        if (!this.perfisAmigo.isEmpty()) {
-            this.perfilSelecionadoAmigo = this.perfisAmigo.get(0);
-        }         
+        this.perfisAmigo = this.controlador.listarPerfisUsuario();
+        if (this.perfilSelecionadoAmigo == null) {
+            for (Perfil perfil : this.perfisAmigo) {
+                if (perfil.isPerfilPadrao()) {
+                    this.perfilSelecionadoAmigo = perfil;
+                    break;
+                }
+            }
+        }
+    }
+
+    public void listarPerfisUsuarioLogado() {
+        this.perfisUsuario = this.controlador.listarPerfis();
+        if (this.perfilSelecionadoUsuario == null) {
+            for (Perfil perfil : this.perfisUsuario) {
+                if (perfil.isPerfilPadrao()) {
+                    this.perfilSelecionadoUsuario = perfil;
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -227,7 +283,7 @@ public class AutenticarBean {
         if (auxPerfil != null) {
             this.controlador.trocarPerfilUsuario(auxPerfil);
             // Recarregar o perfil logado
-            this.controlador.retornarPerfilUsuarioLogado();
+            this.controlador.retornarPerfilPadraoUsuarioLogado();
         }
     }
 
@@ -295,7 +351,7 @@ public class AutenticarBean {
     public String efetuarLogin() {
         try {
             this.controlador.efetuarLogin(this.email, this.senha);
-            this.controlador.retornarPerfilUsuarioLogado();
+            this.controlador.retornarPerfilPadraoUsuarioLogado();
             this.atualizarStatusUsuario(1);
             return "timeline";
         } catch (LoginInvalidoException e) {
@@ -371,6 +427,6 @@ public class AutenticarBean {
     }
 
     public void setarPerfilUsuario() {
-        this.controlador.retornarPerfilUsuarioLogado();
-    }        
+        this.controlador.retornarPerfilPadraoUsuarioLogado();
+    }
 }
