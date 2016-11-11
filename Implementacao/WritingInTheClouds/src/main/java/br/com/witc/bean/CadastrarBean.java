@@ -1216,26 +1216,4 @@ public class CadastrarBean {
     public List<Notificacoes> listarNotificacoes(){
         return this.controlador.listarNotificacoes();
     }
-    
-    /**
-     * Método que retorna true se o usuário não tiver nenhuma notificacao
-     * @return 
-     */
-    public boolean mostraLinhaSemRegistros(){
-        return this.controlador.listarNotificacoes().size() == 0;
-    }
-
-    /**
-     * @return the listaNotificacoes
-     */
-    public List<Notificacoes> getListaNotificacoes() {
-        return listaNotificacoes = this.listarNotificacoes();
-    }
-
-    /**
-     * @param listaNotificacoes the listaNotificacoes to set
-     */
-    public void setListaNotificacoes(List<Notificacoes> listaNotificacoes) {
-        this.listaNotificacoes = listaNotificacoes;
-    }
 }
