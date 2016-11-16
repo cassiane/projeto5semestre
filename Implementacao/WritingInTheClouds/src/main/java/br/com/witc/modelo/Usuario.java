@@ -38,6 +38,7 @@ public class Usuario implements Serializable {
     private Calendar dataAniversario;
     private String genero;
     private byte[] foto;
+    private byte[] fotoCapa;
     private String senha;
     private String status;
     private boolean ativo; 
@@ -152,6 +153,20 @@ public class Usuario implements Serializable {
      */
     public void setFoto(byte[] foto) {
         this.foto = foto;
+    }
+    
+        /**
+     * @return the fotoCapa
+     */
+    public byte[] getFotoCapa() {
+        return fotoCapa;
+    }
+
+    /**
+     * @param fotoCapa the fotoCapa to set
+     */
+    public void setFotoCapa(byte[] fotoCapa) {
+        this.fotoCapa = fotoCapa;
     }
 
     /**

@@ -38,6 +38,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.*;
 import static javax.faces.context.FacesContext.getCurrentInstance;
+import javax.faces.event.PhaseId;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.model.UploadedFile;
@@ -71,6 +72,7 @@ public class CadastrarBean {
     private CroppedImage croppedImage;
     private boolean exibeBotao = true;
     private UploadedFile file;
+    private UploadedFile wallpaperFile;
     private TipoPerfil tipoPerfil;
     private TipoPerfilDAO tipoPerfildao;
     public TipoTexto tipoTexto;
@@ -82,6 +84,7 @@ public class CadastrarBean {
    private List<String> listaPalavras;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
+    private static final String CAMINHO_FOTO_CAPA_DEFAULT = "/resources/imagens/semWallpaper.png";
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro();
@@ -265,11 +268,46 @@ public class CadastrarBean {
         this.file = file;
     }
     
+    /**
+     * @return the wallpaperFile
+     */
+    public UploadedFile getWallpaperFile() {
+        return wallpaperFile;
+    }
+
+    /**
+     * @param wallpaperFile the wallpaperFile to set
+     */
+    public void setWallpaperFile(UploadedFile wallpaperFile) {
+        this.wallpaperFile = wallpaperFile;
+    }
+    
     public StreamedContent getFoto() {                 
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        
         if (this.usuario.getFoto() == null) {
-            return carregarFotoDefault();
+            return carregarFotoDefault(false);
         }        
         InputStream is = new ByteArrayInputStream(this.usuario.getFoto());
+        StreamedContent image = new DefaultStreamedContent(is);        
+        return image;
+    }
+    
+    public StreamedContent getFotoCapa() {                         
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        
+        if (this.usuario.getFotoCapa() == null) {
+            return carregarFotoDefault(true);
+        }        
+        InputStream is = new ByteArrayInputStream(this.usuario.getFotoCapa());
         StreamedContent image = new DefaultStreamedContent(is);        
         return image;
     }
@@ -425,13 +463,13 @@ public class CadastrarBean {
     public StreamedContent getFotos(Usuario user) {
         try {
             if (user.getFoto() == null) {
-                return carregarFotoDefault();
+                return carregarFotoDefault(false);
             }
             InputStream is = new ByteArrayInputStream(user.getFoto());
             StreamedContent image = new DefaultStreamedContent(is);
             return image;
         } catch(NumberFormatException ex) {
-            return carregarFotoDefault();
+            return carregarFotoDefault(false);
         }
     }
     
@@ -440,7 +478,7 @@ public class CadastrarBean {
         try {
             idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
         } catch (NumberFormatException ex) {
-            return carregarFotoDefault();
+            return carregarFotoDefault(false);
         }
         Usuario usu = new Usuario();
         for (Usuario us : this.amigos) {
@@ -457,7 +495,7 @@ public class CadastrarBean {
         try {
             idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
         } catch (NumberFormatException ex) {
-            return carregarFotoDefault();
+            return carregarFotoDefault(false);
         }
         Usuario usu = new Usuario();
         for (Usuario us : this.sugestao) {
@@ -474,7 +512,7 @@ public class CadastrarBean {
         try {
             idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
         } catch (NumberFormatException ex) {
-            return carregarFotoDefault();
+            return carregarFotoDefault(false);
         }
         Usuario usu = new Usuario();
         for (Usuario us : this.solicitacao) {
@@ -491,7 +529,7 @@ public class CadastrarBean {
         try {
             idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
         } catch (NumberFormatException ex) {
-            return carregarFotoDefault();
+            return carregarFotoDefault(false);
         }
         Usuario usu = new Usuario();
         for (Usuario us : this.usuarios) {
@@ -627,6 +665,13 @@ public class CadastrarBean {
                 imgBytes = IOUtils.toByteArray(inputStream);
                 this.usuario.setFoto(imgBytes);
             }                        
+            
+            if ((this.wallpaperFile != null) && (!this.wallpaperFile.getFileName().isEmpty()))  {
+                inputStream = this.wallpaperFile.getInputstream();                
+                imgBytes = IOUtils.toByteArray(inputStream);
+                this.usuario.setFotoCapa(imgBytes);
+            } 
+            
             setDataNascimento();
             this.controlador.alterarUsuario(this.usuario);
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
@@ -875,8 +920,13 @@ public class CadastrarBean {
      * Converte uma imagem para apresentar em um componente p:graphicImage     
      * @return Um objeto StreamedContent
      */
-    public StreamedContent carregarFotoDefault() {        
-        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_FOTO_DEFAULT));            
+    public StreamedContent carregarFotoDefault(boolean capa) {        
+        File imgFile;
+        if (!capa) {
+            imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_FOTO_DEFAULT));            
+        } else {
+            imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_FOTO_CAPA_DEFAULT));
+        }
         
         // Converte o arquivo em um array de bytes
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -1103,5 +1153,5 @@ public class CadastrarBean {
      */
     public void setListaPalavras(List<String> listaPalavras) {
         this.listaPalavras = listaPalavras;
-    }
+    }   
 }

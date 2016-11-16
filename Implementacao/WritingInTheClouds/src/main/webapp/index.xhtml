@@ -29,8 +29,8 @@
                                          maxlength="150" a:placeholder="Email" required="true" value="#{cadastrarBean.usuario.email}"/>
                         </div>
                         <div class="form-group">
-                            <h:inputText styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
-                                         maxlength="150" a:placeholder="Digite novamente o email" autocomplete="false" 
+                            <h:inputText id="intReEmail" styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
+                                         maxlength="150" a:placeholder="Digite novamente o email" autocomplete="false"  
                                          required="true" value="#{cadastrarBean.emailVerificado}"/>
                         </div>
                         <div class="form-group">
