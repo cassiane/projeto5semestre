@@ -41,7 +41,7 @@
                                             </ui:repeat>
                                         </ul>
                                     </li>
-                                </c:if>
+                                </c:if>                                
                                 <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilEditor}" /></li>
                                 <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="revisao.xhtml" rendered="#{autenticarBean.perfilRevisor}" /></li>
                                 <li><h:commandLink value="Biblioteca Virtual" actionListener="#{autenticarBean.setAmigoUsuario()}" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
@@ -57,41 +57,21 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
                                     <ul class="dropdown-menu alert-dropdown">
-                                        <p:dataList styleClass="order-table" rows="5" var="notificacao" itemStyleClass="order-table-odd-row order-table-even-row"
-                                                    value="#{cadastrarBean.listarNotificacoes()}" emptyMessage="Sem Mensagens">
-                                            <p:column>
-                                                <p:graphicImage value="#{notificacao.amigo.foto}" class="img-circle"/>
-                                            </p:column>
-                                            <p:column>
+                                        <h:dataTable styleClass="order-table"                                                       
+                                                     rows="5" var="notificacao" rowClasses="order-table-odd-row order-table-even-row "
+                                                     value="#{cadastrarBean.listarNotificacoes()}" >
+                                            <h:column>
+                                                <p:graphicImage class="img-responsive" value="#{notificacao.amigo.fotoNotificacao}"/>
+                                            </h:column>
+                                            
+                                            <h:column>
                                                 <h:commandLink class="coluna" value="#{notificacao.amigo.nome} 
                                                                #{''} #{notificacao.texto}"
                                                     actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}" 
                                                     action="editarDesafio.xhtml" />
-                                            </p:column>
-                                        </p:dataList>
-                                        <!--
-                                        <h:dataTable styleClass="order-table" 
-                                                     bodyrows="1" 
-                                                     rows="5" var="notificacao" rowClasses="order-table-odd-row order-table-even-row "
-                                                     value="#{cadastrarBean.listaNotificacoes}" >                                            
-                                            
-                                            <h:column rendered="#{cadastrarBean.mostraLinhaSemRegistros()}">
-                                                <f:facet id="cabecalho" class="coluna" name="header">
-                                                    <h:outputText value="No records found." />
-                                                </f:facet>
-                                            </h:column>
-                                            
-                                            <h:column>
-                                                <h:graphicImage value="#{notificacao.amigo.foto}" class="img-circle"/>
-                                            </h:column>
-                                            
-                                            <h:column>
-                                                <h:commandLink class="coluna" value="#{notificacao.amigo.nome} 
-                                                               #{''} #{notificacao.texto}"
-                                                    actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}" 
-                                                    action="editarDesafio.xhtml" />                                                
-                                            </h:column>                                            
-                                        </h:dataTable>-->
+                                            </h:column>                                    
+                                        </h:dataTable>
+                                        
                                     </ul>                                
                                 </li>
                             </ul>        
@@ -128,9 +108,10 @@
                                                    actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" 
                                                    action="listarAmigos.xhtml" />                                    
                                     <div>
-                                        <span class="glyphicon glyphicon-playing-dices" />
-                                        #{' '}
-                                        <h:commandLink style="font-weight: bold;" value="Desafiar" action="DesafiarAmigo.xhtml"  rendered="#{not autenticarBean.amigo}" />
+                                        
+                                        <h:commandLink  value="Desafiar" action="DesafiarAmigo.xhtml"  rendered="#{not autenticarBean.amigo}">
+                                            <i class="fa fa-gavel" aria-hidden="true" style="color: #337ab7"></i>                                           
+                                        </h:commandLink>
                                     </div>
                                 </h:form>
                             </div>

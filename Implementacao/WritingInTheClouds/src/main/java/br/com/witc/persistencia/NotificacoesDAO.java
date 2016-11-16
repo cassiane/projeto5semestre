@@ -39,4 +39,26 @@ public class NotificacoesDAO {
     public void salvarNotificacaoUsuario(Notificacoes notificacao){
         sessao.saveOrUpdate(notificacao);
     }
+    
+    /**
+     * Exclui a notificação do desafio após usuário ter concluído
+     * @param idDesafiosUsuarios 
+     */
+    public void excluirNotificao(int idDesafiosUsuarios) {        
+        Notificacoes not = carregarNotificacao(idDesafiosUsuarios);
+        sessao.delete(not);
+    }
+    
+    /**
+     * Carrega uma notificacao a partir do id do desafio dos usuarios 
+     * @param idDesafiosUsuarios 
+     * @return  
+     */
+    public Notificacoes carregarNotificacao(int idDesafiosUsuarios){
+        Notificacoes not = new Notificacoes();
+        not = (Notificacoes) sessao.createQuery("from Notificacoes where idDesafiosUsuario = :idDesafiosUsuarios")
+                .setInteger("idDesafiosUsuarios", idDesafiosUsuarios)
+                .uniqueResult();
+        return not;
+    }
 }

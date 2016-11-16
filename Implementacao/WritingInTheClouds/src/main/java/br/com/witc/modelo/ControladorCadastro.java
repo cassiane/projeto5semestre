@@ -471,7 +471,15 @@ public class ControladorCadastro {
      * @param idUsuario
      * @return 
      */
-    public List<Notificacoes> listarNotificacoes() {
-        return this.notificacoes.listarNotificacoes((usuario.getId()));
+    public List<Notificacoes> listarNotificacoes(int idUsuario) {
+        return this.notificacoes.listarNotificacoes(idUsuario);
+    }
+    
+    /**
+     * Método que exclui a notificações após usuário ter concluído o desafio
+     * @param idDesafiosUsuarios 
+     */
+    public void excluirNotificacao(int idDesafiosUsuarios) {
+        this.notificacoes.excluirNotificacao(idDesafiosUsuarios);
     }
 }

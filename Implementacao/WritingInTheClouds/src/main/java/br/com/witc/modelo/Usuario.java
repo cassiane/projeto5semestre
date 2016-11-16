@@ -15,12 +15,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import br.com.witc.persistencia.UsuarioDAO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
 import javax.persistence.*;
 import org.apache.commons.mail.EmailException;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -55,6 +65,7 @@ public class Usuario implements Serializable {
                      inverseJoinColumns={@JoinColumn(name="idTipoTexto",   
                       referencedColumnName="id")})  
     private List<TipoTexto> tipostextosRevisor;
+    private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     
     /**
      * @return the id
@@ -146,6 +157,47 @@ public class Usuario implements Serializable {
     public byte[] getFoto() {
         return foto;
     }
+    
+    /**
+     * Retorna a foto em Streamed para colocar em um p:graphicImage
+     * @return 
+     */
+    public StreamedContent getFotoNotificacao(){
+        if (foto == null) {
+            return carregarFotoDefault();
+        }else{        
+            InputStream is = new ByteArrayInputStream(foto);
+            StreamedContent image = new DefaultStreamedContent(is);        
+            return image;
+        }
+    }
+    
+    /**
+     * Converte uma imagem para apresentar em um componente p:graphicImage     
+     * @return Um objeto StreamedContent
+     */
+    public StreamedContent carregarFotoDefault() {  
+        
+        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_FOTO_DEFAULT));            
+        
+        // Converte o arquivo em um array de bytes
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] fotoCliente = null;
+        try {            
+            BufferedImage imagem = ImageIO.read(imgFile);
+            ImageIO.write(imagem, "PNG", bos);
+            bos.flush();  
+            fotoCliente = bos.toByteArray();                
+        } catch (IOException e) {            
+        }        
+        
+        try {
+            return new DefaultStreamedContent(new ByteArrayInputStream(fotoCliente));
+        } catch(NullPointerException e) {
+            // Nao foi possivel localizar nenhuma foto ...
+            return new DefaultStreamedContent();
+        }        
+    }    
 
     /**
      * @param foto the foto to set

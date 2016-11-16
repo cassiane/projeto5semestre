@@ -118,4 +118,9 @@ public class Notificacoes implements Serializable {
         NotificacoesDAO dao = new NotificacoesDAO();        
         return dao.listarNotificacoesUsuarios(idUsuario);
     }
+
+    void excluirNotificacao(int idDesafiosUsuarios) {
+        NotificacoesDAO dao = new NotificacoesDAO();
+        dao.excluirNotificao(idDesafiosUsuarios);
+    }
 }

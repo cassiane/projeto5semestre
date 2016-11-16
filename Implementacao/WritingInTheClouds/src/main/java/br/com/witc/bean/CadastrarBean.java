@@ -1192,6 +1192,7 @@ public class CadastrarBean {
      */
     public String salvarHistoriaDesafio(){
         this.controlador.salvarHistoriaDesafio(this.historiasDesafios);
+        this.controlador.excluirNotificacao(this.historiasDesafios.getDesafiosUsuarios().getId());
         this.controlador.salvarNotificacao(
                 this.historiasDesafios.getDesafiosUsuarios().getUsuario(), 
                 this.historiasDesafios.getDesafiosUsuarios().getUsuarioDesafiante(),
@@ -1214,6 +1215,7 @@ public class CadastrarBean {
      * @return 
      */
     public List<Notificacoes> listarNotificacoes(){
-        return this.controlador.listarNotificacoes();
+        List<Notificacoes> lista = this.controlador.listarNotificacoes(this.usuario.getId());
+        return lista;
     }
 }
