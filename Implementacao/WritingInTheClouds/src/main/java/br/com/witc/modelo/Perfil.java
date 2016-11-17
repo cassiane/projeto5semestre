@@ -118,9 +118,9 @@ public class Perfil implements Serializable {
      * @param usuario
      * @return
      */
-    public static Perfil retornarPerfilUsuarioLogado(Usuario usuario) {
+    public static Perfil retornarPerfilPadraoUsuarioLogado(Usuario usuario) {
         PerfilDAO dao = new PerfilDAO();
-        return dao.carregarPerfil(usuario);
+        return dao.carregarPerfilPadrao(usuario);
     }
 
     /**
@@ -143,10 +143,10 @@ public class Perfil implements Serializable {
     public String getSobrenomeUsuario() {        
         return this.usuario.getSobrenome().split(" ")[this.usuario.getSobrenome().split(" ").length - 1];
     }
-
+    
     public Perfil carregarPerfil(Usuario usuario) {
         PerfilDAO perfilDAO = new PerfilDAO();
-        return perfilDAO.carregarPerfil(usuario);
+        return perfilDAO.carregarPerfilPadrao(usuario);
     }
 
     /**

@@ -733,7 +733,7 @@ public class CadastrarBean {
      *
      * @return Pagina de manutenção de amigos
      */
-    public String listarAmigos() {
+    public String listarAmigos() {        
         this.controlador.usuarioLogado(this.usuario);
         this.usuarios = this.listarUsuarios();
         return "listarAmigos";

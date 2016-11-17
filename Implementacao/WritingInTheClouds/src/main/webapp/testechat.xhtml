@@ -3,19 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
         <ui:define name="conteudo">
-            <div class="round hollow text-center">
-                <a href="#" class="open-btn" id="addClass"><i class="fa fa-whatsapp" aria-hidden="true"></i> Click Here</a>
-            </div>
-            <div class="round hollow text-center">
-                <a href="#" class="open-btn" id="new_chat" onclick="teste(id)"><i class="fa fa-whatsapp" aria-hidden="true"></i> Click Here2</a>
-            </div>
-            <chat-aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar" style="margin-left:10px;">
+            <chat-aside id="sidebar_secondary_chat#{amigo.id}" class="tabbed_sidebar ng-scope chat_sidebar" style="margin-left:10px;">
                 <div class="popup-head">
                     <div class="popup-head-left pull-left">
-                        <h3><span class="glyphicon glyphicon-comment"></span>#{autenticarBean.nomeCompletoUsuario}</h3>
+                        <h3><span class="glyphicon glyphicon-comment"></span>#{amigo.nomeABNT}</h3>
                     </div>
                     <div class="popup-head-right pull-right">
                         <button class="chat-header-button" type="button"><i class="glyphicon glyphicon-facetime-video"></i></button>
@@ -33,7 +28,7 @@
                                 <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact</a></li>
                             </ul>
                         </div>
-                        <button data-widget="remove" id="removeClass" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-remove"></i></button>
+                        <button data-widget="remove" id="removeClass" onclick="chat_off(#{amigo.id})" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-remove"></i></button>
                     </div>
                 </div>
                 <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
@@ -41,7 +36,9 @@
                         <!--repit, ciar variavel int=0, setar com id-->
                         <div class="chat_message_wrapper">
                             <div class="chat_user_avatar">
-                                <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.fotoAmigo}" cache="false" />
+                                <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.fotoAmigo}" cache="false">
+                                    <f:param name="userfoto" value="#{amigo.id}" />
+                                </p:graphicImage>
                             </div>
                             <ul class="chat_message">
                                 <li>
@@ -49,7 +46,12 @@
                                         Testo que o usuario escreve.
                                         <span class="chat_message_time">13:38</span>
                                     </p>
-                                    <time datetime="2009-11-13T20:00"></time>
+                                </li>
+                                <li>
+                                    <p>
+                                        Testo que o usuario escreve.
+                                        <span class="chat_message_time">13:38</span>
+                                    </p>
                                 </li>
                             </ul>
                         </div>
@@ -64,26 +66,34 @@
                                         <span class="chat_message_time">13:34</span>
                                     </p>
                                 </li>
+                                <li>
+                                    <p>
+                                        Testo que o amigo escreve.
+                                        <span class="chat_message_time">13:34</span>
+                                    </p>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="chat_submit_box">
+                    <h:form>
                     <div class="uk-input-group">
                         <div class="gurdeep-chat-box">
                             <span style="vertical-align: sub;" class="uk-input-group-addon">
                                 <a href="#"><i class="fa fa-smile-o"></i></a>
                             </span>
-                            <input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input" />
+                            <input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input" value="#{messengerBean.msn}" />
                             <span style="vertical-align: sub;" class="uk-input-group-addon">
                                 <a href="#"><i class="fa fa-camera"></i></a>
                             </span>
                         </div>
 
                         <span class="uk-input-group-addon">
-                            <a href="#"><i class="glyphicon glyphicon-send"></i></a>
+                            <h:commandLink actionListener="#{messengerBean.enviarMsn(1, 2)}"><i class="glyphicon glyphicon-send"></i></h:commandLink>
                         </span>
                     </div>
+                        </h:form>
                 </div>
             </chat-aside>
         </ui:define>

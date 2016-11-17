@@ -97,8 +97,8 @@ public class ControladorAutenticacao {
     /**
      * Carregar o perfil do usuario logado
      */
-    public void retornarPerfilUsuarioLogado(){
-       this.setPerfil(Perfil.retornarPerfilUsuarioLogado(this.getUsuario()));
+    public void retornarPerfilPadraoUsuarioLogado(){
+       this.setPerfil(Perfil.retornarPerfilPadraoUsuarioLogado(this.getUsuario()));
     }
 
     /**
@@ -187,4 +187,13 @@ public class ControladorAutenticacao {
     public void salvarPerfil(Perfil perfil) {
         this.perfil.criarPerfil(perfil);
     }
+    
+    /**
+     * Acessa a persistencia para buscar os perfis do usuario     
+     * @return Lista de perfis
+     */
+    public List<Perfil> listarPerfisUsuario() {
+        return this.perfil.listarPerfisUsuario(this.amigoUsuario);
+    }
+        
 }

@@ -10,15 +10,22 @@
         <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>  
         <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap.min.css" />
         <h:outputStylesheet name="bootstrap-3.3.7/css/bootstrap-theme.min.css" /> 
-        <h:outputStylesheet name="css/witc.css" /> 
+        <h:outputStylesheet name="css/witc.css" />
+        <h:outputStylesheet name="css/testechatcss.css" />
         <h:outputStylesheet name="raterater/css/raterater.css" /> 
         <h:outputStylesheet name="fontawesome-4.6.3/css/font-awesome.min.css" />
         <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
         <h:outputScript name="raterater/js/raterater.jquery.js" />        
-        <h:outputScript name="js/witc.js" />        
+        <h:outputScript name="js/witc.js" />
+        <h:outputScript name="js/testechatjs.js" />
+<!--        <script type="text/javascript">
+            var teste = enviarmensagem();
+        </script>-->
     </h:head>
     <h:body>         
         <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
+        <f:event listener="#{autenticarBean.listarPerfisAmigos()}" type="preRenderView"/>        
+        <f:event listener="#{autenticarBean.listarPerfisUsuarioLogado()}" type="preRenderView"/>        
         <div class="container">            
             <p:growl id="growl" severity="error" globalOnly="true" /> 
             <div class="clearfix" />
@@ -37,7 +44,14 @@
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Perfil <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             <ui:repeat value="#{autenticarBean.perfisUsuario}" var="psusu">
-                                                <li><h:commandLink value="#{psusu.tipoPerfil.tipoPerfil}" actionListener="#{autenticarBean.trocarPerfilUsuario(psusu)}" action="timeline.xhtml" rendered="#{!autenticarBean.perfilIgual(psusu)}" /></li>
+                                                <li>
+                                                    <h:commandLink value="#{psusu.tipoPerfil.tipoPerfil}"                                                                    
+                                                                   actionListener="#{autenticarBean.trocarPerfilUsuario(psusu)}" 
+                                                                   action="timeline.xhtml" 
+                                                                   rendered="#{!autenticarBean.perfilIgual(psusu)}">
+                                                        <f:setPropertyActionListener value="#{psusu}" target="#{autenticarBean.perfilSelecionadoUsuario}" />
+                                                    </h:commandLink>
+                                                </li>
                                             </ui:repeat>
                                         </ul>
                                     </li>
@@ -78,14 +92,14 @@
                             <h:form id="frmRating"> 
                                 <p:remoteCommand name="callBeanMethod" update=":frmRating" 
                                                  actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRatebox();" />
-                                <div class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
+                                <div id="rate" class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
                                      style="margin-top: 10px; margin-left: auto; margin-right: auto; #{autenticarBean.amigo?'pointer-events:none;':''}">                                        
-                                </div>
-                            </h:form>
+                                </div>                                     
+                            </h:form>                            
                             <div style="margin-top: 10px;">
                                 <h:form>                                    
                                     <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}" 
-                                                   actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioLogado())}" 
+                                                   actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioVisualizado())}" 
                                                    action="listarAmigos.xhtml" />                                    
                                     <div>
                                         <span class="glyphicon glyphicon-playing-dices" />
@@ -96,13 +110,29 @@
                             </div>
                         </div>                        
                     </div>                  
-                    <div class="box about-box">
+                    <div class="box #{!autenticarBean.amigo?'about-box-friend':'about-box'}">
                         <div style="padding-left: 10px;">
                             <div style="padding-top: 10px;">
                                 <h:outputText style="font-weight: bold; font-size: 15px;" value="Sobre" />
                                 #{' '}
-                                <h:link style="font-weight: bold; font-size: 10px;" value="Edit" outcome="editarConta.xhtml" rendered="#{autenticarBean.amigo}" />
-                            </div>                            
+                                <h:link style="font-weight: bold; font-size: 10px;" 
+                                        value="Edit" outcome="editarConta.xhtml" 
+                                        rendered="#{autenticarBean.amigo}" />
+                            </div>       
+                            <div style="padding-top: 10px; #{autenticarBean.amigo?'display: none;':''}" class="form-inline">                                                                
+                                <h:form class="form-inline">                                                                        
+                                    <p:remoteCommand name="updateStars" update=":frmRating" oncomplete="initializeRatebox();" />
+                                    <h:outputText styleClass="text-success" value="Perfil" />
+                                    #{' '}
+                                    <h:selectOneMenu id="somPerfil" styleClass="form-control" style="width: 80%;" converter="conversorPerfil"
+                                                     value="#{autenticarBean.perfilSelecionadoAmigo}">
+                                        <f:selectItems value="#{autenticarBean.perfisAmigo}" var="perfilAmigo" 
+                                                       itemLabel="#{perfilAmigo.tipoPerfil.tipoPerfil}" 
+                                                       itemValue="#{perfilAmigo}" />
+                                        <f:ajax event="change" onevent="updateStars()" render=":frmLivros" />                                        
+                                    </h:selectOneMenu>                                    
+                                </h:form>
+                            </div>
                             <div style="padding-top: 10px;">
                                 <span class="glyphicon glyphicon-pencil" />
                                 #{' '}
@@ -127,7 +157,7 @@
                             </div>
                         </div>
                         <div style="padding-left: 5px; padding-top: 10px; padding-bottom: 10px;">                                
-                            <h:form>                                
+                            <h:form id="frmLivros">                                
                                 <c:forEach begin="0" end="11" items="#{livroBean.listarLivrosPublicadosPerfil()}" var="livro">                                                                        
                                     <h:commandLink action="lerLivro">
                                         <p:graphicImage style="width: 55px; height: 78px; padding: 5px;"                                                         
@@ -153,101 +183,16 @@
                             </div>
                         </div>
                         <ul style="padding-top: 10px;">
+                            <p:graphicImage id="chatfotouser" value="#{cadastrarBean.foto}" style="display: none" />
                             <ui:repeat value="#{cadastrarBean.amigos}" var="amigo">
-                                <a href="#" id="chaton" onclick="chat_on(#{amigo.id})">
+                                <!--<p:remoteCommand name="chatfotouser" actionListener="#{cadastrarBean.foto}" />-->
+                                <a href="#" id="chaton#{amigo.id}" onclick="messenger_create(#{autenticarBean.usuarioLogado().id}, #{amigo.id})">
                                     <li>
-                                        <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.fotoAmigo}" cache="false">
+                                        <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.fotoAmigo}" cache="false" alt="#{amigo.nomeABNT}">
                                             <f:param name="userfoto" value="#{amigo.id}" />
                                         </p:graphicImage>#{amigo.nome}
                                     </li>
                                 </a>
-                                <chat-aside id="sidebar_secondary_chat#{amigo.id}" class="tabbed_sidebar ng-scope chat_sidebar" style="margin-left:10px;">
-                                    <div class="popup-head">
-                                        <div class="popup-head-left pull-left">
-                                            <h3><span class="glyphicon glyphicon-comment"></span>#{amigo.nomeABNT}</h3>
-                                        </div>
-                                        <div class="popup-head-right pull-right">
-                                            <button class="chat-header-button" type="button"><i class="glyphicon glyphicon-facetime-video"></i></button>
-                                            <button class="chat-header-button" type="button"><i class="glyphicon glyphicon-earphone"></i></button>
-                                            <div class="btn-group gurdeepoushan">
-                                                <button class="chat-header-button" data-toggle="dropdown" type="button" aria-expanded="false">
-                                                    <i class="glyphicon glyphicon-paperclip"></i>
-                                                </button>
-                                                <ul role="menu" class="dropdown-menu pull-right">
-                                                    <li><a href="#"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Gallery</a></li>
-                                                    <li><a href="#"><span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Photo</a></li>
-                                                    <li><a href="#"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Location</a></li>
-                                                    <li><a href="#"><span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span> Video</a></li>
-                                                    <li><a href="#"><span class="glyphicon glyphicon-headphones" aria-hidden="true"></span> Audio</a></li>
-                                                    <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Contact</a></li>
-                                                </ul>
-                                            </div>
-                                            <button data-widget="remove" id="removeClass" onclick="chat_off(#{amigo.id})" class="chat-header-button pull-right" type="button"><i class="glyphicon glyphicon-remove"></i></button>
-                                        </div>
-                                    </div>
-                                    <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
-                                        <div class="chat_box touchscroll chat_box_colors_a">
-                                            <!--repit, ciar variavel int=0, setar com id-->
-                                            <div class="chat_message_wrapper">
-                                                <div class="chat_user_avatar">
-                                                    <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.fotoAmigo}" cache="false">
-                                                        <f:param name="userfoto" value="#{amigo.id}" />
-                                                    </p:graphicImage>
-                                                </div>
-                                                <ul class="chat_message">
-                                                    <li>
-                                                        <p>
-                                                            Testo que o usuario escreve.
-                                                            <span class="chat_message_time">13:38</span>
-                                                        </p>
-                                                    </li>
-                                                    <li>
-                                                        <p>
-                                                            Testo que o usuario escreve.
-                                                            <span class="chat_message_time">13:38</span>
-                                                        </p>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="chat_message_wrapper chat_message_right">
-                                                <div class="chat_user_avatar">
-                                                    <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.foto}" cache="false" />
-                                                </div>
-                                                <ul class="chat_message">
-                                                    <li>
-                                                        <p>
-                                                            Testo que o amigo escreve.
-                                                            <span class="chat_message_time">13:34</span>
-                                                        </p>
-                                                    </li>
-                                                    <li>
-                                                        <p>
-                                                            Testo que o amigo escreve.
-                                                            <span class="chat_message_time">13:34</span>
-                                                        </p>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="chat_submit_box">
-                                        <div class="uk-input-group">
-                                            <div class="gurdeep-chat-box">
-                                                <span style="vertical-align: sub;" class="uk-input-group-addon">
-                                                    <a href="#"><i class="fa fa-smile-o"></i></a>
-                                                </span>
-                                                <input type="text" placeholder="Type a message" id="submit_message" name="submit_message" class="md-input" />
-                                                <span style="vertical-align: sub;" class="uk-input-group-addon">
-                                                    <a href="#"><i class="fa fa-camera"></i></a>
-                                                </span>
-                                            </div>
-
-                                            <span class="uk-input-group-addon">
-                                                <a href="#"><i class="glyphicon glyphicon-send"></i></a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </chat-aside>
                             </ui:repeat>
                         </ul>
                     </div>
@@ -255,6 +200,146 @@
                 </div>                    
             </div>            
         </div>    
-        <ui:insert name="dialogos"/>                    
+        <ui:insert name="dialogos"/>
+        <div id="box_messenger" class="row" style="bottom: 0;
+             direction: rtl;
+             float: right;
+             height: 800px;
+             left: 0;
+             position: relative;
+             right: 300px;
+             z-index: 300;">
+            <!--<p:remoteCommand name="enviarmessenger" actionListener="#{messengerBean.enviarMsn()}" />-->
+            <div id="box_messenger_chat" class="col-md-2" style="width: 260px;">
+                <chat-aside id="sidebar_secondary_chat" class="tabbed_sidebar ng-scope chat_sidebar" style="margin-left:10px;">
+                    <div class="popup-head">
+                        <div class="popup-head-left pull-left">
+                            <h3>
+                                <span id="chatnomeamigo" class="glyphicon glyphicon-comment"></span>
+                            </h3>
+                        </div>
+                        <div class="popup-head-right pull-right">
+                            <button class="chat-header-button" type="button">
+                                <i class="glyphicon glyphicon-facetime-video"></i>
+                            </button>
+                            <button class="chat-header-button" type="button">
+                                <i class="glyphicon glyphicon-earphone"></i>
+                            </button>
+                            <div class="btn-group gurdeepoushan">
+                                <button class="chat-header-button" data-toggle="dropdown" type="button" aria-expanded="false">
+                                    <i class="glyphicon glyphicon-paperclip"></i>
+                                </button>
+                                <ul role="menu" class="dropdown-menu pull-right">
+                                    <li>
+                                        <a href="#">
+                                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                            Gallery
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+                                            Photo
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>
+                                            Location
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>
+                                            Video
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>
+                                            Audio
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                            Contact
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button data-widget="remove" id="removeClass" onclick="messenger_off(' + chatami + ')" class="chat-header-button pull-right" type="button">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
+                        <div class="chat_box touchscroll chat_box_colors_a">
+                            <div class="chat_message_wrapper">
+                                <div class="chat_user_avatar">
+                                    <img id="fotoAmigo" src="#" alt="" class="md-user-image" />
+                                </div>
+                                <ul class="chat_message">
+                                    <li>
+                                        <p>Testo que o usuario escreve.
+                                            <span class="chat_message_time">13:38</span>
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p>Testo que o usuario escreve.
+                                            <span class="chat_message_time">13:38</span>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="chat_message_wrapper chat_message_right">
+                                <div class="chat_user_avatar">
+                                    <img id="fotousu" src="#" alt="" class="md-user-image" />
+                                </div>
+                                <ul class="chat_message">
+                                    <li>
+                                        <p>Testo que o amigo escreve.
+                                            <span class="chat_message_time">13:34</span>
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                            Testo que o amigo escreve.
+                                            <span class="chat_message_time">13:34</span>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat_submit_box">
+                        <div class="uk-input-group">
+                            <h:form>
+                                <input type="hidden" id="send" name="idsend" />
+                                <input type="hidden" id="receive" name="idreceive" />
+                                <div class="gurdeep-chat-box">
+                                    <span style="vertical-align: sub;" class="uk-input-group-addon">
+                                        <a href="#">
+                                            <i class="fa fa-smile-o"></i>
+                                        </a>
+                                    </span>
+                                    <input type="text" id="msn" name="messengermsn" />
+                                    <span style="vertical-align: sub;" class="uk-input-group-addon">
+                                        <a href="#">
+                                            <i class="fa fa-camera"></i>
+                                        </a>
+                                    </span>
+                                </div>
+                                <span class="uk-input-group-addon">
+                                    <h:commandLink actionListener="#{messengerBean.enviarMsn()}">
+                                        <i class="glyphicon glyphicon-send"></i>
+                                    </h:commandLink>
+                                </span>
+                            </h:form>
+                        </div>
+                    </div>
+                </chat-aside>
+            </div>
+        </div>
     </h:body>    
 </html>

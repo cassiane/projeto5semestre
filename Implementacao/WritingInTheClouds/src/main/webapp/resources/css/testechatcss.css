@@ -125,10 +125,9 @@ chat-aside {
     border: 1px solid #304445;
     bottom: 0;
     display: none;
-    height: 466px;
+    height: 400px;
     position: fixed;
-    right: 70px;
-    width: 300px;
+    width: 250px;
     font-family: 'Open Sans', sans-serif;
 }
 .chat_box {
@@ -149,7 +148,8 @@ chat-aside {
 }
 .md-user-image {
     border-radius: 50%;
-    width: 34px;
+    height: 30px;
+    width: 30px;
 }
 img {
     border: 0 none;
