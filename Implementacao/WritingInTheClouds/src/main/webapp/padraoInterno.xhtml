@@ -62,12 +62,12 @@
                                                      value="#{cadastrarBean.listaNotificacoes}" >
                                             <h:column>
                                                 <p:graphicImage class="img-rounded" style="width: 75px; height: 65px; padding: 3px;" value="#{cadastrarBean.fotoNotificacao}">                                                
-                                                    <f:param name="userfoto" value="#{notificacao.amigo.id}" />
+                                                    <f:param name="userfoto" value="#{notificacao.remetente.id}" />
                                                 </p:graphicImage>
                                             </h:column>
                                             #{''}
                                             <h:column>
-                                                <h:commandLink class="coluna" value="#{notificacao.amigo.nome} 
+                                                <h:commandLink class="coluna" value="#{notificacao.remetente.nome} 
                                                                #{''} #{notificacao.texto}"
                                                     actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}" 
                                                     action="editarDesafio.xhtml" />

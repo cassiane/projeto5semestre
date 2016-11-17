@@ -22,10 +22,10 @@ public class Notificacoes implements Serializable {
     private String texto;
     @ManyToOne
     @JoinColumn(name = "idUsuarioRemetente")
-    private Usuario amigo;
+    private Usuario remetente;
     @ManyToOne
     @JoinColumn(name = "idUsuarioDestinatario")
-    private Usuario usuario;
+    private Usuario destinatario;
     @ManyToOne
     @JoinColumn(name = "idDesafiosUsuarios")
     private DesafiosUsuarios desafio;
@@ -57,33 +57,33 @@ public class Notificacoes implements Serializable {
     public void setTexto(String texto) {
         this.texto = texto;
     }
-
+    
     /**
-     * @return the amigo
+     * @return the remetente
      */
-    public Usuario getAmigo() {
-        return amigo;
+    public Usuario getRemetente() {
+        return remetente;
     }
 
     /**
-     * @param amigo the amigo to set
+     * @param remetente the remetente to set
      */
-    public void setAmigo(Usuario amigo) {
-        this.amigo = amigo;
+    public void setRemetente(Usuario remetente) {
+        this.remetente = remetente;
     }
 
     /**
-     * @return the usuario
+     * @return the destinatario
      */
-    public Usuario getUsuario() {
-        return usuario;
+    public Usuario getDestinatario() {
+        return destinatario;
     }
 
     /**
-     * @param usuario the usuario to set
+     * @param destinatario the destinatario to set
      */
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setDestinatario(Usuario destinatario) {
+        this.destinatario = destinatario;
     }
     
     /**

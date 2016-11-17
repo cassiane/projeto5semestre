@@ -451,19 +451,10 @@ public class ControladorCadastro {
     
     /**
      * Salva a notificação para o usuário 
-     * @param usuario
-     * @param amigo
-     * @param idDesafio
-     * @param texto 
-     */
-    public void salvarNotificacao(Usuario usuario, Usuario amigo, int idDesafio, String texto) {
-        this.notificacoes.setAmigo(amigo);
-        this.notificacoes.setUsuario(usuario);
-        this.notificacoes.setTexto(texto);
-        DesafiosUsuarios desafioNotificacao = new DesafiosUsuarios();
-        desafioNotificacao.setId(idDesafio);
-        this.notificacoes.setDesafio(desafioNotificacao);
-        this.notificacoes.salvarNotificacao(notificacoes);
+     * @param notificacao 
+    **/
+    public void salvarNotificacao(Notificacoes notificacao) {
+        this.notificacoes.salvarNotificacao(notificacao);
     }
     
     /**

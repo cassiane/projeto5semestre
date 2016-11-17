@@ -87,6 +87,7 @@ public class CadastrarBean {
     private HistoriasDesafios historiasDesafios;
     private List<String> palavrasDoDesafio;
     private List<Notificacoes> listaNotificacoes;
+    private Notificacoes notificacao;
 
     public String getPalavra() {
         return palavra;
@@ -113,6 +114,7 @@ public class CadastrarBean {
         this.desafio = new Desafios();
         this.historiasDesafios = new HistoriasDesafios();
         this.listaNotificacoes = new ArrayList<Notificacoes>();
+        this.notificacao = new Notificacoes();
     }
     
     /**
@@ -578,8 +580,8 @@ public class CadastrarBean {
         }
         Usuario usu = new Usuario();
         for (Notificacoes not : this.listaNotificacoes) {
-            if(not.getAmigo().getId() == idfoto){
-                usu = not.getAmigo();
+            if(not.getRemetente().getId() == idfoto){
+                usu = not.getRemetente();
                 break;
             }
         }
@@ -1162,7 +1164,8 @@ public class CadastrarBean {
         if(getListaPalavras() == null){
             listaPalavras = new ArrayList<>();
         }
-        getListaPalavras().add(palavra);        
+        getListaPalavras().add(palavra);   
+        this.palavra = "";
     }
     
     /**
@@ -1181,8 +1184,11 @@ public class CadastrarBean {
         desUsuario.setUsuarioDesafiante(usuario);
         int idDesafio = this.controlador.salvarDesafiosUsuarios(desUsuario);
         this.controlador.salvarDesafio(listaPalavras, idDesafio);
-        this.controlador.salvarNotificacao(usuario,this.getUsuario().carregarAmigo(idAmigo),
-                idDesafio,"Desafiou você a escrever com as palavras que ele escolheu!");
+        this.notificacao.setDesafio(desUsuario);
+        this.notificacao.setDestinatario(this.getUsuario().carregarAmigo(idAmigo));
+        this.notificacao.setRemetente(usuario);
+        this.notificacao.setTexto("Desafiou você a escrever com as palavras que ele escolheu!");
+        this.controlador.salvarNotificacao(this.notificacao);
         return "timeline.xhtml?faces-redirect=true";   
     }
     
@@ -1214,11 +1220,11 @@ public class CadastrarBean {
     public String salvarHistoriaDesafio(){
         this.controlador.salvarHistoriaDesafio(this.historiasDesafios);
         this.controlador.excluirNotificacao(this.historiasDesafios.getDesafiosUsuarios().getId());
-        this.controlador.salvarNotificacao(
-                this.historiasDesafios.getDesafiosUsuarios().getUsuario(), 
-                this.historiasDesafios.getDesafiosUsuarios().getUsuarioDesafiante(),
-                this.historiasDesafios.getDesafiosUsuarios().getId(),
-                "concluiu seu desafio !");
+        this.notificacao.setDesafio(this.historiasDesafios.getDesafiosUsuarios());
+        this.notificacao.setDestinatario(this.historiasDesafios.getDesafiosUsuarios().getUsuarioDesafiante());
+        this.notificacao.setRemetente(this.historiasDesafios.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setTexto("concluiu seu desafio !");
+        this.controlador.salvarNotificacao(this.notificacao);
         return "timeline";
     }
     
