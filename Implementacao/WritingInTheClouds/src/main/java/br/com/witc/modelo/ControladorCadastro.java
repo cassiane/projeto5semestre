@@ -37,6 +37,7 @@ public class ControladorCadastro {
     private final Desafios desafio;
     private final DesafiosUsuarios desUsuario;
     private final Notificacoes notificacoes;
+    private final HistoriasDesafios historiasDesafios;
     
     public ControladorCadastro() {
         this.usuario = new Usuario();
@@ -54,6 +55,7 @@ public class ControladorCadastro {
         this.desafio = new Desafios();
         this.desUsuario = new DesafiosUsuarios();
         this.notificacoes = new Notificacoes();
+        this.historiasDesafios = new HistoriasDesafios();
     }
 
     /**
@@ -473,5 +475,14 @@ public class ControladorCadastro {
      */
     public void excluirNotificacao(int idDesafiosUsuarios) {
         this.notificacoes.excluirNotificacao(idDesafiosUsuarios);
+    }
+    
+    /**
+     * carrega a historia do desafio 
+     * @param desafiosUsuarios
+     * @return 
+     */
+    public HistoriasDesafios carregarHistoriasDesafios(DesafiosUsuarios desafiosUsuarios) {
+        return this.historiasDesafios.carregarHistoriasDesafios(desafiosUsuarios);
     }
 }

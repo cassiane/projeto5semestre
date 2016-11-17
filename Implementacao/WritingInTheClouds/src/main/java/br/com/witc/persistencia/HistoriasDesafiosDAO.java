@@ -5,6 +5,7 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.modelo.DesafiosUsuarios;
 import br.com.witc.modelo.HistoriasDesafios;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import org.hibernate.Session;
@@ -25,6 +26,18 @@ public class HistoriasDesafiosDAO {
      */
     public void salvarHistoriaDesafio(HistoriasDesafios historiasDesafios) {
         sessao.saveOrUpdate(historiasDesafios);
+    }
+    
+    /**
+     * Carrega um objeto desafiosUsuarios
+     * para retorna o texto e os atributos do desafio
+     * @param desafiosUsuarios
+     * @return 
+     */
+    public HistoriasDesafios carregarHistoriasDesafios(DesafiosUsuarios desafiosUsuarios) {
+        return (HistoriasDesafios) sessao.createQuery("from HistoriasDesafios where idDesafiosUsuarios =: idDesafiosUsuarios")
+                .setInteger("idDesafiosUsuarios", desafiosUsuarios.getId())
+                .uniqueResult();
     }
     
 }

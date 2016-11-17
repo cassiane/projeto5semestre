@@ -217,4 +217,14 @@ public class HistoriasDesafios implements Serializable {
         HistoriasDesafiosDAO dao = new HistoriasDesafiosDAO();        
         dao.salvarHistoriaDesafio(historiasDesafios);
     }
+    
+    /**
+     * Carrega um objeto HistoriasDesafios
+     * @param desafiosUsuarios
+     * @return 
+     */
+    HistoriasDesafios carregarHistoriasDesafios(DesafiosUsuarios desafiosUsuarios) {
+        HistoriasDesafiosDAO dao = new HistoriasDesafiosDAO();
+        return dao.carregarHistoriasDesafios(desafiosUsuarios);
+    }
 }
