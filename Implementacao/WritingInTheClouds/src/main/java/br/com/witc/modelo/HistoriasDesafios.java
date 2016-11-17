@@ -5,18 +5,12 @@
  */
 package br.com.witc.modelo;
 
-import br.com.witc.excessao.BibliotecaVirtualVaziaException;
-import br.com.witc.excessao.LivroException;
 import br.com.witc.persistencia.HistoriasDesafiosDAO;
-import br.com.witc.persistencia.LivroDAO;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**

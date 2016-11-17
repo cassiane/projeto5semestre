@@ -68,9 +68,11 @@
                                             #{''}
                                             <h:column>
                                                 <h:commandLink class="coluna" value="#{notificacao.remetente.nome} 
-                                                               #{''} #{notificacao.texto}"
-                                                    actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}" 
-                                                    action="editarDesafio.xhtml" />
+                                                               #{''} #{notificacao.texto}" 
+                                                    actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
+                                                    action="editarDesafio.xhtml">                                                    
+                                                    <f:param name="desafiosUsuarios" value="#{notificacao.desafio.id}"/>
+                                                </h:commandLink>
                                             </h:column>                                    
                                         </h:dataTable>
                                         

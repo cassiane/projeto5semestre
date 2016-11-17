@@ -36,4 +36,13 @@ public class DesafiosUsuariosDAO {
         sessao.saveOrUpdate(desafio);
         return (int) sessao.getIdentifier(desafio);
     }
+
+    /**
+     * Carrega um objeto desafiosUsuarios
+     * @param idDesafiosUsuarios
+     * @return 
+     */
+    public DesafiosUsuarios carregarDesafioUsuario(int idDesafiosUsuarios) {
+        return (DesafiosUsuarios) sessao.load(DesafiosUsuarios.class, idDesafiosUsuarios);
+    }
 }

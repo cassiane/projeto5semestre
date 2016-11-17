@@ -55,10 +55,8 @@ public class NotificacoesDAO {
      * @return  
      */
     public Notificacoes carregarNotificacao(int idDesafiosUsuarios){
-        Notificacoes not = new Notificacoes();
-        not = (Notificacoes) sessao.createQuery("from Notificacoes where idDesafiosUsuario = :idDesafiosUsuarios")
+        return (Notificacoes) sessao.createQuery("from Notificacoes where idDesafiosUsuarios = :idDesafiosUsuarios")
                 .setInteger("idDesafiosUsuarios", idDesafiosUsuarios)
                 .uniqueResult();
-        return not;
     }
 }

@@ -437,16 +437,17 @@ public class ControladorCadastro {
      * Salva a historia do desafio
      * @param historiasDesafios 
      */
-    public void salvarHistoriaDesafio(HistoriasDesafios historiasDesafios) {
-        TipoTexto tipo = new TipoTexto();        
-        tipo = tipo.carregarTipoTexto(1);
-        int id = tipo.getId();
-        historiasDesafios.setTipoTexto(carregarTipoTexto(1));
-        historiasDesafios.setDisponivelBiblioteca(false);
-        historiasDesafios.setReportadoConteudoImproprio(false);
-        historiasDesafios.setClassificacao("LIVRE");
-        historiasDesafios.setAvaliacao(0f);
+    public void salvarHistoriaDesafio(HistoriasDesafios historiasDesafios) {                
         historiasDesafios.salvarHistoriaDesafio(historiasDesafios);
+    }
+    
+    /**
+     * 
+     * @param idDesafiosUsuarios
+     * @return 
+     */
+    public DesafiosUsuarios carregarDesafiosUsuarios(int idDesafiosUsuarios){
+        return this.desUsuario.carregarDesafioUsuario(idDesafiosUsuarios);
     }
     
     /**

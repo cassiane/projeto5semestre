@@ -109,9 +109,24 @@ public class DesafiosUsuarios implements Serializable {
     public void setDesafio(Desafios desafio) {
         this.desafio = desafio;
     }
-
+    
+    /**
+     * Salva na tabela de ligação entre o desafio o usuario e o usuario que desafiou
+     * @param des
+     * @return 
+     */
     public int salvarDesafiosUsuarios(DesafiosUsuarios des) {
         DesafiosUsuariosDAO dao = new DesafiosUsuariosDAO();
         return dao.salvarDesafioUsuario(des);
+    }
+    
+    /**
+     * carrega um objeto desafiosUsuarios pelo id
+     * @param idDesafiosUsuarios
+     * @return 
+     */
+    DesafiosUsuarios carregarDesafioUsuario(int idDesafiosUsuarios) {
+        DesafiosUsuariosDAO dao = new DesafiosUsuariosDAO();
+        return dao.carregarDesafioUsuario(idDesafiosUsuarios);
     }
 }

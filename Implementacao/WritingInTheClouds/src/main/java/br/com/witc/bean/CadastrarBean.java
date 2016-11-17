@@ -88,6 +88,7 @@ public class CadastrarBean {
     private List<String> palavrasDoDesafio;
     private List<Notificacoes> listaNotificacoes;
     private Notificacoes notificacao;
+    DesafiosUsuarios desafiosUsuarios;
 
     public String getPalavra() {
         return palavra;
@@ -115,6 +116,7 @@ public class CadastrarBean {
         this.historiasDesafios = new HistoriasDesafios();
         this.listaNotificacoes = new ArrayList<Notificacoes>();
         this.notificacao = new Notificacoes();
+        this.desafiosUsuarios = new DesafiosUsuarios();
     }
     
     /**
@@ -1218,7 +1220,19 @@ public class CadastrarBean {
      * @return retorna a pagina timeline
      */
     public String salvarHistoriaDesafio(){
+        this.historiasDesafios.setTipoTexto(this.controlador.carregarTipoTexto(1));
+        this.historiasDesafios.setDisponivelBiblioteca(false);
+        this.historiasDesafios.setReportadoConteudoImproprio(false);
+        this.historiasDesafios.setClassificacao("LIVRE");
+        this.historiasDesafios.setAvaliacao(0f);  
+        /*int idDesafiosUsuarios =  
+                Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("desafiosUsuarios"));
+        */
+        this.desafiosUsuarios = this.controlador.carregarDesafiosUsuarios(this.historiasDesafios.getDesafiosUsuarios().getId());
+        this.historiasDesafios.setDesafiosUsuarios(desafiosUsuarios);
+        
         this.controlador.salvarHistoriaDesafio(this.historiasDesafios);
+        
         this.controlador.excluirNotificacao(this.historiasDesafios.getDesafiosUsuarios().getId());
         this.notificacao.setDesafio(this.historiasDesafios.getDesafiosUsuarios());
         this.notificacao.setDestinatario(this.historiasDesafios.getDesafiosUsuarios().getUsuarioDesafiante());
