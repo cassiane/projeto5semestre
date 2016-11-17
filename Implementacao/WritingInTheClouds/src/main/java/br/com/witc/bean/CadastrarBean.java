@@ -564,6 +564,27 @@ public class CadastrarBean {
         }
         return this.getFotos(usu);
     }
+    
+    /**
+     * 
+     * @return 
+     */
+    public StreamedContent getFotoNotificacao() {
+        int idfoto = 0;
+        try {
+            idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
+        } catch (NumberFormatException ex) {
+            return carregarFotoDefault();
+        }
+        Usuario usu = new Usuario();
+        for (Notificacoes not : this.listaNotificacoes) {
+            if(not.getAmigo().getId() == idfoto){
+                usu = not.getAmigo();
+                break;
+            }
+        }
+        return this.getFotos(usu);
+    }
 
     /**
      * @return the anoAtual
@@ -1211,11 +1232,16 @@ public class CadastrarBean {
     }
     
     /**
-     * Retorna as notificacoes do usuario
-     * @return 
+     * @return the listaNotificacoes
      */
-    public List<Notificacoes> listarNotificacoes(){
-        List<Notificacoes> lista = this.controlador.listarNotificacoes(this.usuario.getId());
-        return lista;
+    public List<Notificacoes> getListaNotificacoes() {
+        return listaNotificacoes = this.controlador.listarNotificacoes(this.usuario.getId());
+    }
+
+    /**
+     * @param listaNotificacoes the listaNotificacoes to set
+     */
+    public void setListaNotificacoes(List<Notificacoes> listaNotificacoes) {
+        this.listaNotificacoes = listaNotificacoes;
     }
 }

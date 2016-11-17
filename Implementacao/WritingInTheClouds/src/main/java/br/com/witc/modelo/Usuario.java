@@ -159,20 +159,6 @@ public class Usuario implements Serializable {
     }
     
     /**
-     * Retorna a foto em Streamed para colocar em um p:graphicImage
-     * @return 
-     */
-    public StreamedContent getFotoNotificacao(){
-        if (foto == null) {
-            return carregarFotoDefault();
-        }else{        
-            InputStream is = new ByteArrayInputStream(foto);
-            StreamedContent image = new DefaultStreamedContent(is);        
-            return image;
-        }
-    }
-    
-    /**
      * Converte uma imagem para apresentar em um componente p:graphicImage     
      * @return Um objeto StreamedContent
      */
