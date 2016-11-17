@@ -1224,10 +1224,7 @@ public class CadastrarBean {
         this.historiasDesafios.setDisponivelBiblioteca(false);
         this.historiasDesafios.setReportadoConteudoImproprio(false);
         this.historiasDesafios.setClassificacao("LIVRE");
-        this.historiasDesafios.setAvaliacao(0f);  
-        /*int idDesafiosUsuarios =  
-                Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("desafiosUsuarios"));
-        */
+        this.historiasDesafios.setAvaliacao(0f);          
         this.desafiosUsuarios = this.controlador.carregarDesafiosUsuarios(this.historiasDesafios.getDesafiosUsuarios().getId());
         this.historiasDesafios.setDesafiosUsuarios(desafiosUsuarios);
         
@@ -1239,7 +1236,7 @@ public class CadastrarBean {
         this.notificacao.setRemetente(this.historiasDesafios.getDesafiosUsuarios().getUsuario());
         this.notificacao.setTexto("concluiu seu desafio !");
         this.controlador.salvarNotificacao(this.notificacao);
-        return "timeline";
+        return "timeline.xhtml?faces-redirect=true";
     }
     
     /**
@@ -1263,5 +1260,15 @@ public class CadastrarBean {
      */
     public void setListaNotificacoes(List<Notificacoes> listaNotificacoes) {
         this.listaNotificacoes = listaNotificacoes;
+    }
+    
+    /**
+     * Método para redirecionar para outra página 
+     * quando for uma notificação de conclusão de desafio
+     * @param notificacao
+     * @return true se contém a palavra conclui no texto da notificação
+     */
+    public boolean isConclusaoDesafio(Notificacoes notificacao){        
+        return notificacao.getTexto().contains("concluiu");
     }
 }

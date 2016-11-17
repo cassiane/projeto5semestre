@@ -156,3 +156,7 @@ and open the template in the editor.
 .autocomplete_multiple {
     margin-top: 10px; width:300px;
 }
+
+.disable_editor{
+    pointer-events: none;
+}
