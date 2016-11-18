@@ -28,18 +28,18 @@
                             <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center; width: 80%;">
                                 #{lis.titulo}
                             </p:column>                                
-                            <p:column style="text-align: center; width: 20%">
+                            <p:column style="text-align: center; width: 25%">                                
                                 <p:commandButton title="Editar" 
                                                  ajax="false"                                         
                                                  icon="ui-icon-pencil" 
                                                  action="#{livroBean.atualizarLockLivro(lis.id)}"                                                      
-                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)} " />
+                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
                                 <p:commandButton ajax="false" 
                                                  title="Ler" 
                                                  icon="ui-icon-document" 
                                                  action="lerLivro">
                                     <f:setPropertyActionListener value="#{lis}" target="#{livroBean.livroSelecionado}" />
-                                </p:commandButton>
+                                </p:commandButton>                                
                             </p:column>
                         </p:dataTable>
                     </div>
