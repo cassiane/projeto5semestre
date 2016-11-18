@@ -1205,6 +1205,7 @@ public class CadastrarBean {
      * @return the historiasDesafios
      */
     public HistoriasDesafios getHistoriasDesafios() {
+        this.desafiosUsuarios = new DesafiosUsuarios();
         this.desafiosUsuarios = this.controlador.carregarDesafiosUsuarios(this.historiasDesafios.getDesafiosUsuarios().getId());
         return this.historiasDesafios = this.controlador.carregarHistoriasDesafios(this.desafiosUsuarios);
     }

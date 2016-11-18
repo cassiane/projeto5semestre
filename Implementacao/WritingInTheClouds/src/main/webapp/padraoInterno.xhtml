@@ -74,13 +74,15 @@
                                                     rendered="#{not cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafio.xhtml">                                                    
                                                     <f:param name="desafiosUsuarios" value="#{notificacao.desafio.id}"/>
                                                 </h:commandLink>
-                                                <!--Quando for uma notificação de conclusão de desafio-->
-                                                <h:commandLink class="coluna" value="#{notificacao.remetente.nome} 
-                                                               #{''} #{notificacao.texto}" 
-                                                    actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
-                                                    rendered="#{cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafioConcluido.xhtml">                                                    
-                                                    <f:param name="desafiosUsuarios" value="#{notificacao.desafio.id}"/>
-                                                </h:commandLink>
+                                                <!-- actionListener="{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
+                                                -->
+                                                <!--Quando for uma notificação de conclusão de desafio
+                                                <h:commandLink class="coluna" value="{notificacao.remetente.nome} 
+                                                               {''} {notificacao.texto}" 
+                                                    actionListener="{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
+                                                    rendered="{cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafioConcluido.xhtml">                                                    
+                                                    <f:param name="desafiosUsuarios" value="{notificacao.desafio.id}"/>
+                                                </h:commandLink>-->
                                             </h:column>                                    
                                         </h:dataTable>
                                         

@@ -35,8 +35,8 @@ public class HistoriasDesafiosDAO {
      * @return 
      */
     public HistoriasDesafios carregarHistoriasDesafios(DesafiosUsuarios desafiosUsuarios) {
-        return (HistoriasDesafios) sessao.createQuery("from HistoriasDesafios where idDesafiosUsuarios =: idDesafiosUsuarios")
-                .setInteger("idDesafiosUsuarios", desafiosUsuarios.getId())
+        return (HistoriasDesafios) sessao.createQuery("from HistoriasDesafios where idDesafiosUsuarios =:id")
+                .setInteger("id", desafiosUsuarios.getId())
                 .uniqueResult();
     }
     
