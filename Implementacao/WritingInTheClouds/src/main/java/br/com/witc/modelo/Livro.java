@@ -301,6 +301,15 @@ public class Livro implements Serializable {
     }      
     
     /**
+     * @param idPerfil O id do perfil do usuário
+     * @return Um map contendo o gênero e a avaliação     
+     */
+    public Map<String, Float> getGenerosPreferidos(int idPerfil) {
+        LivroDAO livroDAO = new LivroDAO();
+        return livroDAO.listarGenerosPreferidos(idPerfil);
+    }
+    
+    /**
      * Verifica se o livro está disponível para edição do usuário logado
      * @param idLivro O id do Livro
      * @param idPerfil O id do perfil do usuário logado

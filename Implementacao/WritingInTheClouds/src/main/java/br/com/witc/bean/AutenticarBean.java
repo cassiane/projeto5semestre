@@ -366,7 +366,7 @@ public class AutenticarBean {
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             enviarMensagem(SEVERITY_ERROR, "Problemas na geração do hash da senha!");
         }
-        return "index";
+        return null;
     }
 
     /**

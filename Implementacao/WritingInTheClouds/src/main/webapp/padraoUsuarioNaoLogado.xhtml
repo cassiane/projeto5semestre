@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">      
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">      
     <h:head>
         <title><ui:insert name="titulo">Wrinting in the Clouds</ui:insert></title>        
         <meta http-equiv="X-UA-Compatible" content="IE-edge" />
@@ -14,7 +15,8 @@
         <h:outputScript name="bootstrap-3.3.7/js/bootstrap.min.js" />        
         <h:outputScript name="js/witc.js" />                
     </h:head>
-    <h:body>                    
+    <h:body>                   
+        <p:growl id="growl" severity="error" globalOnly="true" />        
         <div class="clearfix" />
         <div class="collapse navbar-collapse">
             <nav class="navbar navbar-inverse">                

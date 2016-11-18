@@ -21,8 +21,8 @@
         <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
         <f:event listener="#{autenticarBean.listarPerfisAmigos()}" type="preRenderView"/>        
         <f:event listener="#{autenticarBean.listarPerfisUsuarioLogado()}" type="preRenderView"/>        
-        <div class="container">            
-            <p:growl id="growl" severity="error" globalOnly="true" /> 
+        <p:growl id="growl" severity="error" globalOnly="true" /> 
+        <div class="container">                        
             <div class="clearfix" />
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
@@ -144,11 +144,9 @@
                                 <h:outputText value="de" />
                             </div>                            
                             <div style="padding-top: 10px;">
-                                <h:form>
-                                    <span class="glyphicon glyphicon-book" />
-                                    #{' '}                                
-                                    <h:commandLink value="Meus gêneros preferidos ... " />
-                                </h:form>
+                                <span class="glyphicon glyphicon-book" />
+                                #{' '}                                
+                                <a href="#" data-toggle="modal" data-target="#generos">Minhas avaliações ...</a>                                
                             </div>
                         </div>                        
                     </div>
@@ -172,6 +170,42 @@
                                 </c:forEach>
                             </h:form>
                         </div>                        
+                    </div>
+
+                    <!-- Modal -->
+                    <div id="generos" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Avaliações de #{autenticarBean.nomeCompletoUsuario}</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <h:form id="frmGeneros"> 
+                                        <p:remoteCommand name="callBeanMethod" update=":frmGeneros" oncomplete="initializeRatebox();" />                                                                                                                        
+                                        <div align="center">
+                                            <h:panelGrid columns="2">
+                                                <c:forEach items="#{livroBean.generosPreferidos.entrySet().toArray()}" var="entry">                                                
+                                                    <h:outputText value="#{entry.key}" class="text-primary" style="font-size: 15px;" />
+                                                    <div id="rate" class="ratebox col-md-6" data-id="#{autenticarBean.idPerfil}-#{entry.key}" data-rating="#{entry.value}" 
+                                                         style="margin-left: 10px; pointer-events: none;}">                                                                              
+                                                    </div>
+                                                </c:forEach>                                                                                
+                                            </h:panelGrid>
+                                            <c:if test="${empty livroBean.generosPreferidos}">
+                                                <div align="center">
+                                                    <h:outputText value="Não foram encontradas avaliações" class="text-primary" style="font-size: 15px;" />
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                    </h:form>   
+                                </div>
+                                <div class="modal-footer">                                    
+                                    <button type="button" class="btn btn-success" data-dismiss="modal">Fechar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">                                                           

@@ -141,6 +141,14 @@ public class ControladorLivro {
     }
     
     /**
+     * @param idPerfil O id do perfil do usuário
+     * @return Um map contendo o gênero e a avaliação     
+     */
+    public Map<String, Float> getGenerosPreferidos(int idPerfil) {
+       return this.livro.getGenerosPreferidos(idPerfil);
+    }
+    
+    /**
      * Carrega os livros disponíveis na Biblioteca Virtual segundo critérios de pesquisa
      * @param valorPesquisa O valor a ser pesquisado
      * @return Um objeto Map, com os livros encontrados

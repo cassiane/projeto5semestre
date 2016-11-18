@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
@@ -207,11 +209,11 @@ public class LivroBean {
     public String biblioteca() {
         // Status do usuario
         this.atualizarStatusUsuarioLivro(1);
-        if(this.livroCarregado.isDisponivelRevisao()){
+        if (this.livroCarregado.isDisponivelRevisao()) {
             return "revisao.xhtml?faces-redirect=true";
         }
         return "biblioteca.xhtml?faces-redirect=true";
-       
+
     }
 
     public String editorNovoLivro() {
@@ -282,6 +284,17 @@ public class LivroBean {
         return this.bibliotecaVirtual;
     }
 
+    /**
+     * @return Um map contendo o gênero e a avaliação
+     */
+    public Map<String, Float> getGenerosPreferidos() {
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "autenticarBean");
+
+        return this.controlador.getGenerosPreferidos(autenticarBean.getIdPerfil());
+    }
+
     public String salvarNovoLivro() {
         try {
             this.perfilUsuario = this.controlador.carregarPerfil(this.usuario);
@@ -302,16 +315,16 @@ public class LivroBean {
 //            if (this.disponivelEdicaoAmigo) {
 //                this.livro.setBookLock(0);
 //            } else {
-                this.livro.setBookLock(this.perfilUsuario.getId());
+            this.livro.setBookLock(this.perfilUsuario.getId());
 //            }
 //            if (this.disponivelRevisao){
 //                this.livro.setRevisao(1);
 //            }else{
-                this.livro.setRevisao(0);
+            this.livro.setRevisao(0);
 //            }
 //            this.controlador.salvarLivro(this.livro, this.livroFinalizado, this.perfilUsuario);            
             this.controlador.salvarLivro(livro);
-            this.historico=new HistoricoLivro();
+            this.historico = new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
             this.historico.setLivro(this.livro);
             this.historico.setStatus(st);
@@ -333,15 +346,15 @@ public class LivroBean {
         this.atualizarStatusUsuarioLivro(2);
         return "editarLivro";
     }
-    
-    public String salvarLivroVoltar(){
+
+    public String salvarLivroVoltar() {
         salvarLivro();
-        if(this.livroCarregado.isDisponivelRevisao()){
+        if (this.livroCarregado.isDisponivelRevisao()) {
             return "revisao.xhtml?faces-redirect=true";
         }
         return "biblioteca.xhtml?faces-redirect=true";
     }
-   
+
     public String salvarLivro() {
         try {
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
@@ -352,12 +365,12 @@ public class LivroBean {
                 this.livroCarregado.setRevisao(1);
                 this.livroCarregado.setBookLock(0);
                 this.livroCarregado.setDisponivelRevisao(disponivelRevisao);
-                 
+
             }
-            if(this.livroFinalizadoRevisao){
-                 this.livroCarregado.setDisponivelRevisao(false);
-                 this.livroCarregado.setBookLock(0);
-                 this.livroFinalizado = true;
+            if (this.livroFinalizadoRevisao) {
+                this.livroCarregado.setDisponivelRevisao(false);
+                this.livroCarregado.setBookLock(0);
+                this.livroFinalizado = true;
 //                 TipoStatus st = this.controlador.carregarTipoStatus(1);
 //                 this.historico= new HistoricoLivro();
 //            this.historico.setPerfil(this.perfilUsuario);
@@ -655,7 +668,7 @@ public class LivroBean {
             // Status usuario
             this.atualizarStatusUsuarioLivro(3);
             TipoStatus st = this.controlador.carregarTipoStatus(2);
-            this.historico=new HistoricoLivro();
+            this.historico = new HistoricoLivro();
             this.historico.setPerfil(this.perfilUsuario);
             this.historico.setLivro(this.livroCarregado);
             this.historico.setStatus(st);
@@ -860,8 +873,8 @@ public class LivroBean {
                 .getELResolver().getValue(elContext, null, "autenticarBean");
         if ((autenticarBean.getPerfilSelecionadoAmigo() != null) && (!autenticarBean.isAmigo())) {
             return autenticarBean.getPerfilSelecionadoAmigo().getId();
-        }        
-        return 0;        
+        }
+        return 0;
     }
 
     public void downloadEpub() {

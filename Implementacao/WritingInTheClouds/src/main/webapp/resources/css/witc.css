@@ -131,3 +131,7 @@ and open the template in the editor.
     height: auto;                
     margin:auto;
 }    
+
+.column-panel {
+    margin-top: 20px;
+}
