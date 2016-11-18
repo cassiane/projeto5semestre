@@ -15,3 +15,27 @@ USE `witc` ;
 
 ALTER TABLE `witc`.`usuario` 
 ADD COLUMN `fotoCapa` LONGBLOB NULL DEFAULT NULL AFTER `foto`;
+
+-- -----------------------------------------------------
+-- Table `witc`.`timeline`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `witc`.`timeline` (
+  `idTimeline` INT UNSIGNED NOT NULL,
+  `idUsuario` INT(10) UNSIGNED NOT NULL,
+  `idAmigo` INT(10) UNSIGNED NOT NULL,
+  `dataPublicacao` DATETIME NOT NULL,
+  `publicacao` VARCHAR(140) NOT NULL,
+  PRIMARY KEY (`idTimeline`),
+  INDEX `fk_timeline_usuario_idx` (`idUsuario` ASC),
+  INDEX `fk_timeline_usuario1_idx` (`idAmigo` ASC),
+  CONSTRAINT `fk_timeline_usuario`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `witc`.`usuario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_timeline_usuario1`
+    FOREIGN KEY (`idAmigo`)
+    REFERENCES `witc`.`usuario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
