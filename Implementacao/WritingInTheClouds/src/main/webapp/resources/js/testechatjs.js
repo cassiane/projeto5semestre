@@ -411,3 +411,44 @@ function messenger_create(chatusu, chatami) {
 //
 //    }
 //});
+
+function listarmsn(txt) {
+    alert(txt);
+    var msnamigo =
+            '<div class="chat_message_wrapper">'
+            + '<div class="chat_user_avatar">'
+            + '<img id="fotoAmigo" src="#" alt="" class="md-user-image" />'
+            + '</div>'
+            + '<ul class="chat_message">'
+            + '<li>'
+            + '<p>Testo que o usuario escreve.'
+            + '<span class="chat_message_time">13:38</span>'
+            + '</p>'
+            + '</li>'
+            + '<li>'
+            + '<p>Testo que o usuario escreve.'
+            + '<span class="chat_message_time">13:38</span>'
+            + '</p>'
+            + '</li>'
+            + '</ul>'
+            + '</div>'
+    var msnusuario =
+            '<div class="chat_message_wrapper chat_message_right">'
+            + '<div class="chat_user_avatar">'
+            + '<img id="fotousu" src="#" alt="" class="md-user-image" />'
+            + '</div>'
+            + '<ul class="chat_message">'
+            + '<li>'
+            + '<p>Testo que o amigo escreve.'
+            + '<span class="chat_message_time">13:34</span>'
+            + '</p>'
+            + '</li>'
+            + '<li>'
+            + '<p>'
+            + 'Testo que o amigo escreve.'
+            + '<span class="chat_message_time">13:34</span>'
+            + '</p>'
+            + '</li>'
+            + '</ul>'
+            + '</div>'
+}

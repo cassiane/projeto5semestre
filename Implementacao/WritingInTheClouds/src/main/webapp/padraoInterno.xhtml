@@ -185,7 +185,7 @@
                                 <!--<p:remoteCommand name="chatfotouser" actionListener="#{cadastrarBean.foto}" />-->
                                 <a href="#" id="chaton#{amigo.id}" onclick="messenger_create(#{autenticarBean.usuarioLogado().id}, #{amigo.id})">
                                     <li>
-                                        <p:graphicImage styleClass="md-user-image" value="#{cadastrarBean.fotoAmigo}" cache="false" alt="#{amigo.nomeABNT}">
+                                        <p:graphicImage styleClass="md-user-image img-thumbnail" value="#{cadastrarBean.fotoAmigo}" cache="false" alt="#{amigo.nomeABNT}">
                                             <f:param name="userfoto" value="#{amigo.id}" />
                                         </p:graphicImage>#{amigo.nome}
                                     </li>
@@ -279,41 +279,7 @@
                     </div>
                     <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
                         <div class="chat_box touchscroll chat_box_colors_a">
-                            <div class="chat_message_wrapper">
-                                <div class="chat_user_avatar">
-                                    <img id="fotoAmigo" src="#" alt="" class="md-user-image" />
-                                </div>
-                                <ul class="chat_message">
-                                    <li>
-                                        <p>Testo que o usuario escreve.
-                                            <span class="chat_message_time">13:38</span>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p>Testo que o usuario escreve.
-                                            <span class="chat_message_time">13:38</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="chat_message_wrapper chat_message_right">
-                                <div class="chat_user_avatar">
-                                    <img id="fotousu" src="#" alt="" class="md-user-image" />
-                                </div>
-                                <ul class="chat_message">
-                                    <li>
-                                        <p>Testo que o amigo escreve.
-                                            <span class="chat_message_time">13:34</span>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <p>
-                                            Testo que o amigo escreve.
-                                            <span class="chat_message_time">13:34</span>
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
+                            <!--mostrar mensagens-->
                         </div>
                     </div>
                     <div class="chat_submit_box">

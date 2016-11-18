@@ -61,7 +61,7 @@
                         <h:commandLink value=""
                                        actionListener="#{autenticarBean.setAmigoUsuario(amigo.id)}"
                                        action="timeline.xhtml">
-                            <p:graphicImage height="75px" value="#{cadastrarBean.fotoAmigo}" cache="false">
+                            <p:graphicImage value="#{cadastrarBean.fotoAmigo}" style="width: 75px; height: 75px;" styleClass="img-thumbnail" cache="false">
                                 <f:param name="userfoto" value="#{amigo.id}" />
                             </p:graphicImage>
                         </h:commandLink>
