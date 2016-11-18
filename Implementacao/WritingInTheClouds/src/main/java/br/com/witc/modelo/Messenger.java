@@ -5,6 +5,7 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.persistencia.MessengerDAO;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -94,11 +95,16 @@ public class Messenger {
     }
     
     public void enviarMsn() {
-        
+        if (this.dateSend == null) {
+            this.dateSend = Calendar.getInstance();
+        }
+        MessengerDAO dao = new MessengerDAO();
+        dao.enviarMsn(this);
     }
     
     public List<Messenger> listarMsn(int send, int receive) {
-        List<Messenger> lstmsn = new ArrayList<Messenger>();
+        MessengerDAO dao = new MessengerDAO();
+        List<Messenger> lstmsn = dao.listarMsn(send, receive);
         return lstmsn;
     }
 }

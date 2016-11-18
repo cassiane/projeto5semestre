@@ -4,6 +4,17 @@
  * and open the template in the editor.
  */
 
+function enviandomsn(usu, amigo, msn) {
+//    alert(usu + " " + amigo + " " + msn);
+    $('input#idsend').attr('value', usu);
+    $('input#idreceive').attr('value', amigo);
+    $('input#messengermsn').attr('value', msn.value);
+    msn.value = "";
+//    var link = document.getElementById('frmMsn:idmsn');
+    var link = $('#idmsn');
+    link.click();
+}
+//
 //$(function () {
 //    $("#addClass").click(function () {
 //        $('#sidebar_secondary').addClass('popup-box-on');
@@ -40,7 +51,7 @@
 
 function messenger_off(e) {
     //$('#sidebar_secondary_chat' + e).removeClass('popup-box-on');
-    $('#box_messenger').children('#sidebar_secondary_chat' + e).remove();
+    $('#box_messenger').children('#box_messenger_chat' + e).remove();
 }
 
 //$(document).on('click', '.panel-heading span.icon_minim', function (e) {
@@ -83,11 +94,11 @@ function messenger_create(chatusu, chatami) {
     html.attr('id', 'box_messenger_chat' + chatami);
     $(html.children('chat-aside')).addClass('popup-box-on');
     $(html.children('chat-aside').children('div').children('div').children('h3').children('span')).text(' ' + fotoAmigo.attr('alt'));
-    $(html).find("input#send").val(chatusu);
-    $(html).find("input#receive").val(chatami);
-    $(html).find("input#msn").val("teste");
-    alert(html.html());
-    
+    $(html.children('chat-aside').children('div').children('div').children('form').children('div').children('input')).attr('id', 'txtmsn' + chatami);
+    $(html.children('chat-aside').children('div').children('div').children('form').children('span').children('a')).attr('onclick', 'enviandomsn(' + chatusu + ', ' + chatami + ', txtmsn' + chatami + ')');
+    $(html).find('#removeClass').attr('onclick', 'messenger_off(' + chatami + ')');
+//    alert(html.html());
+
     //alert(fotoUsuario);
 //    $('#box_messenger')
 //            .append(
@@ -229,7 +240,7 @@ function messenger_create(chatusu, chatami) {
             '<div id="box_messenger_chat' + chatami + '" class="col-md-2" style="width: 260px;">' +
             html.html() +
             '</div>');
-    
+
 }
 
 //$.fn.extend({ChatSocket: function (opciones) {

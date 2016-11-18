@@ -18,9 +18,6 @@
         <h:outputScript name="raterater/js/raterater.jquery.js" />        
         <h:outputScript name="js/witc.js" />
         <h:outputScript name="js/testechatjs.js" />
-<!--        <script type="text/javascript">
-            var teste = enviarmensagem();
-        </script>-->
     </h:head>
     <h:body>         
         <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
@@ -209,7 +206,14 @@
              position: relative;
              right: 300px;
              z-index: 300;">
-            <!--<p:remoteCommand name="enviarmessenger" actionListener="#{messengerBean.enviarMsn()}" />-->
+            <h:form id="frmMsn" style="display: none">
+            <p:remoteCommand name="vais" action="#{messengerBean.enviarMsn()}" />
+                <input type="text" id="idsend" name="idsend" />
+                <input type="text" id="idreceive" name="idreceive" />
+                <input type="text" id="messengermsn" name="messengermsn" />
+                <!--<h:commandLink id="idmsn" value="submit" action="#{messengerBean.enviarMsn()}" />-->
+                <a href="#" id="idmsn" onclick="vais()" />
+            </h:form>
             <div id="box_messenger_chat" class="col-md-2" style="width: 260px;">
                 <chat-aside id="sidebar_secondary_chat" class="tabbed_sidebar ng-scope chat_sidebar" style="margin-left:10px;">
                     <div class="popup-head">
@@ -268,7 +272,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <button data-widget="remove" id="removeClass" onclick="messenger_off(' + chatami + ')" class="chat-header-button pull-right" type="button">
+                            <button data-widget="remove" id="removeClass" onclick="messenger_off(chatami)" class="chat-header-button pull-right" type="button">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </button>
                         </div>
@@ -314,16 +318,14 @@
                     </div>
                     <div class="chat_submit_box">
                         <div class="uk-input-group">
-                            <h:form>
-                                <input type="hidden" id="send" name="idsend" />
-                                <input type="hidden" id="receive" name="idreceive" />
-                                <div class="gurdeep-chat-box">
+                            <form>
+                                <div class="gurdeep-chat-box" style="direction: ltr">
                                     <span style="vertical-align: sub;" class="uk-input-group-addon">
                                         <a href="#">
                                             <i class="fa fa-smile-o"></i>
                                         </a>
                                     </span>
-                                    <input type="text" id="msn" name="messengermsn" />
+                                    <input type="text" placeholder="Type a message" id="msn" class="md-input submit_message" />
                                     <span style="vertical-align: sub;" class="uk-input-group-addon">
                                         <a href="#">
                                             <i class="fa fa-camera"></i>
@@ -331,11 +333,11 @@
                                     </span>
                                 </div>
                                 <span class="uk-input-group-addon">
-                                    <h:commandLink actionListener="#{messengerBean.enviarMsn()}">
+                                    <a href="#" onclick="enviandomsn(0, 0, msn)">
                                         <i class="glyphicon glyphicon-send"></i>
-                                    </h:commandLink>
+                                    </a>
                                 </span>
-                            </h:form>
+                            </form>
                         </div>
                     </div>
                 </chat-aside>
