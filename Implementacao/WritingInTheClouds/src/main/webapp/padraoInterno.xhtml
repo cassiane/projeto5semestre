@@ -50,7 +50,7 @@
                                             </ui:repeat>
                                         </ul>
                                     </li>
-                                </c:if>
+                                </c:if>                                
                                 <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilEditor}" /></li>
                                 <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="revisao.xhtml" rendered="#{autenticarBean.perfilRevisor}" /></li>
                                 <li><h:commandLink value="Biblioteca Virtual" actionListener="#{autenticarBean.setAmigoUsuario()}" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
@@ -62,7 +62,39 @@
                                         <li><h:commandLink value="Editar minha conta" actionListener="#{autenticarBean.setAmigoUsuario()}" action="editarConta.xhtml" /></li>                                                                
                                         <li><h:commandLink value="Logoff" action="#{autenticarBean.efetuarLogoff()}" /></li>                                    
                                     </ul>
-                                </li>                            
+                                </li>        
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                                    <ul class="dropdown-menu alert-dropdown" style="width: 300px;">                                        
+                                        <h:dataTable styleClass="order-table"                                                       
+                                                     rows="5" var="notificacao" rowClasses="order-table-odd-row order-table-even-row "
+                                                     value="#{cadastrarBean.listaNotificacoes}" >                                          
+                                            <h:column>
+                                                <p:graphicImage class="img-rounded" style="width: 75px; height: 65px; padding: 3px;" value="#{cadastrarBean.fotoNotificacao}">                                                
+                                                    <f:param name="userfoto" value="#{notificacao.remetente.id}" />
+                                                </p:graphicImage>
+                                            </h:column>
+                                            #{''}
+                                            <h:column>
+                                                <!--Quando não for notificação de conclusão de desafio-->
+                                                <h:commandLink class="coluna" value="#{notificacao.remetente.nome} 
+                                                               #{''} #{notificacao.texto}" 
+                                                    actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
+                                                    rendered="#{not cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafio.xhtml">                                                    
+                                                    <f:param name="desafiosUsuarios" value="#{notificacao.desafio.id}"/>
+                                                </h:commandLink>                                                
+                                                <!--Quando for uma notificação de conclusão de desafio-->
+                                                <h:commandLink class="coluna" value="#{notificacao.remetente.nome} 
+                                                               #{''} #{notificacao.texto}" 
+                                                    actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
+                                                    rendered="#{cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafioConcluido.xhtml">                                                 
+                                                    <f:param name="desafiosUsuarios" value="#{notificacao.desafio.id}"/>
+                                                </h:commandLink>
+                                            </h:column>                                    
+                                        </h:dataTable>
+                                        
+                                    </ul>                                
+                                </li>
                             </ul>        
                         </h:form>
                     </div>
@@ -97,9 +129,10 @@
                                                    actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioVisualizado())}" 
                                                    action="listarAmigos.xhtml" />                                    
                                     <div>
-                                        <span class="glyphicon glyphicon-playing-dices" />
-                                        #{' '}
-                                        <h:commandLink style="font-weight: bold;" value="Desafiar" action="DesafiarAmigo.xhtml"  rendered="#{not autenticarBean.amigo}" />
+                                        
+                                        <h:commandLink  value="Desafiar" action="DesafiarAmigo.xhtml"  rendered="#{not autenticarBean.amigo}">
+                                            <i class="fa fa-gavel" aria-hidden="true" style="color: #337ab7"></i>                                           
+                                        </h:commandLink>
                                     </div>
                                 </h:form>
                             </div>

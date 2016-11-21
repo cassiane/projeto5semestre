@@ -52,9 +52,25 @@ public class DesafiosPalavras implements Serializable {
         this.palavra = palavra;
     }    
     
+    /**
+     * Retornar a lista de todas as palavras cadastradas nos desafios
+     * @return retorna a lista de strings 
+     * @throws Exception 
+     */
     public List<String> listarDesafiosPalavras() throws Exception{
         DesafiosPalavrasDAO dao = new DesafiosPalavrasDAO();
         return dao.listarDesafiosPalavras();
+    }
+    
+    /**
+     * Retornar a lista das palavras do desafio que o usuário está criando a
+     * história
+     * @return retorna a lista de strings 
+     * @throws Exception 
+     */
+    public List<String> listarPalavrasDoDesafio(int idDesafio) throws Exception{
+        DesafiosPalavrasDAO dao = new DesafiosPalavrasDAO();
+        return dao.listarPalavrasDoDesafio(idDesafio);
     }
 
     /**
@@ -69,5 +85,15 @@ public class DesafiosPalavras implements Serializable {
      */
     public void setDesafio(Desafios desafio) {
         this.desafio = desafio;
+    }
+    
+    /**
+     * Salvar a lista de palavras do desafio e salva o desafio do usuário
+     * @param listaPalavras
+     * @param idDesafio 
+     */
+    public void salvarDesafio(List<String> listaPalavras, int idDesafio) {
+        DesafiosPalavrasDAO dao = new DesafiosPalavrasDAO();
+        dao.salvarDesafio(listaPalavras, idDesafio);
     }
 }

@@ -22,8 +22,8 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>5.3</version>
-        </dependency>
+            <version>6.0</version>
+        </dependency>        
         <!-- https://mvnrepository.com/artifact/org.primefaces.extensions/primefaces-extensions -->
         <dependency>
             <groupId>org.primefaces.extensions</groupId>

@@ -4,14 +4,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">   
     <ui:composition template="padraoInterno.xhtml">
         <ui:define name="conteudo">
+            <!--
             <script type="text/javascript">
             var algumaberto = false;
             function exibe(id) {                
-                    if(document.getElementById(id).style.display=="none") {
+                    if(document.getElementById(id).style.display==="none") {
                             document.getElementById(id).style.display = "inline";
                             algumaberto = true;
                     }
@@ -19,60 +19,58 @@
                             document.getElementById(id).style.display = "none";
                     }
             }
+            </script>-->
+            <script type="text/javascript">
+                function limpaCampo(){
+                    document.getElementById("palavra").value = "";
+                }
             </script>
+               
             <div align="center" style="padding-top: 50px;">                
                 <div class="col-lg-4">
-                    <img id="img1" onclick="javascript: exibe('conteudo1');" src="resources/imagens/IconeDesafioPalavras.png" />    
+                    <!-- onclick="javascript: exibe('conteudo1');"-->
+                    <img id="img1" src="resources/imagens/IconeDesafioPalavras.png" />    
                     <h:outputLabel styleClass="text-info" value="Desafio com palavras" style="font-size: 20px;"/>
                 </div>
+                <!--
                 <div class="col-lg-4">
                     <img id="img2" onclick="javascript: exibe('conteudo2');" src="resources/imagens/IconeSemIconeDesafio.png" /> 
                     <h:outputLabel styleClass="text-info" value="Desafio com palavras e limite" style="font-size: 20px;"/>
                 </div>
-                <!--<div class="col-lg-4">
+                <div class="col-lg-4">
                     <img id="img3" onclick="javascript: exibe('conteudo3');" src="resources/imagens/IconeSemIconeDesafio.png" /> 
                 </div>-->
             </div>
             <br />
+            <h:form id="form1">
             <div style="padding-top: 100px;" >
-                <div id="conteudo1" style="display: none;">
-                    <div style="margin-top: 30px;">                     
+                <!-- style="display: none;"-->
+                <div id="conteudo1">
+                    <div style="margin-top: 100px;">                                             
                         <h:outputLabel styleClass="text-info" value="Palavras do desafio" style="font-size: 20px;"/>
-                   
+                        <div>
+                            <h:inputText id="palavra" class="inputtext" value="#{cadastrarBean.palavra}" style="width: 300px;"/>            
+                            #{''}
+                            <p:commandButton styleClass="btn btn-success"
+                                             action="#{cadastrarBean.salvarPalavra()}" 
+                                             update="autoDesafiosPalavras" icon="ui-icon-plus" onclick="javascript: limpaCampo();"/>
+                        </div>
+                        #{''}
                         <p:autoComplete id="autoDesafiosPalavras" minQueryLength="1" value="#{cadastrarBean.listaPalavras}"
                                         multiple="true" completeMethod="#{cadastrarBean.listaPalavrasDesafios}" effect="fade"
-                                        var="des" itemLabel="#{des.toString}"
-                                        itemValue="#{des.toString}"
-                                        maxResults="6">                                    
+                                        var="des" itemLabel="#{des}"
+                                        itemValue="#{des}"
+                                        maxResults="6" style="margin-top: 10px; width:300px;">                                    
                         </p:autoComplete>
-                        <div>
-                            <h:commandButton style="width: 160px" styleClass="btn btn-success" value="Desafiar !"
-                                 action="#{cadastrarBean.salvarDesafio()}" />
+                        #{''}
+                        <div style="margin-top: 30px;">                                                        
+                            <h:commandButton style="width: 160px;" styleClass="btn btn-success" value="Desafiar !"
+                                             action="#{cadastrarBean.salvarDesafio(autenticarBean.idAmigoUsuario)}"/>
                         </div>
                     </div>
                 </div>
-                
-                <div id="conteudo2" class="bottom" style="display: none; padding-top: 100px;">
-                    <div style="margin-top: 30px;">                     
-                        <h:outputLabel styleClass="text-info" value="Palavras do desafio" style="font-size: 20px;"/>
-                   
-                        <p:autoComplete id="autoDesafiosPalavrasLimite" minQueryLength="1" value="#{cadastrarBean.listaPalavras}"
-                                        multiple="true" completeMethod="#{cadastrarBean.listaPalavrasDesafios}" effect="fade"
-                                        var="des" itemLabel="#{des.toString}"
-                                        itemValue="#{des.toString}"
-                                        maxResults="6">                                    
-                        </p:autoComplete>
-                        <div>
-                            <h:commandButton style="width: 160px" styleClass="btn btn-success" value="Desafiar !"
-                                 action="#{cadastrarBean.salvarDesafio()}" />
-                        </div>
-                    </div>
-                </div>
-                <!--
-                <div id="conteudo3" class="bottom" style="display: none; padding-top: 100px;">
-                    Seu conteúdo aqui 3...
-                </div>-->
             </div>                                           
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>
