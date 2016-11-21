@@ -144,6 +144,15 @@ public class Perfil implements Serializable {
         return this.usuario.getSobrenome().split(" ")[this.usuario.getSobrenome().split(" ").length - 1];
     }
     
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Um objeto Usuario
+     */
+    public Usuario getUsuarioPorIdPerfil(int idPerfil) {
+        PerfilDAO perfilDAO = new PerfilDAO();
+        return perfilDAO.carregarUsuarioPorId(idPerfil);
+    }
+    
     public Perfil carregarPerfil(Usuario usuario) {
         PerfilDAO perfilDAO = new PerfilDAO();
         return perfilDAO.carregarPerfilPadrao(usuario);

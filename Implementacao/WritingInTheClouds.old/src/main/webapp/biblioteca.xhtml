@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="padraoInterno.xhtml">        
+        <ui:define name="conteudo">            
+            <f:event listener="#{livroBean.carregarListaSolicitacaoEdicao()}" type="preRenderView" />                                    
+            <div style="width: 100%">
+                <h:form id="formMBibli">                  
+                    <div style="text-align: center;">
+                        <h:outputText class="text-info" style="font-size: 20px;" value="Minha Biblioteca" />
+                    </div>
+                    <div style="text-align: center; margin-top: 5px;">
+                        <h:commandButton styleClass="btn btn-success" title="Novo Livro" value="Novo Livro" action="#{livroBean.editorNovoLivro()}"/>
+                    </div>       
+                    <div style="margin-top: 5px;">
+                        <p:dataTable value="#{livroBean.listarLivrosPerfil()}"  var="lis" rows="10" paginator="true" emptyMessage="Nenhum livro encontrado.">
+                            <p:column headerText="Capa" style="text-align: center; width: 75px;">
+                                <p:graphicImage style="width: 55px; height: 78px; padding: 5px;"                                                         
+                                                value="#{livroBean.capaLivroConvertida}" title="#{lis.titulo}"
+                                                cache="false">
+                                    <f:param name="idLivro" value="#{lis.id}" />
+                                </p:graphicImage>
+                            </p:column>
+                            <p:column headerText="Titulo" sortBy="#{lis.titulo}" style="text-align: center; width: 80%;">
+                                #{lis.titulo}
+                            </p:column>                                
+                            <p:column style="text-align: center; width: 25%">                                
+                                <p:commandButton title="Editar" 
+                                                 ajax="false"                                         
+                                                 icon="ui-icon-pencil" 
+                                                 action="#{livroBean.atualizarLockLivro(lis.id)}"                                                      
+                                                 disabled="#{!livroBean.estaDisponivelEdicaoUsuario(lis.id)}" />
+                                <p:commandButton ajax="false" 
+                                                 title="Ler" 
+                                                 icon="ui-icon-document" 
+                                                 action="lerLivro">
+                                    <f:setPropertyActionListener value="#{lis}" target="#{livroBean.livroSelecionado}" />
+                                </p:commandButton>                                
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </h:form>   
+            </div>
+            <div style="width: 100%;">
+                <h:form id="solEdicao" rendered="#{livroBean.listaSolicitacaoEdicao.size() > 0 ? 'true' : 'false' }">                    
+                    <div style="text-align: center; margin-top: 20px; margin-bottom:20px">
+                        <h:outputText class="text-info" style="font-size: 20px;" value="Minha Socilitação" />
+                    </div>
+                    <p:dataScroller id="datEdiLivro" value="#{livroBean.listaSolicitacaoEdicao}" var="ediLivro" chunkSize="3">
+                        <h:outputText styleClass="text-primary" value='O usuario(a) "#{ediLivro.idPerfil.pseudonimo}" convidou você para editar o texto "#{ediLivro.idLivro.titulo}"' />
+                        <br />                                                                                                
+                        <h:commandButton id="btnAceEdicao" styleClass="btn btn-success" value="Aceitar" actionListener="#{livroBean.aceitarEdicao(ediLivro.idLivro)}" />
+
+                        <h:commandButton id="btnNegEdicao" styleClass="btn btn-danger" value="Negar" actionListener="#{livroBean.negarEdicao(ediLivro)}" />
+                    </p:dataScroller>                    
+                </h:form>              
+            </div>                        
+        </ui:define>
+    </ui:composition>
+</html>

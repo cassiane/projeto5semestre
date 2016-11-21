@@ -28,8 +28,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 import javax.el.ELContext;
 import javax.faces.application.FacesMessage;
@@ -88,8 +86,7 @@ public class LivroBean {
     // lista de solicitações para edição do usuario
     private List<ConvidadoPerfil> listaSolicitacaoEdicao;
 
-    private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
-
+    //private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     public LivroBean() {
         this.controlador = new ControladorLivro();
 
@@ -333,6 +330,13 @@ public class LivroBean {
             this.livroCarregado = this.livro;
             this.tituloLivro = "";
             this.textoLivro = "";
+
+            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+            TimelineBean timelineBean = (TimelineBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "timelineBean");
+            timelineBean.setMensagemPublicacao("Começei a escrever um livro!");
+            timelineBean.salvarMensagemPublicacao();
+
             if (this.disponivelEdicaoAmigo) {
                 this.livroFinalizado = false;
                 this.disponivelEdicaoAmigo = false;
@@ -386,6 +390,14 @@ public class LivroBean {
             }
             //this.livroCarregado.setTipoTexto(tipoTexto);            
             this.controlador.salvarLivro(livroCarregado, this.livroFinalizado, this.perfilUsuario);
+
+            if (this.livroFinalizado) {
+                ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+                TimelineBean timelineBean = (TimelineBean) FacesContext.getCurrentInstance().getApplication()
+                        .getELResolver().getValue(elContext, null, "timelineBean");
+                timelineBean.setMensagemPublicacao("Terminei minha contribuição para o livro " + this.livroCarregado.getTitulo());
+                timelineBean.salvarMensagemPublicacao();
+            }
 
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
                 this.livroFinalizado = false;
@@ -793,7 +805,7 @@ public class LivroBean {
      * @return Um objeto StreamedContent
      */
     public StreamedContent carregarFotoDefault() {
-        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CAMINHO_FOTO_DEFAULT));
+        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath(CadastrarBean.CAMINHO_FOTO_DEFAULT));
 
         // Converte o arquivo em um array de bytes
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

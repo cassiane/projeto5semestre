@@ -4,19 +4,35 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="padraoInterno.xhtml">        
-        <ui:define name="conteudo">     
-            <h:inputText a:placeholder="No que você está pensando?" style="width: 100%; height: 80px;"/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="padraoInterno.xhtml">                
+        <ui:define name="conteudo">                 
+            <script>
+            </script>
+            <f:event listener="#{timelineBean.carregarPublicacoesAmigos(autenticarBean.idPerfil)}" type="preRenderView" />
+            <f:event listener="#{timelineBean.setUsuario(autenticarBean.usuarioLogado())}" type="preRenderView" />
+            <h:form>
+                <div>
+                    <h:inputText a:placeholder="No que você está pensando?" value="#{timelineBean.mensagemPublicacao}" style="width: 100%; height: 80px;"/>
+                </div>                
+                <div style="margin-top: 5px;">                    
+                    <h:commandButton value="Publicar" class="btn btn-success" action="return form.reset();" actionListener="#{timelineBean.salvarMensagemPublicacao()}" />
+                </div>
+        </h:form>
+        <ui:repeat value="#{timelineBean.publicacoesAmigos}" var="tl" varStatus="loop">
             <div class="publication-box">
-                <h:panelGrid columns="2">
-                    <p:graphicImage style="width: 50px; height: 50px;" name="imagens/semFoto.png" />
-                    <p>Nova publicação de Marcelo Lima</p>
+                <h:panelGrid columns="2" cellpadding="10" cellspacing="1">
+                    <p:graphicImage cache="false" style="width: 30px; height: 30px;" value="#{timelineBean.fotoAmigo}">
+                        <f:param name="posicao" value="#{loop.index}" />
+                    </p:graphicImage>
+                    <p style="margin-left: 5px;" class="text-info">Nova publicação de #{tl.amigo.nome} em #{timelineBean.getDataPublicacao(tl.dataPublicacao)}</p>
                 </h:panelGrid>
-                #{' '}
-                <p>Uma publicação de um Amigo</p>
+                <br />
+                <p>#{tl.publicacao}</p>
             </div>
-        </ui:define>
-    </ui:composition>
+        </ui:repeat>
+    </ui:define>
+</ui:composition>
 </html>
 

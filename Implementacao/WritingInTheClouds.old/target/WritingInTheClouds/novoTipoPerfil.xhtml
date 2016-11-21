@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="padraoInterno.xhtml">        
+        <ui:define name="conteudo">     
+            <div align="center"> 
+               <h:form >  
+                   <p:outputLabel for="Descricao" value="Descrição: "/>
+                   <p:inputText id="Descricao" label="Descrição"  value="#{cadastrarBean.tipoPerfil.tipoPerfil}"/>
+                    <h:panelGrid columns="2" style="margin-top: 10px">
+                        <p:commandButton value="Voltar" action="tiposPerfis.xhtml" icon="ui-icon-disk" ajax="false" />
+                        <p:commandButton value="Salvar" action="#{cadastrarBean.cadastrarTipoPerfil()}" icon="ui-icon-disk" ajax="false" />                        
+                    </h:panelGrid>                      
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -83,8 +83,8 @@ public class CadastrarBean {
    private DesafiosPalavras desafioPalavras;
    private List<String> listaPalavras;
 
-    private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
-    private static final String CAMINHO_FOTO_CAPA_DEFAULT = "/resources/imagens/semWallpaper.png";
+    public static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
+    public static final String CAMINHO_FOTO_CAPA_DEFAULT = "/resources/imagens/semWallpaper.png";
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro();

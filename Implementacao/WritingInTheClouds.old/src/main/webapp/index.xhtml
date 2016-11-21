@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="padraoUsuarioNaoLogado.xhtml">
+        <ui:define name="conteudo">            
+            <h:form>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h:graphicImage styleClass="book_img" name="imagens/livro.png"/>
+                    </div>                    
+                    <div class="col-md-6">
+                        <h:outputText styleClass="text-info" value="Abra uma Conta" style="font-size: 30px;"/>                
+                        <div class="form-group form-inline">
+                            <h:inputText styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'} width: 49.5%;"
+                                         maxlength="50" a:placeholder="Nome" required="true" value="#{cadastrarBean.usuario.nome}"/>                        
+                            #{' '}
+                            <h:inputText styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'} width: 49.5%;" 
+                                         maxlength="50" a:placeholder="Sobrenome" required="true" value="#{cadastrarBean.usuario.sobrenome}"/>
+                        </div>
+                        <div class="form-group">
+                            <h:inputText styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
+                                         maxlength="150" a:placeholder="Email" required="true" value="#{cadastrarBean.usuario.email}"/>
+                        </div>
+                        <div class="form-group">
+                            <h:inputText id="intReEmail" styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
+                                         maxlength="150" a:placeholder="Digite novamente o email" autocomplete="false"  
+                                         required="true" value="#{cadastrarBean.emailVerificado}"/>
+                        </div>
+                        <div class="form-group">
+                            <h:inputSecret styleClass="form-control" style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" 
+                                           maxlength="120" a:placeholder="Senha" required="true" value="#{cadastrarBean.usuario.senha}"/>
+                        </div>
+                        <div class="form-group">
+                            <h:outputText styleClass="text-primary" value="Aniversário" style="font-size: 15px;" />
+                        </div>
+                        <div class="form-inline">
+                            <h:selectOneMenu value="#{cadastrarBean.diaNascimento}" styleClass="form-control" 
+                                             style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'}" required="true">
+                                <f:selectItem itemLabel="Dia" itemValue="" />
+                                <c:forEach var="dia" begin="1" end="31">
+                                    <f:selectItem itemLabel="#{dia}" itemValue="#{dia}" />
+                                </c:forEach>
+                            </h:selectOneMenu>                                                
+                            <h:selectOneMenu value="#{cadastrarBean.mesNascimento}" styleClass="form-control" 
+                                             style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'} margin-left: 10px;" 
+                                             required="true">
+                                <f:selectItem itemLabel="Mês" itemValue="" />
+                                <c:forEach var="mes" begin="1" end="12">
+                                    <f:selectItem itemLabel="#{mes}" itemValue="#{mes}" />
+                                </c:forEach>
+                            </h:selectOneMenu>
+                            <h:selectOneMenu value="#{cadastrarBean.anoNascimento}" styleClass="form-control" 
+                                             style="#{ component.valid ? 'border-color:none;' : 'border-color:red;'} margin-left: 10px;" 
+                                             required="true">
+                                <f:selectItem itemLabel="Ano" itemValue="" />
+                                <c:forEach varStatus="ano" begin="#{cadastrarBean.anoInicial}" end="#{cadastrarBean.anoAtual}">
+                                    <f:selectItem itemLabel="#{ano.index}" itemValue="#{ano.index}" />
+                                </c:forEach>
+                            </h:selectOneMenu>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <h:selectOneRadio value="#{cadastrarBean.usuario.genero}" required="true" 
+                                              style="#{ component.valid ? 'color:black;' : 'color:red;'} font-size: 20px;">
+                                <f:selectItem itemLabel="Feminino" itemValue="F" class="form-control" />
+                                <f:selectItem itemLabel="Masculino" itemValue="M" class="form-control" />
+                            </h:selectOneRadio>
+                        </div>
+                        <div class="form-group">
+                            <p>
+                                Ao clicar em Abrir uma Conta, você concorda que leu nossa 
+                                <a href="http://www.google.com.br">Política de Dados</a> e que concorda com os nossos
+                                <a href="http://www.google.com.br">Termos</a> incluindo o nosso
+                                <a href="http://www.google.com.br">Uso de Cookies</a>.
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <h:commandButton value="Abrir uma Conta" styleClass="btn btn-group btn-success"
+                                             action="#{cadastrarBean.cadastrarUsuario()}" />
+                        </div>
+                    </div>
+                </div>                
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

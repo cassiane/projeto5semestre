@@ -93,4 +93,15 @@ public class PerfilDAO {
                 .setInteger("idusu", usuario.getId())
                 .list();
     }    
+    
+    /**     
+     * @param idPerfil O id do perfil do usuário
+     * @return Um objeto Usuario
+     */
+    public Usuario carregarUsuarioPorId(int idPerfil) {        
+        Perfil perfil = (Perfil) sessao.createQuery("FROM Perfil WHERE id = :idPerfil")
+                .setInteger("idPerfil", idPerfil)
+                .uniqueResult();
+        return perfil.getUsuario();
+    }
 }
