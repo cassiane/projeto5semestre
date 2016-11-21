@@ -51,7 +51,7 @@ function enviandomsn(usu, amigo, msn) {
 
 function messenger_off(e) {
     //$('#sidebar_secondary_chat' + e).removeClass('popup-box-on');
-    $('#box_messenger').children('#box_messenger_chat' + e).remove();
+    //$('#box_messenger').children('#box_messenger_chat' + e).remove();
 }
 
 //$(document).on('click', '.panel-heading span.icon_minim', function (e) {
@@ -91,13 +91,15 @@ function messenger_create(chatusu, chatami) {
     var fotoUsuario = $('#chatfotouser').attr('src');
     var fotoAmigo = $('#chaton' + chatami).children('li').children('img');
     var html = $('#box_messenger_chat').clone();
-    html.attr('id', 'box_messenger_chat' + chatami);
+//    html.attr('id', 'box_messenger_chat' + chatami + ' ' + $('#box_messenger_chat').html());
+    alert(chatusu + ' ' + chatami + ' ' + html.html());
     $(html.children('chat-aside')).addClass('popup-box-on');
     $(html.children('chat-aside').children('div').children('div').children('h3').children('span')).text(' ' + fotoAmigo.attr('alt'));
     $(html.children('chat-aside').children('div').children('div').children('form').children('div').children('input')).attr('id', 'txtmsn' + chatami);
     $(html.children('chat-aside').children('div').children('div').children('form').children('span').children('a')).attr('onclick', 'enviandomsn(' + chatusu + ', ' + chatami + ', txtmsn' + chatami + ')');
-    $(html).find('#removeClass').attr('onclick', 'messenger_off(' + chatami + ')');
-//    alert(html.html());
+//    $(html.children('chat-aside').children('div').children('div').children('form#j_idt105').children('input')).attr('value', chatami);
+    $(html).find('#removeClass').attr('onclick', 'fecharBox(' + chatami + ')');
+    alert(html.html());
 
     //alert(fotoUsuario);
 //    $('#box_messenger')
@@ -413,7 +415,7 @@ function messenger_create(chatusu, chatami) {
 //});
 
 function listarmsn(txt) {
-    alert(txt);
+    alert("oi");
     var msnamigo =
             '<div class="chat_message_wrapper">'
             + '<div class="chat_user_avatar">'
@@ -451,4 +453,5 @@ function listarmsn(txt) {
             + '</li>'
             + '</ul>'
             + '</div>'
+    $('#box_messenger').append(txt);
 }

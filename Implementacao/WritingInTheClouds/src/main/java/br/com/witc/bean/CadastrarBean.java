@@ -37,6 +37,7 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.*;
+import javax.faces.bean.ManagedProperty;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
@@ -82,6 +83,7 @@ public class CadastrarBean {
    private List<String> listaPalavras;
 
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
+    private int boxAtivo;
     
     public CadastrarBean() {
         this.controlador = new ControladorCadastro();
@@ -1103,5 +1105,17 @@ public class CadastrarBean {
      */
     public void setListaPalavras(List<String> listaPalavras) {
         this.listaPalavras = listaPalavras;
+    }
+
+    public int getBoxAtivo() {
+        return boxAtivo;
+    }
+
+    public void setBoxAtivo(int boxAtivo) {
+//        try {
+            this.boxAtivo = boxAtivo;
+//        } catch (Exception ex) {
+//            this.boxAtivo = 0;
+//        }
     }
 }

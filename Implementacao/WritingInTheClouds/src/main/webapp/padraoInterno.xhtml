@@ -18,11 +18,23 @@
         <h:outputScript name="raterater/js/raterater.jquery.js" />        
         <h:outputScript name="js/witc.js" />
         <h:outputScript name="js/testechatjs.js" />
+        <script type="text/javascript">
+            function fecharBox(e) {
+                alert('E: ' + e);
+                if (e > 0) {
+                    alert('Sim: ' + e);
+                    fechandoBox({param : e);
+                } else {
+                    alert('Não: ' + e);
+                }
+            }
+        </script>
     </h:head>
     <h:body>         
         <f:event listener="#{cadastrarBean.setUsuarioLogado()}" type="preRenderView"/>        
         <f:event listener="#{autenticarBean.listarPerfisAmigos()}" type="preRenderView"/>        
-        <f:event listener="#{autenticarBean.listarPerfisUsuarioLogado()}" type="preRenderView"/>        
+        <f:event listener="#{autenticarBean.listarPerfisUsuarioLogado()}" type="preRenderView"/>
+        <f:event listener="#{cadastrarBean.listarAmigos()}" type="preRenderView" />
         <div class="container">            
             <p:growl id="growl" severity="error" globalOnly="true" /> 
             <div class="clearfix" />
@@ -182,14 +194,15 @@
                         <ul style="padding-top: 10px;">
                             <p:graphicImage id="chatfotouser" value="#{cadastrarBean.foto}" style="display: none" />
                             <ui:repeat value="#{cadastrarBean.amigos}" var="amigo">
-                                <!--<p:remoteCommand name="chatfotouser" actionListener="#{cadastrarBean.foto}" />-->
-                                <a href="#" id="chaton#{amigo.id}" onclick="messenger_create(#{autenticarBean.usuarioLogado().id}, #{amigo.id})">
+                                <p:commandLink actionListener="#{autenticarBean.addBoxMessenger(amigo.id, amigo.nomeABNT)}" >
+                                <!--<a href="#" id="chaton#{amigo.id}" onclick="messenger_create(#{autenticarBean.usuarioLogado().id}, #{amigo.id})">-->
                                     <li>
                                         <p:graphicImage styleClass="md-user-image img-thumbnail" value="#{cadastrarBean.fotoAmigo}" cache="false" alt="#{amigo.nomeABNT}">
                                             <f:param name="userfoto" value="#{amigo.id}" />
                                         </p:graphicImage>#{amigo.nome}
                                     </li>
-                                </a>
+                                    <!--</a>-->
+                                </p:commandLink>
                             </ui:repeat>
                         </ul>
                     </div>
@@ -207,7 +220,8 @@
              right: 300px;
              z-index: 300;">
             <h:form id="frmMsn" style="display: none">
-            <p:remoteCommand name="vais" action="#{messengerBean.enviarMsn()}" />
+                <p:remoteCommand name="vais" action="#{messengerBean.enviarMsn()}" />
+                <!--<p:remoteCommand name="fechandoBox" action="#{autenticarBean.rmBoxMessenger()}" />-->
                 <input type="text" id="idsend" name="idsend" />
                 <input type="text" id="idreceive" name="idreceive" />
                 <input type="text" id="messengermsn" name="messengermsn" />
@@ -215,7 +229,8 @@
                 <a href="#" id="idmsn" onclick="vais()" />
             </h:form>
             <div id="box_messenger_chat" class="col-md-2" style="width: 260px;">
-                <chat-aside id="sidebar_secondary_chat" class="tabbed_sidebar ng-scope chat_sidebar" style="margin-left:10px;">
+                <!--<h:form>-->
+                <chat-aside id="sidebar_secondary_chat" class="tabbed_sidebar ng-scope chat_sidebar popup-box-on" style="margin-left:10px;">
                     <div class="popup-head">
                         <div class="popup-head-left pull-left">
                             <h3>
@@ -272,14 +287,20 @@
                                     </li>
                                 </ul>
                             </div>
-                            <button data-widget="remove" id="removeClass" onclick="messenger_off(chatami)" class="chat-header-button pull-right" type="button">
+                            <!--<h:form id="frmFexBox">-->
+                                
+                                <!--<h:commandLink onclick="" class="chat-header-button pull-right">-->
+                            <button data-widget="remove" id="removeClass" onclick="" class="chat-header-button pull-right" type="button">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </button>
+                            <!--</h:commandLink>-->
+                                <!--</h:form>-->
                         </div>
                     </div>
                     <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active" style="opacity: 1; display: block; transform: translateX(0px);">
                         <div class="chat_box touchscroll chat_box_colors_a">
-                            <!--mostrar mensagens-->
+                            mostrar mensagens
+
                         </div>
                     </div>
                     <div class="chat_submit_box">
@@ -299,7 +320,7 @@
                                     </span>
                                 </div>
                                 <span class="uk-input-group-addon">
-                                    <a href="#" onclick="enviandomsn(0, 0, msn)">
+                                    <a href="#" onclick="enviandomsn(#{autenticarBean.usuarioLogado().id}, boxa, msn)">
                                         <i class="glyphicon glyphicon-send"></i>
                                     </a>
                                 </span>
@@ -307,7 +328,17 @@
                         </div>
                     </div>
                 </chat-aside>
+                <!--</h:form>-->
             </div>
+            <f:view>
+                <c:forEach items="#{autenticarBean.boxMessenger.entrySet()}" var="box">
+                    <f:subview id="subview_#{box.key}">
+                        <!--<ui:include src="testechat.xhtml" />-->
+                        <script>messenger_create(#{autenticarBean.usuarioLogado().id}, #{box.key});</script>
+                    </f:subview>
+                </c:forEach>
+            </f:view>
         </div>
+        
     </h:body>    
 </html>

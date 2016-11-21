@@ -11,13 +11,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import br.com.witc.modelo.ControladorAutenticacao;
+import br.com.witc.modelo.Messenger;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.Usuario;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.PatternSyntaxException;
 import static javax.faces.application.FacesMessage.SEVERITY_ERROR;
+import javax.faces.bean.ManagedProperty;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 
 /**
@@ -35,9 +39,12 @@ public class AutenticarBean {
     private Perfil perfilSelecionadoUsuario;
     private List<Perfil> perfisAmigo;
     private Perfil perfilSelecionadoAmigo;
+    private Map<Integer, String> boxMessenger;
+    private int boxAtivo;
 
     public AutenticarBean() {
         this.controlador = new ControladorAutenticacao();
+        this.boxMessenger = new HashMap<Integer, String>();
     }
 
     /**
@@ -436,4 +443,33 @@ public class AutenticarBean {
     public void setarPerfilUsuario() {
         this.controlador.retornarPerfilPadraoUsuarioLogado();
     }
+
+    public Map<Integer, String> getBoxMessenger() {
+        return boxMessenger;
+    }
+
+    public void setBoxMessenger(Map<Integer, String> boxMessenger) {
+        this.boxMessenger = boxMessenger;
+    }
+    
+    public void addBoxMessenger(int box, String messenger) {
+        this.boxMessenger.put(box, messenger);
+        this.boxAtivo = box;
+    }
+    
+    public void rmBoxMessenger() {
+        try {
+            int value = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("param"));
+            this.boxMessenger.remove(value);
+        } catch (Exception ex) {}
+    }
+
+    public int getBoxAtivo() {
+        return boxAtivo;
+    }
+
+    public void setBoxAtivo(int boxAtivo) {
+        this.boxAtivo = boxAtivo;
+    }
+    
 }
