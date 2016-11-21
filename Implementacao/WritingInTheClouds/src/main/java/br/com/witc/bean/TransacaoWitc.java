@@ -39,7 +39,7 @@ public class TransacaoWitc {
     public void finalizarRequisicao() {        
         if (sessaoHibernate.isOpen() && sessaoHibernate.getTransaction().isActive()) {                
             sessaoHibernate.flush();            
-            sessaoHibernate.getTransaction().commit();
+            sessaoHibernate.getTransaction().commit();            
         }
         ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
     }    

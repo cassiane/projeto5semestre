@@ -20,7 +20,7 @@ ADD COLUMN `fotoCapa` LONGBLOB NULL DEFAULT NULL AFTER `foto`;
 -- Table `witc`.`timeline`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `witc`.`timeline` (
-  `idTimeline` INT UNSIGNED NOT NULL,
+  `timeline` INT UNSIGNED AUTO INCREMENT NOT NULL,
   `idUsuario` INT(10) UNSIGNED NOT NULL,
   `idAmigo` INT(10) UNSIGNED NOT NULL,
   `dataPublicacao` DATETIME NOT NULL,
@@ -39,3 +39,6 @@ CREATE TABLE IF NOT EXISTS `witc`.`timeline` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+ALTER TABLE `witc`.`timeline` 
+CHANGE COLUMN `idTimeline` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;

@@ -334,6 +334,7 @@ public class LivroBean {
             ELContext elContext = FacesContext.getCurrentInstance().getELContext();
             TimelineBean timelineBean = (TimelineBean) FacesContext.getCurrentInstance().getApplication()
                     .getELResolver().getValue(elContext, null, "timelineBean");
+            timelineBean.setUsuario(this.usuario);
             timelineBean.setMensagemPublicacao("Começei a escrever um livro!");
             timelineBean.salvarMensagemPublicacao();
 
@@ -395,6 +396,7 @@ public class LivroBean {
                 ELContext elContext = FacesContext.getCurrentInstance().getELContext();
                 TimelineBean timelineBean = (TimelineBean) FacesContext.getCurrentInstance().getApplication()
                         .getELResolver().getValue(elContext, null, "timelineBean");
+                timelineBean.setUsuario(this.usuario);
                 timelineBean.setMensagemPublicacao("Terminei minha contribuição para o livro " + this.livroCarregado.getTitulo());
                 timelineBean.salvarMensagemPublicacao();
             }

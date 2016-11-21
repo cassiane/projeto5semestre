@@ -83,5 +83,6 @@ public class ControladorTimeline {
             this.timeline.setPublicacao(mensagem);
             this.timeline.salvarMensagemPublicacao();
         }
+        this.timeline = new Timeline();
     }
 }

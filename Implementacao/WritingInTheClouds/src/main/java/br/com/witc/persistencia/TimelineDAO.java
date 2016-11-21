@@ -45,7 +45,7 @@ public class TimelineDAO {
         return lstTimeline;
     }
     
-    public void salvarPublicacao(Timeline tl) {
-        sessao.save(tl);
+    public void salvarPublicacao(Timeline tl) {        
+        sessao.saveOrUpdate(tl);        
     }
 }
