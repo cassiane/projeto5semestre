@@ -56,10 +56,10 @@
                                 </li>        
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
-                                    <ul class="dropdown-menu alert-dropdown" style="width: 300px;">
+                                    <ul class="dropdown-menu alert-dropdown" style="width: 300px;">                                        
                                         <h:dataTable styleClass="order-table"                                                       
                                                      rows="5" var="notificacao" rowClasses="order-table-odd-row order-table-even-row "
-                                                     value="#{cadastrarBean.listaNotificacoes}" >
+                                                     value="#{cadastrarBean.listaNotificacoes}" >                                          
                                             <h:column>
                                                 <p:graphicImage class="img-rounded" style="width: 75px; height: 65px; padding: 3px;" value="#{cadastrarBean.fotoNotificacao}">                                                
                                                     <f:param name="userfoto" value="#{notificacao.remetente.id}" />
@@ -73,16 +73,14 @@
                                                     actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
                                                     rendered="#{not cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafio.xhtml">                                                    
                                                     <f:param name="desafiosUsuarios" value="#{notificacao.desafio.id}"/>
+                                                </h:commandLink>                                                
+                                                <!--Quando for uma notificação de conclusão de desafio-->
+                                                <h:commandLink class="coluna" value="#{notificacao.remetente.nome} 
+                                                               #{''} #{notificacao.texto}" 
+                                                    actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
+                                                    rendered="#{cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafioConcluido.xhtml">                                                    
+                                                    <f:param name="desafiosUsuarios" value="#{notificacao.desafio.id}"/>
                                                 </h:commandLink>
-                                                <!-- actionListener="{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
-                                                -->
-                                                <!--Quando for uma notificação de conclusão de desafio
-                                                <h:commandLink class="coluna" value="{notificacao.remetente.nome} 
-                                                               {''} {notificacao.texto}" 
-                                                    actionListener="{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
-                                                    rendered="{cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafioConcluido.xhtml">                                                    
-                                                    <f:param name="desafiosUsuarios" value="{notificacao.desafio.id}"/>
-                                                </h:commandLink>-->
                                             </h:column>                                    
                                         </h:dataTable>
                                         

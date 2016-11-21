@@ -40,6 +40,7 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.*;
+import java.util.regex.PatternSyntaxException;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
@@ -87,8 +88,9 @@ public class CadastrarBean {
     private HistoriasDesafios historiasDesafios;
     private List<String> palavrasDoDesafio;
     private List<Notificacoes> listaNotificacoes;
-    private Notificacoes notificacao;
+    private final Notificacoes notificacao;
     DesafiosUsuarios desafiosUsuarios;
+    private HistoriasDesafios historiasDesafiosCarregado; 
 
     public String getPalavra() {
         return palavra;
@@ -116,6 +118,7 @@ public class CadastrarBean {
         this.historiasDesafios = new HistoriasDesafios();
         this.listaNotificacoes = new ArrayList<Notificacoes>();
         this.notificacao = new Notificacoes();
+        //this.historiasDesafiosCarregado = new HistoriasDesafios();
         this.desafiosUsuarios = new DesafiosUsuarios();
     }
     
@@ -397,7 +400,7 @@ public class CadastrarBean {
     public boolean isTemSolicitacao() {
         return !(this.solicitacao == null || this.solicitacao.isEmpty());
     }
-
+    
     /**
      * Busca a lista de usuarios do sistema
      *
@@ -422,8 +425,6 @@ public class CadastrarBean {
         this.convidarEmail = convidarEmail;
     }
     
-    
-
     /**
      * @return the tipoPerfilNovo
      */
@@ -653,7 +654,24 @@ public class CadastrarBean {
         this.atualizarStatusUsuario(1);
         this.preencherDataNasc();
     }
-
+    
+    /**
+     * @return the historiasDesafiosCarregado
+     */
+    public HistoriasDesafios getHistoriasDesafiosCarregado() {
+        desafiosUsuarios.setId(Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("desafiosUsuarios")));
+        return historiasDesafiosCarregado = this.controlador.carregarHistoriasDesafios(desafiosUsuarios);
+    }
+    
+    /**
+     * Usado no padrão interno para mostrar a mensagem sem registros
+     * quando o usuário nao tiver notificações
+     * @return 
+     */
+    public boolean listaVazia(){
+        return this.listaNotificacoes.isEmpty();
+    }
+    
     /**
      * Cadastra um usuario no sistema
      *
@@ -1204,10 +1222,8 @@ public class CadastrarBean {
     /**
      * @return the historiasDesafios
      */
-    public HistoriasDesafios getHistoriasDesafios() {
-        this.desafiosUsuarios = new DesafiosUsuarios();
-        this.desafiosUsuarios = this.controlador.carregarDesafiosUsuarios(this.historiasDesafios.getDesafiosUsuarios().getId());
-        return this.historiasDesafios = this.controlador.carregarHistoriasDesafios(this.desafiosUsuarios);
+    public HistoriasDesafios getHistoriasDesafios() {        
+        return this.historiasDesafios;
     }
 
     /**
@@ -1220,25 +1236,100 @@ public class CadastrarBean {
     /**
      * Salva a história do desafio
      * @return retorna a pagina timeline
+     * @throws java.lang.Exception
      */
-    public String salvarHistoriaDesafio(){
-        this.historiasDesafios.setTipoTexto(this.controlador.carregarTipoTexto(1));
-        this.historiasDesafios.setDisponivelBiblioteca(false);
-        this.historiasDesafios.setReportadoConteudoImproprio(false);
-        this.historiasDesafios.setClassificacao("LIVRE");
-        this.historiasDesafios.setAvaliacao(0f);          
-        this.desafiosUsuarios = this.controlador.carregarDesafiosUsuarios(this.historiasDesafios.getDesafiosUsuarios().getId());
-        this.historiasDesafios.setDesafiosUsuarios(desafiosUsuarios);
+    public String salvarHistoriaDesafio() throws Exception{
+        //Trocar o id de 3 para o que for o de desafio
         
-        this.controlador.salvarHistoriaDesafio(this.historiasDesafios);
-        
-        this.controlador.excluirNotificacao(this.historiasDesafios.getDesafiosUsuarios().getId());
-        this.notificacao.setDesafio(this.historiasDesafios.getDesafiosUsuarios());
-        this.notificacao.setDestinatario(this.historiasDesafios.getDesafiosUsuarios().getUsuarioDesafiante());
-        this.notificacao.setRemetente(this.historiasDesafios.getDesafiosUsuarios().getUsuario());
-        this.notificacao.setTexto("concluiu seu desafio !");
+            this.historiasDesafios.setTipoTexto(this.controlador.carregarTipoTexto(3));
+            this.historiasDesafios.setDisponivelBiblioteca(false);
+            this.historiasDesafios.setReportadoConteudoImproprio(false);
+            this.historiasDesafios.setClassificacao("LIVRE");
+            this.historiasDesafios.setAvaliacao(0f);          
+            this.desafiosUsuarios = this.controlador.carregarDesafiosUsuarios(this.historiasDesafios.getDesafiosUsuarios().getId());
+            this.historiasDesafios.setDesafiosUsuarios(desafiosUsuarios);
+
+            this.controlador.salvarHistoriaDesafio(this.historiasDesafios);
+
+            this.controlador.excluirNotificacao(this.historiasDesafios.getDesafiosUsuarios().getId());
+            this.notificacao.setDesafio(this.historiasDesafios.getDesafiosUsuarios());
+            this.notificacao.setDestinatario(this.historiasDesafios.getDesafiosUsuarios().getUsuarioDesafiante());
+            this.notificacao.setRemetente(this.historiasDesafios.getDesafiosUsuarios().getUsuario());
+            this.notificacao.setTexto("concluiu seu desafio !");
+            this.controlador.salvarNotificacao(this.notificacao);
+            return "timeline.xhtml?faces-redirect=true";        
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public String salvarHistoriaNovamente(){
+        this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);         
+        this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
+        this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setTexto("tentou novamente o desafio !");
         this.controlador.salvarNotificacao(this.notificacao);
         return "timeline.xhtml?faces-redirect=true";
+    }
+    
+    /**
+     * Informa ao usuário que não está de acordo e salva a avaliação da historia
+     * @return 
+     */
+    public String naoEstaAcordo(){
+        this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);  
+        this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
+        this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setTexto("Informou que seu desafio não está de acordo !");
+        this.controlador.salvarNotificacao(this.notificacao);
+        return "timeline.xhtml?faces-redirect=true";
+    }
+    
+    /**
+     * Salva a história do desafio
+     * @return retorna a pagina timeline
+     */
+    public String publicarDesafioBiblioteca(){
+        this.historiasDesafiosCarregado.setDisponivelBiblioteca(true);        
+        this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);         
+        this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
+        this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setTexto("publicou seu desafio na biblioteca !");
+        this.controlador.salvarNotificacao(this.notificacao);
+        return "timeline.xhtml?faces-redirect=true";
+    }
+    
+    /**
+     * Recebe o id e a nota dada pelo usuário ao livro.  
+     */
+    public void desafioRating() {        
+        try {
+            String[] avaliacao = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap()
+                .get("rating").split("-");            
+            int idHistoriasDesafios = Integer.parseInt(avaliacao[0]);
+            float rating = Float.parseFloat(avaliacao[1]);
+            HistoriasDesafios tmpHistoria = this.controlador.carregarHistoriasDesafiosPorId(idHistoriasDesafios);           
+            
+            
+            int qtdAvaliacoes = tmpHistoria.getQtdAvaliacoes() + 1;
+            float somaAvaliacoes = tmpHistoria.getSomaAvaliacoes() + rating;
+            float novaAvaliacao = somaAvaliacoes / qtdAvaliacoes;
+            
+            historiasDesafiosCarregado.setAvaliacao(novaAvaliacao);
+            historiasDesafiosCarregado.setQtdAvaliacoes(qtdAvaliacoes);
+            historiasDesafiosCarregado.setSomaAvaliacoes(somaAvaliacoes);            
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException | 
+                NullPointerException | PatternSyntaxException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Erro ao qualificar o usuário. Seu voto não foi computado!");
+        }        
     }
     
     /**
@@ -1271,6 +1362,33 @@ public class CadastrarBean {
      * @return true se contém a palavra conclui no texto da notificação
      */
     public boolean isConclusaoDesafio(Notificacoes notificacao){        
-        return notificacao.getTexto().contains("concluiu");
+        return notificacao.getTexto().contains("concluiu") || notificacao.getTexto().contains("não") || notificacao.getTexto().contains("novamente");
+    }
+    
+    /**
+     * Método para redirecionar para outra página 
+     * quando for uma notificação de um desafio não aceito
+     * @return true se contém a palavra conclui no texto da notificação
+     */
+    public boolean isNaoDeAcordo(){     
+        for(Notificacoes notif:listaNotificacoes){
+            if(notif.getDesafio().getId() == this.historiasDesafiosCarregado.getDesafiosUsuarios().getId()){
+                if(notif.getTexto().contains("novamente")){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Quando o usuário desiste de tentar fazer o desafio
+     */
+    public void desistir(){
+        this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setTexto("Desistiu de seu desafio !");
+        this.controlador.salvarNotificacao(this.notificacao);
     }
 }

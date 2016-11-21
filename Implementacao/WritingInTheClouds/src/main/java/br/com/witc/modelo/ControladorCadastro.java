@@ -485,4 +485,13 @@ public class ControladorCadastro {
     public HistoriasDesafios carregarHistoriasDesafios(DesafiosUsuarios desafiosUsuarios) {
         return this.historiasDesafios.carregarHistoriasDesafios(desafiosUsuarios);
     }
+    
+    /**
+     * Carrega a historia do desafio por id
+     * @param idHistoriasDesafios
+     * @return 
+     */
+    public HistoriasDesafios carregarHistoriasDesafiosPorId(int idHistoriasDesafios) {
+        return this.historiasDesafios.carregarHistoriasDesafiosPorId(idHistoriasDesafios);
+    }
 }

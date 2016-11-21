@@ -17,19 +17,31 @@
                         class="disable_autocomplete_multiple autocomplete_multiple" disabled="true" active="false" >
                     </p:autoComplete>
                     
-                    <p:editor id="editor" widgetVar="editorWidget" value="#{cadastrarBean.historiasDesafios.texto}" disabled="true" width="600" />
-                    
-                    <h:form id="frmRating"> 
-                        <p:remoteCommand name="callBeanMethod" update=":frmRating" 
-                                         actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRatebox();" />
-                        <div class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
-                             style="margin-top: 10px; margin-left: auto; margin-right: auto;}">                                        
-                        </div>
-                    </h:form>
-                    
+                    <p:editor id="editor" widgetVar="editorWidget" value="#{cadastrarBean.historiasDesafiosCarregado.texto}" disabled="true" width="600" />
+                </h:form>
+                <h:form id="formDesafio">
+                    <p:remoteCommand name="callBeanMethod" update=":formDesafio" 
+                                        actionListener="#{cadastrarBean.desafioRating()}" 
+                                        oncomplete="initializeRatebox();" />
+                    <div class="ratebox" data-id="#{cadastrarBean.historiasDesafiosCarregado.id}" data-rating="#{cadastrarBean.historiasDesafiosCarregado.avaliacao}" 
+                         style="margin-top: 10px; margin-left: auto; margin-right: auto;}">                                        
+                    </div>
+                </h:form>
+                <h:form rendered="#{not cadastrarBean.isNaoDeAcordo()}">
                     <h:panelGrid columns="4" style="margin-top: 10px">
-                        <p:commandButton value="Salvar na biblioteca"  action="#{cadastrarBean.salvarHistoriaDesafio()}" icon="ui-icon-disk" ajax="false" />                        
-                        <p:commandButton value="Não está de acordo"  action="#{cadastrarBean.salvarHistoriaDesafio()}" icon="ui-icon-close" ajax="false" />
+                        <p:commandButton value="Tentar novamente"                                         
+                                         action="editarDesafioNovamente.xhtml"
+                                         icon="ui-icon-disk" ajax="false">
+                            <f:param name="desafiosUsuarios" value="#{cadastrarBean.historiasDesafiosCarregado.desafiosUsuarios.id}"/>
+                        </p:commandButton>                        
+                        <p:commandButton value="Desistir" actionListener="#{cadastrarBean.desistir()}" action="timeline" icon="ui-icon-close" ajax="false" />
+                        <p:commandButton value="Voltar" action="timeline" type="button" /> 
+                    </h:panelGrid> 
+                </h:form>                
+                <h:form rendered="#{cadastrarBean.isNaoDeAcordo()}">
+                    <h:panelGrid columns="4" style="margin-top: 10px">
+                        <p:commandButton value="Salvar na biblioteca"  action="#{cadastrarBean.publicarDesafioBiblioteca()}" icon="ui-icon-disk" ajax="false" />                        
+                        <p:commandButton value="Não está de acordo"  action="#{cadastrarBean.naoEstaAcordo()}" icon="ui-icon-close" ajax="false" />
                         <p:commandButton value="Voltar" action="timeline" type="button" /> 
                     </h:panelGrid>                     
                 </h:form>

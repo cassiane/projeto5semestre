@@ -40,4 +40,13 @@ public class HistoriasDesafiosDAO {
                 .uniqueResult();
     }
     
+    /**
+     * Faz o load do historia desafios
+     * @param idHistoriasDesafios
+     * @return 
+     */
+    public HistoriasDesafios carregarHistoriasDesafiosPorId(int idHistoriasDesafios) {
+        return (HistoriasDesafios) sessao.load(HistoriasDesafios.class, idHistoriasDesafios);
+    }
+    
 }
