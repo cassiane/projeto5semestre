@@ -12,7 +12,6 @@ import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.persistencia.PerfilDAO;
 import br.com.witc.persistencia.TipoPerfilDAO;
-import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -36,7 +35,10 @@ public class ControladorCadastro {
     private final TipoTexto tipoTexto;
     private final DesafiosPalavras desafiosPalavras;
     private final Desafios desafio;
-
+    private final DesafiosUsuarios desUsuario;
+    private final Notificacoes notificacoes;
+    private final HistoriasDesafios historiasDesafios;
+    
     public ControladorCadastro() {
         this.usuario = new Usuario();
         this.tipoPerfil = new TipoPerfil();
@@ -51,6 +53,9 @@ public class ControladorCadastro {
         this.tipoTexto = new TipoTexto();
         this.desafiosPalavras = new DesafiosPalavras();
         this.desafio = new Desafios();
+        this.desUsuario = new DesafiosUsuarios();
+        this.notificacoes = new Notificacoes();
+        this.historiasDesafios = new HistoriasDesafios();
     }
 
     /**
@@ -358,6 +363,16 @@ public class ControladorCadastro {
     }
     
     /**
+     * Método para retornar as palavras do desafio em que o usuário está fazendo
+     * @param idDesafio id do desafio
+     * @return lista de strings
+     * @throws java.lang.Exception 
+     */
+    public List<String> listarPalavrasDoDesafio(int idDesafio) throws Exception{
+        return this.desafiosPalavras.listarPalavrasDoDesafio(idDesafio);
+    }
+    
+    /**
      * Envia à viewer uma mensagem com o status da operação
      *
      * @param sev A severidade da mensagem
@@ -390,6 +405,94 @@ public class ControladorCadastro {
         Perfil oldPerfil = this.perfil.carregarPerfil(usuario);
         this.perfil.desativarPerfil(oldPerfil);
         this.perfil.criarPerfil(newPerfil);
+    }
+    
+    /**
+     * Cadastra a lista de palavras escolhidas pelo usuario
+     * e cadastro o desafio para o usuario 
+     * @param listaPalavras
+     * @param idDesafio
+     */
+    public void salvarDesafio(List<String> listaPalavras, int idDesafio){
+        this.desafiosPalavras.salvarDesafio(listaPalavras,idDesafio);
+    }
+    
+    /**
+     * Cadastra um novo desafio para o amigo desafiado
+     * @param des Objeto desafiosUsuarios
+     * @return retorna o id do desafio recém cadastrado
+     */
+    public int salvarDesafiosUsuarios(DesafiosUsuarios des){
+        return this.desUsuario.salvarDesafiosUsuarios(des);
+    }
+    
+    /**
+     * Retorna a lista de todos os desafios do usuário
+     * @param idUsuario id do usuário logado
+     * @return retorna uma lista de objetos desafiosUsuarios
+     */
+    public List<DesafiosUsuarios> listarDesafiosUsuarios(int idUsuario) {
+        return this.desUsuario.listarDesafiosUsuarios(idUsuario);
+    }
+    
+    /**
+     * Salva a historia do desafio
+     * @param historiasDesafios 
+     */
+    public void salvarHistoriaDesafio(HistoriasDesafios historiasDesafios) {                
+        historiasDesafios.salvarHistoriaDesafio(historiasDesafios);
+    }
+    
+    /**
+     * 
+     * @param idDesafiosUsuarios
+     * @return 
+     */
+    public DesafiosUsuarios carregarDesafiosUsuarios(int idDesafiosUsuarios){
+        return this.desUsuario.carregarDesafioUsuario(idDesafiosUsuarios);
+    }
+    
+    /**
+     * Salva a notificação para o usuário 
+     * @param notificacao 
+    **/
+    public void salvarNotificacao(Notificacoes notificacao) {
+        this.notificacoes.salvarNotificacao(notificacao);
+    }
+    
+    /**
+     * retorna a lista de notificacoes para a tela padrao interno
+     * @param idUsuario
+     * @return 
+     */
+    public List<Notificacoes> listarNotificacoes(int idUsuario) {
+        return this.notificacoes.listarNotificacoes(idUsuario);
+    }
+    
+    /**
+     * Método que exclui a notificações após usuário ter concluído o desafio
+     * @param idDesafiosUsuarios 
+     */
+    public void excluirNotificacao(int idDesafiosUsuarios) {
+        this.notificacoes.excluirNotificacao(idDesafiosUsuarios);
+    }
+    
+    /**
+     * carrega a historia do desafio 
+     * @param desafiosUsuarios
+     * @return 
+     */
+    public HistoriasDesafios carregarHistoriasDesafios(DesafiosUsuarios desafiosUsuarios) {
+        return this.historiasDesafios.carregarHistoriasDesafios(desafiosUsuarios);
+    }
+    
+    /**
+     * Carrega a historia do desafio por id
+     * @param idHistoriasDesafios
+     * @return 
+     */
+    public HistoriasDesafios carregarHistoriasDesafiosPorId(int idHistoriasDesafios) {
+        return this.historiasDesafios.carregarHistoriasDesafiosPorId(idHistoriasDesafios);
     }
     
     public Usuario carregarUsuarioPorIdPerfil(int idPerfil) {        

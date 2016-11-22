@@ -51,11 +51,11 @@ and open the template in the editor.
 
 /* style icon */
 .inner-addon .glyphicon {
-  position: absolute;
-  padding: 10px;
-  pointer-events: none;
-  top: 50%;
-  transform: translateY(-50%); 
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%); 
 }
 
 /* align icon */
@@ -130,7 +130,41 @@ and open the template in the editor.
     width: auto;     
     height: auto;                
     margin:auto;
-}    
+}
+
+.coluna {    
+    font: 12px Arial, sans-serif;
+    font-weight: bold;
+    color: black;
+}
+
+.order-table{
+    border-collapse:collapse;
+    padding: 5px;
+    margin: 5px;
+}
+
+.order-table-odd-row{    
+    background:none repeat scroll 0 0 #FFFFFF;
+    border-top:1px solid #BBBBBB;
+}
+
+.order-table-even-row{    
+    background:none repeat scroll 0 0 #F9F9F9;
+    border-top:1px solid #BBBBBB;
+}
+
+.disable_autocomplete_multiple li {
+    pointer-events: none;
+}
+
+.autocomplete_multiple {
+    margin-top: 10px; width:300px;
+}
+
+.disable_editor{
+    pointer-events: none;
+}
 
 .column-panel {
     margin-top: 20px;

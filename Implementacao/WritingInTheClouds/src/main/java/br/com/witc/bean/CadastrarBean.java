@@ -13,6 +13,9 @@ import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Desafios;
 import br.com.witc.modelo.DesafiosPalavras;
+import br.com.witc.modelo.DesafiosUsuarios;
+import br.com.witc.modelo.HistoriasDesafios;
+import br.com.witc.modelo.Notificacoes;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
@@ -37,6 +40,7 @@ import org.primefaces.model.CroppedImage;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.DefaultStreamedContent;
 import java.io.*;
+import java.util.regex.PatternSyntaxException;
 import static javax.faces.context.FacesContext.getCurrentInstance;
 import javax.faces.event.PhaseId;
 import javax.imageio.ImageIO;
@@ -79,14 +83,32 @@ public class CadastrarBean {
     public TipoTextoDAO tipoTextoDAO;    
     List<TipoTexto> tiposTexto = new ArrayList<>();
     private int tipoPerfilNovo;
-   private final Desafios desafio;
-   private DesafiosPalavras desafioPalavras;
-   private List<String> listaPalavras;
+    private final Desafios desafio;
+    private DesafiosPalavras desafioPalavras;
+    private List<String> listaPalavras;
+    String palavra;
+    private HistoriasDesafios historiasDesafios;
+    private List<String> palavrasDoDesafio;
+    private List<Notificacoes> listaNotificacoes;
+    private final Notificacoes notificacao;
+    DesafiosUsuarios desafiosUsuarios;
+    private HistoriasDesafios historiasDesafiosCarregado; 
+
+    public String getPalavra() {
+        return palavra;
+    }
+
+    public void setPalavra(String palavra) {
+        this.palavra = palavra;
+    }
+    
+    
 
     public static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     public static final String CAMINHO_FOTO_CAPA_DEFAULT = "/resources/imagens/semWallpaper.png";
     
     public CadastrarBean() {
+        this.listaPalavras = new ArrayList<>();
         this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
         this.tipoPerfil = new TipoPerfil();
@@ -96,7 +118,11 @@ public class CadastrarBean {
         this.selectedTiposTextoUsuario = new ArrayList<>();
         this.desafioPalavras = new DesafiosPalavras();
         this.desafio = new Desafios();
-        this.listaPalavras = new ArrayList<>();
+        this.historiasDesafios = new HistoriasDesafios();
+        this.listaNotificacoes = new ArrayList<Notificacoes>();
+        this.notificacao = new Notificacoes();
+        //this.historiasDesafiosCarregado = new HistoriasDesafios();
+        this.desafiosUsuarios = new DesafiosUsuarios();
     }
     
     /**
@@ -415,7 +441,7 @@ public class CadastrarBean {
     public boolean isTemSolicitacao() {
         return !(this.solicitacao == null || this.solicitacao.isEmpty());
     }
-
+    
     /**
      * Busca a lista de usuarios do sistema
      *
@@ -440,8 +466,6 @@ public class CadastrarBean {
         this.convidarEmail = convidarEmail;
     }
     
-    
-
     /**
      * @return the tipoPerfilNovo
      */
@@ -461,6 +485,49 @@ public class CadastrarBean {
      */
     public Desafios getDesafio() {
         return desafio;
+    }
+    
+    /**
+     * @return the desafioPalavras
+     */
+    public DesafiosPalavras getDesafioPalavras() {
+        return desafioPalavras;
+    }
+
+    /**
+     * @param desafioPalavras the desafioPalavras to set
+     */
+    public void setDesafioPalavras(DesafiosPalavras desafioPalavras) {
+        this.desafioPalavras = desafioPalavras;
+    }
+
+    /**
+     * @return the listaPalavras
+     */
+    public List<String> getListaPalavras() {
+        return listaPalavras;
+    }
+
+    /**
+     * @param listaPalavras the listaPalavras to set
+     */
+    public void setListaPalavras(List<String> listaPalavras) {
+        this.listaPalavras = listaPalavras;
+    }
+    
+    /**
+     * @return the palavrasDoDesafio
+     * @throws java.lang.Exception
+     */
+    public List<String> getPalavrasDoDesafio() throws Exception {
+        return listarPalavrasDoDesafio();
+    }
+
+    /**
+     * @param palavrasDoDesafio the palavrasDoDesafio to set
+     */
+    public void setPalavrasDoDesafio(List<String> palavrasDoDesafio) {
+        this.palavrasDoDesafio = palavrasDoDesafio;
     }
     
     public StreamedContent getFotos(Usuario user) {
@@ -543,6 +610,27 @@ public class CadastrarBean {
         }
         return this.getFotos(usu);
     }
+    
+    /**
+     * 
+     * @return 
+     */
+    public StreamedContent getFotoNotificacao() {
+        int idfoto = 0;
+        try {
+            idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
+        } catch (NumberFormatException ex) {
+            return carregarFotoDefault(false);
+        }
+        Usuario usu = new Usuario();
+        for (Notificacoes not : this.listaNotificacoes) {
+            if(not.getRemetente().getId() == idfoto){
+                usu = not.getRemetente();
+                break;
+            }
+        }
+        return this.getFotos(usu);
+    }
 
     /**
      * @return the anoAtual
@@ -607,7 +695,24 @@ public class CadastrarBean {
         this.atualizarStatusUsuario(1);
         this.preencherDataNasc();
     }
-
+    
+    /**
+     * @return the historiasDesafiosCarregado
+     */
+    public HistoriasDesafios getHistoriasDesafiosCarregado() {
+        desafiosUsuarios.setId(Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("desafiosUsuarios")));
+        return historiasDesafiosCarregado = this.controlador.carregarHistoriasDesafios(desafiosUsuarios);
+    }
+    
+    /**
+     * Usado no padrão interno para mostrar a mensagem sem registros
+     * quando o usuário nao tiver notificações
+     * @return 
+     */
+    public boolean listaVazia(){
+        return this.listaNotificacoes.isEmpty();
+    }
+    
     /**
      * Cadastra um usuario no sistema
      *
@@ -765,12 +870,10 @@ public class CadastrarBean {
             this.controlador.redefinirSenha(this.emailRecuperacaoSenha, this.hashRedefinicao, this.senhaRedefinicao);
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso");
             return "index.xhtml";
-        } catch (DadosUsuarioInvalidoException ex) {
+        } catch (DadosUsuarioInvalidoException | LinkRecuperacaoInvalidoException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Problemas na geração do hash para redefinição de senha!");
-        } catch (LinkRecuperacaoInvalidoException ex) {
-            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, ex.getMessage());
         }
 
         return null;
@@ -905,6 +1008,7 @@ public class CadastrarBean {
     
     /**
      * Converte uma imagem para apresentar em um componente p:graphicImage     
+     * @param pathFile O caminho do arquivo
      * @return Um objeto StreamedContent
      */
     public StreamedContent converterFoto(String pathFile) {        
@@ -1137,35 +1241,217 @@ public class CadastrarBean {
         return this.controlador.listarDesafiosPalavras();
     }
     
-    public void salvarDesafio(){
+    /**
+     * Salva a palavra digitada na lista de palavras do desafio
+     */
+    public void salvarPalavra(){
+        if(getListaPalavras() == null){
+            listaPalavras = new ArrayList<>();
+        }
+        getListaPalavras().add(palavra);   
+        this.palavra = "";
+    }
+    
+    /**
+     * Salva o desafio na tabela de desafios
+     * Salva as palavras do desafio na tabela de palavras 
+     * envia notificacao para o usuario que existe um desafio
+     * salva na tabela de desafios do usuario um novo registro
+     * @param idAmigo
+     * @return 
+     */
+    public String salvarDesafio(int idAmigo){  
+        DesafiosUsuarios desUsuario = new DesafiosUsuarios();
+        desafio.setId(1);
+        desUsuario.setDesafio(desafio);
+        desUsuario.setUsuario(this.getUsuario().carregarAmigo(idAmigo));        
+        desUsuario.setUsuarioDesafiante(usuario);
+        int idDesafio = this.controlador.salvarDesafiosUsuarios(desUsuario);
+        this.controlador.salvarDesafio(listaPalavras, idDesafio);
+        this.notificacao.setDesafio(desUsuario);    
+        this.notificacao.setDestinatario(this.getUsuario().carregarAmigo(idAmigo));
+        this.notificacao.setRemetente(this.getUsuario());
+        this.notificacao.setTexto("Desafiou você a escrever com as palavras que ele escolheu!");
+        this.controlador.salvarNotificacao(this.notificacao);
+        return "timeline.xhtml?faces-redirect=true";   
+    }
+    
+    /**
+     * Lista os desafios em que o usuário foi selecionado para fazer 
+     */
+    public void listarDesafiosUsuario(){
+        this.controlador.listarDesafiosUsuarios(this.usuario.getId());
+    }
+
+    /**
+     * @return the historiasDesafios
+     */
+    public HistoriasDesafios getHistoriasDesafios() {        
+        return this.historiasDesafios;
+    }
+
+    /**
+     * @param historiasDesafios the historiasDesafios to set
+     */
+    public void setHistoriasDesafios(HistoriasDesafios historiasDesafios) {
+        this.historiasDesafios = historiasDesafios;
+    }
+    
+    /**
+     * Salva a história do desafio
+     * @return retorna a pagina timeline
+     * @throws java.lang.Exception
+     */
+    public String salvarHistoriaDesafio() throws Exception{
+        //Trocar o id de 3 para o que for o de desafio
         
+            this.historiasDesafios.setTipoTexto(this.controlador.carregarTipoTexto(3));
+            this.historiasDesafios.setDisponivelBiblioteca(false);
+            this.historiasDesafios.setReportadoConteudoImproprio(false);
+            this.historiasDesafios.setClassificacao("LIVRE");
+            this.historiasDesafios.setAvaliacao(0f);          
+            this.desafiosUsuarios = this.controlador.carregarDesafiosUsuarios(this.historiasDesafios.getDesafiosUsuarios().getId());
+            this.historiasDesafios.setDesafiosUsuarios(desafiosUsuarios);
+
+            this.controlador.salvarHistoriaDesafio(this.historiasDesafios);
+
+            this.controlador.excluirNotificacao(this.historiasDesafios.getDesafiosUsuarios().getId());
+            this.notificacao.setDesafio(this.historiasDesafios.getDesafiosUsuarios());
+            this.notificacao.setDestinatario(this.historiasDesafios.getDesafiosUsuarios().getUsuarioDesafiante());
+            this.notificacao.setRemetente(this.historiasDesafios.getDesafiosUsuarios().getUsuario());
+            this.notificacao.setTexto("concluiu seu desafio !");
+            this.controlador.salvarNotificacao(this.notificacao);
+            return "timeline.xhtml?faces-redirect=true";        
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public String salvarHistoriaNovamente(){
+        this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);         
+        this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
+        this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setTexto("tentou novamente o desafio !");
+        this.controlador.salvarNotificacao(this.notificacao);
+        return "timeline.xhtml?faces-redirect=true";
+    }
+    
+    /**
+     * Informa ao usuário que não está de acordo e salva a avaliação da historia
+     * @return 
+     */
+    public String naoEstaAcordo(){
+        this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);  
+        this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
+        this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setRemetente(this.getUsuario());
+        this.notificacao.setTexto("Informou que seu desafio não está de acordo !");
+        this.controlador.salvarNotificacao(this.notificacao);
+        return "timeline.xhtml?faces-redirect=true";
+    }
+    
+    /**
+     * Salva a história do desafio
+     * @return retorna a pagina timeline
+     */
+    public String publicarDesafioBiblioteca(){
+        this.historiasDesafiosCarregado.setDisponivelBiblioteca(true);        
+        this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);         
+        this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
+        this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setTexto("publicou seu desafio na biblioteca !");
+        this.controlador.salvarNotificacao(this.notificacao);
+        return "timeline.xhtml?faces-redirect=true";
+    }
+    
+    /**
+     * Recebe o id e a nota dada pelo usuário ao livro.  
+     */
+    public void desafioRating() {        
+        try {
+            String[] avaliacao = FacesContext.getCurrentInstance()
+                .getExternalContext().getRequestParameterMap()
+                .get("rating").split("-");            
+            int idHistoriasDesafios = Integer.parseInt(avaliacao[0]);
+            float rating = Float.parseFloat(avaliacao[1]);
+            HistoriasDesafios tmpHistoria = this.controlador.carregarHistoriasDesafiosPorId(idHistoriasDesafios);           
+            
+            
+            int qtdAvaliacoes = tmpHistoria.getQtdAvaliacoes() + 1;
+            float somaAvaliacoes = tmpHistoria.getSomaAvaliacoes() + rating;
+            float novaAvaliacao = somaAvaliacoes / qtdAvaliacoes;
+            
+            historiasDesafiosCarregado.setAvaliacao(novaAvaliacao);
+            historiasDesafiosCarregado.setQtdAvaliacoes(qtdAvaliacoes);
+            historiasDesafiosCarregado.setSomaAvaliacoes(somaAvaliacoes);            
+        } catch (ArrayIndexOutOfBoundsException | NumberFormatException | 
+                NullPointerException | PatternSyntaxException ex) {
+            enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Erro ao qualificar o usuário. Seu voto não foi computado!");
+        }        
+    }
+    
+    /**
+     * Listar as palavras do desafio em que o usuário está escrevendo
+     * @return 
+     * @throws java.lang.Exception 
+     */
+    public List<String> listarPalavrasDoDesafio() throws Exception{
+        return this.controlador.listarPalavrasDoDesafio(this.historiasDesafios.getDesafiosUsuarios().getId());
+    }
+    
+    /**
+     * @return the listaNotificacoes
+     */
+    public List<Notificacoes> getListaNotificacoes() {
+        return listaNotificacoes = this.controlador.listarNotificacoes(this.usuario.getId());
     }
 
     /**
-     * @return the desafioPalavras
+     * @param listaNotificacoes the listaNotificacoes to set
      */
-    public DesafiosPalavras getDesafioPalavras() {
-        return desafioPalavras;
+    public void setListaNotificacoes(List<Notificacoes> listaNotificacoes) {
+        this.listaNotificacoes = listaNotificacoes;
     }
-
+    
     /**
-     * @param desafioPalavras the desafioPalavras to set
+     * Método para redirecionar para outra página 
+     * quando for uma notificação de conclusão de desafio
+     * @param notificacao
+     * @return true se contém a palavra conclui no texto da notificação
      */
-    public void setDesafioPalavras(DesafiosPalavras desafioPalavras) {
-        this.desafioPalavras = desafioPalavras;
+    public boolean isConclusaoDesafio(Notificacoes notificacao){        
+        return notificacao.getTexto().contains("concluiu") || notificacao.getTexto().contains("não") || notificacao.getTexto().contains("novamente");
     }
-
+    
     /**
-     * @return the listaPalavras
+     * Método para redirecionar para outra página 
+     * quando for uma notificação de um desafio não aceito
+     * @return true se contém a palavra conclui no texto da notificação
      */
-    public List<String> getListaPalavras() {
-        return listaPalavras;
+    public boolean isNaoDeAcordo(){     
+        for(Notificacoes notif:listaNotificacoes){
+            if(notif.getDesafio().getId() == this.historiasDesafiosCarregado.getDesafiosUsuarios().getId()){
+                if(notif.getTexto().contains("novamente")){
+                    return true;
+                }
+                if(notif.getTexto().contains("concluiu")){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-
+    
     /**
-     * @param listaPalavras the listaPalavras to set
+     * Quando o usuário desiste de tentar fazer o desafio
      */
-    public void setListaPalavras(List<String> listaPalavras) {
-        this.listaPalavras = listaPalavras;
-    }   
+    public void desistir(){
+        this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
+    }        
 }
