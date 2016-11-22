@@ -17,15 +17,15 @@ ALTER TABLE `witc`.`usuario`
 ADD COLUMN `fotoCapa` LONGBLOB NULL DEFAULT NULL AFTER `foto`;
 
 -- -----------------------------------------------------
--- Table `witc`.`timeline`
+-- Table `witc`.`Publicacao`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `witc`.`timeline` (
-  `timeline` INT UNSIGNED AUTO INCREMENT NOT NULL,
+CREATE TABLE IF NOT EXISTS `witc`.`Publicacao` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idUsuario` INT(10) UNSIGNED NOT NULL,
   `idAmigo` INT(10) UNSIGNED NOT NULL,
   `dataPublicacao` DATETIME NOT NULL,
-  `publicacao` VARCHAR(140) NOT NULL,
-  PRIMARY KEY (`idTimeline`),
+  `mensagemPublicacao` VARCHAR(140) NOT NULL,
+  PRIMARY KEY (`id`),
   INDEX `fk_timeline_usuario_idx` (`idUsuario` ASC),
   INDEX `fk_timeline_usuario1_idx` (`idAmigo` ASC),
   CONSTRAINT `fk_timeline_usuario`
@@ -38,7 +38,5 @@ CREATE TABLE IF NOT EXISTS `witc`.`timeline` (
     REFERENCES `witc`.`usuario` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-ALTER TABLE `witc`.`timeline` 
-CHANGE COLUMN `idTimeline` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
