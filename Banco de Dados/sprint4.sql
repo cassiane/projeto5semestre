@@ -1,3 +1,5 @@
+use witc;
+
 CREATE TABLE `HistoriasDesafios` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `idTipoTexto` int(10) unsigned NOT NULL,
@@ -16,8 +18,6 @@ CREATE TABLE `HistoriasDesafios` (
   CONSTRAINT `fk_HistoriaDesafio_DesafiosUsuarios` FOREIGN KEY (`idDesafiosUsuarios`) REFERENCES `desafiosusuarios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-
-use witc;
 CREATE TABLE `Notificacoes` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `texto` longtext NOT NULL,
@@ -29,3 +29,31 @@ CREATE TABLE `Notificacoes` (
   CONSTRAINT `fk_Notificacoes_idUsuarioDestinatario` FOREIGN KEY (`idUsuarioDestinatario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Notificacoes_idDesafiosUsuarios` FOREIGN KEY (`idDesafiosUsuarios`) REFERENCES `desafiosusuarios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
+
+ALTER TABLE `witc`.`usuario` 
+ADD COLUMN `fotoCapa` LONGBLOB NULL DEFAULT NULL AFTER `foto`;
+
+-- -----------------------------------------------------
+-- Table `witc`.`Publicacao`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `witc`.`Publicacao` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idUsuario` INT(10) UNSIGNED NOT NULL,
+  `idAmigo` INT(10) UNSIGNED NOT NULL,
+  `dataPublicacao` DATETIME NOT NULL,
+  `mensagemPublicacao` VARCHAR(140) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_timeline_usuario_idx` (`idUsuario` ASC),
+  INDEX `fk_timeline_usuario1_idx` (`idAmigo` ASC),
+  CONSTRAINT `fk_timeline_usuario`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `witc`.`usuario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_timeline_usuario1`
+    FOREIGN KEY (`idAmigo`)
+    REFERENCES `witc`.`usuario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
