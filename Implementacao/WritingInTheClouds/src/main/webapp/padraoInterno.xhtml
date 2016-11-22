@@ -95,9 +95,10 @@
                             </h:form>                            
                             <div style="margin-top: 10px;">
                                 <h:form>                                    
-                                    <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}" 
-                                                   actionListener="#{cadastrarBean.setUsuario(autenticarBean.usuarioVisualizado())}" 
-                                                   action="listarAmigos.xhtml" />                                    
+                                    <h:commandLink value="#{autenticarBean.numeroAmigosUsuarioLogado}"                                                    
+                                                   action="listarAmigos.xhtml">                                    
+                                        <f:param name="idPerfil" value="#{!autenticarBean.amigo?autenticarBean.idAmigoUsuario:autenticarBean.idPerfil}" />
+                                    </h:commandLink>
                                     <div>
                                         <span class="glyphicon glyphicon-playing-dices" />
                                         #{' '}

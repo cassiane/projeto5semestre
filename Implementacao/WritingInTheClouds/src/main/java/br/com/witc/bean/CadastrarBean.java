@@ -782,7 +782,18 @@ public class CadastrarBean {
      * @return Pagina de manutenção de amigos
      */
     public String listarAmigos() {        
-        this.controlador.usuarioLogado(this.usuario);
+        int idPerfil;
+        try {
+            idPerfil = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idPerfil"));
+        } catch(NumberFormatException ex) {
+            idPerfil = 0;
+        }     
+        
+        if (idPerfil == 0) {
+            this.controlador.usuarioLogado(this.usuario);
+        } else {
+            this.controlador.usuarioLogado(this.controlador.carregarUsuarioPorIdPerfil(idPerfil));
+        }
         this.usuarios = this.listarUsuarios();
         return "listarAmigos";
     }
