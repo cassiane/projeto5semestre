@@ -391,4 +391,8 @@ public class ControladorCadastro {
         this.perfil.desativarPerfil(oldPerfil);
         this.perfil.criarPerfil(newPerfil);
     }
+    
+    public Usuario carregarUsuarioPorIdPerfil(int idPerfil) {        
+        return perfilDAO.carregarUsuarioPorId(idPerfil);
+    }
 }

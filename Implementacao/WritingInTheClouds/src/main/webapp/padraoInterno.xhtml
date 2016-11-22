@@ -72,7 +72,9 @@
                 <div class="col-md-3">                     
                     <div class="box perfil-box">
                         <div class="wallpapper-box">                            
-                            <p:graphicImage styleClass="img-wallpaper" value="#{cadastrarBean.fotoCapa}" cache="false" />
+                            <p:graphicImage styleClass="img-wallpaper" value="#{cadastrarBean.fotoCapa}" cache="false">
+                                <f:param name="idPerfil" value="#{!autenticarBean.amigo?autenticarBean.idAmigoUsuario:autenticarBean.idPerfil}" />
+                            </p:graphicImage>
                             <p:graphicImage styleClass="img-thumbnail img-circle" value="#{cadastrarBean.foto}" 
                                             style="width: 120px; height: 120px;" cache="false" rendered="#{autenticarBean.amigo}" />
                             <p:graphicImage styleClass="img-thumbnail img-circle" value="#{cadastrarBean.fotoAmigo}" 

@@ -219,6 +219,14 @@ public class LivroBean {
         this.tituloLivro = "";
         this.tipoTexto = new TipoTexto();
         this.atualizarStatusUsuarioLivro(2);
+
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        PublicacaoBean publicacaoBean = (PublicacaoBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "publicacaoBean");
+        publicacaoBean.setUsuario(this.usuario);
+        publicacaoBean.setMensagemPublicacao("Começei a escrever um livro!");
+        publicacaoBean.salvarMensagemPublicacao();
+
         return "metadadosLivro";
     }
 
@@ -331,13 +339,6 @@ public class LivroBean {
             this.tituloLivro = "";
             this.textoLivro = "";
 
-            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-            TimelineBean timelineBean = (TimelineBean) FacesContext.getCurrentInstance().getApplication()
-                    .getELResolver().getValue(elContext, null, "timelineBean");
-            timelineBean.setUsuario(this.usuario);
-            timelineBean.setMensagemPublicacao("Começei a escrever um livro!");
-            timelineBean.salvarMensagemPublicacao();
-
             if (this.disponivelEdicaoAmigo) {
                 this.livroFinalizado = false;
                 this.disponivelEdicaoAmigo = false;
@@ -394,11 +395,11 @@ public class LivroBean {
 
             if (this.livroFinalizado) {
                 ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-                TimelineBean timelineBean = (TimelineBean) FacesContext.getCurrentInstance().getApplication()
-                        .getELResolver().getValue(elContext, null, "timelineBean");
-                timelineBean.setUsuario(this.usuario);
-                timelineBean.setMensagemPublicacao("Terminei minha contribuição para o livro " + this.livroCarregado.getTitulo());
-                timelineBean.salvarMensagemPublicacao();
+                PublicacaoBean publicacaoBean = (PublicacaoBean) FacesContext.getCurrentInstance().getApplication()
+                        .getELResolver().getValue(elContext, null, "publicacaoBean");
+                publicacaoBean.setUsuario(this.usuario);
+                publicacaoBean.setMensagemPublicacao("Terminei minha contribuição para o livro " + this.livroCarregado.getTitulo());
+                publicacaoBean.salvarMensagemPublicacao();
             }
 
             if ((this.livroFinalizado) || (this.disponivelEdicaoAmigo)) {
@@ -757,6 +758,13 @@ public class LivroBean {
     public void aceitarEdicao(Livro livro) {
         this.controlador.aceitarEdicao(this.perfilUsuario, livro);
         this.listaSolicitacaoEdicao = this.controlador.carregarListaSolicitacaoEdicao(this.perfilUsuario);
+
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        PublicacaoBean publicacaoBean = (PublicacaoBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "publicacaoBean");
+        publicacaoBean.setUsuario(this.perfilUsuario.getUsuario());
+        publicacaoBean.setMensagemPublicacao("Começei a escrever um livro com meus amigos!");
+        publicacaoBean.salvarMensagemPublicacao();
         //return "biblioteca";
     }
 

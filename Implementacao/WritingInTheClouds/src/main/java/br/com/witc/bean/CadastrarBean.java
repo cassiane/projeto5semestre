@@ -304,10 +304,13 @@ public class CadastrarBean {
             return new DefaultStreamedContent();
         }
         
-        if (this.usuario.getFotoCapa() == null) {
+        int idPerfil = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idPerfil"));
+        byte[] capa = this.controlador.carregarUsuarioPorIdPerfil(idPerfil).getFotoCapa();
+        
+        if (capa == null) {
             return carregarFotoDefault(true);
         }        
-        InputStream is = new ByteArrayInputStream(this.usuario.getFotoCapa());
+        InputStream is = new ByteArrayInputStream(capa);
         StreamedContent image = new DefaultStreamedContent(is);        
         return image;
     }

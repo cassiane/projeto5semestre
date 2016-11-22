@@ -9,10 +9,10 @@
         <ui:define name="conteudo">     
             <f:event listener="#{livroBean.carregarListaAmigoEditor()}" type="preRenderView" />
             <div align="center"> 
-                <h1>Editor de texto</h1>
+                <h1 class="text-primary">Editor de texto</h1>
                 <h:form enctype="multipart/form-data">
                     <p:growl id="message" showDetail="true" />
-                    <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" width="600" />
+                    <p:editor id="editor" widgetVar="editorWidget" value="#{livroBean.livroCarregado.texto}" />
                     <h:panelGrid columns="2" style="margin-top: 10px">                        
                         <h:outputText value="Disponível para Edição: " />
                         <p:selectBooleanCheckbox id="editavelAmigo" value="#{livroBean.disponivelEdicaoAmigo}" />
@@ -24,28 +24,23 @@
                         </p:selectBooleanCheckbox>
                     </h:panelGrid> 
                     
-                    <h:panelGrid columns="4" style="margin-top: 10px">
-                        <p:commandButton value="Adicionar" type="button" onclick="PF('ConAmiEdi').show();" icon="ui-icon-disk" ajax="false" />
-                        <p:commandButton value="Salvar"  action="#{livroBean.salvarLivro()}" icon="ui-icon-disk" ajax="false" />
-                        <p:commandButton value="Limpar" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />                        
-                        <p:commandButton value="Voltar" onclick="PF('dlg1').show();" type="button" /> 
-                    </h:panelGrid>                     
-                    <p:fileUpload value="#{livroBean.file}" mode="simple" allowTypes="*.jpg;*.png;*.gif;"/>
-<!--                    <p:dialog header="Enviar Para Revisão" widgetVar="dlg0" showEffect="pop">
-                        <h:panelGrid columns="2" style="margin-top: 10px">                        
-                        <h:outputText value="Disponível para Revisão: " />
-                        <p:selectBooleanCheckbox id="editavel" value="#{livroBean.disponivelEdicaoAmigo}" />                        
-                        <h:outputText value="Finalizado: " />
-                        <p:selectBooleanCheckbox id="Finalizado" value="#{livroBean.livroFinalizado}">
-                            <p:ajax update="editavelAmigo" listener="#{livroBean.onLivroFinalizadoStatusChange()}" />
-                        </p:selectBooleanCheckbox>
-                    </h:panelGrid> 
-                     </p:dialog>-->
-                     <p:dialog header="Atenção" widgetVar="dlg1" showEffect="pop">
-                        <h:outputText value="Deseja salvar antes de voltar ?" />
-                        <p:commandButton value="SIM" action="#{livroBean.salvarLivroVoltar()}" icon="ui-icon-disk" ajax="false" />
-                        <p:commandButton value="NÃO"  action="#{livroBean.biblioteca()}" icon="ui-icon-disk" ajax="false" /> 
-                     </p:dialog>
+                    <div style="text-align: right; margin-top: 10px;"> 
+                        <h:outputLabel style="width: 180px; height: 35px;" for="capaLivro" value="Altere a capa do livro"
+                                       styleClass="btn btn-info" />
+                        <p:fileUpload id="capaLivro" 
+                                      value="#{livroBean.file}" 
+                                      mode="simple" 
+                                      style="display: none;"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                        #{' '}
+                        <p:commandButton value="Convidar amigo" styleClass="btn btn-primary" style="width: 180px; height: 35px;"
+                                         onclick="PF('ConAmiEdi').show();" />
+                    </div>
+                    <div style="text-align: right; margin-top: 10px;"> 
+                        <p:commandButton value="Salvar" styleClass="btn btn-success" 
+                                         action="#{livroBean.salvarLivro()}" ajax="false" 
+                                         style="width: 180px; height: 35px;" />
+                    </div>
                 </h:form>
                
             </div>
@@ -69,8 +64,8 @@
                             </p:selectManyMenu>
                         </p:outputPanel>
                         <p:outputPanel>
-                            <p:commandButton value="Convidar" actionListener="#{livroBean.convidarAmigoEditor()}" icon="ui-icon.disk" ajax="false" />
-                            <p:commandButton value="Voltar" type="button" onclick="PF('ConAmiEdi').hide();" icon="ui-icon-disk" ajax="false" />
+                            <p:commandButton value="Convidar" actionListener="#{livroBean.convidarAmigoEditor()}" ajax="false" />
+                            <p:commandButton value="Cancelar" onclick="PF('ConAmiEdi').hide();" ajax="false" />
                         </p:outputPanel>
                     </h:panelGrid>
                 </h:form>
