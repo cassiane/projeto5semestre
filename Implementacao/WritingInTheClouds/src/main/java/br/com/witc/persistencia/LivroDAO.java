@@ -146,20 +146,20 @@ public class LivroDAO {
      * @return Um map contendo o gênero e a avaliação     
      */
     public Map<String, Float> listarGenerosPreferidos(int idPerfil) {        
-        String sql = "SELECT SUM(l.somaAvaliacoes)/SUM(l.qtdAvaliacoes), tp FROM Livro l "
+        String sql = "SELECT SUM(l.somaAvaliacoes)/SUM(l.qtdAvaliacoes), tp.tipoTexto FROM Livro l "
                 + "INNER JOIN l.tipoTexto AS tp "
                 + "INNER JOIN l.historicoLivros AS hl "
                 + "INNER JOIN hl.perfil AS p "                               
                 + "WHERE ("
                 + "p.id = " + idPerfil + " AND "
                 + "l.disponivelBiblioteca = true) "
-                + "GROUP BY l.tipoTexto "
-                + "ORDER BY l.tipoTexto";
+                + "GROUP BY tp.tipoTexto "
+                + "ORDER BY tp.tipoTexto DESC";
         
         List<Object[]> lstResult = sessao.createQuery(sql).list();
         Map<String, Float> tmpMap = new HashMap();                
         for (Object[] arrObj : lstResult) {            
-            tmpMap.put(((TipoTexto)arrObj[1]).getTipoTexto(), (Double) arrObj[0] != null?((Double) arrObj[0]).floatValue():0f);
+            tmpMap.put(arrObj[1].toString(), (Double) arrObj[0] != null?((Double) arrObj[0]).floatValue():0f);
         }
         
         return tmpMap;

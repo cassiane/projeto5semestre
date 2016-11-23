@@ -54,16 +54,17 @@ public class ControladorPublicacao {
     /**
      * @param idPerfil O id do perfil visualizado
      * @return Uma lista contendo as publicações dos Amigos
-     * @throws br.com.witc.excessao.TimelineException Caso não haja publicação dos amigos
+     * @throws br.com.witc.excessao.TimelineException Caso não haja publicação
+     * dos amigos
      */
     public List<Publicacao> getPublicacoesAmigos(int idPerfil) throws TimelineException {
         Perfil perfil = new Perfil();
-        Usuario usuario = perfil.getUsuarioPorIdPerfil(idPerfil);        
+        Usuario usuario = perfil.getUsuarioPorIdPerfil(idPerfil);
         this.timeline.setUsuario(usuario);
         return this.timeline.getPublicacoesAmigos();
     }
-    
-    /**     
+
+    /**
      * @param idAmigo o id do usuário amigo
      * @return Um array de bytes com a foto
      */
@@ -71,17 +72,19 @@ public class ControladorPublicacao {
         Usuario user = this.usuario.carregarAmigo(idAmigo);
         return user.getFoto();
     }
-    
+
     public void salvarMensagemPublicacao(String mensagem) {
         List<Usuario> lstAmigos = this.usuario.listarAmigos();
         Usuario usuarioLogado = this.usuario;
-        for (Usuario usr : lstAmigos) {
-            this.timeline = new Publicacao();
-            this.timeline.setUsuario(usr);
-            this.timeline.setAmigo(usuarioLogado);
-            this.timeline.setDataPublicacao(Calendar.getInstance());
-            this.timeline.setMensagemPublicacao(mensagem);
-            this.timeline.salvarMensagemPublicacao();
+        if (lstAmigos != null) {
+            for (Usuario usr : lstAmigos) {
+                this.timeline = new Publicacao();
+                this.timeline.setUsuario(usr);
+                this.timeline.setAmigo(usuarioLogado);
+                this.timeline.setDataPublicacao(Calendar.getInstance());
+                this.timeline.setMensagemPublicacao(mensagem);
+                this.timeline.salvarMensagemPublicacao();
+            }
         }
         this.timeline = new Publicacao();
     }
