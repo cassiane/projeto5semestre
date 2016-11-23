@@ -78,8 +78,8 @@
                                                 <h:commandLink class="coluna" value="#{notificacao.remetente.nome} 
                                                                #{''} #{notificacao.texto}" 
                                                     actionListener="#{cadastrarBean.historiasDesafios.desafiosUsuarios.setId(notificacao.desafio.id)}"
-                                                    rendered="#{cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafioConcluido.xhtml">                                                    
-                                                    <f:param name="desafiosUsuarios" value="#{notificacao.desafio.id}"/>
+                                                    rendered="#{cadastrarBean.isConclusaoDesafio(notificacao)}" action="editarDesafioConcluido.xhtml">                                                     
+                                                    <f:setPropertyActionListener value="#{notificacao.desafio.id}" target="#{cadastrarBean.idDesafiosUsuarios}" />
                                                 </h:commandLink>
                                             </h:column>                                    
                                         </h:dataTable>

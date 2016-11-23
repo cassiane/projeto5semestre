@@ -6,10 +6,10 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="padraoInterno.xhtml">        
-        <ui:define name="conteudo">                 
+        <ui:define name="conteudo">            
             <div align="center"> 
                 <h1>Desafio de palavras</h1>
-                <h3>Você deve escrever o texto com as palavras abaixo</h3>
+                <h3>Você deve escrever o texto com as palavras abaixo</h3>                
                 <h:form enctype="multipart/form-data">
                     <p:growl id="message" showDetail="true" />
                     <p:autoComplete id="autoDesafiosPalavras" minQueryLength="1" value="#{cadastrarBean.palavrasDoDesafio}"
@@ -20,16 +20,15 @@
                     <p:editor id="editor" widgetVar="editorWidget" value="#{cadastrarBean.historiasDesafiosCarregado.texto}" disabled="true" width="600" />
                 </h:form>
             </div>
-            <div align="center">
+            <div align="center">                
                 <h:form id="editarDesafio" enctype="multipart/form-data">
                     <p:remoteCommand name="callBeanMethod" update=":editarDesafio" 
-                                        actionListener="#{cadastrarBean.desafioRating()}" 
-                                        oncomplete="initializeRatebox();" />
-                    <div class="ratebox" data-id="#{entry.key}-#{cadastrarBean.historiasDesafiosCarregado.id}" data-rating="#{cadastrarBean.historiasDesafiosCarregado.avaliacao}" 
-                         style="margin-top: 10px; margin-left: auto; margin-right: auto;}">                                        
-                    </div>
-                </h:form>
-                <h:form rendered="#{not cadastrarBean.isNaoDeAcordo()}">                    
+                                        action="#{cadastrarBean.desafioRating()}" />
+                    <div class="ratebox" data-id="#{cadastrarBean.historiasDesafiosCarregado.id}" data-rating="#{cadastrarBean.historiasDesafiosCarregado.avaliacao}" 
+                         style="margin-top: 10px; margin-left: auto; margin-right: auto; #{autenticarBean.usuarioLogado().id == cadastrarBean.historiasDesafiosCarregado.desafiosUsuarios.usuario.id?'pointer-events:none;':''}">                                        
+                    </div>                    
+                </h:form>                
+                <h:form rendered="#{cadastrarBean.isNaoDeAcordo()}">                    
                     <h:panelGrid columns="4" style="margin-top: 10px">
                         <p:commandButton value="Tentar novamente"                                         
                                          action="editarDesafioNovamente.xhtml"
@@ -40,7 +39,7 @@
                         <p:commandButton value="Voltar" action="timeline" type="button" /> 
                     </h:panelGrid> 
                 </h:form>                
-                <h:form rendered="#{cadastrarBean.isNaoDeAcordo()}">
+                <h:form rendered="#{not cadastrarBean.isNaoDeAcordo()}">
                     <h:panelGrid columns="4" style="margin-top: 10px">
                         <p:commandButton value="Salvar na biblioteca"  action="#{cadastrarBean.publicarDesafioBiblioteca()}" icon="ui-icon-disk" ajax="false" />                        
                         <p:commandButton value="Não está de acordo"  action="#{cadastrarBean.naoEstaAcordo()}" icon="ui-icon-close" ajax="false" />

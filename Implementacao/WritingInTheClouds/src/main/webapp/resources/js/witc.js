@@ -14,7 +14,7 @@ function setRating(id, rating)
 
 function initializeRatebox() {
     $(function() {    
-        $( '.ratebox' ).raterater( { 
+        $( '.ratebox' ).raterater( {             
             submitFunction: 'setRating', 
             allowChange: true,
             starWidth: 20,

@@ -91,6 +91,7 @@ public class CadastrarBean {
     private final Notificacoes notificacao;
     DesafiosUsuarios desafiosUsuarios;
     private HistoriasDesafios historiasDesafiosCarregado; 
+    public int idDesafiosUsuarios;
 
     public String getPalavra() {
         return palavra;
@@ -659,7 +660,8 @@ public class CadastrarBean {
      * @return the historiasDesafiosCarregado
      */
     public HistoriasDesafios getHistoriasDesafiosCarregado() {
-        desafiosUsuarios.setId(Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("desafiosUsuarios")));
+        //desafiosUsuarios.setId(Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("desafiosUsuarios")));
+        desafiosUsuarios.setId(this.idDesafiosUsuarios);
         return historiasDesafiosCarregado = this.controlador.carregarHistoriasDesafios(desafiosUsuarios);
     }
     
@@ -1268,8 +1270,8 @@ public class CadastrarBean {
         this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);         
         this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
         this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
-        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
-        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
         this.notificacao.setTexto("tentou novamente o desafio !");
         this.controlador.salvarNotificacao(this.notificacao);
         return "timeline.xhtml?faces-redirect=true";
@@ -1283,8 +1285,8 @@ public class CadastrarBean {
         this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);  
         this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
         this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
-        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
-        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
         this.notificacao.setTexto("Informou que seu desafio não está de acordo !");
         this.controlador.salvarNotificacao(this.notificacao);
         return "timeline.xhtml?faces-redirect=true";
@@ -1309,14 +1311,13 @@ public class CadastrarBean {
     /**
      * Recebe o id e a nota dada pelo usuário ao livro.  
      */
-    public void desafioRating() {        
+    public String desafioRating() {        
         try {
             String[] avaliacao = FacesContext.getCurrentInstance()
                 .getExternalContext().getRequestParameterMap()
-                .get("rating").split("-");  
-            String key = avaliacao[0];
-            int idHistoriasDesafios = Integer.parseInt(avaliacao[1]);
-            float rating = Float.parseFloat(avaliacao[2]);           
+                .get("rating").split("-");              
+            int idHistoriasDesafios = Integer.parseInt(avaliacao[0]);
+            float rating = Float.parseFloat(avaliacao[1]);           
             
             HistoriasDesafios tmpHistoria;
             tmpHistoria = this.controlador.carregarHistoriasDesafiosPorId(idHistoriasDesafios);           
@@ -1333,6 +1334,7 @@ public class CadastrarBean {
                 NullPointerException | PatternSyntaxException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Erro ao qualificar o usuário. Seu voto não foi computado!");
         }      
+        return "editarDesafioConcluido.xhtml?faces-redirect=true";
     }
     
     /**
@@ -1376,7 +1378,7 @@ public class CadastrarBean {
     public boolean isNaoDeAcordo(){     
         for(Notificacoes notif:listaNotificacoes){
             if(notif.getDesafio().getId() == this.historiasDesafiosCarregado.getDesafiosUsuarios().getId()){
-                if(notif.getTexto().contains("novamente")){
+                if(notif.getTexto().contains("acordo")){
                     return true;
                 }
             }
@@ -1393,5 +1395,19 @@ public class CadastrarBean {
         this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
         this.notificacao.setTexto("Desistiu de seu desafio !");
         this.controlador.salvarNotificacao(this.notificacao);
+    }
+
+    /**
+     * @return the idDesafiosUsuarios
+     */
+    public int getIdDesafiosUsuarios() {
+        return idDesafiosUsuarios;
+    }
+
+    /**
+     * @param idDesafiosUsuarios the idDesafiosUsuarios to set
+     */
+    public void setIdDesafiosUsuarios(int idDesafiosUsuarios) {
+        this.idDesafiosUsuarios = idDesafiosUsuarios;
     }
 }
