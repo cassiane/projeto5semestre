@@ -70,4 +70,14 @@ public class TipoTextoDAO {
         lista = (List<TipoTexto>) sessao.createQuery("from TipoTexto").list();        
         return lista;
     }
+    
+    /**
+     * Pesquisa um tipo de texto por nome e retorna ele 
+     * @param nome
+     * @return 
+     */
+    public TipoTexto carregarTipoTextoPorNome(String nome) {        
+        return (TipoTexto) sessao.createQuery("from TipoTexto where tipotexto like '%"+nome+"%'")
+                .uniqueResult();
+    }
 }

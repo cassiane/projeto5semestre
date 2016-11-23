@@ -316,6 +316,15 @@ public class ControladorCadastro {
     }
     
     /**
+     * Faz a pesquisa do nome do tipo de texto e retorna ele
+     * @param nome
+     * @return 
+     */
+    public TipoTexto carregarTipoTextoPorNome(String nome){
+        return this.tipoTexto.carregarTipoTextoPorNome(nome);
+    }
+    
+    /**
      * Método para salvar os tipos de textos ao usuário
      * para este se identificar com vários tipos de texto
      * @param tiposTextoUsuario lista dos tipos de textos 

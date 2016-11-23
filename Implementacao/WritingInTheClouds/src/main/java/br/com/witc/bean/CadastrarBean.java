@@ -1241,7 +1241,7 @@ public class CadastrarBean {
     public String salvarHistoriaDesafio() throws Exception{
         //Trocar o id de 3 para o que for o de desafio
         
-            this.historiasDesafios.setTipoTexto(this.controlador.carregarTipoTexto(3));
+            this.historiasDesafios.setTipoTexto(this.controlador.carregarTipoTextoPorNome("DESAFIO"));
             this.historiasDesafios.setDisponivelBiblioteca(false);
             this.historiasDesafios.setReportadoConteudoImproprio(false);
             this.historiasDesafios.setClassificacao("LIVRE");
@@ -1313,10 +1313,13 @@ public class CadastrarBean {
         try {
             String[] avaliacao = FacesContext.getCurrentInstance()
                 .getExternalContext().getRequestParameterMap()
-                .get("rating").split("-");            
-            int idHistoriasDesafios = Integer.parseInt(avaliacao[0]);
-            float rating = Float.parseFloat(avaliacao[1]);
-            HistoriasDesafios tmpHistoria = this.controlador.carregarHistoriasDesafiosPorId(idHistoriasDesafios);           
+                .get("rating").split("-");  
+            String key = avaliacao[0];
+            int idHistoriasDesafios = Integer.parseInt(avaliacao[1]);
+            float rating = Float.parseFloat(avaliacao[2]);           
+            
+            HistoriasDesafios tmpHistoria;
+            tmpHistoria = this.controlador.carregarHistoriasDesafiosPorId(idHistoriasDesafios);           
             
             
             int qtdAvaliacoes = tmpHistoria.getQtdAvaliacoes() + 1;
@@ -1325,11 +1328,11 @@ public class CadastrarBean {
             
             historiasDesafiosCarregado.setAvaliacao(novaAvaliacao);
             historiasDesafiosCarregado.setQtdAvaliacoes(qtdAvaliacoes);
-            historiasDesafiosCarregado.setSomaAvaliacoes(somaAvaliacoes);            
+            historiasDesafiosCarregado.setSomaAvaliacoes(somaAvaliacoes); 
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException | 
                 NullPointerException | PatternSyntaxException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Erro ao qualificar o usuário. Seu voto não foi computado!");
-        }        
+        }      
     }
     
     /**

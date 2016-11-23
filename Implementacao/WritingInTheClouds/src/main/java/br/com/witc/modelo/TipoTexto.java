@@ -124,4 +124,14 @@ public class TipoTexto implements Serializable {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+    
+    /**
+     * Pesquisa o tipo de texto por nome e retorna ele 
+     * @param nome
+     * @return 
+     */
+    public TipoTexto carregarTipoTextoPorNome(String nome) {
+        TipoTextoDAO dao = new TipoTextoDAO();
+        return dao.carregarTipoTextoPorNome(nome);
+    }
 }

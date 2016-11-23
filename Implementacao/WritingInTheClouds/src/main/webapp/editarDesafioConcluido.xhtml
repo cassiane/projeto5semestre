@@ -19,15 +19,17 @@
                     
                     <p:editor id="editor" widgetVar="editorWidget" value="#{cadastrarBean.historiasDesafiosCarregado.texto}" disabled="true" width="600" />
                 </h:form>
-                <h:form id="formDesafio">
-                    <p:remoteCommand name="callBeanMethod" update=":formDesafio" 
+            </div>
+            <div align="center">
+                <h:form id="editarDesafio" enctype="multipart/form-data">
+                    <p:remoteCommand name="callBeanMethod" update=":editarDesafio" 
                                         actionListener="#{cadastrarBean.desafioRating()}" 
                                         oncomplete="initializeRatebox();" />
-                    <div class="ratebox" data-id="#{cadastrarBean.historiasDesafiosCarregado.id}" data-rating="#{cadastrarBean.historiasDesafiosCarregado.avaliacao}" 
+                    <div class="ratebox" data-id="#{entry.key}-#{cadastrarBean.historiasDesafiosCarregado.id}" data-rating="#{cadastrarBean.historiasDesafiosCarregado.avaliacao}" 
                          style="margin-top: 10px; margin-left: auto; margin-right: auto;}">                                        
                     </div>
                 </h:form>
-                <h:form rendered="#{not cadastrarBean.isNaoDeAcordo()}">
+                <h:form rendered="#{not cadastrarBean.isNaoDeAcordo()}">                    
                     <h:panelGrid columns="4" style="margin-top: 10px">
                         <p:commandButton value="Tentar novamente"                                         
                                          action="editarDesafioNovamente.xhtml"
