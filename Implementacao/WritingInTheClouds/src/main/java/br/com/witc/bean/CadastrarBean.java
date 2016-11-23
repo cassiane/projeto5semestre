@@ -490,6 +490,34 @@ public class CadastrarBean {
         this.palavrasDoDesafio = palavrasDoDesafio;
     }
     
+    /**
+     * @return the listaNotificacoes
+     */
+    public List<Notificacoes> getListaNotificacoes() {
+        return listaNotificacoes = this.controlador.listarNotificacoes(this.usuario.getId());
+    }
+
+    /**
+     * @param listaNotificacoes the listaNotificacoes to set
+     */
+    public void setListaNotificacoes(List<Notificacoes> listaNotificacoes) {
+        this.listaNotificacoes = listaNotificacoes;
+    }
+    
+    /**
+     * @return the idDesafiosUsuarios
+     */
+    public int getIdDesafiosUsuarios() {
+        return idDesafiosUsuarios;
+    }
+
+    /**
+     * @param idDesafiosUsuarios the idDesafiosUsuarios to set
+     */
+    public void setIdDesafiosUsuarios(int idDesafiosUsuarios) {
+        this.idDesafiosUsuarios = idDesafiosUsuarios;
+    }
+    
     public StreamedContent getFotos(Usuario user) {
         try {
             if (user.getFoto() == null) {
@@ -1241,8 +1269,7 @@ public class CadastrarBean {
      * @throws java.lang.Exception
      */
     public String salvarHistoriaDesafio() throws Exception{
-        //Trocar o id de 3 para o que for o de desafio
-        
+        if(this.verificarPalavrasDoDesafio()){
             this.historiasDesafios.setTipoTexto(this.controlador.carregarTipoTextoPorNome("DESAFIO"));
             this.historiasDesafios.setDisponivelBiblioteca(false);
             this.historiasDesafios.setReportadoConteudoImproprio(false);
@@ -1260,6 +1287,23 @@ public class CadastrarBean {
             this.notificacao.setTexto("concluiu seu desafio !");
             this.controlador.salvarNotificacao(this.notificacao);
             return "timeline.xhtml?faces-redirect=true";        
+        }else{
+            enviarMensagem(FacesMessage.SEVERITY_ERROR, "Você não escreveu o desafio com as palavras solicitadas.");
+            return null;
+        }
+    }
+    
+    /**
+     * Verifica se a história do desafio contém as palavras
+     * escolhidas pelo desfiante 
+     * @return 
+     * @throws java.lang.Exception 
+     */
+    public boolean verificarPalavrasDoDesafio() throws Exception{
+        for(String s:this.listarPalavrasDoDesafio()){
+            return this.historiasDesafios.getTexto().contains(s);
+        }
+        return false;
     }
     
     /**
@@ -1309,6 +1353,7 @@ public class CadastrarBean {
     }
     
     /**
+     * @return 
      * Recebe o id e a nota dada pelo usuário ao livro.  
      */
     public String desafioRating() {        
@@ -1346,19 +1391,6 @@ public class CadastrarBean {
         return this.controlador.listarPalavrasDoDesafio(this.historiasDesafios.getDesafiosUsuarios().getId());
     }
     
-    /**
-     * @return the listaNotificacoes
-     */
-    public List<Notificacoes> getListaNotificacoes() {
-        return listaNotificacoes = this.controlador.listarNotificacoes(this.usuario.getId());
-    }
-
-    /**
-     * @param listaNotificacoes the listaNotificacoes to set
-     */
-    public void setListaNotificacoes(List<Notificacoes> listaNotificacoes) {
-        this.listaNotificacoes = listaNotificacoes;
-    }
     
     /**
      * Método para redirecionar para outra página 
@@ -1395,19 +1427,5 @@ public class CadastrarBean {
         this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
         this.notificacao.setTexto("Desistiu de seu desafio !");
         this.controlador.salvarNotificacao(this.notificacao);
-    }
-
-    /**
-     * @return the idDesafiosUsuarios
-     */
-    public int getIdDesafiosUsuarios() {
-        return idDesafiosUsuarios;
-    }
-
-    /**
-     * @param idDesafiosUsuarios the idDesafiosUsuarios to set
-     */
-    public void setIdDesafiosUsuarios(int idDesafiosUsuarios) {
-        this.idDesafiosUsuarios = idDesafiosUsuarios;
     }
 }
