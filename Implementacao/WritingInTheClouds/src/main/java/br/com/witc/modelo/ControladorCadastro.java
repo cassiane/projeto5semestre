@@ -38,6 +38,7 @@ public class ControladorCadastro {
     private final DesafiosUsuarios desUsuario;
     private final Notificacoes notificacoes;
     private final HistoriasDesafios historiasDesafios;
+    private final ControladorLivro controladorLivro;
     
     public ControladorCadastro() {
         this.usuario = new Usuario();
@@ -56,6 +57,7 @@ public class ControladorCadastro {
         this.desUsuario = new DesafiosUsuarios();
         this.notificacoes = new Notificacoes();
         this.historiasDesafios = new HistoriasDesafios();
+        this.controladorLivro = new ControladorLivro();
     }
 
     /**
@@ -316,6 +318,15 @@ public class ControladorCadastro {
     }
     
     /**
+     * Faz a pesquisa do nome do tipo de texto e retorna ele
+     * @param nome
+     * @return 
+     */
+    public TipoTexto carregarTipoTextoPorNome(String nome){
+        return this.tipoTexto.carregarTipoTextoPorNome(nome);
+    }
+    
+    /**
      * Método para salvar os tipos de textos ao usuário
      * para este se identificar com vários tipos de texto
      * @param tiposTextoUsuario lista dos tipos de textos 
@@ -495,7 +506,19 @@ public class ControladorCadastro {
         return this.historiasDesafios.carregarHistoriasDesafiosPorId(idHistoriasDesafios);
     }
     
-    public Usuario carregarUsuarioPorIdPerfil(int idPerfil) {        
-        return perfilDAO.carregarUsuarioPorId(idPerfil);
+    /**
+     * Salva um desafio na biblioteca
+     * @param livro
+     * @param perfil 
+     */
+    public void salvarDesafioBiblioteca(Livro livro, Perfil perfil) {
+        this.controladorLivro.salvarLivro(livro, false, perfil);        
+        TipoStatus st = this.controladorLivro.carregarTipoStatus(1);
+        HistoricoLivro historicoLivro = new HistoricoLivro();
+        historicoLivro.setDataInicio(Calendar.getInstance());
+        historicoLivro.setPerfil(perfil);
+        historicoLivro.setLivro(livro);
+        historicoLivro.setStatus(st);
+        this.controladorLivro.salvarHistorico(historicoLivro);
     }
 }
