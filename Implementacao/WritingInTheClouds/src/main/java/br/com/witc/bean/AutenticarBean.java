@@ -227,6 +227,24 @@ public class AutenticarBean {
         }
         return this.perfilSelecionadoUsuario.getAvaliacao();
     }
+    
+    /**
+     * Retorna a soma das avaliações do usuário
+     * @return 
+     */
+    public float getSomaAvaliacaoPerfil(){
+        if (!this.isAmigo()) {
+            return this.perfilSelecionadoAmigo.getSomaAvaliacoes();
+        }
+        if (this.perfilSelecionadoUsuario == null) {
+            for (Perfil perfil : this.perfisUsuario) {
+                if (perfil.isPerfilPadrao()) {
+                    return this.perfisUsuario.get(0).getSomaAvaliacoes();
+                }
+            }
+        }
+        return this.perfilSelecionadoUsuario.getSomaAvaliacoes();
+    }
 
     /**
      * @return the perfilSelecionadoAmigo

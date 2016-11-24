@@ -195,5 +195,14 @@ public class ControladorAutenticacao {
     public List<Perfil> listarPerfisUsuario() {
         return this.perfil.listarPerfisUsuario(this.amigoUsuario);
     }
+    
+    /**
+     * Retorna a posição do usuário conforme o número de pontos
+     * @param perfil Pesquisa conforme o perfil do usário logado
+     * @return 
+     */
+    public int getPosicaoUsuarioRanking(Perfil perfil){
+        return this.perfil.getPosicaoUsuarioRanking(perfil);
+    }
         
 }

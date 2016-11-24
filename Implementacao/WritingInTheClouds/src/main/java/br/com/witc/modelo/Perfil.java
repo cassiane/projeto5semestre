@@ -206,4 +206,14 @@ public class Perfil implements Serializable {
         PerfilDAO dao = new PerfilDAO();
         return dao.carregaPerfilID(idPerfil);
     }
+    
+    /**
+     * Retorna a posição no ranking daquele perfil do usuário
+     * @param perfil
+     * @return 
+     */
+    int getPosicaoUsuarioRanking(Perfil perfil) {
+        PerfilDAO dao = new PerfilDAO();
+        return dao.getPosicaoUsuarioRanking(perfil);
+    }
 }

@@ -104,4 +104,13 @@ public class PerfilDAO {
                 .uniqueResult();
         return perfil.getUsuario();
     }
+    
+    /**
+     * Retorna a posição no ranking daquele perfil
+     * @param perfil perfil a ver a posição
+     * @return 
+     */
+    public int getPosicaoUsuarioRanking(Perfil perfil) {
+        return 1;
+    }
 }

@@ -50,7 +50,9 @@
                                             </ui:repeat>
                                         </ul>
                                     </li>
-                                </c:if>                                
+                                </c:if>
+                                <li></li>
+                                <li><h:commandLink style="padding-top: 11.5px; color: silver;" action="biblioteca.xhtml"> <i class="fa fa-trophy" aria-hidden="true" style="font-size: 20px;"/> #{autenticarBean.somaAvaliacaoPerfil}</h:commandLink> </li>
                                 <li><h:commandLink value="Minha Biblioteca" actionListener="#{autenticarBean.setAmigoUsuario()}" action="biblioteca.xhtml" rendered="#{autenticarBean.perfilEditor}" /></li>
                                 <li><h:commandLink value="Minha Revisão" actionListener="#{autenticarBean.setAmigoUsuario()}" action="revisao.xhtml" rendered="#{autenticarBean.perfilRevisor}" /></li>
                                 <li><h:commandLink value="Biblioteca Virtual" actionListener="#{autenticarBean.setAmigoUsuario()}" action="#{livroBean.carregaBibliotecaVirtualCompleta()}" /></li>
