@@ -11,7 +11,6 @@ import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
-import br.com.witc.modelo.ControladorAutenticacao;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Desafios;
 import br.com.witc.modelo.DesafiosPalavras;
@@ -1418,7 +1417,7 @@ public class CadastrarBean {
         this.historiasDesafiosCarregado.setDisponivelBiblioteca(true);        
         this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);
         Livro livro = this.criarLivroDoDesafio();
-        Perfil perfil = Perfil.retornarPerfilUsuarioLogado(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        Perfil perfil = Perfil.retornarPerfilPadraoUsuarioLogado(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
         this.controlador.salvarDesafioBiblioteca(livro,perfil);
         this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
         this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
@@ -1455,7 +1454,7 @@ public class CadastrarBean {
             
             //incrementa a avaliação do usuário também
             //ControladorAutenticacao controlAut = new ControladorAutenticacao();
-            Perfil tmpPerfil = Perfil.retornarPerfilUsuarioLogado(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+            Perfil tmpPerfil = Perfil.retornarPerfilPadraoUsuarioLogado(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
             
             int qtdAvaliacoes = tmpPerfil.getQtdAvaliacoes() + 1;
             float somaAvaliacoes = tmpPerfil.getSomaAvaliacoes() + rating;

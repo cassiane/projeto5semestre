@@ -521,4 +521,8 @@ public class ControladorCadastro {
         historicoLivro.setStatus(st);
         this.controladorLivro.salvarHistorico(historicoLivro);
     }
+    
+    public Usuario carregarUsuarioPorIdPerfil(int idPerfil) {        
+        return perfilDAO.carregarUsuarioPorId(idPerfil);
+    }
 }
