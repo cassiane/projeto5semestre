@@ -7,6 +7,7 @@ package br.com.witc.bean;
 
 import br.com.witc.excessao.DadosUsuarioInvalidoException;
 import br.com.witc.excessao.LinkRecuperacaoInvalidoException;
+import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
@@ -15,7 +16,10 @@ import br.com.witc.modelo.Desafios;
 import br.com.witc.modelo.DesafiosPalavras;
 import br.com.witc.modelo.DesafiosUsuarios;
 import br.com.witc.modelo.HistoriasDesafios;
+import br.com.witc.modelo.Livro;
 import br.com.witc.modelo.Notificacoes;
+import br.com.witc.modelo.Perfil;
+import java.io.InputStream;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.TipoTexto;
 import br.com.witc.modelo.Usuario;
@@ -118,9 +122,12 @@ public class CadastrarBean {
         this.desafio = new Desafios();
         this.historiasDesafios = new HistoriasDesafios();
         this.listaNotificacoes = new ArrayList<Notificacoes>();
-        this.notificacao = new Notificacoes();
-        //this.historiasDesafiosCarregado = new HistoriasDesafios();
+        this.notificacao = new Notificacoes();        
         this.desafiosUsuarios = new DesafiosUsuarios();
+        
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "autenticarBean");
     }
     
     /**
@@ -1339,14 +1346,18 @@ public class CadastrarBean {
     /**
      * Salva a história do desafio
      * @return retorna a pagina timeline
+     * @throws br.com.witc.excessao.LivroException
      */
-    public String publicarDesafioBiblioteca(){
+    public String publicarDesafioBiblioteca() throws LivroException, Exception{
         this.historiasDesafiosCarregado.setDisponivelBiblioteca(true);        
-        this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);         
+        this.controlador.salvarHistoriaDesafio(this.historiasDesafiosCarregado);
+        Livro livro = this.criarLivroDoDesafio();
+        Perfil perfil = Perfil.retornarPerfilUsuarioLogado(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.controlador.salvarDesafioBiblioteca(livro,perfil);
         this.controlador.excluirNotificacao(this.historiasDesafiosCarregado.getDesafiosUsuarios().getId());        
         this.notificacao.setDesafio(this.historiasDesafiosCarregado.getDesafiosUsuarios());
-        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
-        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setDestinatario(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+        this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuarioDesafiante());
         this.notificacao.setTexto("publicou seu desafio na biblioteca !");
         this.controlador.salvarNotificacao(this.notificacao);
         return "timeline.xhtml?faces-redirect=true";
@@ -1427,5 +1438,48 @@ public class CadastrarBean {
         this.notificacao.setRemetente(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
         this.notificacao.setTexto("Desistiu de seu desafio !");
         this.controlador.salvarNotificacao(this.notificacao);
+    }
+    
+    /**
+     * Cria um novo livro a partir dos dados de um desafio 
+     * @return
+     * @throws LivroException 
+     */
+    private Livro criarLivroDoDesafio() throws LivroException, Exception {
+        Livro livro = new Livro();   
+        livro.setCapa(getImgBytes());
+        livro.setAvaliacao(this.historiasDesafiosCarregado.getAvaliacao());
+        livro.setBookLock(0);
+        livro.setClassificacao("LIVRE");
+        livro.setDisponivelBiblioteca(true);
+        livro.setDisponivelRevisao(true);        
+        livro.setNroPaginas(0);
+        livro.setReportadoConteudoImproprio(false);
+        livro.setQtdAvaliacoes(this.historiasDesafiosCarregado.getQtdAvaliacoes());
+        livro.setRevisao(0);
+        livro.setTexto(this.historiasDesafiosCarregado.getTexto());
+        livro.setTipoGenero(null);
+        this.tipoTexto = tipoTexto.carregarTipoTextoPorNome("DESAFIO");
+        livro.setTipoTexto(tipoTexto);
+        livro.setTitulo("Desafio entre palavras");
+        return livro;
+    }
+    
+    /**
+     * @return Um array de byte da imagem
+     * @throws Exception Caso haja algum problema na conversão da imagem
+     */
+    private byte[] getImgBytes() throws Exception {
+        File imgFile = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/imagens/semCapa.png"));
+        if (imgFile.exists()) {
+            // Converte o arquivo em um array de bytes
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            BufferedImage imagem = ImageIO.read(imgFile);
+            ImageIO.write(imagem, "PNG", bos);
+            bos.flush();
+            return bos.toByteArray();
+        } else {
+            throw new Exception();
+        }
     }
 }

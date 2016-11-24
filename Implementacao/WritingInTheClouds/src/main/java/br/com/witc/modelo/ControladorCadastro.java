@@ -38,6 +38,7 @@ public class ControladorCadastro {
     private final DesafiosUsuarios desUsuario;
     private final Notificacoes notificacoes;
     private final HistoriasDesafios historiasDesafios;
+    private final ControladorLivro controladorLivro;
     
     public ControladorCadastro() {
         this.usuario = new Usuario();
@@ -56,6 +57,7 @@ public class ControladorCadastro {
         this.desUsuario = new DesafiosUsuarios();
         this.notificacoes = new Notificacoes();
         this.historiasDesafios = new HistoriasDesafios();
+        this.controladorLivro = new ControladorLivro();
     }
 
     /**
@@ -502,5 +504,21 @@ public class ControladorCadastro {
      */
     public HistoriasDesafios carregarHistoriasDesafiosPorId(int idHistoriasDesafios) {
         return this.historiasDesafios.carregarHistoriasDesafiosPorId(idHistoriasDesafios);
+    }
+    
+    /**
+     * Salva um desafio na biblioteca
+     * @param livro
+     * @param perfil 
+     */
+    public void salvarDesafioBiblioteca(Livro livro, Perfil perfil) {
+        this.controladorLivro.salvarLivro(livro, false, perfil);        
+        TipoStatus st = this.controladorLivro.carregarTipoStatus(1);
+        HistoricoLivro historicoLivro = new HistoricoLivro();
+        historicoLivro.setDataInicio(Calendar.getInstance());
+        historicoLivro.setPerfil(perfil);
+        historicoLivro.setLivro(livro);
+        historicoLivro.setStatus(st);
+        this.controladorLivro.salvarHistorico(historicoLivro);
     }
 }
