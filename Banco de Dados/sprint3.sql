@@ -64,7 +64,7 @@ CREATE TABLE `Desafios` (
 );
 
 INSERT INTO `witc`.`Desafios` (`id`, `titulo`, `descricao`) 
-VALUES ('1', 'Limite de palavras', 
+VALUES ('1', 'Desafio com palavras', 
 'O desafiante irá desafiar seu amigo a escrever um texto 
 com palavras que ele escolher e o texto deve ser revisado 
 pelo desafiante para ver se o desafio foi cumprido');
@@ -76,14 +76,6 @@ CREATE TABLE `DesafiosPalavras` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-INSERT INTO `witc`.`DesafiosPalavras` (`id`, `palavra`, `idDesafio`) 
-VALUES ('1', 'Igreja','1');
-
-INSERT INTO `witc`.`DesafiosPalavras` (`id`, `palavra`, `idDesafio`) 
-VALUES ('2', 'Padre','1');
-
-INSERT INTO `witc`.`DesafiosPalavras` (`id`, `palavra`, `idDesafio`) 
-VALUES ('3', 'Santo','1');
 
 CREATE TABLE `DesafiosUsuarios` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -94,9 +86,5 @@ CREATE TABLE `DesafiosUsuarios` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-INSERT INTO `witc`.`DesafiosUsuarios` (`id`, `idUsuario`, `idUsuarioDesafiante`, `idDesafio`) VALUES ('1', '1', '2', '1');
-
-INSERT INTO `witc`.`Desafios` (`id`, `titulo`, `descricao`) VALUES ('2', 'Desafio com palavras e limite', 'O desafiante ira desafiar seu amigo a escrever um texto com um limite de palavras e o texto tambem devera ter as palavras que o desafiante selecionar');
-UPDATE `witc`.`Desafios` SET `titulo`='Desafio com palavras' WHERE `id`='1';
 
 

@@ -57,3 +57,5 @@ CREATE TABLE IF NOT EXISTS `witc`.`Publicacao` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+insert into witc.tipotexto(tipotexto) values ('DESAFIO');
