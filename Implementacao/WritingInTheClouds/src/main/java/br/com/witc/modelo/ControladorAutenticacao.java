@@ -177,7 +177,7 @@ public class ControladorAutenticacao {
      * @return Um objeto Perfil, com o perfil carregado
      */
     public Perfil carregarPerfilPorId(int idPerfil) {
-        return this.perfil.carregarPerfilPorId(idPerfil);
+        return perfil.carregarPerfilPorId(idPerfil);
     }
     
     /**

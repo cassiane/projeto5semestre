@@ -11,6 +11,7 @@ import br.com.witc.excessao.LivroException;
 import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
+import br.com.witc.modelo.ControladorAutenticacao;
 import br.com.witc.modelo.ControladorCadastro;
 import br.com.witc.modelo.Desafios;
 import br.com.witc.modelo.DesafiosPalavras;
@@ -96,7 +97,8 @@ public class CadastrarBean {
     DesafiosUsuarios desafiosUsuarios;
     private HistoriasDesafios historiasDesafiosCarregado; 
     public int idDesafiosUsuarios;
-
+    AutenticarBean autenticarBean;
+            
     public String getPalavra() {
         return palavra;
     }
@@ -126,7 +128,7 @@ public class CadastrarBean {
         this.desafiosUsuarios = new DesafiosUsuarios();
         
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-        AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+        autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
                 .getELResolver().getValue(elContext, null, "autenticarBean");
     }
     
@@ -1308,7 +1310,7 @@ public class CadastrarBean {
      */
     public boolean verificarPalavrasDoDesafio() throws Exception{
         for(String s:this.listarPalavrasDoDesafio()){
-            return this.historiasDesafios.getTexto().contains(s);
+            return this.historiasDesafios.getTexto().toLowerCase().contains(s.toLowerCase());
         }
         return false;
     }
@@ -1377,15 +1379,29 @@ public class CadastrarBean {
             
             HistoriasDesafios tmpHistoria;
             tmpHistoria = this.controlador.carregarHistoriasDesafiosPorId(idHistoriasDesafios);           
+            int qtdAvaliacoesDesafio = tmpHistoria.getQtdAvaliacoes() + 1;
+            float somaAvaliacoesDesafio = tmpHistoria.getSomaAvaliacoes() + rating;
+            float novaAvaliacaoDesafio = somaAvaliacoesDesafio / qtdAvaliacoesDesafio;
             
+            historiasDesafiosCarregado.setAvaliacao(novaAvaliacaoDesafio);
+            historiasDesafiosCarregado.setQtdAvaliacoes(qtdAvaliacoesDesafio);
+            historiasDesafiosCarregado.setSomaAvaliacoes(somaAvaliacoesDesafio); 
             
-            int qtdAvaliacoes = tmpHistoria.getQtdAvaliacoes() + 1;
-            float somaAvaliacoes = tmpHistoria.getSomaAvaliacoes() + rating;
+            this.controlador.salvarHistoriaDesafio(historiasDesafiosCarregado);
+            
+            //incrementa a avaliação do usuário também
+            //ControladorAutenticacao controlAut = new ControladorAutenticacao();
+            Perfil tmpPerfil = Perfil.retornarPerfilUsuarioLogado(this.historiasDesafiosCarregado.getDesafiosUsuarios().getUsuario());
+            
+            int qtdAvaliacoes = tmpPerfil.getQtdAvaliacoes() + 1;
+            float somaAvaliacoes = tmpPerfil.getSomaAvaliacoes() + rating;
             float novaAvaliacao = somaAvaliacoes / qtdAvaliacoes;
             
-            historiasDesafiosCarregado.setAvaliacao(novaAvaliacao);
-            historiasDesafiosCarregado.setQtdAvaliacoes(qtdAvaliacoes);
-            historiasDesafiosCarregado.setSomaAvaliacoes(somaAvaliacoes); 
+            tmpPerfil.setAvaliacao(novaAvaliacao);
+            tmpPerfil.setSomaAvaliacoes(somaAvaliacoes);
+            tmpPerfil.setQtdAvaliacoes(qtdAvaliacoes);
+            
+            autenticarBean.controlador.salvarPerfil(tmpPerfil);
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException | 
                 NullPointerException | PatternSyntaxException ex) {
             enviarMensagem(javax.faces.application.FacesMessage.SEVERITY_ERROR, "Erro ao qualificar o usuário. Seu voto não foi computado!");
