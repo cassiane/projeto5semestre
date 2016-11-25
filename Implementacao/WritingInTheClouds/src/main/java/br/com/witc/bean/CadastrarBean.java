@@ -568,6 +568,12 @@ public class CadastrarBean {
     }
     
     public StreamedContent getFotos(Usuario user) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        
         try {
             if (user.getFoto() == null) {
                 return carregarFotoDefault(false);
@@ -580,13 +586,25 @@ public class CadastrarBean {
         }
     }
     
-    public StreamedContent getFotoAmigo() {
+    public StreamedContent getFotoAmigo() {        
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        }
+        
         int idfoto = 0;
         try {
             idfoto = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userfoto"));
         } catch (NumberFormatException ex) {
             return carregarFotoDefault(false);
         }
+        
+        if (this.autenticarBean.getPerfilSelecionadoAmigo() != null && 
+            idfoto == this.autenticarBean.getPerfilSelecionadoAmigo().getUsuario().getId()) {
+            return this.getFotos(this.autenticarBean.getPerfilSelecionadoAmigo().getUsuario());
+        }                
+        
         Usuario usu = new Usuario();
         for (Usuario us : this.amigos) {
             if (us.getId() == idfoto) {
@@ -594,6 +612,7 @@ public class CadastrarBean {
                 break;
             }
         }
+        
         return this.getFotos(usu);
     }
     

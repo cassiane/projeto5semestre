@@ -8,12 +8,29 @@
  * This is out callback function for when a rating is submitted
  */
 function setRating(id, rating)
-{                
+{                    
     callBeanMethod([{name:'rating',value:id + "-" + rating}]);    
 }
 
+function setRating(id, rating)
+{                    
+    userRating([{name:'rating',value:id + "-" + rating}]);    
+}
+
+function initializeRateboxUserRating() {
+    $(function() {                    
+        $( '.ratebox' ).raterater( { 
+            submitFunction: 'setRating', 
+            allowChange: true,
+            starWidth: 20,
+            spaceWidth: 5,
+            numStars: 5
+        });    
+    });
+}
+
 function initializeRatebox() {    
-    $(function() {            
+    $(function() {                    
         $( '.ratebox' ).raterater( { 
             submitFunction: 'setRating', 
             allowChange: true,
@@ -25,8 +42,8 @@ function initializeRatebox() {
 }
 
 /* Here we initialize raterater on our rating boxes */
-$(function() {    
-    $( '.ratebox' ).raterater( { 
+$(function() {        
+    $( '.ratebox' ).raterater( {         
         submitFunction: 'setRating', 
         allowChange: true,
         starWidth: 20,

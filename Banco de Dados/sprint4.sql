@@ -59,3 +59,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 insert into witc.tipotexto(tipotexto) values ('DESAFIO');
+
+ALTER TABLE `witc`.`perfil` 
+CHANGE COLUMN `avaliacao` `avaliacao` FLOAT UNSIGNED NULL DEFAULT '0' ;

@@ -27,6 +27,7 @@ import static javax.faces.context.FacesContext.getCurrentInstance;
 @ManagedBean
 @SessionScoped
 public class AutenticarBean {
+
     final ControladorAutenticacao controlador;
     private String email;
     private String senha;
@@ -110,6 +111,13 @@ public class AutenticarBean {
     }
 
     /**
+     * @return the perfilSelecionadoAmigo
+     */
+    public Perfil getPerfilSelecionadoAmigo() {
+        return perfilSelecionadoAmigo;
+    }
+
+    /**
      * Verifica se o usuario possui mais de um perfil
      *
      * @return Verdadeiro se tiver mais de um perfil
@@ -150,7 +158,8 @@ public class AutenticarBean {
      */
     public void setAmigoUsuario(int id) {
         this.controlador.setAmigoUsuario(id);
-        
+        this.perfilSelecionadoAmigo = this.controlador.carregarPerfilPorId(id);
+
         // Carrega perfil padrao do amigo
         this.listarPerfisAmigos();
     }
@@ -189,7 +198,7 @@ public class AutenticarBean {
      */
     public int getIdPerfil() {
         if (!this.isAmigo()) {
-            if (this.perfilSelecionadoAmigo == null) {
+            if (this.getPerfilSelecionadoAmigo() == null) {
                 // perfil padrao
                 for (Perfil perfil : this.perfisAmigo) {
                     if (perfil.isPerfilPadrao()) {
@@ -197,9 +206,9 @@ public class AutenticarBean {
                     }
                 }
             }
-            return this.perfilSelecionadoAmigo.getId();
+            return this.getPerfilSelecionadoAmigo().getId();
         } else {
-            if (this.perfilSelecionadoUsuario == null) {
+            if (this.getPerfilSelecionadoUsuario() == null) {
                 // perfil padrao
                 for (Perfil perfil : this.perfisUsuario) {
                     if (perfil.isPerfilPadrao()) {
@@ -207,7 +216,7 @@ public class AutenticarBean {
                     }
                 }
             }
-            return this.perfilSelecionadoUsuario.getId();
+            return this.getPerfilSelecionadoUsuario().getId();
         }
     }
 
@@ -216,35 +225,21 @@ public class AutenticarBean {
      */
     public float getAvaliacaoPerfil() {
         if (!this.isAmigo()) {
-            return this.perfilSelecionadoAmigo.getAvaliacao();
+            return this.getPerfilSelecionadoAmigo().getAvaliacao();
         }
-        if (this.perfilSelecionadoUsuario == null) {
+        if (this.getPerfilSelecionadoUsuario() == null) {
             for (Perfil perfil : this.perfisUsuario) {
                 if (perfil.isPerfilPadrao()) {
                     return this.perfisUsuario.get(0).getAvaliacao();
                 }
             }
         }
-        return this.perfilSelecionadoUsuario.getAvaliacao();
-    }
-
-    /**
-     * @return the perfilSelecionadoAmigo
-     */
-    public Perfil getPerfilSelecionadoAmigo() {
-        return perfilSelecionadoAmigo;
-    }
-
-    /**
-     * @param perfilSelecionadoAmigo the perfilSelecionadoAmigo to set
-     */
-    public void setPerfilSelecionadoAmigo(Perfil perfilSelecionadoAmigo) {        
-        this.perfilSelecionadoAmigo = perfilSelecionadoAmigo;        
+        return this.getPerfilSelecionadoUsuario().getAvaliacao();
     }
 
     public void listarPerfisAmigos() {
         this.perfisAmigo = this.controlador.listarPerfisUsuario();
-        if (this.perfilSelecionadoAmigo == null) {
+        if (this.getPerfilSelecionadoAmigo() == null) {
             for (Perfil perfil : this.perfisAmigo) {
                 if (perfil.isPerfilPadrao()) {
                     this.perfilSelecionadoAmigo = perfil;
@@ -256,7 +251,7 @@ public class AutenticarBean {
 
     public void listarPerfisUsuarioLogado() {
         this.perfisUsuario = this.controlador.listarPerfis();
-        if (this.perfilSelecionadoUsuario == null) {
+        if (this.getPerfilSelecionadoUsuario() == null) {
             for (Perfil perfil : this.perfisUsuario) {
                 if (perfil.isPerfilPadrao()) {
                     this.perfilSelecionadoUsuario = perfil;
@@ -341,7 +336,7 @@ public class AutenticarBean {
     public Usuario usuarioLogado() {
         return this.controlador.getUsuario();
     }
-    
+
     /**
      * Autentica um usuário no sistema
      *

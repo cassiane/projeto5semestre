@@ -106,22 +106,24 @@
                         <div class="wallpapper-box">                            
                             <p:graphicImage styleClass="img-wallpaper" value="#{cadastrarBean.fotoCapa}" cache="false">
                                 <f:param name="idPerfil" value="#{!autenticarBean.amigo?autenticarBean.idAmigoUsuario:autenticarBean.idPerfil}" />
-                            </p:graphicImage>
+                            </p:graphicImage>                            
                             <p:graphicImage styleClass="img-thumbnail img-circle" value="#{cadastrarBean.foto}" 
                                             style="width: 120px; height: 120px;" cache="false" rendered="#{autenticarBean.amigo}" />
                             <p:graphicImage styleClass="img-thumbnail img-circle" value="#{cadastrarBean.fotoAmigo}" 
                                             style="width: 120px; height: 120px;" cache="false" rendered="#{!autenticarBean.amigo}">
                                 <f:param name="userfoto" value="#{autenticarBean.idAmigoUsuario}" />
-                            </p:graphicImage>
+                            </p:graphicImage>                            
                         </div>                    
                         <div style="position: absolute; width: 100%; text-align: center; top: 65%;">
                             <div>
                                 <h:outputText style="font-weight: bold;" value="#{autenticarBean.nomeCompletoUsuario}" />
                             </div>  
                             <h:form id="frmRating"> 
-                                <p:remoteCommand name="callBeanMethod" update=":frmRating" 
-                                                 actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRatebox();" />
-                                <div id="rate" class="ratebox" data-id="#{autenticarBean.idPerfil}" data-rating="#{autenticarBean.avaliacaoPerfil}" 
+                                <p:remoteCommand name="userRating" update=":frmRating" 
+                                                 actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRateboxUserRating();" />
+                                <div id="rate" class="ratebox" 
+                                     data-id="#{!autenticarBean.amigo?autenticarBean.idAmigoUsuario:autenticarBean.idPerfil}" 
+                                     data-rating="#{autenticarBean.avaliacaoPerfil}" 
                                      style="margin-top: 10px; margin-left: auto; margin-right: auto; #{autenticarBean.amigo?'pointer-events:none;':''}">                                        
                                 </div>                                     
                             </h:form>                            
@@ -218,7 +220,7 @@
                                     <h4 class="modal-title">Avaliações de #{autenticarBean.nomeCompletoUsuario}</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <h:form id="frmGeneros"> 
+                                    <h:form id="frmGeneros">                                         
                                         <p:remoteCommand name="callBeanMethod" update=":frmGeneros" oncomplete="initializeRatebox();" />                                                                                                                        
                                         <div align="center">
                                             <h:panelGrid columns="2">
@@ -234,7 +236,7 @@
                                                     <h:outputText value="Não foram encontradas avaliações" class="text-primary" style="font-size: 15px;" />
                                                 </div>
                                             </c:if>
-                                        </div>
+                                        </div>                                        
                                     </h:form>   
                                 </div>
                                 <div class="modal-footer">                                    
