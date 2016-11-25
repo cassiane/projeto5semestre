@@ -22,6 +22,7 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @RequestScoped
 public class MessengerBean {
+
     private final ControladorMessenger controlador;
     @ManagedProperty(value = "#{param.idsend}")
     private int idSend;
@@ -73,11 +74,21 @@ public class MessengerBean {
     }
 
     public void enviarMsn() {
-        if (((this.idSend > 0) && (this.idReceive > 0)) && ((!this.msn.isEmpty())))
+        if (((this.idSend > 0) && (this.idReceive > 0)) && ((!this.msn.isEmpty()))) {
             this.controlador.enviaMsn(this.idSend, this.idReceive, this.msn);
+        }
     }
 
     public List<Messenger> listarMsn(int idsend, int idreceive) {
         return this.controlador.listarMsn(idsend, idreceive);
+    }
+
+    public void fecharBox() {
+        if (this.idReceive > 0) {
+            ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+            AutenticarBean autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                    .getELResolver().getValue(elContext, null, "autenticarBean");
+            autenticarBean.rmBoxMessenger(this.idReceive);
+        }
     }
 }

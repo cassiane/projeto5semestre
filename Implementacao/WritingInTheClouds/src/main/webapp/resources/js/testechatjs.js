@@ -50,6 +50,10 @@ function enviandomsn(usu, amigo, msn) {
 //}
 
 function messenger_off(e) {
+//    alert(e);
+    $('input#idreceive').attr('value', e);
+    var link = $('#idbox');
+    link.click();
     //$('#sidebar_secondary_chat' + e).removeClass('popup-box-on');
     //$('#box_messenger').children('#box_messenger_chat' + e).remove();
 }
@@ -86,20 +90,19 @@ function messenger_off(e) {
 //    $( "#chat_window_1" ).remove();
 //});
 
-function messenger_create(chatusu, chatami) {
-//$('#'+idChat ).append( '<div class="'+classChat+'"><div class="panel panel-'+panelColor+'"><div class="panel-heading"><span class="glyphicon glyphicon-comment"></span>'+lblTitulChat+" : "+Nombre+'<div class="btn-group pull-right"><button type="button" onclick="alert(\''+textoAyuda+'\')" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></button></div></div><div class="panel-body"><ul class="chatpluginchat"></ul></div><div class="panel-footer"><div class="input-group"><input id="'+lblTxtEnviar+'" type="text" class="form-control input-sm" placeholder="'+lblCampoEntrada+'" /><span class="input-group-btn"><button  class="btn btn-warning btn-sm" id="'+btnEnviar+'">'+lblEnviar+'</button></span></div></div></div></div><li class="left clearfix itemtemplate" style="display:none"><span class="chat-img pull-left"><img src="'+urlImg+'" alt="User Avatar" class="img-circle" id="Foto"/></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font" id="Nombre">Nombre</strong><small class="pull-right text-muted"><span class="glyphicon glyphicon-asterisk"></span><span id="Tiempo">12 mins ago</span></small></div> <p id="Contenido">Contenido</p></div></li>');
+function messenger_create(chatusu, chatami, chatname) {
     var fotoUsuario = $('#chatfotouser').attr('src');
     var fotoAmigo = $('#chaton' + chatami).children('li').children('img');
     var html = $('#box_messenger_chat').clone();
-//    html.attr('id', 'box_messenger_chat' + chatami + ' ' + $('#box_messenger_chat').html());
-    alert(chatusu + ' ' + chatami + ' ' + html.html());
+    alert(fotoAmigo.html() + ' ' + chatami + ' ' + html.html());
     $(html.children('chat-aside')).addClass('popup-box-on');
-    $(html.children('chat-aside').children('div').children('div').children('h3').children('span')).text(' ' + fotoAmigo.attr('alt'));
+    $(html.children('chat-aside').children('div').children('div').children('h3').children('span')).text(' ' + chatname);
     $(html.children('chat-aside').children('div').children('div').children('form').children('div').children('input')).attr('id', 'txtmsn' + chatami);
     $(html.children('chat-aside').children('div').children('div').children('form').children('span').children('a')).attr('onclick', 'enviandomsn(' + chatusu + ', ' + chatami + ', txtmsn' + chatami + ')');
-//    $(html.children('chat-aside').children('div').children('div').children('form#j_idt105').children('input')).attr('value', chatami);
-    $(html).find('#removeClass').attr('onclick', 'fecharBox(' + chatami + ')');
-    alert(html.html());
+    $(html).find('#removeClass').attr('onclick', 'messenger_off(' + chatami + ')');
+    
+//showMsnBox
+    //    alert(html.html());
 
     //alert(fotoUsuario);
 //    $('#box_messenger')
@@ -234,10 +237,7 @@ function messenger_create(chatusu, chatami) {
 //                    '</div>' +
 //                    '</chat-aside>' +
 //                    '</div>');
-    //alert(html.attr('id').toString());
     html.addClass('popup-box-on');
-    //var t = html.html();
-    //alert(t.toString().substring(64));
     $('#box_messenger').append(
             '<div id="box_messenger_chat' + chatami + '" class="col-md-2" style="width: 260px;">' +
             html.html() +

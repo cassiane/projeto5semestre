@@ -457,10 +457,9 @@ public class AutenticarBean {
         this.boxAtivo = box;
     }
     
-    public void rmBoxMessenger() {
+    public void rmBoxMessenger(int box) {
         try {
-            int value = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("param"));
-            this.boxMessenger.remove(value);
+            this.boxMessenger.remove(box);
         } catch (Exception ex) {}
     }
 
