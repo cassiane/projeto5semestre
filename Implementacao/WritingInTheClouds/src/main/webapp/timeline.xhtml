@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="padraoInterno.xhtml">                
+        <ui:define name="conteudo">                 
+            <script>
+            </script>
+            <f:event listener="#{publicacaoBean.carregarPublicacoesAmigos(autenticarBean.idPerfil)}" type="preRenderView" />
+            <f:event listener="#{publicacaoBean.setUsuario(autenticarBean.usuarioLogado())}" type="preRenderView" />
+            <h:form>
+                <div>
+                    <h:inputText a:placeholder="No que você está pensando?" maxlength="140" 
+                                 value="#{publicacaoBean.mensagemPublicacao}" style="width: 100%; height: 80px;"/>
+                </div>                
+                <div style="margin-top: 5px;">                    
+                    <h:commandButton value="Publicar" class="btn btn-success" action="return form.reset();" actionListener="#{publicacaoBean.salvarMensagemPublicacao()}" />
+                </div>
+        </h:form>
+        <ui:repeat value="#{publicacaoBean.publicacoesAmigos}" var="tl" varStatus="loop">
+            <div class="publication-box">
+                <h:panelGrid columns="2" cellpadding="10" cellspacing="1">
+                    <p:graphicImage cache="false" style="width: 30px; height: 30px;" value="#{publicacaoBean.fotoAmigo}">
+                        <f:param name="posicao" value="#{loop.index}" />
+                    </p:graphicImage>
+                    <p style="margin-left: 5px;" class="text-info">Nova publicação de #{tl.amigo.nome} em #{publicacaoBean.getDataPublicacao(tl.dataPublicacao)}</p>
+                </h:panelGrid>
+                <br />
+                <p>#{tl.mensagemPublicacao}</p>
+            </div>
+        </ui:repeat>
+    </ui:define>
+</ui:composition>
+</html>
+

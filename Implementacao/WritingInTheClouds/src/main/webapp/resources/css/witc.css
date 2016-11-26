@@ -1,0 +1,178 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 05/09/2016, 16:06:18
+    Author     : marcelo.lima
+*/
+
+.inputtext {
+    width: 98%;        
+}
+
+.inputtext2c {
+    width: 96%;
+}
+
+.painelgrid {
+    width: 100%;    
+}
+
+.book_img {
+    width: 100%; 
+    height: auto;
+}
+
+.logo_img {
+    width: 42%; 
+    height: auto;
+}
+
+.column1 {
+    width: 60%;
+    height:auto;        
+}
+
+.column2 {
+    width: 40%;
+    height:auto;
+}
+
+.colunaDireita{
+    width: 230px;        
+}
+
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%); 
+}
+
+/* align icon */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+.vertical-align {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.box { 
+    position: relative;            
+    width: 90%;    
+    border: 1px lightblue solid;
+}
+
+.perfil-box {    
+    height: 300px; 
+}
+
+.about-box { 
+    margin-top: 40px;
+    height: 160px;     
+}
+
+.about-box-friend { 
+    margin-top: 40px;
+    height: 200px;     
+}
+
+.book-box { 
+    margin-top: 40px;
+    height: 280px;     
+}
+
+.img-perfil-box {
+    position: absolute;        
+    height: 30%;
+    top: 20%;  
+}
+
+.wallpapper-box {
+    position: absolute;
+    max-height: 100%;
+    max-width: 100%;
+    top: 0px;
+    left: 0px;
+    width: 100%; 
+    height: 40%; 
+}
+
+.img-wallpaper {
+    display: block;
+    height: 100%;    
+    width: 100%;
+}
+
+.img-circle {
+    position: absolute;
+    display: block;                
+    top: 50%;    
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;     
+    height: auto;                
+    margin:auto;
+}
+
+.coluna {    
+    font: 12px Arial, sans-serif;
+    font-weight: bold;
+    color: black;
+}
+
+.order-table{
+    border-collapse:collapse;
+    padding: 5px;
+    margin: 5px;
+}
+
+.order-table-odd-row{    
+    background:none repeat scroll 0 0 #FFFFFF;
+    border-top:1px solid #BBBBBB;
+}
+
+.order-table-even-row{    
+    background:none repeat scroll 0 0 #F9F9F9;
+    border-top:1px solid #BBBBBB;
+}
+
+.disable_autocomplete_multiple li {
+    pointer-events: none;
+}
+
+.autocomplete_multiple {
+    margin-top: 10px; width:300px;
+}
+
+.disable_editor{
+    pointer-events: none;
+}
+
+.column-panel {
+    margin-top: 20px;
+}
+
+.publication-box {
+    margin-top: 10px;
+    width: 100%; 
+    height: 100px;    
+    border: 1px solid #dcdcdc;
+}
