@@ -28,7 +28,7 @@ import static javax.faces.context.FacesContext.getCurrentInstance;
 @SessionScoped
 public class AutenticarBean {
 
-    final ControladorAutenticacao controlador;
+    ControladorAutenticacao controlador;
     private String email;
     private String senha;
     private List<Perfil> perfisUsuario;
@@ -54,6 +54,14 @@ public class AutenticarBean {
         this.email = email;
     }
 
+    public ControladorAutenticacao getControlador() {
+        return controlador;
+    }
+
+    public void setControlador(ControladorAutenticacao controlador) {
+        this.controlador = controlador;
+    }
+    
     /**
      * @return the senha
      */
