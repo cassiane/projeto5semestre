@@ -59,7 +59,7 @@ import org.primefaces.model.UploadedFile;
 @SessionScoped
 public class CadastrarBean {
 
-    private final ControladorCadastro controlador;
+    private ControladorCadastro controlador;
     private Usuario usuario;
     private String emailVerificado;
     private String emailRecuperacaoSenha;
@@ -107,8 +107,14 @@ public class CadastrarBean {
     public void setPalavra(String palavra) {
         this.palavra = palavra;
     }
-    
-    
+
+    public ControladorCadastro getControlador() {
+        return controlador;
+    }
+
+    public void setControlador(ControladorCadastro controlador) {
+        this.controlador = controlador;
+    }
 
     public static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
     public static final String CAMINHO_FOTO_CAPA_DEFAULT = "/resources/imagens/semWallpaper.png";
