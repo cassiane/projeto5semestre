@@ -116,6 +116,14 @@ public class AutenticarBean {
     public Perfil getPerfilSelecionadoAmigo() {
         return perfilSelecionadoAmigo;
     }
+    
+    /**
+     * @param perfilSelecionadoAmigo the perfilSelecionadoAmigo to set
+     */
+    public void setPerfilSelecionadoAmigo(Perfil perfilSelecionadoAmigo) {
+        this.perfilSelecionadoAmigo = perfilSelecionadoAmigo;
+    }
+       
 
     /**
      * Verifica se o usuario possui mais de um perfil
@@ -158,7 +166,7 @@ public class AutenticarBean {
      */
     public void setAmigoUsuario(int id) {
         this.controlador.setAmigoUsuario(id);
-        this.perfilSelecionadoAmigo = this.controlador.carregarPerfilPorId(id);
+        this.setPerfilSelecionadoAmigo(this.controlador.carregarPerfilPorId(id));
 
         // Carrega perfil padrao do amigo
         this.listarPerfisAmigos();
@@ -242,7 +250,7 @@ public class AutenticarBean {
         if (this.getPerfilSelecionadoAmigo() == null) {
             for (Perfil perfil : this.perfisAmigo) {
                 if (perfil.isPerfilPadrao()) {
-                    this.perfilSelecionadoAmigo = perfil;
+                    this.setPerfilSelecionadoAmigo(perfil);
                     break;
                 }
             }

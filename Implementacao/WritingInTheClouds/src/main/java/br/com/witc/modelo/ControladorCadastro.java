@@ -410,7 +410,9 @@ public class ControladorCadastro {
         newPerfil.setPerfilPadrao(true);
         newPerfil.setPseudonimo(usuario.getNome());
 
-        newPerfil.setAvaliacao(0f);
+        newPerfil.setAvaliacao(3f);
+        newPerfil.setQtdAvaliacoes(1);
+        newPerfil.setSomaAvaliacoes(3f);
 
         newPerfil.setUsuario(usuario);
         Perfil oldPerfil = this.perfil.carregarPerfil(usuario);
