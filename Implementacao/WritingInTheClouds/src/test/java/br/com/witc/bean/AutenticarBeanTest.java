@@ -44,7 +44,7 @@ public class AutenticarBeanTest {
     public void setup(){
         aut = new AutenticarBean();
         controlador = Mockito.mock(ControladorAutenticacao.class);
-        aut.setControlador(controlador);
+       // aut.setControlador(controlador);
     }
     
     /**
