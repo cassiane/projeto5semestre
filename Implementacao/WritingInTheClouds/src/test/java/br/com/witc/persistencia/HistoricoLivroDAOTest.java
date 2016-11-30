@@ -6,13 +6,17 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.modelo.HistoricoLivro;
+import br.com.witc.modelo.Livro;
+import br.com.witc.modelo.Perfil;
 import java.util.Calendar;
+import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,7 +27,7 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author Marcelo
+ * @author vanderson
  */
 public class HistoricoLivroDAOTest {
     
@@ -93,5 +97,21 @@ public class HistoricoLivroDAOTest {
         boolean expResult = false;
         boolean result = instance.estaFinalizadoUsuario(2, 1);
         assertEquals(expResult, result);        
+    }
+    
+    /**
+     * Test of estaFinalizadoRevisaoUsuario method, of class HistoricoLivroDAO.
+     */
+    @Test
+    public void testEstaFinalizadoRevisaoUsuario() {
+        System.out.println("estaFinalizadoRevisaoUsuario");
+        int idLivro = 0;
+        int idPerfil = 0;
+        HistoricoLivroDAO instance = new HistoricoLivroDAO();
+        boolean expResult = false;
+        boolean result = instance.estaFinalizadoRevisaoUsuario(idLivro, idPerfil);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 }

@@ -22,7 +22,7 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author Marcelo
+ * @author vanderson
  */
 public class LivroTest {
     
@@ -53,21 +53,17 @@ public class LivroTest {
     }
 
     /**
-     * Test of estaDisponivelEdicaoUsuario method, of class Livro.
+     * Test of getNomeAutoresABNT method, of class Livro.
      */
     @Test
-    public void testEstaDisponivelEdicaoUsuarioTrue() {        
-        Mockito.when(livroDAO.estaDisponivelEdicaoUsuario(Mockito.anyInt(), Mockito.anyInt())).thenReturn(Boolean.TRUE);
-        boolean expResult = true;
-        boolean result = instance.estaDisponivelEdicaoUsuario(Mockito.anyInt(), Mockito.anyInt());
-        assertEquals(expResult, result);        
-    }       
-    
-    @Test
-    public void testEstaDisponivelEdicaoUsuarioFalse() {        
-        Mockito.when(livroDAO.estaDisponivelEdicaoUsuario(Mockito.anyInt(), Mockito.anyInt())).thenReturn(Boolean.FALSE);
-        boolean expResult = false;
-        boolean result = instance.estaDisponivelEdicaoUsuario(Mockito.anyInt(), Mockito.anyInt());
-        assertEquals(expResult, result);        
+    public void testGetNomeAutoresABNT() {
+        System.out.println("getNomeAutoresABNT");
+        int idLivro = 0;
+        Livro instance = new Livro();
+        String expResult = "";
+        String result = instance.getNomeAutoresABNT(idLivro);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 }

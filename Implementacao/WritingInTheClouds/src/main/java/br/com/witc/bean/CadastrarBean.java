@@ -118,9 +118,9 @@ public class CadastrarBean {
         this.controlador = new ControladorCadastro();
         this.usuario = new Usuario();
         this.tipoPerfil = new TipoPerfil();
-        this.tipoPerfildao = new TipoPerfilDAO();
+        //this.tipoPerfildao = new TipoPerfilDAO();
         this.tipoTexto = new TipoTexto();
-        this.tipoTextoDAO = new TipoTextoDAO();
+        //this.tipoTextoDAO = new TipoTextoDAO();
         this.selectedTiposTextoUsuario = new ArrayList<>();
         this.desafioPalavras = new DesafiosPalavras();
         this.desafio = new Desafios();
@@ -129,9 +129,9 @@ public class CadastrarBean {
         this.notificacao = new Notificacoes();        
         this.desafiosUsuarios = new DesafiosUsuarios();
         
-        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        /*ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
-                .getELResolver().getValue(elContext, null, "autenticarBean");
+                .getELResolver().getValue(elContext, null, "autenticarBean");*/
     }
     
     /**
@@ -999,7 +999,7 @@ public class CadastrarBean {
      */
     public void solicitarAmizade(int idSugestao) {
         // Status do usuario
-        this.atualizarStatusUsuario(1);
+        //this.atualizarStatusUsuario(1);
         this.controlador.solicitarAmizade(idSugestao);
     }
 

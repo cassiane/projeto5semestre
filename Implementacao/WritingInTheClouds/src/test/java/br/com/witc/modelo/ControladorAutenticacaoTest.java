@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author Marcelo
+ * @author vanderson
  */
 public class ControladorAutenticacaoTest {
     @InjectMocks
@@ -49,13 +49,15 @@ public class ControladorAutenticacaoTest {
     }
 
     /**
-     * Test of carregarPerfilPorId method, of class ControladorAutenticacao.
+     * Test of salvarPerfil method, of class ControladorAutenticacao.
      */
     @Test
-    public void testCarregarPerfilPorId() {
-        Mockito.when(perfil.carregarPerfilPorId(Mockito.anyInt())).thenReturn(perfil);        
-        Perfil expResult = perfil;
-        Perfil result = instance.carregarPerfilPorId(Mockito.anyInt());
-        assertEquals(expResult, result);        
+    public void testSalvarPerfil() {
+        System.out.println("salvarPerfil");
+        Perfil perfil = null;
+        ControladorAutenticacao instance = new ControladorAutenticacao();
+        instance.salvarPerfil(perfil);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 }

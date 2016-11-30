@@ -26,7 +26,7 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author marcelo.lima
+ * @author vanderson
  */
 public class LivroDAOTest {
     
@@ -66,44 +66,54 @@ public class LivroDAOTest {
     }
 
     /**
-     * Test of estaDisponivelEdicaoUsuario method, of class LivroDAO.
+     * Test of estaDisponivelRevisaoUsuario method, of class LivroDAO.
      */
     @Test
-    public void testEstaDisponivelEdicaoUsuario_1ParOK() {
-        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
-        Mockito.when(sessao.createQuery(Mockito.anyString()))                
-                .thenReturn(query);        
+    public void testEstaDisponivelRevisaoUsuario() {
+        System.out.println("estaDisponivelRevisaoUsuario");
+        Mockito.when(sessao.createQuery(Mockito.anyString())).thenReturn(query);
         Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
         Mockito.when((Livro) query.uniqueResult()).thenReturn(livro);
-        Mockito.when(livro.getBookLock()).thenReturn(1);        
+        Mockito.when(livro.getBookLock()).thenReturn(1);
+        Mockito.when(livro.getId()).thenReturn(1);
+        Mockito.when(livro.isDisponivelRevisao()).thenReturn(true);
         boolean expResult = true;
-        boolean result = instance.estaDisponivelEdicaoUsuario(livro.getId(),1);
-        assertEquals(expResult, result);        
+        boolean result = instance.estaDisponivelRevisaoUsuario(livro.getId(), 1);
+        assertEquals(expResult, result);
     }
-    
+
+    /**
+     * Test of estaDisponivelRevisaoUsuario method, of class LivroDAO.
+     */
     @Test
-    public void testEstaDisponivelEdicaoUsuario_2ParOK() {
-        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
-        Mockito.when(sessao.createQuery(Mockito.anyString()))                
-                .thenReturn(query);        
+    public void testEstaDisponivelRevisaoUsuario_OutroUsuario() {
+        System.out.println("estaDisponivelRevisaoUsuario_OutroUsuario");
+        Mockito.when(sessao.createQuery(Mockito.anyString())).thenReturn(query);
         Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
         Mockito.when((Livro) query.uniqueResult()).thenReturn(livro);
-        Mockito.when(livro.getBookLock()).thenReturn(0);        
-        boolean expResult = true;
-        boolean result = instance.estaDisponivelEdicaoUsuario(livro.getId(), 1);
-        assertEquals(expResult, result);        
-    }
-    
-    @Test
-    public void testEstaDisponivelEdicaoUsuario_2ParNOK() {
-        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
-        Mockito.when(sessao.createQuery(Mockito.anyString()))                
-                .thenReturn(query);        
-        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
-        Mockito.when((Livro) query.uniqueResult()).thenReturn(livro);
-        Mockito.when(livro.getBookLock()).thenReturn(3);        
+        Mockito.when(livro.getBookLock()).thenReturn(2);
+        Mockito.when(livro.getId()).thenReturn(1);
+        Mockito.when(livro.isDisponivelRevisao()).thenReturn(true);
         boolean expResult = false;
-        boolean result = instance.estaDisponivelEdicaoUsuario(livro.getId(), 1);
-        assertEquals(expResult, result);        
+        boolean result = instance.estaDisponivelRevisaoUsuario(livro.getId(), 1);
+        assertEquals(expResult, result);
     }
+
+    /**
+     * Test of estaDisponivelRevisaoUsuario method, of class LivroDAO.
+     */
+    @Test
+    public void testEstaDisponivelRevisaoUsuario_SemRevisao() {
+        System.out.println("estaDisponivelRevisaoUsuario_SemRevisao");
+        Mockito.when(sessao.createQuery(Mockito.anyString())).thenReturn(query);
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
+        Mockito.when((Livro) query.uniqueResult()).thenReturn(livro);
+        Mockito.when(livro.getBookLock()).thenReturn(1);
+        Mockito.when(livro.getId()).thenReturn(1);
+        Mockito.when(livro.isDisponivelRevisao()).thenReturn(false);
+        boolean expResult = false;
+        boolean result = instance.estaDisponivelRevisaoUsuario(livro.getId(), 1);
+        assertEquals(expResult, result);
+    }
+
 }

@@ -24,7 +24,7 @@ import org.primefaces.model.StreamedContent;
 
 /**
  *
- * @author Marcelo
+ * @author vanderson
  */
 public class UsuarioTest {
     
@@ -55,17 +55,42 @@ public class UsuarioTest {
     }
    
     /**
-     * Test of aceitarAmizade method, of class Usuario.
+     * Test of cadastrarUsuario method, of class Usuario.
      */
     @Test
-    public void testAceitarAmizade() {        
-        instance.aceitarAmizade(1);
-        Mockito.verify(usuarioDAO, times(1)).aceitarAmizade(instance.getId(), 1);
+    public void testCadastrarUsuario() throws Exception {
+        System.out.println("cadastrarUsuario");
+        Usuario instance = new Usuario();
+        instance.cadastrarUsuario();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of removerAmizade method, of class Usuario.
+     */
+    @Test
+    public void testRemoverAmizade() {
+        System.out.println("removerAmizade");
+        int idAmizade = 0;
+        Usuario instance = new Usuario();
+        instance.removerAmizade(idAmizade);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of verificarExistenciaUsuario method, of class Usuario.
+     */
+    @Test
+    public void testVerificarExistenciaUsuario() throws Exception {
+        System.out.println("verificarExistenciaUsuario");
+        String Email = "";
+        Usuario expResult = null;
+        Usuario result = Usuario.verificarExistenciaUsuario(Email);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     
-    @Test
-    public void testExcluirTodosTipoTextoUsuario() {
-        instance.excluirTodosTipoTextoUsuario(instance.getId());
-        Mockito.verify(usuarioDAO, times(1)).excluirTodosTipoTextoUsuario(instance.getId());
-    }
 }

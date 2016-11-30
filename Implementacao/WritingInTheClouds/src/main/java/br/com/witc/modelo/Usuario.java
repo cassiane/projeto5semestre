@@ -381,8 +381,8 @@ public class Usuario implements Serializable {
      * @param idSugestao Identificador do amigo a ser solicitado
      */
     public void solicitarAmizade(int idSugestao) {
-        UsuarioDAO dao = new UsuarioDAO();
-        dao.solicitarAmizade(this.getId(), idSugestao);
+        //UsuarioDAO dao = new UsuarioDAO();
+        usuarioDAO.solicitarAmizade(this.getId(), idSugestao);
     }
 
     /**

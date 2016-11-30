@@ -22,7 +22,7 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author Marcelo
+ * @author vanderson
  */
 public class ControladorLivroTest {
     
@@ -62,38 +62,33 @@ public class ControladorLivroTest {
     }
 
     /**
-     * Test of salvarLivro method, of class ControladorLivro.
+     * Test of carregarLivro method, of class ControladorLivro.
      */
     @Test
-    public void testSalvarLivro_3argsNaoFinalizado() {                
-        instance.salvarLivro(livro, false, perfil);        
-        Mockito.verify(livro, times(1)).salvarLivro(livro);
-    }
-    
-    /*
-    @Test
-    public void testSalvarLivro_3argsFinalizado() {                
-        instance.salvarLivro(livro, true, perfil);
-        Mockito.verify(historicoLivro, times(1)).finalizarLivroUsuario(livro,perfil);
-        Mockito.verify(livro, times(1)).salvarLivro(livro);
-    }
-    */
-    
-    /**
-     * Test of salvarHistorico method, of class ControladorLivro.
-     */
-    @Test
-    public void testSalvarHistorico() {        
-        instance.salvarHistorico(historicoLivro);
-        Mockito.verify(historicoLivro, times(1)).salvarHistorico(historicoLivro);
+    public void testCarregarLivro() throws Exception {
+        System.out.println("carregarLivro");
+        int idLivro = 0;
+        ControladorLivro instance = new ControladorLivro();
+        Livro expResult = null;
+        Livro result = instance.carregarLivro(idLivro);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 
     /**
-     * Test of negarEdicao method, of class ControladorLivro.
+     * Test of carregarListaAmigoEditor method, of class ControladorLivro.
      */
     @Test
-    public void testNegarEdicao() {        
-        instance.negarEdicao(convidadoPerfil);
-        Mockito.verify(convidadoPerfil, times(1)).negarEdicao();
+    public void testCarregarListaAmigoEditor() {
+        System.out.println("carregarListaAmigoEditor");
+        Perfil perfil = null;
+        int idLivro = 0;
+        ControladorLivro instance = new ControladorLivro();
+        List<Perfil> expResult = null;
+        List<Perfil> result = instance.carregarListaAmigoEditor(perfil, idLivro);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
 }

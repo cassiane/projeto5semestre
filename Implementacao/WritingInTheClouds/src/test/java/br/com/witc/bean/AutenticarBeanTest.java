@@ -22,12 +22,9 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author 10070133
+ * @author vanderson
  */
 public class AutenticarBeanTest {        
-    
-    public AutenticarBeanTest() {
-    }
     
     @InjectMocks
     AutenticarBean instance = new AutenticarBean();
@@ -35,14 +32,8 @@ public class AutenticarBeanTest {
     @Mock
     ControladorAutenticacao controlador;
     
-    @Mock
-    Perfil perfil;
-    
-    @Mock
-    Usuario usuario;
-    
-    @Mock
-    TipoPerfil tipoPerfil;        
+    public AutenticarBeanTest() {
+    }       
     
     @BeforeClass
     public static void setUpClass() {
@@ -62,27 +53,21 @@ public class AutenticarBeanTest {
     }
 
     /**
-     * Test of isPerfilEditor method, of class AutenticarBean.
+     * Test of getNumeroAmigosUsuarioLogado method, of class AutenticarBean.
      */
     @Test
-    public void testIsPerfilEditorTrue() {                                
-        Mockito.when(controlador.getUsuario()).thenReturn(usuario);             
-        Mockito.when(controlador.carregarPerfil(usuario)).thenReturn(perfil);
-        Mockito.when(perfil.getTipoPerfil()).thenReturn(tipoPerfil);        
-        Mockito.when(tipoPerfil.getId()).thenReturn(1);
-        boolean expResult = true;
-        boolean result = instance.isPerfilEditor();
-        assertEquals(expResult, result);
+    public void testGetNumeroAmigosUsuarioLogado() {
+        System.out.println("getNumeroAmigosUsuarioLogado");
+        Mockito.when(controlador.getNumeroAmigosUsuarioLogado())
+                .thenReturn(5)
+                .thenReturn(1)
+                .thenReturn(0);
+        assertEquals("5 amigos", instance.getNumeroAmigosUsuarioLogado());
+        assertEquals("1 amigo", instance.getNumeroAmigosUsuarioLogado());
+        assertEquals("0 amigos", instance.getNumeroAmigosUsuarioLogado());
+        Mockito.verify(controlador, Mockito.times(3)).getNumeroAmigosUsuarioLogado();
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
     }
-    
-    @Test
-    public void testIsPerfilEditorFalse() {                                
-        Mockito.when(controlador.getUsuario()).thenReturn(usuario);             
-        Mockito.when(controlador.carregarPerfil(usuario)).thenReturn(perfil);
-        Mockito.when(perfil.getTipoPerfil()).thenReturn(tipoPerfil);        
-        Mockito.when(tipoPerfil.getId()).thenReturn(0);
-        boolean expResult = false;
-        boolean result = instance.isPerfilEditor();
-        assertEquals(expResult, result);
-    }
+
 }

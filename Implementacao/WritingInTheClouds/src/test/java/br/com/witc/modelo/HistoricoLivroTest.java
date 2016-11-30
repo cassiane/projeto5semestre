@@ -22,7 +22,7 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author Marcelo
+ * @author vanderson
  */
 public class HistoricoLivroTest {
     
@@ -56,21 +56,19 @@ public class HistoricoLivroTest {
     }
     
     /**
-     * Test of salvarHistorico method, of class HistoricoLivro.
+     * Test of carregarHistoricoLivroUsuario method, of class HistoricoLivro.
      */
     @Test
-    public void testSalvarHistorico() {        
-        instance.salvarHistorico(historicoLivro);
-        Mockito.verify(historicoLivroDAO, times(1)).salvarHistorico(historicoLivro);
-    }
-
-    /**
-     * Test of salvarHistoricoConvite method, of class HistoricoLivro.
-     */
-    @Test
-    public void testSalvarHistoricoConvite() {        
-        instance.salvarHistoricoConvite(Mockito.anyInt(), Mockito.anyInt());
-        Mockito.verify(historicoLivroDAO, times(1)).salvarHistoricoConvite(Mockito.anyInt(), Mockito.anyInt());
+    public void testCarregarHistoricoLivroUsuario() {
+        System.out.println("carregarHistoricoLivroUsuario");
+        Livro livro = null;
+        Perfil perfil = null;
+        HistoricoLivro instance = new HistoricoLivro();
+        HistoricoLivro expResult = null;
+        HistoricoLivro result = instance.carregarHistoricoLivroUsuario(livro, perfil);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
     }
     
 }
