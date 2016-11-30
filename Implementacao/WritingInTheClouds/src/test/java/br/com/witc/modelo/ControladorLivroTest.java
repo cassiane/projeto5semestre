@@ -76,7 +76,8 @@ public class ControladorLivroTest {
         Mockito.when(historicoLivro.getDataConclusao()).thenReturn(Calendar.getInstance());
         instance.salvarLivro(livro, Boolean.TRUE, perfil);        
         Mockito.verify(historicoLivro, times(1)).finalizarLivroUsuario(livro,perfil);
-        Mockito.verify(livro, times(1)).salvarLivro(livro);
+        Mockito.verify(livro, times(1)).setDisponivelBiblioteca(Boolean.TRUE);
+        Mockito.verify(livro, times(1)).salvarLivro(livro);        
     }    
             
     @Test
@@ -89,7 +90,7 @@ public class ControladorLivroTest {
         Mockito.when(historicoLivro.getDataConclusao()).thenReturn(null);        
         instance.salvarLivro(livro, Boolean.TRUE, perfil);        
         Mockito.verify(historicoLivro, times(1)).finalizarLivroUsuario(livro,perfil);
-        Mockito.verify(livro, times(1)).salvarLivro(livro);
+        Mockito.verify(livro, times(1)).salvarLivro(livro);        
     }     
     
     /**
