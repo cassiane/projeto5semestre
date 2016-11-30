@@ -45,7 +45,7 @@ public class LivroTest {
     
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+       MockitoAnnotations.initMocks(this);
     }
     
     @After

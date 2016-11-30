@@ -6,11 +6,13 @@
 package br.com.witc.modelo;
 
 import br.com.witc.persistencia.HistoricoLivroDAO;
+import java.util.Calendar;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.times;
 import org.mockito.runners.MockitoJUnitRunner;
 
 /**
@@ -19,16 +21,23 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class HistoricoLivroTest {
-    @InjectMocks
-    HistoricoLivro historicoLivro = new HistoricoLivro();
+   @InjectMocks
+    HistoricoLivro instance = new HistoricoLivro();
+    
     @Mock
-    HistoricoLivroDAO dao;
+    HistoricoLivro historicoLivro;
+    
     @Mock
-    Perfil perfil;
-    @Mock
-    Livro livro;
+    HistoricoLivroDAO historicoLivroDAO;
+    
     @Mock
     TipoStatus tipoStatus;
+    
+    @Mock
+    Livro livro;
+    
+    @Mock
+    Perfil perfil;
     
     public HistoricoLivroTest() {
     }
@@ -39,12 +48,12 @@ public class HistoricoLivroTest {
     @Test
     public void testFinalizarLivroUsuario() {
         System.out.println("finalizarLivroUsuario");
-        Mockito.when(dao.carregarHistoricoLivroUsuario(livro, perfil)).thenReturn(historicoLivro);
+        Mockito.when(historicoLivroDAO.carregarHistoricoLivroUsuario(livro, perfil)).thenReturn(historicoLivro);
         Mockito.when(tipoStatus.carregarTipoStatus(1)).thenReturn(tipoStatus);
-       // historicoLivro.setDataConclusao(Calendar.getInstance());
-       // historicoLivro.setStatus(tipoStatus.carregarTipoStatus(1));
-        historicoLivro.finalizarLivroUsuario(livro, perfil);
-        Mockito.verify(dao).salvarHistorico(historicoLivro);
+        historicoLivro.setDataConclusao(Calendar.getInstance());
+        historicoLivro.setStatus(tipoStatus.carregarTipoStatus(1));
+        instance.finalizarLivroUsuario(livro, perfil);
+        Mockito.verify(historicoLivroDAO, times(1)).salvarHistorico(historicoLivro);
         
     }
     

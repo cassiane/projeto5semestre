@@ -6,9 +6,13 @@
 package br.com.witc.modelo;
 
 import br.com.witc.persistencia.ConvidadoPerfilDAO;
+import br.com.witc.persistencia.HibernateUtil;
 import br.com.witc.persistencia.PerfilDAO;
 import java.util.Calendar;
 import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -34,6 +38,17 @@ public class ConvidadoPerfilTest {
     
     @Mock
     ConvidadoPerfilDAO dao;
+     @Mock
+    SessionFactory sessionFactory;
+    
+    @Mock
+    Session sessao;
+    
+    @Mock
+    Query query;
+    
+    @Mock
+    HibernateUtil hibernateUtil;
     
     public ConvidadoPerfilTest() {
     }

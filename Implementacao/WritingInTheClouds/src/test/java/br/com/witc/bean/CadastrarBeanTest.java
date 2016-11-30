@@ -6,36 +6,44 @@
 package br.com.witc.bean;
 
 import br.com.witc.modelo.ControladorCadastro;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.times;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
 
 
 /**
  *
  * @author marcio
  */
-@RunWith(MockitoJUnitRunner.class)
+
 public class CadastrarBeanTest {
     
-    //@InjectMocks
-    CadastrarBean cadastrar;  
+    @InjectMocks
+    CadastrarBean cadastrar = new CadastrarBean();  
     
     @Mock 
     ControladorCadastro controlador;
     
+     @Mock
+    SessionFactory sessionFactory;
+    
     @Mock
-    AutenticarBean autenticar;
+    Session sessao;
+    
+    @Mock
+    Query query;
     
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        cadastrar = new CadastrarBean();
+        
         
     }
      /**
@@ -44,9 +52,8 @@ public class CadastrarBeanTest {
     @Test
     public void testRemoverTodasAmizades() {
         System.out.println("removerTodasAmizades");
-        int idUsuario = 1;
-        Mockito.verify(this.controlador).removerTodasAmizades(idUsuario);
-
+        cadastrar.removerTodasAmizades(1);
+        Mockito.verify(controlador,times(1)).removerTodasAmizades(1);
     }
 
 }
