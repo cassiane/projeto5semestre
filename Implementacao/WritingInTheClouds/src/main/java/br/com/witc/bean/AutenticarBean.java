@@ -317,8 +317,11 @@ public class AutenticarBean {
      * @return Verdadeiro se Editor
      */
     public boolean isPerfilEditor() {
+        /*
         Perfil editor = new Perfil();
         editor = editor.carregarPerfil(this.usuarioLogado());
+        */
+        Perfil editor = this.controlador.carregarPerfil(this.usuarioLogado());
         return editor.getTipoPerfil().getId() == 1;
     }
 

@@ -9,6 +9,7 @@ import br.com.witc.modelo.ControladorAutenticacao;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.Usuario;
+import br.com.witc.persistencia.PerfilDAO;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,7 +43,7 @@ public class AutenticarBeanTest {
     Usuario usuario;
     
     @Mock
-    TipoPerfil tipoPerfil;
+    TipoPerfil tipoPerfil;        
     
     @BeforeClass
     public static void setUpClass() {
@@ -66,8 +67,8 @@ public class AutenticarBeanTest {
      */
     @Test
     public void testIsPerfilEditor() {                                
-        Mockito.when(controlador.getUsuario()).thenReturn(usuario); 
-        Mockito.when(perfil.carregarPerfil(usuario)).thenReturn(perfil);                
+        Mockito.when(controlador.getUsuario()).thenReturn(usuario);             
+        Mockito.when(controlador.carregarPerfil(usuario)).thenReturn(perfil);
         Mockito.when(perfil.getTipoPerfil()).thenReturn(tipoPerfil);        
         Mockito.when(tipoPerfil.getId()).thenReturn(1);
         boolean expResult = true;
