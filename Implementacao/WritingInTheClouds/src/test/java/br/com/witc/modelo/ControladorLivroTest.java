@@ -39,10 +39,7 @@ public class ControladorLivroTest {
     HistoricoLivro historicoLivro;            
     
     @Mock
-    ConvidadoPerfil convidadoPerfil;
-    
-    @Mock
-    List<HistoricoLivro> lstHl = new ArrayList();
+    ConvidadoPerfil convidadoPerfil;            
     
     public ControladorLivroTest() {
     }
@@ -81,19 +78,19 @@ public class ControladorLivroTest {
         Mockito.verify(historicoLivro, times(1)).finalizarLivroUsuario(livro,perfil);
         Mockito.verify(livro, times(1)).salvarLivro(livro);
     }    
-        
-    /*
+            
     @Test
     public void testSalvarLivro_3argsFinalizadoNaoTerminado() {        
+        List<HistoricoLivro> lstHl = new ArrayList();
         lstHl.add(historicoLivro);        
-        Mockito.when(livro.getId()).thenReturn(1);
+        Mockito.when(livro.getId()).thenReturn(0);        
+        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(Calendar.getInstance());
         Mockito.when(historicoLivro.listarHistoricoLivro(livro.getId())).thenReturn(lstHl);
-        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(null);                
+        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(null);        
         instance.salvarLivro(livro, Boolean.TRUE, perfil);        
         Mockito.verify(historicoLivro, times(1)).finalizarLivroUsuario(livro,perfil);
         Mockito.verify(livro, times(1)).salvarLivro(livro);
-    } 
-    */
+    }     
     
     /**
      * Test of salvarHistorico method, of class ControladorLivro.
