@@ -27,8 +27,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class AutenticarBeanTest {
     @InjectMocks
-    AutenticarBean autenticar = new AutenticarBean();
-    
+    AutenticarBean autenticar;   
     @Mock 
     ControladorAutenticacao controlador;
     @Mock 
@@ -42,8 +41,9 @@ public class AutenticarBeanTest {
 
     @Before
     public void setup(){
+        MockitoAnnotations.initMocks(this);
         aut = new AutenticarBean();
-        controlador = Mockito.mock(ControladorAutenticacao.class);
+      // controlador = Mockito.mock(ControladorAutenticacao.class);
        // aut.setControlador(controlador);
     }
     
@@ -180,17 +180,27 @@ public class AutenticarBeanTest {
         AutenticarBean instance = new AutenticarBean();
         instance.trocarPerfilUsuario(auxPerfil);
     }
+    **/
 
     /**
-     * Test of perfilIgual method, of class AutenticarBean.
+     * Test of perfilIgual method, of class AutenticarBean.*/
      
     @Test
     public void testPerfilIgual() {
-        System.out.println("perfilIgual");
-        Perfil perfil = null;
-        AutenticarBean instance = new AutenticarBean();
-        boolean expResult = false;
-        boolean result = instance.perfilIgual(perfil);
+       System.out.println("perfilIgual");
+       Mockito.when(this.controlador.perfilIgual(perfil)).thenReturn(true); 
+       boolean expResult = true;
+       boolean result=autenticar.perfilIgual(perfil);
+        assertEquals(expResult, result);
+        
+    }
+    
+    @Test
+    public void testPerfilIgualNULL() {
+        System.out.println("perfilIgualNULL");
+        Perfil perfilNull=null;
+       boolean expResult = false;
+       boolean result=autenticar.perfilIgual(perfilNull);
         assertEquals(expResult, result);
     }
 

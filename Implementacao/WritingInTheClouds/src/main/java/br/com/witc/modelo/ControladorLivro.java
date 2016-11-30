@@ -224,6 +224,8 @@ public class ControladorLivro {
     
     /**
      * Metodo para aceitar a solicitação de edição
+     * @param perfil
+     * @param livro
      * @param editarLivro livro a ser compartilhado
      */
     //public void aceitarEdicao(ConvidadoPerfil editarLivro) {
