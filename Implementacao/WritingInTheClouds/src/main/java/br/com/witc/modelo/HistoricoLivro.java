@@ -135,8 +135,7 @@ public class HistoricoLivro implements Serializable {
      * @param idPerfil O id do perfil do usuário
      * @return Um objeto HistoricoLivro
      */
-    public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) {
-        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+    public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) {        
         return historicoLivroDAO.estaFinalizadoUsuario(idLivro, idPerfil);
     }
      public boolean estaFinalizadoRevisaoUsuario(int idLivro, int idPerfil) {

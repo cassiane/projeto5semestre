@@ -6,14 +6,8 @@
 package br.com.witc.modelo;
 
 import br.com.witc.persistencia.HistoricoLivroDAO;
-import java.util.Calendar;
-import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -22,45 +16,25 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author Marcelo
+ * @author 10070187
  */
 public class HistoricoLivroTest {
     
     @InjectMocks
-    HistoricoLivro instance = new HistoricoLivro();
-    
+    HistoricoLivro historico = new HistoricoLivro();
     @Mock
     HistoricoLivro historicoLivro;
-    
     @Mock
     HistoricoLivroDAO historicoLivroDAO;
-    
-    public HistoricoLivroTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
     
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
     
-    @After
-    public void tearDown() {
-    }
-    
-    /**
-     * Test of salvarHistorico method, of class HistoricoLivro.
-     */
     @Test
     public void testSalvarHistorico() {        
-        instance.salvarHistorico(historicoLivro);
+        historico.salvarHistorico(historicoLivro);
         Mockito.verify(historicoLivroDAO, times(1)).salvarHistorico(historicoLivro);
     }
 
@@ -69,8 +43,13 @@ public class HistoricoLivroTest {
      */
     @Test
     public void testSalvarHistoricoConvite() {        
-        instance.salvarHistoricoConvite(Mockito.anyInt(), Mockito.anyInt());
+        historico.salvarHistoricoConvite(Mockito.anyInt(), Mockito.anyInt());
         Mockito.verify(historicoLivroDAO, times(1)).salvarHistoricoConvite(Mockito.anyInt(), Mockito.anyInt());
     }
     
+    @Test
+    public void testEstaFinalizadoUsuario() {
+        historico.estaFinalizadoUsuario(Mockito.anyInt(),Mockito.anyInt());
+        Mockito.verify(historicoLivroDAO,times(1)).estaFinalizadoUsuario(Mockito.anyInt(),Mockito.anyInt());
+    }
 }

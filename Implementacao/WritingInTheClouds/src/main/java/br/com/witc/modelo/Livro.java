@@ -51,6 +51,7 @@ public class Livro implements Serializable {
     private boolean disponivelRevisao;
     @Transient
     private LivroDAO livroDAO;
+    HistoricoLivro historicoLivro;
 
     public int getId() {
         return id;
@@ -241,8 +242,7 @@ public class Livro implements Serializable {
     /**     
      * @return Uma matriz com os nome e sobrenome do(s) autor(es)
      */
-    public String[][] getLstNomesCompletosAutores() {        
-        HistoricoLivro historicoLivro = new HistoricoLivro();
+    public String[][] getLstNomesCompletosAutores() {  
         List<HistoricoLivro> lstHistorico = historicoLivro.listarHistoricoLivro(this.id);
         String[][] arrNomes = new String[lstHistorico.size()][2];
         int index = 0;

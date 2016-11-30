@@ -6,6 +6,7 @@
 package br.com.witc.modelo;
 
 import br.com.witc.persistencia.LivroDAO;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.After;
@@ -31,6 +32,8 @@ public class LivroTest {
     
     @Mock
     LivroDAO livroDAO;
+    @Mock 
+    HistoricoLivro historicoLivro;
     
     public LivroTest() {
     }
@@ -69,5 +72,19 @@ public class LivroTest {
         boolean expResult = false;
         boolean result = instance.estaDisponivelEdicaoUsuario(Mockito.anyInt(), Mockito.anyInt());
         assertEquals(expResult, result);        
+    }
+    
+    @Test
+    public void testGetLstNomesCompletosAutores() {  
+        List<HistoricoLivro> lstHistorico = new ArrayList<>();
+        lstHistorico.add(historicoLivro);
+        Mockito.when(historicoLivro.listarHistoricoLivro(Mockito.anyInt())).thenReturn(lstHistorico);
+        Mockito.when(historicoLivro.getNomeUsuario()).thenReturn("CASSIANE");
+        Mockito.when(historicoLivro.getSobrenomeUsuario()).thenReturn("SANTOS");
+        String[][] arrNomesEsp = new String[1][2]; 
+        arrNomesEsp[0][0] = "CASSIANE";
+        arrNomesEsp[0][1] = "SANTOS";
+        
+        assertArrayEquals(arrNomesEsp, instance.getLstNomesCompletosAutores());        
     }
 }
