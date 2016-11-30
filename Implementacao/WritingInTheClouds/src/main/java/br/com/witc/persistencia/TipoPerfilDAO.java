@@ -22,12 +22,13 @@ import org.hibernate.hql.internal.ast.QuerySyntaxException;
  */
 public class TipoPerfilDAO {
     Session sessao;
+    SessionFactory sessionFactory;
 
     public TipoPerfilDAO() {
         Configuration configuration = new Configuration();
         configuration.configure("hibernate.cfg.xml");
         StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-        SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        sessionFactory = configuration.buildSessionFactory(ssrb.build());
         this.sessao = sessionFactory.openSession();
     }
     
