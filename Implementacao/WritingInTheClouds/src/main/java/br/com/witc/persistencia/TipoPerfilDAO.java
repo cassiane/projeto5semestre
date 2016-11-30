@@ -10,6 +10,9 @@ import br.com.witc.modelo.TipoPerfil;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.hql.internal.ast.QuerySyntaxException;
 
@@ -19,9 +22,14 @@ import org.hibernate.hql.internal.ast.QuerySyntaxException;
  */
 public class TipoPerfilDAO {
     Session sessao;
+    SessionFactory sessionFactory;
 
     public TipoPerfilDAO() {
-        this.sessao = getSessionFactory().getCurrentSession();
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        this.sessao = sessionFactory.openSession();
     }
     
     /**

@@ -61,32 +61,41 @@
                         <h:commandLink value=""
                                        actionListener="#{autenticarBean.setAmigoUsuario(amigo.id)}"
                                        action="timeline.xhtml">
-                            <p:graphicImage height="75px" value="#{cadastrarBean.fotoAmigo}" cache="false">
+                            <p:graphicImage styleClass="img-thumbnail" value="#{cadastrarBean.fotoAmigo}" style="width: 75px; height: 75px;" cache="false">
                                 <f:param name="userfoto" value="#{amigo.id}" />
                             </p:graphicImage>
                         </h:commandLink>
                         <p:outputPanel>
-                            <h:panelGrid columns="2" cellpadding="5">
+                            <h:panelGrid columns="2">
                                 <p:outputPanel>
-                                    <h:outputText value="#{amigo.nome}" style="font-weight: bold" />
-                                </p:outputPanel>
-                                <p:commandButton value="Desfazer Amizade" id="btnDesAmizade" actionListener="#{cadastrarBean.removerAmizade(amigo.id)}" update="frmAmi:datAmigos, frmSug:carSugestao" icon="ui-icon-closethick" ajax="false" />
+                                    <h:outputText styleClass="text-primary" value="#{amigo.nome}" style="font-weight: bold" />
+                                </p:outputPanel>                                
+                                <p:commandButton id="btnDesAmizade"
+                                                 value="Desfazer Amizade"
+                                                 actionListener="#{cadastrarBean.removerAmizade(amigo.id)}"
+                                                 update="frmAmi:datAmigos, frmSug:carSugestao"
+                                                 ajax="false" />
                             </h:panelGrid>
-                        </p:outputPanel>
+                        </p:outputPanel>                        
                     </h:panelGrid>
                 </p:dataScroller>
             </h:form>
             <h:form id="frmSug">
                 <p:carousel id="carSugestao" value="#{cadastrarBean.sugestao}" headerText="Sugestões de amizade" var="sugAmizade" itemStyle="text-align:center" responsive="true">
-                    <p:panelGrid columns="2" style="width:100%;margin:10px 0px" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank" rendered="#{cadastrarBean.temSugestao}">
+                    <p:panelGrid columns="2" columnClasses="label,value" layout="grid" styleClass="ui-panelgrid-blank" rendered="#{cadastrarBean.temSugestao}">
                         <f:facet name="header">
                             <p:graphicImage height="95px" value="#{cadastrarBean.fotoSugestao}" cache="false">
                                 <f:param name="userfoto" value="#{sugAmizade.id}" />
                             </p:graphicImage>
                             <h:outputText value="#{sugAmizade.nome}" />
                         </f:facet>
-                        <p:commandButton value="Solicitar Amizade" id="btnSolAmizade" actionListener="#{cadastrarBean.solicitarAmizade(sugAmizade.id)}" update="frmSug:carSugestao" icon="ui-icon-closethick" style="width:90px; margin-left: 3px; font-size: small" ajax="false" />
-                        <h:outputText value="Remover" />
+                        <div align="center">
+                        <p:commandButton id="btnSolAmizade"
+                                         value="Solicitar Amizade"                                          
+                                         actionListener="#{cadastrarBean.solicitarAmizade(sugAmizade.id)}" 
+                                         update="frmSug:carSugestao"                                          
+                                         ajax="false" />                       
+                        </div>
                     </p:panelGrid>
                 </p:carousel>
             </h:form>

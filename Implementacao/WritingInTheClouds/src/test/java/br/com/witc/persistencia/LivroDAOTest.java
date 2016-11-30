@@ -6,40 +6,57 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.modelo.Livro;
-import br.com.witc.modelo.Perfil;
-import br.com.witc.modelo.TipoTexto;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.hibernate.Session;
-import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author 10070187
+ * @author marcelo.lima
  */
-
-
 public class LivroDAOTest {
+    
     @InjectMocks
     LivroDAO dao = new LivroDAO();
     
-    @Mock 
+    @Mock
+    Livro livro;
+    
+    @Mock
+    SessionFactory sessionFactory;
+    
+    @Mock
     Session sessao;
+    
+    @Mock
+    Query query;
+    
+    public LivroDAOTest() {
+    }
+    
+    @BeforeClass
+    public static void setUpClass() {
+    }
+    
+    @AfterClass
+    public static void tearDownClass() {
+    }
     
     @Before
     public void setUp() {
-        dao = Mockito.mock(LivroDAO.class);
-        sessao = Mockito.mock(Session.class);
+        MockitoAnnotations.initMocks(this);
     }
     
     @After
@@ -47,11 +64,61 @@ public class LivroDAOTest {
     }
 
     /**
-     * Test of listarLivrosRevisao method, of class LivroDAO.
+     * Test of estaDisponivelEdicaoUsuario method, of class LivroDAO.
      */
     @Test
-    public void testListarLivrosRevisao() {        
-        
+    public void testEstaDisponivelEdicaoUsuario_1ParOK() {
+        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
+        Mockito.when(sessao.createQuery(Mockito.anyString()))                
+                .thenReturn(query);        
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
+        Mockito.when((Livro) query.uniqueResult()).thenReturn(livro);
+        Mockito.when(livro.getBookLock()).thenReturn(1);        
+        boolean expResult = true;
+        boolean result = dao.estaDisponivelEdicaoUsuario(livro.getId(),1);
+        assertEquals(expResult, result);        
     }
     
+    @Test
+    public void testEstaDisponivelEdicaoUsuario_2ParOK() {
+        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
+        Mockito.when(sessao.createQuery(Mockito.anyString()))                
+                .thenReturn(query);        
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
+        Mockito.when((Livro) query.uniqueResult()).thenReturn(livro);
+        Mockito.when(livro.getBookLock()).thenReturn(0);        
+        boolean expResult = true;
+        boolean result = dao.estaDisponivelEdicaoUsuario(livro.getId(), 1);
+        assertEquals(expResult, result);        
+    }
+    
+    @Test
+    public void testEstaDisponivelEdicaoUsuario_2ParNOK() {
+        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
+        Mockito.when(sessao.createQuery(Mockito.anyString()))                
+                .thenReturn(query);        
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
+        Mockito.when((Livro) query.uniqueResult()).thenReturn(livro);
+        Mockito.when(livro.getBookLock()).thenReturn(3);        
+        boolean expResult = false;
+        boolean result = dao.estaDisponivelEdicaoUsuario(livro.getId(), 1);
+        assertEquals(expResult, result);        
+    }
+    /**
+     * 
+    **/
+    @Test
+    public void listarLivrosRevisao(){
+        Livro liv = new Livro();
+        liv.setRevisao(0);
+        List<Livro> listaLivros = new ArrayList<>();
+        listaLivros.add(liv);
+        
+        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
+        Mockito.when(sessao.createQuery(Mockito.anyString()))                
+                .thenReturn(query); 
+        Mockito.when((List<Livro>) query.list()).thenReturn(listaLivros);
+        
+        assertEquals(listaLivros,dao.listarLivrosRevisao());
+    }
 }

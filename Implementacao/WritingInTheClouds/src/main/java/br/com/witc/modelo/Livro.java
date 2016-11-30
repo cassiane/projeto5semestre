@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 /**
  *
@@ -48,6 +49,8 @@ public class Livro implements Serializable {
     private int bookLock; 
     private int revisao;
     private boolean disponivelRevisao;
+    @Transient
+    private LivroDAO livroDAO;
 
     public int getId() {
         return id;
@@ -315,8 +318,7 @@ public class Livro implements Serializable {
      * @param idPerfil O id do perfil do usuário logado
      * @return True, caso o livro esteja disponível para edição e false, caso contrário
      */
-    public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
-        LivroDAO livroDAO = new LivroDAO();
+    public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {        
         return livroDAO.estaDisponivelEdicaoUsuario(idLivro, idPerfil) ;
     }
      public boolean estaDisponivelRevisaoUsuario(int idLivro, int idPerfil) {

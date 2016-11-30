@@ -20,6 +20,7 @@ import java.util.Map;
  */
 public class ControladorLivro {
     private Livro livro;
+    private HistoricoLivro historicoLivro;
 
     public ControladorLivro() {
         this.livro = new Livro();
@@ -177,9 +178,8 @@ public class ControladorLivro {
         return this.livro.estaDisponivelRevisaoUsuario(idLivro, idPerfil) ;
     }  
     
-    public void salvarHistorico(HistoricoLivro hist){
-        HistoricoLivro historicoLivro = new HistoricoLivro();
-        historicoLivro.salvarHistorico(hist);
+    public void salvarHistorico(HistoricoLivro hist){        
+        this.historicoLivro.salvarHistorico(hist);
     }
     
     public TipoStatus carregarTipoStatus (int id) {

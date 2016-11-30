@@ -9,6 +9,9 @@ import br.com.witc.modelo.DesafiosUsuarios;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 
 /**
  *
@@ -18,7 +21,11 @@ public class DesafiosUsuariosDAO {
     Session sessao;
     
     public DesafiosUsuariosDAO() {
-        this.sessao=getSessionFactory().getCurrentSession();
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        this.sessao = sessionFactory.openSession();
     }
     
     /**

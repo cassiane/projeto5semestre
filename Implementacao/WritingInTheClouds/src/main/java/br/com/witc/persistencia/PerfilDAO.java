@@ -8,9 +8,14 @@ package br.com.witc.persistencia;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.Usuario;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
+import static java.lang.System.err;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -22,7 +27,23 @@ public class PerfilDAO {
     Session sessao;
 
     public PerfilDAO() {
-        this.sessao = getSessionFactory().getCurrentSession();
+        //this.sessao = getSessionFactory().getCurrentSession();
+        /*
+         try {
+         // Create the SessionFactory from standard (hibernate.cfg.xml)             
+         SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+         this.sessao = sessionFactory.getCurrentSession();
+         } catch (Throwable ex) {
+         // Log the exception. 
+         err.println("Initial SessionFactory creation failed." + ex);
+         throw new ExceptionInInitializerError(ex);
+         }
+         */
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        this.sessao = sessionFactory.openSession();
     }
 
     public Perfil carregarPerfilPadrao(Usuario usuario) {
@@ -35,8 +56,8 @@ public class PerfilDAO {
         }
         return p;
     }
-    
-    /**     
+
+    /**
      * @param idPerfil O id do perfil a ser carregado
      * @return Um objeto Perfil, com o perfil carregado
      */
@@ -76,6 +97,7 @@ public class PerfilDAO {
 
     /**
      * Acessar a tabela e buscar o perfil por codigo
+     *
      * @param id Codigo do perfil
      * @return Perfil selecionado
      */
@@ -85,6 +107,7 @@ public class PerfilDAO {
 
     /**
      * Acessa a tabela e buscar os perfis
+     *
      * @param usuario Usuario logado
      * @return Lista de perfis
      */
@@ -92,13 +115,13 @@ public class PerfilDAO {
         return (List<Perfil>) sessao.createQuery("FROM Perfil WHERE idUsuario = :idusu ORDER BY tipoPerfil")
                 .setInteger("idusu", usuario.getId())
                 .list();
-    }    
-    
-    /**     
+    }
+
+    /**
      * @param idPerfil O id do perfil do usuário
      * @return Um objeto Usuario
      */
-    public Usuario carregarUsuarioPorId(int idPerfil) {        
+    public Usuario carregarUsuarioPorId(int idPerfil) {
         Perfil perfil = (Perfil) sessao.createQuery("FROM Perfil WHERE id = :idPerfil")
                 .setInteger("idPerfil", idPerfil)
                 .uniqueResult();

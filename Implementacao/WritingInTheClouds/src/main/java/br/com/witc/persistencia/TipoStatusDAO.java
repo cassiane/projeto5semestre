@@ -8,6 +8,9 @@ package br.com.witc.persistencia;
 import br.com.witc.modelo.TipoStatus;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -18,7 +21,11 @@ public class TipoStatusDAO {
     Session sessao;
 
     public TipoStatusDAO() {
-        this.sessao=getSessionFactory().getCurrentSession();
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        this.sessao = sessionFactory.openSession();
     }
     
     public void salvar(TipoStatus status){

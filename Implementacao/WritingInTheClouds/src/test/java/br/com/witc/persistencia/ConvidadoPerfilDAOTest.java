@@ -6,27 +6,37 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.modelo.ConvidadoPerfil;
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.junit.After;
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
+import org.mockito.MockitoAnnotations;
 
 /**
  *
  * @author 10070187
  */
 public class ConvidadoPerfilDAOTest {
+    @InjectMocks 
+    ConvidadoPerfilDAO dao = new ConvidadoPerfilDAO();
+    
     @Mock 
-    ConvidadoPerfilDAO dao;
     ConvidadoPerfil convP;
+    @Mock
+    SessionFactory sessionFactory;    
+    @Mock
+    Session sessao; 
+    @Mock
+    ConvidadoPerfilDAO d;
     
     @Before
     public void setUp() {
-        dao = Mockito.mock(ConvidadoPerfilDAO.class);
-        convP = Mockito.mock(ConvidadoPerfil.class);
+        MockitoAnnotations.initMocks(this);
     }
 
     /**
@@ -34,8 +44,10 @@ public class ConvidadoPerfilDAOTest {
      */
     @Test
     public void testSalvar() {
-        dao.salvar(convP);
-        Mockito.verify(dao,times(1)).salvar(convP);
+        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
+        ConvidadoPerfil p = new ConvidadoPerfil();
+        d.salvar(p);
+        Mockito.verify(d,times(1)).salvar(Mockito.any());
     }
     
 }

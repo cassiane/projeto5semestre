@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.Transient;
 
 /**
  *
@@ -41,7 +42,9 @@ public class HistoricoLivro implements Serializable {
     @OneToOne
     @JoinColumn(name="idTipoStatus")
     private TipoStatus status;
-
+    @Transient
+    private HistoricoLivroDAO historicoLivroDAO;
+    
     public int getId() {
         return id;
     }
@@ -102,8 +105,7 @@ public class HistoricoLivro implements Serializable {
         return this.perfil.getSobrenomeUsuario();
     }
     
-    public void salvarHistorico(HistoricoLivro hist){
-        HistoricoLivroDAO historicoLivroDAO = new HistoricoLivroDAO();
+    public void salvarHistorico(HistoricoLivro hist){                
         historicoLivroDAO.salvarHistorico(hist);
     }
     
@@ -155,8 +157,7 @@ public class HistoricoLivro implements Serializable {
         historicoLivroDAO.salvarHistorico(historico);
     }
     
-    public void salvarHistoricoConvite(int perfil, int livro) {
-        HistoricoLivroDAO dao = new HistoricoLivroDAO();
-        dao.salvarHistoricoConvite(perfil, livro);
+    public void salvarHistoricoConvite(int perfil, int livro) {                
+        historicoLivroDAO.salvarHistoricoConvite(perfil, livro);
     }
 }

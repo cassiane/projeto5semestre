@@ -16,7 +16,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
@@ -28,12 +32,17 @@ import org.hibernate.exception.ConstraintViolationException;
 public class LivroDAO {
 
     Session sessao;
+    SessionFactory sessionFactory;
 
     /**
      *
      */
     public LivroDAO() {
-        sessao = getSessionFactory().getCurrentSession();
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        this.sessao = sessionFactory.openSession();
     }
 
     /**
@@ -143,25 +152,25 @@ public class LivroDAO {
 
     /**
      * @param idPerfil O id do perfil do usuário
-     * @return Um map contendo o gênero e a avaliação     
+     * @return Um map contendo o gênero e a avaliação
      */
-    public Map<String, Float> listarGenerosPreferidos(int idPerfil) {        
+    public Map<String, Float> listarGenerosPreferidos(int idPerfil) {
         String sql = "SELECT SUM(l.somaAvaliacoes)/SUM(l.qtdAvaliacoes), tp.tipoTexto FROM Livro l "
                 + "INNER JOIN l.tipoTexto AS tp "
                 + "INNER JOIN l.historicoLivros AS hl "
-                + "INNER JOIN hl.perfil AS p "                               
+                + "INNER JOIN hl.perfil AS p "
                 + "WHERE ("
                 + "p.id = " + idPerfil + " AND "
                 + "l.disponivelBiblioteca = true) "
                 + "GROUP BY tp.tipoTexto "
                 + "ORDER BY tp.tipoTexto DESC";
-        
+
         List<Object[]> lstResult = sessao.createQuery(sql).list();
-        Map<String, Float> tmpMap = new HashMap();                
-        for (Object[] arrObj : lstResult) {            
-            tmpMap.put(arrObj[1].toString(), (Double) arrObj[0] != null?((Double) arrObj[0]).floatValue():0f);
+        Map<String, Float> tmpMap = new HashMap();
+        for (Object[] arrObj : lstResult) {
+            tmpMap.put(arrObj[1].toString(), (Double) arrObj[0] != null ? ((Double) arrObj[0]).floatValue() : 0f);
         }
-        
+
         return tmpMap;
     }
 
@@ -175,8 +184,9 @@ public class LivroDAO {
      */
     public boolean estaDisponivelEdicaoUsuario(int idLivro, int idPerfil) {
         Livro livro = (Livro) sessao.createQuery("FROM Livro WHERE id=:idLivro")
-                .setString("idLivro", String.valueOf(idLivro))
-                .uniqueResult();
+                .setString("idLivro", String.valueOf(idLivro)).uniqueResult();
+
+        //this.livro = (Livro) query.uniqueResult();
 
         sessao.refresh(livro);
 
@@ -224,9 +234,7 @@ public class LivroDAO {
     }
 
     public List<Livro> listarLivrosRevisao() {
-        List<Livro> tmpLstLivros = sessao.createCriteria(Livro.class)
-                .add(Restrictions.ne("disponivelRevisao", false))
-                .list();
-        return tmpLstLivros;
+        List<Livro> livros = sessao.createQuery("from Livro where disponivelRevisao = 0").list();
+        return livros;
     }
 }

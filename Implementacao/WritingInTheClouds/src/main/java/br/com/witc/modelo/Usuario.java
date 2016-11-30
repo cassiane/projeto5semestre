@@ -67,6 +67,8 @@ public class Usuario implements Serializable {
                       referencedColumnName="id")})  
     private List<TipoTexto> tipostextosRevisor;
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
+    @Transient
+    private UsuarioDAO dao;
     
     /**
      * @return the id
@@ -327,8 +329,7 @@ public class Usuario implements Serializable {
      * então deve apagar a conta do usuário
      * @throws UsuarioInvalidoException 
      */
-    public void excluirUsuario() throws UsuarioInvalidoException{
-        UsuarioDAO dao = new UsuarioDAO();
+    public void excluirUsuario() throws UsuarioInvalidoException{        
         dao.ExcluirUsuario(this);
     }
     /**
@@ -398,8 +399,7 @@ public class Usuario implements Serializable {
      *
      * @param idAceitar Identificador do solicitante da amizade
      */
-    void aceitarAmizade(int idAceitar) {
-        UsuarioDAO dao = new UsuarioDAO();
+    void aceitarAmizade(int idAceitar) {        
         dao.aceitarAmizade(this.getId(), idAceitar);
     }
 
@@ -414,12 +414,10 @@ public class Usuario implements Serializable {
     }
     
     /**
-     * Acessar o dao para remover as amizades do usuário que está apagando a conta
-     *
-     * @param idAmizade Identificador do solicitante ou amigo
+     * Acessar o dao para remover as amizades do usuário que está apagando a conta     
+     * @param idUsuario
      */
-    void removerTodasAmizades(int idUsuario) {
-        UsuarioDAO dao = new UsuarioDAO();
+    public void removerTodasAmizades(int idUsuario) {        
         dao.removerTodasAmizades(idUsuario);
     }
     
@@ -448,8 +446,7 @@ public class Usuario implements Serializable {
      * quando este apaga sua conta 
      * @param idUsuario 
      */
-    void excluirTodosTipoTextoUsuario(int idUsuario){
-        UsuarioDAO dao = new UsuarioDAO();
+    void excluirTodosTipoTextoUsuario(int idUsuario){        
         dao.excluirTodosTipoTextoUsuario(idUsuario);
     }
 

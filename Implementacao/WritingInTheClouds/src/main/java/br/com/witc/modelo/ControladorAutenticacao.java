@@ -6,6 +6,7 @@
 package br.com.witc.modelo;
 
 import br.com.witc.excessao.LoginInvalidoException;
+import br.com.witc.persistencia.PerfilDAO;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -195,5 +196,8 @@ public class ControladorAutenticacao {
     public List<Perfil> listarPerfisUsuario() {
         return this.perfil.listarPerfisUsuario(this.amigoUsuario);
     }
-        
+    
+    public Perfil carregarPerfil(Usuario usuario) {        
+        return this.perfil.carregarPerfil(usuario);
+    }
 }
