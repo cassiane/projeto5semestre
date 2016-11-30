@@ -28,8 +28,12 @@ import org.hibernate.exception.ConstraintViolationException;
 public class UsuarioDAO {
 
 
-    private final Session sessao;
+    Session sessao;
     SessionFactory sessionFactory;
+
+    public void setSessao(Session sessao) {
+        this.sessao = sessao;
+    }        
 
     public UsuarioDAO() {
         Configuration configuration = new Configuration();

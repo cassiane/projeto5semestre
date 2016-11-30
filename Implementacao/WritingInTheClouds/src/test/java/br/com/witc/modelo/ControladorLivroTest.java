@@ -5,15 +5,15 @@
  */
 package br.com.witc.modelo;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.mockito.ArgumentMatchers;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -28,18 +28,21 @@ public class ControladorLivroTest {
     
     @InjectMocks
     ControladorLivro instance = new ControladorLivro();
-    
+        
     @Mock
     Livro livro;
     
     @Mock
-    Perfil perfil;
+    Perfil perfil;  
     
     @Mock
-    HistoricoLivro historicoLivro;
+    HistoricoLivro historicoLivro;            
     
     @Mock
     ConvidadoPerfil convidadoPerfil;
+    
+    @Mock
+    List<HistoricoLivro> lstHl = new ArrayList();
     
     public ControladorLivroTest() {
     }
@@ -54,7 +57,7 @@ public class ControladorLivroTest {
     
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.initMocks(this);        
     }
     
     @After
@@ -63,37 +66,50 @@ public class ControladorLivroTest {
 
     /**
      * Test of salvarLivro method, of class ControladorLivro.
-     */
+     */    
     @Test
     public void testSalvarLivro_3argsNaoFinalizado() {                
-        instance.salvarLivro(livro, false, perfil);        
+        instance.salvarLivro(livro, Boolean.FALSE, perfil);        
         Mockito.verify(livro, times(1)).salvarLivro(livro);
     }
     
-    /*
     @Test
-    public void testSalvarLivro_3argsFinalizado() {                
-        instance.salvarLivro(livro, true, perfil);
+    public void testSalvarLivro_3argsFinalizadoTerminado() {                     
+        Mockito.when(livro.getId()).thenReturn(0);        
+        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(Calendar.getInstance());
+        instance.salvarLivro(livro, Boolean.TRUE, perfil);        
         Mockito.verify(historicoLivro, times(1)).finalizarLivroUsuario(livro,perfil);
         Mockito.verify(livro, times(1)).salvarLivro(livro);
-    }
+    }    
+        
+    /*
+    @Test
+    public void testSalvarLivro_3argsFinalizadoNaoTerminado() {        
+        lstHl.add(historicoLivro);        
+        Mockito.when(livro.getId()).thenReturn(1);
+        Mockito.when(historicoLivro.listarHistoricoLivro(livro.getId())).thenReturn(lstHl);
+        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(null);                
+        instance.salvarLivro(livro, Boolean.TRUE, perfil);        
+        Mockito.verify(historicoLivro, times(1)).finalizarLivroUsuario(livro,perfil);
+        Mockito.verify(livro, times(1)).salvarLivro(livro);
+    } 
     */
     
     /**
      * Test of salvarHistorico method, of class ControladorLivro.
-     */
+     */   
     @Test
     public void testSalvarHistorico() {        
         instance.salvarHistorico(historicoLivro);
         Mockito.verify(historicoLivro, times(1)).salvarHistorico(historicoLivro);
-    }
+    }    
 
     /**
      * Test of negarEdicao method, of class ControladorLivro.
-     */
+     */    
     @Test
     public void testNegarEdicao() {        
         instance.negarEdicao(convidadoPerfil);
         Mockito.verify(convidadoPerfil, times(1)).negarEdicao();
-    }
+    }    
 }

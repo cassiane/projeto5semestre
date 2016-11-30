@@ -25,6 +25,12 @@ public class ControladorLivro {
     public ControladorLivro() {
         this.livro = new Livro();
     }    
+
+    public void setHistoricoLivro(HistoricoLivro historicoLivro) {
+        this.historicoLivro = historicoLivro;
+    }
+    
+    
     
     /**
      * @return the livro
@@ -73,12 +79,15 @@ public class ControladorLivro {
      * @param perfil O perfil do usuário criador do livro
      */
     public void salvarLivro(Livro livro, boolean finalizado, Perfil perfil){    
-        if (finalizado) {
-            HistoricoLivro historicoLivro = new HistoricoLivro();
+        if (finalizado) {             
+            if (historicoLivro == null) {
+                historicoLivro = new HistoricoLivro();
+            }            
             historicoLivro.finalizarLivroUsuario(livro, perfil);
             
             boolean terminado = true;
-            for (HistoricoLivro hl : historicoLivro.listarHistoricoLivro(livro.getId())) {
+            List<HistoricoLivro> lstHistorico = historicoLivro.listarHistoricoLivro(livro.getId());
+            for (HistoricoLivro hl : lstHistorico) {
                 if (hl.getDataConclusao() == null) {
                     terminado = false;
                     break;

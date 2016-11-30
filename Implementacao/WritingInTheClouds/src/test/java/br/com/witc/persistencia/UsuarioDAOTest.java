@@ -5,8 +5,9 @@
  */
 package br.com.witc.persistencia;
 
+import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.Usuario;
-import java.util.List;
+import java.util.Calendar;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -14,7 +15,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -35,10 +35,7 @@ public class UsuarioDAOTest {
     
     @Mock
     Session sessao;
-    
-    @Mock
-    Usuario usuario;        
-    
+            
     public UsuarioDAOTest() {
     }
     
@@ -61,13 +58,13 @@ public class UsuarioDAOTest {
 
     /**
      * Test of ExcluirUsuario method, of class UsuarioDAO.
-     */
-    /*
+     */    
     @Test
-    public void testExcluirUsuario() throws Exception {
+    public void testExcluirUsuario() throws Exception {        
         Mockito.when(sessionFactory.openSession()).thenReturn(sessao);                                  
+        instance.setSessao(sessao);
+        Usuario usuario = new Usuario();        
         instance.ExcluirUsuario(usuario);        
         Mockito.verify(sessao, times(1)).saveOrUpdate(usuario);
-    }
-    */
+    }        
 }

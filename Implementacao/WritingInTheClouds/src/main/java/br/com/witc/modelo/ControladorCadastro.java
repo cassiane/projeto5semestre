@@ -30,8 +30,8 @@ public class ControladorCadastro {
     private Usuario usuario;
     private TipoPerfil tipoPerfil; 
     private final TipoPerfilDAO tipoDAO;
-    private final Perfil perfil;  
-    private final PerfilDAO perfilDAO; 
+    private Perfil perfil;  
+    private PerfilDAO perfilDAO; 
     private final TipoTexto tipoTexto;
     private final DesafiosPalavras desafiosPalavras;
     private final Desafios desafio;
@@ -39,6 +39,14 @@ public class ControladorCadastro {
     private final Notificacoes notificacoes;
     private final HistoriasDesafios historiasDesafios;
     private final ControladorLivro controladorLivro;
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    public void setPerfilDAO(PerfilDAO perfilDAO) {
+        this.perfilDAO = perfilDAO;
+    }        
     
     public ControladorCadastro() {
         this.usuario = new Usuario();
@@ -271,7 +279,7 @@ public class ControladorCadastro {
         this.perfil.setTipoPerfil(this.tipoPerfil);
         //SB24 Setar perfil padrão
         this.perfil.setPerfilPadrao(true);
-        perfilDAO.salvarPerfil(this.perfil);
+        this.perfilDAO.salvarPerfil(this.perfil);
     }
 
     /**

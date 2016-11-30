@@ -48,7 +48,7 @@ public class ControladorCadastroTest {
     
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.initMocks(this);        
     }
     
     @After
@@ -63,14 +63,15 @@ public class ControladorCadastroTest {
         instance.solicitarAmizade(Mockito.anyInt());
         Mockito.verify(usuario, times(1)).solicitarAmizade(Mockito.anyInt());
     }   
-    
-    /*
+        
     @Test
-    public void testCriarPerfilPadrao() {
+    public void testCriarPerfilPadrao() {        
+        instance.setPerfil(perfil);
+        instance.setPerfilDAO(perfilDAO);
+        Mockito.when(usuario.getNome()).thenReturn("teste");                        
         instance.criarPerfilPadrao(usuario);
         Mockito.verify(perfilDAO, times(1)).salvarPerfil(perfil);
-    }
-    */
+    }    
     
     @Test
     public void testSalvarTipoTextoUsuario() {
