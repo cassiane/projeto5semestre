@@ -123,7 +123,8 @@
                                                  actionListener="#{autenticarBean.userRating()}" oncomplete="initializeRateboxUserRating();" />
                                 <div id="rate" class="ratebox" 
                                      data-id="#{!autenticarBean.amigo?autenticarBean.idAmigoUsuario:autenticarBean.idPerfil}" 
-                                     data-rating="#{autenticarBean.avaliacaoPerfil}" 
+                                     data-rating="#{autenticarBean.avaliacaoPerfil}"
+                                     onclick="userRating()"
                                      style="margin-top: 10px; margin-left: auto; margin-right: auto; #{autenticarBean.amigo?'pointer-events:none;':''}">                                        
                                 </div>                                     
                             </h:form>                            

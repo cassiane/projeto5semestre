@@ -54,7 +54,8 @@
                                         <p:remoteCommand name="callBeanMethod" update=":frmBiblioteca" 
                                                          actionListener="#{livroBean.bookRating()}" oncomplete="initializeRatebox();" />
                                         <div class="ratebox" data-id="#{entry.key}-#{livro.id}" data-rating="#{livro.avaliacao}" 
-                                              style="margin-left: auto; margin-right: auto;">                                        
+                                             onclick="callBeanMethod()"
+                                             style="margin-left: auto; margin-right: auto;">                                        
                                         </div>                                        
                                         <h:outputText id="qtdAvaliacoes" styleClass="text-info" value="#{livro.qtdAvaliacoes} #{livro.qtdAvaliacoes eq 1 ? 'avalição' : 'avaliações'}" />                                                                        
                                     </h:panelGrid>

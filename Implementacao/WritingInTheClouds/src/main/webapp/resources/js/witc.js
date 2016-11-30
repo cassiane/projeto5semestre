@@ -12,15 +12,15 @@ function setRating(id, rating)
     callBeanMethod([{name:'rating',value:id + "-" + rating}]);    
 }
 
-function setRating(id, rating)
+function setUserRating(id, rating)
 {                    
     userRating([{name:'rating',value:id + "-" + rating}]);    
 }
 
 function initializeRateboxUserRating() {
-    $(function() {                    
+    $(function() {              
         $( '.ratebox' ).raterater( { 
-            submitFunction: 'setRating', 
+            submitFunction: 'setUserRating', 
             allowChange: true,
             starWidth: 20,
             spaceWidth: 5,
@@ -30,7 +30,7 @@ function initializeRateboxUserRating() {
 }
 
 function initializeRatebox() {    
-    $(function() {                    
+    $(function() {                 
         $( '.ratebox' ).raterater( { 
             submitFunction: 'setRating', 
             allowChange: true,
