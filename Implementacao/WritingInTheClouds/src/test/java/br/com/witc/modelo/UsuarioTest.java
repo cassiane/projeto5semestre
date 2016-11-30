@@ -6,25 +6,20 @@
 package br.com.witc.modelo;
 
 import br.com.witc.persistencia.UsuarioDAO;
-import java.util.Calendar;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
 import org.mockito.MockitoAnnotations;
-import org.primefaces.model.StreamedContent;
 
 /**
  *
- * @author Marcelo
+ * @author 10070187
  */
 public class UsuarioTest {
     

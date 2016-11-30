@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 
 /**
  *
- * @author Marcelo
+ * @author 10070187
  */
 public class ControladorAutenticacaoTest {
     @InjectMocks

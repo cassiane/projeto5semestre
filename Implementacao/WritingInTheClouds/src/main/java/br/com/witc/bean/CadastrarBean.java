@@ -12,6 +12,7 @@ import br.com.witc.excessao.TipoPerfilException;
 import br.com.witc.excessao.TipoTextoException;
 import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.modelo.ControladorCadastro;
+import br.com.witc.modelo.ControladorLivro;
 import br.com.witc.modelo.Desafios;
 import br.com.witc.modelo.DesafiosPalavras;
 import br.com.witc.modelo.DesafiosUsuarios;
@@ -134,10 +135,6 @@ public class CadastrarBean {
         this.listaNotificacoes = new ArrayList<Notificacoes>();
         this.notificacao = new Notificacoes();        
         this.desafiosUsuarios = new DesafiosUsuarios();
-        
-        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
-        autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
-                .getELResolver().getValue(elContext, null, "autenticarBean");
     }
     
     /**
@@ -594,6 +591,9 @@ public class CadastrarBean {
     
     public StreamedContent getFotoAmigo() {        
         FacesContext context = FacesContext.getCurrentInstance();
+        ELContext elContext = FacesContext.getCurrentInstance().getELContext();
+        autenticarBean = (AutenticarBean) FacesContext.getCurrentInstance().getApplication()
+                .getELResolver().getValue(elContext, null, "autenticarBean");
         if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
             // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
             return new DefaultStreamedContent();
@@ -1172,7 +1172,7 @@ public class CadastrarBean {
      * @param id
      * @return 
      */
-    public String editarPerfil(int id){      
+    public String editarPerfil(int id){   
         this.tipoPerfil = this.tipoPerfildao.carregarTipoPerfil(id);
         return "novoTipoPerfil";
     }

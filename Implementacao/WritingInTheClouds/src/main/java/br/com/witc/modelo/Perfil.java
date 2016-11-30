@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  *
@@ -35,6 +36,8 @@ public class Perfil implements Serializable {
     @JoinColumn(name = "idTipoPerfil")
     private TipoPerfil tipoPerfil;
     private boolean perfilPadrao;
+    @Transient
+    private PerfilDAO dao;
 
     public int getId() {
         return id;
@@ -183,8 +186,7 @@ public class Perfil implements Serializable {
      * Acessa a persistencia para criar ou atualizar o perfil
      * @param newPerfil Perfil do usuario
      */
-    public void criarPerfil(Perfil newPerfil) {
-        PerfilDAO dao = new PerfilDAO();
+    public void criarPerfil(Perfil newPerfil) {        
         dao.salvarPerfil(newPerfil);
     }
 

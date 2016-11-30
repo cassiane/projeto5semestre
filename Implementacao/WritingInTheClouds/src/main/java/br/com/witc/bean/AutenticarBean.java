@@ -363,7 +363,7 @@ public class AutenticarBean {
      */
     public String efetuarLogin() {
         try {
-            this.controlador.efetuarLogin(this.email, this.senha);
+            this.controlador.efetuarLogin(getEmail(), getSenha());
             this.controlador.retornarPerfilPadraoUsuarioLogado();
             this.atualizarStatusUsuario(1);
             return "timeline";
