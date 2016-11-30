@@ -67,6 +67,8 @@ public class Usuario implements Serializable {
                       referencedColumnName="id")})  
     private List<TipoTexto> tipostextosRevisor;
     private static final String CAMINHO_FOTO_DEFAULT = "/resources/imagens/semFoto.png";
+    @Transient
+    private UsuarioDAO usuarioDAO;
     
     /**
      * @return the id
@@ -398,9 +400,8 @@ public class Usuario implements Serializable {
      *
      * @param idAceitar Identificador do solicitante da amizade
      */
-    void aceitarAmizade(int idAceitar) {
-        UsuarioDAO dao = new UsuarioDAO();
-        dao.aceitarAmizade(this.getId(), idAceitar);
+    void aceitarAmizade(int idAceitar) {        
+        usuarioDAO.aceitarAmizade(this.getId(), idAceitar);
     }
 
     /**
@@ -448,9 +449,8 @@ public class Usuario implements Serializable {
      * quando este apaga sua conta 
      * @param idUsuario 
      */
-    void excluirTodosTipoTextoUsuario(int idUsuario){
-        UsuarioDAO dao = new UsuarioDAO();
-        dao.excluirTodosTipoTextoUsuario(idUsuario);
+    void excluirTodosTipoTextoUsuario(int idUsuario){        
+        usuarioDAO.excluirTodosTipoTextoUsuario(idUsuario);
     }
 
     @Override

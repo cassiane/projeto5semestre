@@ -9,7 +9,6 @@ import br.com.witc.modelo.ControladorAutenticacao;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.Usuario;
-import br.com.witc.persistencia.PerfilDAO;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -66,12 +65,23 @@ public class AutenticarBeanTest {
      * Test of isPerfilEditor method, of class AutenticarBean.
      */
     @Test
-    public void testIsPerfilEditor() {                                
+    public void testIsPerfilEditorTrue() {                                
         Mockito.when(controlador.getUsuario()).thenReturn(usuario);             
         Mockito.when(controlador.carregarPerfil(usuario)).thenReturn(perfil);
         Mockito.when(perfil.getTipoPerfil()).thenReturn(tipoPerfil);        
         Mockito.when(tipoPerfil.getId()).thenReturn(1);
         boolean expResult = true;
+        boolean result = instance.isPerfilEditor();
+        assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testIsPerfilEditorFalse() {                                
+        Mockito.when(controlador.getUsuario()).thenReturn(usuario);             
+        Mockito.when(controlador.carregarPerfil(usuario)).thenReturn(perfil);
+        Mockito.when(perfil.getTipoPerfil()).thenReturn(tipoPerfil);        
+        Mockito.when(tipoPerfil.getId()).thenReturn(0);
+        boolean expResult = false;
         boolean result = instance.isPerfilEditor();
         assertEquals(expResult, result);
     }

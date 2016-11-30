@@ -11,6 +11,9 @@ import br.com.witc.modelo.Perfil;
 import static br.com.witc.persistencia.HibernateUtil.getSessionFactory;
 import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -20,9 +23,15 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class HistoricoLivroDAO {
     Session sessao;
+    HistoricoLivro historico;
+    SessionFactory sessionFactory;
 
     public HistoricoLivroDAO() {
-        this.sessao = getSessionFactory().getCurrentSession();
+        Configuration configuration = new Configuration();
+        configuration.configure("hibernate.cfg.xml");
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        this.sessao = sessionFactory.openSession();
     }
     
      public void salvarHistorico(HistoricoLivro hist){
@@ -67,7 +76,7 @@ public class HistoricoLivroDAO {
      * @return Um objeto HistoricoLivro
      */
     public boolean estaFinalizadoUsuario(int idLivro, int idPerfil) {
-        HistoricoLivro historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil")
+        historico = (HistoricoLivro) sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil")
                 .setString("idLivro", String.valueOf(idLivro))
                 .setString("idPerfil", String.valueOf(idPerfil))
 //                .setInteger("idStatus", 1)
