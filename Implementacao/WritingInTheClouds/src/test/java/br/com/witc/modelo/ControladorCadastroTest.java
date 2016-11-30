@@ -24,57 +24,55 @@ import org.mockito.MockitoAnnotations;
 public class ControladorCadastroTest {
     
     @InjectMocks
-    ControladorCadastro instance = new ControladorCadastro();
+    ControladorCadastro controlador = new ControladorCadastro();
     
     @Mock
-    Usuario usuario;
-    
+    Usuario usuario;    
     @Mock
-    PerfilDAO perfilDAO;
-    
+    PerfilDAO perfilDAO;    
     @Mock
     Perfil perfil;
-    
-    public ControladorCadastroTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
+    @Mock 
+    TipoPerfil tipoPerfil;
     
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
     
-    @After
-    public void tearDown() {
-    }
-
-    /**
-     * Test of solicitarAmizade method, of class ControladorCadastro.
-     */
     @Test
     public void testSolicitarAmizade() {        
-        instance.solicitarAmizade(Mockito.anyInt());
+        controlador.solicitarAmizade(Mockito.anyInt());
         Mockito.verify(usuario, times(1)).solicitarAmizade(Mockito.anyInt());
-    }   
-    
-    /*
-    @Test
-    public void testCriarPerfilPadrao() {
-        instance.criarPerfilPadrao(usuario);
-        Mockito.verify(perfilDAO, times(1)).salvarPerfil(perfil);
-    }
-    */
+    } 
     
     @Test
     public void testSalvarTipoTextoUsuario() {
-        instance.salvarTipoTextoUsuario(Mockito.anyList(), Mockito.anyInt());
+        controlador.salvarTipoTextoUsuario(Mockito.anyList(), Mockito.anyInt());
         Mockito.verify(usuario, times(1)).salvarTipoTextoUsuario(Mockito.anyList(), Mockito.anyInt());
+    }
+    
+    @Test
+    public void testCadastrarUsuario() throws Exception {  
+        controlador.cadastrarUsuario(usuario);        
+        Mockito.verify(usuario,times(1)).cadastrarUsuario();
+    }
+	
+    @Test
+    public void testRemoverAmizade() {
+        controlador.removerAmizade(1);
+        Mockito.verify(usuario,times(1)).removerAmizade(1);
+    }
+	
+    @Test
+    public void testCadastrarTipoPerfil() throws Exception {
+        controlador.cadastrarTipoPerfil(tipoPerfil);
+        Mockito.verify(tipoPerfil,times(1)).cadastrarTipoPerfil();
+    }
+	
+    @Test
+    public void testExcluirTodosTipoTextoUsuario() {
+       controlador.excluirTodosTipoTextoUsuario(Mockito.anyInt());
+       Mockito.verify(usuario,times(1)).excluirTodosTipoTextoUsuario(Mockito.anyInt());
     }
 }
