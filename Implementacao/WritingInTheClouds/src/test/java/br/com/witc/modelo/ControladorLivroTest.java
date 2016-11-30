@@ -126,10 +126,8 @@ public class ControladorLivroTest {
      */
     @Test
     public void testCarregarPerfil() {
-       Mockito.when(controlador.carregarPerfil(Mockito.any())).thenReturn(perfil);       
-       Perfil p;
-       p = controlador.carregarPerfil(usuario);
-       assertEquals(p,perfil);
+       Mockito.when(controlador.carregarPerfil(Mockito.any())).thenReturn(perfil);   
+       assertEquals(controlador.carregarPerfil(usuario),perfil);
     }
 
     /**

@@ -5,14 +5,9 @@
  */
 package br.com.witc.modelo;
 
-import java.util.Calendar;
-import java.util.List;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
@@ -23,11 +18,11 @@ import static org.mockito.Mockito.times;
  */
 public class HistoricoLivroTest {
     @Mock 
-    HistoricoLivro historico; 
+    HistoricoLivro historico;     
     
     @Before
     public void setUp() {
-        historico = Mockito.mock(HistoricoLivro.class);
+        historico = Mockito.mock(HistoricoLivro.class);        
     }
     
     @After
@@ -121,16 +116,10 @@ public class HistoricoLivroTest {
 
     /**
      * Test of salvarHistoricoConvite method, of class HistoricoLivro.
-     
+    **/ 
     @Test
     public void testSalvarHistoricoConvite() {
-        System.out.println("salvarHistoricoConvite");
-        int perfil = 0;
-        int livro = 0;
-        HistoricoLivro instance = new HistoricoLivro();
-        instance.salvarHistoricoConvite(perfil, livro);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        historico.salvarHistoricoConvite(1,1);
+        Mockito.verify(historico,times(1)).salvarHistoricoConvite(1, 1);
     }
-    **/
 }

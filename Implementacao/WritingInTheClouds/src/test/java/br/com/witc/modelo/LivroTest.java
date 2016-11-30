@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import br.com.witc.modelo.HistoricoLivro;
 import java.util.ArrayList;
 import org.junit.Assert;
+import static org.mockito.Mockito.doReturn;
 
 /**
  *
@@ -27,10 +28,19 @@ public class LivroTest {
     
     @Mock 
     HistoricoLivro historico;
-    
+    Livro livro;
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
     @Before
     public void setUp() {
         historico = Mockito.mock(HistoricoLivro.class);
+        livro = Mockito.mock(Livro.class);
     }
     
     @After
@@ -84,33 +94,15 @@ public class LivroTest {
      * Test of getLstNomesCompletosAutores method, of class Livro.
      */
     @Test
-    public void testGetLstNomesCompletosAutores() {
-        List<HistoricoLivro> lstHistorico;
-        List<HistoricoLivro> hist;
-        
-        lstHistorico = new ArrayList<>();
-        lstHistorico.add(historico);
-        
-        hist = new ArrayList<>();
-        hist.add(historico);
-        
-        String[][] arrNomes = new String[lstHistorico.size()][2];
-        int index = 0;
-        for (HistoricoLivro histor : lstHistorico) {
-            arrNomes[index][0] = histor.getNomeUsuario();
-            arrNomes[index][1] = histor.getSobrenomeUsuario();
-            index++;
-        }
-        String[][] arrNomeEsp = new String[hist.size()][2];
-        int index2 = 0;
-        for (HistoricoLivro historico2 : lstHistorico) {
-            arrNomes[index2][0] = historico2.getNomeUsuario();
-            arrNomes[index2][1] = historico2.getSobrenomeUsuario();
-            index2++;
-        }
-        assertArrayEquals(arrNomeEsp,arrNomes);
+    public void testGetLstNomesCompletosAutores() {        
+        String[][] arrNomesEsp = new String[1][2];
+        arrNomesEsp[0][0] = "CASSIANE";
+        arrNomesEsp[0][1] = "SANTOS";
+        Mockito.when(livro.getLstNomesCompletosAutores()).thenReturn(arrNomesEsp);
+        String[][] arrNomesActual = livro.getLstNomesCompletosAutores();        
+        assertArrayEquals(arrNomesEsp,arrNomesActual);
     }
-
+    
     /**
      * Test of carregarLivro method, of class Livro.
      

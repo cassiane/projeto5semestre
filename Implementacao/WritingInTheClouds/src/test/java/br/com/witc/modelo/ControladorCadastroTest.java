@@ -5,12 +5,10 @@
  */
 package br.com.witc.modelo;
 
-import br.com.witc.persistencia.TipoPerfilDAO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
