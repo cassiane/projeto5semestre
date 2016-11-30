@@ -29,12 +29,13 @@ public class UsuarioDAO {
 
 
     private final Session sessao;
+    SessionFactory sessionFactory;
 
     public UsuarioDAO() {
         Configuration configuration = new Configuration();
         configuration.configure("hibernate.cfg.xml");
         StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-        SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        sessionFactory = configuration.buildSessionFactory(ssrb.build());
         this.sessao = sessionFactory.openSession();
     }
 
