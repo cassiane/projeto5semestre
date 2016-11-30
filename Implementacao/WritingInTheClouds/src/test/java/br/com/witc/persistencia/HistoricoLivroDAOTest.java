@@ -6,19 +6,16 @@
 package br.com.witc.persistencia;
 
 import br.com.witc.modelo.HistoricoLivro;
-import br.com.witc.modelo.Livro;
-import br.com.witc.modelo.Perfil;
-import java.util.List;
+import java.util.Calendar;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -67,23 +64,34 @@ public class HistoricoLivroDAOTest {
 
     /**
      * Test of estaFinalizadoUsuario method, of class HistoricoLivroDAO.
-     */
+     */    
     @Test
     public void testEstaFinalizadoUsuarioTrue() {                
         Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
+                          
+        Mockito.when(sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil"))
+                    .thenReturn(query);                        
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);                                   
         
-        Mockito.when(sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil")
-                .setString("idLivro", "1")
-                .setString("idPerfil", "1"))
-                .thenReturn(query);
-        /*
-        Mockito.when(sessao.createQuery(Mockito.anyString()))                
-                .thenReturn(query);
-        */
-        Mockito.when(query.uniqueResult()).thenReturn(historicoLivro);
-        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(Mockito.anyObject());        
+        Mockito.when((HistoricoLivro) query.uniqueResult()).thenReturn(historicoLivro);
+        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(Calendar.getInstance());        
         boolean expResult = true;
-        boolean result = instance.estaFinalizadoUsuario(1, 1);
+        boolean result = instance.estaFinalizadoUsuario(2, 1);
+        assertEquals(expResult, result);        
+    }
+    
+    @Test
+    public void testEstaFinalizadoUsuarioFalse() {                
+        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
+                          
+        Mockito.when(sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil"))
+                    .thenReturn(query);                        
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);                                   
+        
+        Mockito.when((HistoricoLivro) query.uniqueResult()).thenReturn(historicoLivro);
+        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(null);        
+        boolean expResult = false;
+        boolean result = instance.estaFinalizadoUsuario(2, 1);
         assertEquals(expResult, result);        
     }
 }
