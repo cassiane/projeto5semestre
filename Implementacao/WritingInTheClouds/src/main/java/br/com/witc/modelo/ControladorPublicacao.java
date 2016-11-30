@@ -75,17 +75,18 @@ public class ControladorPublicacao {
 
     public void salvarMensagemPublicacao(String mensagem) {
         List<Usuario> lstAmigos = this.usuario.listarAmigos();
+        lstAmigos.add(this.usuario);
         Usuario usuarioLogado = this.usuario;
-        if (lstAmigos != null) {
-            for (Usuario usr : lstAmigos) {
-                this.timeline = new Publicacao();
-                this.timeline.setUsuario(usr);
-                this.timeline.setAmigo(usuarioLogado);
-                this.timeline.setDataPublicacao(Calendar.getInstance());
-                this.timeline.setMensagemPublicacao(mensagem);
-                this.timeline.salvarMensagemPublicacao();
-            }
+
+        for (Usuario usr : lstAmigos) {
+            this.timeline = new Publicacao();
+            this.timeline.setUsuario(usr);
+            this.timeline.setAmigo(usuarioLogado);
+            this.timeline.setDataPublicacao(Calendar.getInstance());
+            this.timeline.setMensagemPublicacao(mensagem);
+            this.timeline.salvarMensagemPublicacao();
         }
+
         this.timeline = new Publicacao();
     }
 }
