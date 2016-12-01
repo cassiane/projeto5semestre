@@ -40,6 +40,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CadastrarBeanTest {
     
+    @InjectMocks
+    CadastrarBean instance = new CadastrarBean();
+    
     @Mock
     ControladorCadastro controlador;
     
@@ -47,16 +50,13 @@ public class CadastrarBeanTest {
     Usuario usuario;
     
     @Mock
-    PerfilDAO perfilDAO;
+    UsuarioDAO usuarioDAO;
     
     @Mock
-    Perfil perfil;
+    Session sessao;
     
     @Mock
     Query query;
-    
-    @InjectMocks
-    CadastrarBean instance = new CadastrarBean();
     
     public CadastrarBeanTest() {
     }
@@ -85,10 +85,11 @@ public class CadastrarBeanTest {
     public void testSolicitarAmizade() {
         System.out.println("solicitarAmizade");
         Mockito.when(query.executeUpdate()).thenReturn(1);
+        Mockito.when(usuario.getId()).thenReturn(Mockito.anyInt());
         //usuario.setId(1);
-        controlador.usuarioLogado(Mockito.mock(Usuario.class));
+        controlador.usuarioLogado(usuario);
         instance.solicitarAmizade(2);
-        Mockito.verify(controlador, Mockito.times(0)).solicitarAmizade(Mockito.anyInt());
+        Mockito.verify(controlador, Mockito.times(1)).solicitarAmizade(2);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }

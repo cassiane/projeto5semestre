@@ -319,9 +319,9 @@ public class Usuario implements Serializable {
      */
     public void cadastrarUsuario() throws DadosUsuarioInvalidoException,
             NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {
-        UsuarioDAO dao = new UsuarioDAO();
+        //UsuarioDAO dao = new UsuarioDAO();
         setSenha(criarHashSenha(this.senha));
-        dao.salvarUsuario(this);
+        usuarioDAO.salvarUsuario(this);
     }
     /**
      * Dado um usuário do sistema
@@ -410,8 +410,8 @@ public class Usuario implements Serializable {
      * @param idAmizade Identificador do solicitante ou amigo
      */
     void removerAmizade(int idAmizade) {
-        UsuarioDAO dao = new UsuarioDAO();
-        dao.removerAmizade(this.getId(), idAmizade);
+        //UsuarioDAO dao = new UsuarioDAO();
+        usuarioDAO.removerAmizade(this.getId(), idAmizade);
     }
     
     /**

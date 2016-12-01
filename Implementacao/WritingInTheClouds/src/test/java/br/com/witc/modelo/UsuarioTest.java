@@ -6,26 +6,26 @@
 package br.com.witc.modelo;
 
 import br.com.witc.persistencia.UsuarioDAO;
-import java.util.Calendar;
-import java.util.List;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.mockito.ArgumentMatchers;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.times;
 import org.mockito.MockitoAnnotations;
-import org.primefaces.model.StreamedContent;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  *
  * @author vanderson
  */
+@RunWith(MockitoJUnitRunner.class)
 public class UsuarioTest {
     
     @InjectMocks
@@ -33,6 +33,12 @@ public class UsuarioTest {
     
     @Mock
     UsuarioDAO usuarioDAO;
+    
+    @Mock
+    Session sessao;
+    
+    @Mock
+    SQLQuery sqlQuery;
     
     public UsuarioTest() {
     }
@@ -57,14 +63,13 @@ public class UsuarioTest {
     /**
      * Test of cadastrarUsuario method, of class Usuario.
      */
-    @Test
-    public void testCadastrarUsuario() throws Exception {
-        System.out.println("cadastrarUsuario");
-        Usuario instance = new Usuario();
-        instance.cadastrarUsuario();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testCadastrarUsuario() throws Exception {
+//        System.out.println("cadastrarUsuario");
+//        //PowerMockito.mockStatic(Usuario.class);
+//        
+//        instance.cadastrarUsuario();
+//    }
 
     /**
      * Test of removerAmizade method, of class Usuario.
@@ -72,11 +77,9 @@ public class UsuarioTest {
     @Test
     public void testRemoverAmizade() {
         System.out.println("removerAmizade");
-        int idAmizade = 0;
-        Usuario instance = new Usuario();
-        instance.removerAmizade(idAmizade);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setId(1);
+        instance.removerAmizade(2);
+        Mockito.verify(usuarioDAO, Mockito.times(1)).removerAmizade(Mockito.anyInt(), Mockito.anyInt());
     }
 
     /**
@@ -89,8 +92,6 @@ public class UsuarioTest {
         Usuario expResult = null;
         Usuario result = Usuario.verificarExistenciaUsuario(Email);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }

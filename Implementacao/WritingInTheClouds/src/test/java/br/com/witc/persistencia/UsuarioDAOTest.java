@@ -67,7 +67,7 @@ public class UsuarioDAOTest {
         Mockito.when(sessao.createSQLQuery(Mockito.any())).thenReturn(sqlQuery);
         Mockito.when(sqlQuery.executeUpdate()).thenReturn(1);
         instance.solicitarAmizade(id, idSugestao);
-        Mockito.verify(sqlQuery, Mockito.times(0)).executeUpdate();
+        Mockito.verify(sessao, Mockito.times(1)).createSQLQuery(Mockito.anyString());
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }

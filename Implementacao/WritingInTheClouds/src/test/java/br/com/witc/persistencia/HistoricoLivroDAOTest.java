@@ -20,31 +20,37 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  *
  * @author vanderson
  */
+@RunWith(MockitoJUnitRunner.class)
 public class HistoricoLivroDAOTest {
     
     @InjectMocks
     HistoricoLivroDAO instance = new HistoricoLivroDAO();
     
     @Mock
-    HistoricoLivro historicoLivro;
-    
-    @Mock
-    SessionFactory sessionFactory;
-    
-    @Mock
     Session sessao;
     
     @Mock
     Query query;
+    
+    @Mock
+    HistoricoLivro historicoLivro;
+    
+    @Mock
+    Livro livro;
+    
+    @Mock
+    Calendar calendar;
     
     public HistoricoLivroDAOTest() {
     }
@@ -67,51 +73,38 @@ public class HistoricoLivroDAOTest {
     }
 
     /**
-     * Test of estaFinalizadoUsuario method, of class HistoricoLivroDAO.
-     */    
+     * Test of estaFinalizadoRevisaoUsuario method, of class HistoricoLivroDAO.
+     */
     @Test
-    public void testEstaFinalizadoUsuarioTrue() {                
-        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
-                          
-        Mockito.when(sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil"))
-                    .thenReturn(query);                        
-        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);                                   
-        
+    public void testEstaFinalizadoRevisaoUsuario() {
+        System.out.println("estaFinalizadoRevisaoUsuario");
+        Mockito.when(sessao.createQuery(Mockito.any())).thenReturn(query);
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
+        Mockito.when(query.setInteger(Mockito.anyString(), Mockito.anyInt())).thenReturn(query);
         Mockito.when((HistoricoLivro) query.uniqueResult()).thenReturn(historicoLivro);
-        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(Calendar.getInstance());        
-        boolean expResult = true;
-        boolean result = instance.estaFinalizadoUsuario(2, 1);
-        assertEquals(expResult, result);        
-    }
-    
-    @Test
-    public void testEstaFinalizadoUsuarioFalse() {                
-        Mockito.when(sessionFactory.openSession()).thenReturn(sessao);
-                          
-        Mockito.when(sessao.createQuery("FROM HistoricoLivro WHERE idLivro=:idLivro AND idPerfil=:idPerfil"))
-                    .thenReturn(query);                        
-        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);                                   
-        
-        Mockito.when((HistoricoLivro) query.uniqueResult()).thenReturn(historicoLivro);
-        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(null);        
+        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(null);
+        Mockito.when(livro.getId()).thenReturn(1);
         boolean expResult = false;
-        boolean result = instance.estaFinalizadoUsuario(2, 1);
-        assertEquals(expResult, result);        
+        boolean result = instance.estaFinalizadoRevisaoUsuario(livro.getId(), Mockito.anyInt());
+        assertEquals(expResult, result);
     }
     
     /**
      * Test of estaFinalizadoRevisaoUsuario method, of class HistoricoLivroDAO.
      */
     @Test
-    public void testEstaFinalizadoRevisaoUsuario() {
-        System.out.println("estaFinalizadoRevisaoUsuario");
-        int idLivro = 0;
-        int idPerfil = 0;
-        HistoricoLivroDAO instance = new HistoricoLivroDAO();
-        boolean expResult = false;
-        boolean result = instance.estaFinalizadoRevisaoUsuario(idLivro, idPerfil);
+    public void testEstaFinalizadoRevisaoUsuario_True() {
+        System.out.println("estaFinalizadoRevisaoUsuario_True");
+        Mockito.when(sessao.createQuery(Mockito.any())).thenReturn(query);
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
+        Mockito.when(query.setString(Mockito.anyString(), Mockito.anyString())).thenReturn(query);
+        Mockito.when(query.setInteger(Mockito.anyString(), Mockito.anyInt())).thenReturn(query);
+        Mockito.when((HistoricoLivro) query.uniqueResult()).thenReturn(historicoLivro);
+        Mockito.when(historicoLivro.getDataConclusao()).thenReturn(calendar);
+        Mockito.when(livro.getId()).thenReturn(1);
+        boolean expResult = true;
+        boolean result = instance.estaFinalizadoRevisaoUsuario(livro.getId(), Mockito.anyInt());
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 }
