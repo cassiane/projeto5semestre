@@ -5,8 +5,13 @@
  */
 package br.com.witc.modelo;
 
+import br.com.witc.excessao.DadosUsuarioInvalidoException;
+import br.com.witc.excessao.UsuarioInvalidoException;
 import br.com.witc.persistencia.PerfilDAO;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -49,8 +54,9 @@ public class ControladorCadastroTest {
         Mockito.verify(usuario, times(1)).salvarTipoTextoUsuario(Mockito.anyList(), Mockito.anyInt());
     }
     
-    @Test
-    public void testCadastrarUsuario() throws Exception {  
+    @Ignore
+    public void testCadastrarUsuario() throws DadosUsuarioInvalidoException, 
+            NoSuchAlgorithmException, UnsupportedEncodingException, UsuarioInvalidoException {  
         controlador.cadastrarUsuario(usuario);        
         Mockito.verify(usuario,times(1)).cadastrarUsuario();
     }

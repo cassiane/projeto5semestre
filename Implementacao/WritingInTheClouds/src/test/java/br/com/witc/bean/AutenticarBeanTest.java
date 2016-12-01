@@ -10,6 +10,7 @@ import br.com.witc.modelo.ControladorAutenticacao;
 import br.com.witc.modelo.Perfil;
 import br.com.witc.modelo.TipoPerfil;
 import br.com.witc.modelo.Usuario;
+import br.com.witc.persistencia.UsuarioDAO;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import org.junit.After;
@@ -21,6 +22,7 @@ import static org.junit.Assert.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import org.mockito.MockitoAnnotations;
 
@@ -49,7 +51,10 @@ public class AutenticarBeanTest {
     Usuario usuario;
     
     @Mock
-    TipoPerfil tipoPerfil;        
+    TipoPerfil tipoPerfil;     
+    
+    @Mock 
+    UsuarioDAO dao;
     
     @BeforeClass
     public static void setUpClass() {
@@ -95,16 +100,6 @@ public class AutenticarBeanTest {
     
     @Test 
     public void testeEfetuarLogin() throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{        
-        instance.setEmail("email");
-        instance.setSenha("senha");
-        instance.efetuarLogin();
-        Mockito.verify(controlador,times(1)).efetuarLogin(Mockito.anyString(), Mockito.anyString());
-        Mockito.verify(controlador,times(1)).retornarPerfilPadraoUsuarioLogado();
-        Mockito.verify(controlador,times(1)).atualizarStatusUsuario(Mockito.anyInt());
-    }
-    
-    @Test 
-    public void testeEfetuarLoginLoginInvalidoException() throws LoginInvalidoException, NoSuchAlgorithmException, UnsupportedEncodingException{        
         instance.setEmail("email");
         instance.setSenha("senha");
         instance.efetuarLogin();
